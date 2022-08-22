@@ -1,5 +1,14 @@
 <template>
-  <div class="app-container">
+  <div class="login-container">
+    <div class="content-box">
+      <div class="box-left"></div>
+      <div class="box-right">
+        <div class="right-login">
+          <p class="login-title">标题</p>
+          <div class="login-form"></div>
+        </div>
+      </div>
+    </div>
     <!-- <v-container>
       <v-form>
         <v-text-field
@@ -51,11 +60,42 @@ const adminFormRules = reactive({
 </script>
 
 <style lang="scss" scoped>
-.app-container {
+.login-container {
   width: 100vw;
   height: 100%;
-  background-image: url('/src/assets/images/admin/login/autumn.jpg');
+  // background-image: url('/src/assets/images/admin/login/autumn.jpg');
   background-repeat: no-repeat;
   background-position: center;
+  .content-box {
+    width: 1000px;
+    height: 550px;
+    background-color: aquamarine;
+    box-shadow: 10px 10px 10px 0 rgb(158, 153, 153);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-items: center;
+    border-radius: 5px;
+    .box-left {
+      width: 45%;
+      height: 100%;
+      border-right: 2px solid rgb(158, 150, 150);
+    }
+    .box-right {
+      width: 55%;
+      .right-login {
+        .login-title {
+          font-size: 25px;
+          font-weight: 600;
+          text-align: center;
+          padding: 20px;
+        }
+      }
+    }
+  }
 }
 </style>

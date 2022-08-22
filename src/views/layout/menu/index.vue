@@ -1,8 +1,9 @@
-<template>后台登录进来的首页内容</template>
+<template>菜单</template>
 
 <script lang="ts" setup></script>
 
 <style lang="scss" scoped>
-.app-container {
+.menu-label {
+  color: #fff !important;
 }
 </style>

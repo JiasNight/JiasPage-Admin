@@ -1,37 +1,63 @@
 {
   "name": "jiaspage-admin",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.1",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --mode development",
+    "prod": "vite --mode production",
     "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint . --ext .vue,.js,.ts,.jsx,.tsx --fix",
+    "format": "prettier --write ./**/*.{vue,ts,tsx,js,jsx,css,less,scss,json,md}",
+    "prepare": "husky install"
   },
   "dependencies": {
-    "@vicons/utils": "^0.1.4",
+    "@vueuse/core": "^8.7.5",
     "axios": "^0.24.0",
-    "naive-ui": "^2.25.5",
+    "crypto-js": "^4.1.1",
+    "jsencrypt": "^3.2.1",
+    "md-editor-v3": "^1.8.0",
+    "pinia": "^2.0.14",
     "vue": "^3.2.25",
+    "vue-i18n": "^9.2.0-beta.26",
     "vue-router": "^4.0.12",
-    "vuex": "^4.0.2"
+    "vuetify": "3.0.0-beta.5",
+    "webfontloader": "^1.0.0"
   },
   "devDependencies": {
+    "@mdi/font": "^6.9.96",
+    "@types/crypto-js": "^4.1.1",
     "@typescript-eslint/eslint-plugin": "^5.8.0",
     "@typescript-eslint/parser": "^5.8.0",
     "@vicons/fluent": "^0.11.0",
     "@vitejs/plugin-vue": "^2.0.0",
-    "eslint": "^8.5.0",
+    "@vitejs/plugin-vue-jsx": "^1.3.10",
+    "eslint": "^8.16.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^8.2.0",
-    "naive-ui": "^2.23.1",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
     "prettier": "^2.5.1",
     "sass": "^1.45.1",
     "typescript": "^4.4.4",
+    "unplugin-auto-import": "^0.8.6",
+    "unplugin-vue-components": "^0.19.6",
     "vfonts": "^0.1.0",
-    "vite": "^2.7.2",
+    "vite": "^3.0.7",
     "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-eslint": "^1.8.0",
     "vite-plugin-importer": "^0.2.5",
+    "vite-plugin-vuetify": "^1.0.0-alpha.0",
     "vue-tsc": "^0.29.8"
+  },
+  "lint-staged": {
+    "*.{js,vue,ts,jsx,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{html,css,less,scss,md}": [
+      "prettier --write"
+    ]
   }
 }

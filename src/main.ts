@@ -1,68 +1,30 @@
 import { createApp } from 'vue';
-import AppMain from '@/components/Application/index.vue';
-
-// import { setupStore } from './store';
-
-// import router, { setupRouter } from './router';
-
-import { setupNaive } from '@/plugins';
-// import AppProvider from '@/components/Application/index.vue';
-
+import App from './App.vue';
 // 引入路由
 import router from './router';
-// 引入vuex
-import { store, key } from './store';
+// 引入pinia
+import store from './store';
 // 引入axios
 import axios from 'axios';
+// 引入i18n
+import i18n from './i18n';
 // 通用字体
 import 'vfonts/Lato.css';
 // 等宽字体
 import 'vfonts/FiraCode.css';
-// 引入naiveUI组件
-// import naiveUI from 'naive-ui';
+// 引入vuetify组件
+import vuetify from './plugins/vuetify';
+import { loadFonts } from './plugins/webfontloader';
+
+loadFonts();
 
 // 创建app实例
-const app = createApp(AppMain);
-// 注册全局常用的 naive-ui 组件
-setupNaive(app)
+const app = createApp(App);
 app.use(router);
-app.use(store, key);
+app.use(i18n);
+app.use(store);
+app.use(vuetify);
 // 全局挂在axios
-// app.config.globalProperties.$axios = axios;
+app.config.globalProperties.$axios = axios;
 // 挂载
 app.mount('#app');
-
-
-// async function bootstrap() {
-//   const appProvider = createApp(AppProvider);
-
-//   const app = createApp(App);
-
-//   // 注册全局常用的 naive-ui 组件
-//   setupNaive(app);
-
-//   // 注册全局自定义组件
-//   //setupCustomComponents();
-
-//   // 注册全局自定义指令，如：v-permission权限指令
-//   // setupDirectives(app);
-
-//   // 注册全局方法，如：app.config.globalProperties.$message = message
-//   //setupGlobalMethods(app);
-
-//   // 挂载状态管理
-//   setupStore(app);
-
-//   //优先挂载一下 Provider 解决路由守卫，Axios中可使用，Dialog，Message 等之类组件
-//   appProvider.mount('#appProvider', true);
-
-//   // 挂载路由
-//   await setupRouter(app);
-
-//   // 路由准备就绪后挂载APP实例
-//   await router.isReady();
-
-//   app.mount('#app', true);
-// }
-
-// void bootstrap();

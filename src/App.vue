@@ -4,16 +4,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-import { defineComponent } from 'vue';
-import { useMessage, useDialog, useNotification, useLoadingBar } from 'naive-ui';
-
-// mount on window
-window.$message = useMessage();
-window.$dialog = useDialog();
-window.$notification = useNotification();
-window.$loadingBar = useLoadingBar();
-</script>
+<script lang="ts" setup></script>
 
 <style>
 #app {

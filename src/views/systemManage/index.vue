@@ -1,4 +1,6 @@
-<template>后台登录进来的首页内容</template>
+<template>
+  <div class="app-container"></div>
+</template>
 
 <script lang="ts" setup></script>
 

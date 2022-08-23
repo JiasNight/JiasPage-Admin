@@ -1,0 +1,64 @@
+// 自定义loading相关样式
+.v-loading {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  text-align: center;
+  p {
+    color: #2ecc71;
+  }
+  .v-loading-box {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+// 旋转整个svg容器
+.v-rotate {
+  animation: rotateCircular 1s linear infinite;
+}
+
+// svg容器样式 以及 里面的circle的旋转
+.v-loading-circular {
+  width: 40px;
+  height: 40px;
+  color: #2ecc71;
+  margin-bottom: 20px;
+  circle {
+    animation: v-circular 1.5s ease-in-out infinite;
+    stroke: currentColor;
+    stroke-width: 3;
+    stroke-linecap: round;
+  }
+}
+
+@keyframes rotateCircular {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes v-circular {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -20;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -120;
+  }
+}

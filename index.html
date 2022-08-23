@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
+    <title>PAGE-ADMIN</title>
   </head>
   <body>
     <div id="app"></div>
@@ -27,6 +27,14 @@
           return false;
         }
       }
+    </script>
+    <script>
+      document.addEventListener('visibilitychange', function () {
+        let normalTitle = document.title;
+        if (document.visibilityState === 'hidden') {
+          document.title = '(づ￣ 3￣)づ';
+        } else document.title = normalTitle;
+      });
     </script>
   </body>
 </html>

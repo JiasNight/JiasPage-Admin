@@ -1,13 +1,13 @@
 <template>
   <div class="login-container">
     <div class="content-box">
-      <div v-ripple class="box-left text-center elevation-2 pa-12 text-h5" >
-        <img src="https://picsum.photos/id/11/500/300" alt="">
-        <br>
-        <br>
+      <div v-loading="isLoading" v-ripple class="box-left text-center elevation-2 pa-12 text-h5">
+        <!-- <img src="https://picsum.photos/id/11/500/300" alt="" />
+        <br />
+        <br />
         <p>
           如果你拥有别人没有的，知道别人不知道的，会做别人不会做的，请准备好：别人都会来批评你。如果想杜绝批评，那你不妨做一个无脑无能无言无为的人
-        </p>
+        </p> -->
       </div>
       <div class="box-right">
         <div class="right-login">
@@ -24,7 +24,7 @@
                   prepend-inner-icon="mdi-account-lock"
                   variant="outlined"
                   color="success"
-                  density="compact" 
+                  density="compact"
                   shaped
                 >
                 </v-text-field>
@@ -58,7 +58,7 @@
                       shaped
                     ></v-text-field>
                   </div>
-                  <img class="code-look" src="https://picsum.photos/id/11/500/300" alt="verifyCode">
+                  <img class="code-look" src="https://picsum.photos/id/11/500/300" alt="verifyCode" />
                 </div>
                 <v-divider></v-divider>
                 <div class="form-tool">
@@ -67,7 +67,8 @@
                     label="记住密码"
                     color="orange"
                     value="success"
-                    hide-details>
+                    hide-details
+                  >
                   </v-checkbox>
                   <a class="tool-forget-password" href="#">忘记密码？</a>
                 </div>
@@ -82,7 +83,8 @@
 </template>
 
 <script lang="ts" setup>
-const valid = $ref(false);
+import { $ref } from 'vue/macros';
+const isLoading = $ref(true);
 const firstname = $ref('');
 const lastname = $ref('');
 const email = $ref('');
@@ -106,15 +108,15 @@ const showPassword = $ref(false);
 .login-container {
   width: 100vw;
   height: 100%;
-  background-image: url('/src/assets/images/admin/login/spring.jpg');
+  // background-image: url('/src/assets/images/admin/login/spring.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   .content-box {
-    width: 1000px;
+    width: 900px;
     height: 550px;
-    background: linear-gradient(180deg,#5efce8,#736efe);
-    box-shadow: 10px 10px 10px 0 rgb(192, 192, 192);
+    background: rgba(248, 248, 248, 1);
+    box-shadow: 5px 5px 5px 0 rgb(185, 182, 182);
     position: absolute;
     left: 50%;
     top: 50%;
@@ -173,18 +175,22 @@ const showPassword = $ref(false);
               color: #2ecc71;
             }
             .tool-remember-password:hover {
-              color: #ffa502; 
+              color: #ffa502;
             }
             .tool-forget-password {
               color: #2ecc71;
             }
             .tool-forget-password:hover {
-              color: #ffa502; 
+              color: #ffa502;
             }
           }
         }
       }
     }
   }
+}
+
+// 媒体查询响应式页面
+@media screen {
 }
 </style>

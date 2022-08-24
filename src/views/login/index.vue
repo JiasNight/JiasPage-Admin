@@ -1,17 +1,17 @@
 <template>
   <div class="login-container">
     <div class="content-box">
-      <div v-loading="isLoading" v-ripple class="box-left text-center elevation-2 pa-12 text-h5">
-        <!-- <img src="https://picsum.photos/id/11/500/300" alt="" />
+      <div v-loading="isLoading" v-ripple loading-style="wave" class="box-left text-center elevation-2 pa-12 text-h5">
+        <img src="https://picsum.photos/id/11/500/300" alt="" />
         <br />
         <br />
         <p>
           如果你拥有别人没有的，知道别人不知道的，会做别人不会做的，请准备好：别人都会来批评你。如果想杜绝批评，那你不妨做一个无脑无能无言无为的人
-        </p> -->
+        </p>
       </div>
       <div class="box-right">
         <div class="right-login">
-          <p class="login-title">标题</p>
+          <p class="login-tit贵州省遵义市务川仡佬族苗族自治县丰乐镇le">标题</p>
           <div class="login-form">
             <v-container>
               <v-form>
@@ -84,10 +84,17 @@
 
 <script lang="ts" setup>
 import { $ref } from 'vue/macros';
-const isLoading = $ref(true);
+let isLoading = $ref(false);
 const firstname = $ref('');
 const lastname = $ref('');
 const email = $ref('');
+
+onMounted(() => {
+  isLoading = true;
+  setTimeout(() => {
+    isLoading = false;
+  }, 10000);
+});
 
 const adminForm = reactive({
   userName: '',

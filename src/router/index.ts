@@ -4,7 +4,7 @@ import Layout from '@/views/layout/index.vue';
 
 const commonRoutes: Array<RouteRecordRaw> = [
   {
-    path: '',
+    path: '/',
     component: Layout,
     redirect: 'index',
     children: [

@@ -1,20 +1,12 @@
 <template>
   <div class="login-container">
     <div class="content-box">
-      <div v-loading="isLoading" v-ripple loading-style="wave" class="box-left text-center elevation-2 pa-12 text-h5">
-        <img src="https://picsum.photos/id/11/500/300" alt="" />
-        <br />
-        <br />
-        <p>
-          如果你拥有别人没有的，知道别人不知道的，会做别人不会做的，请准备好：别人都会来批评你。如果想杜绝批评，那你不妨做一个无脑无能无言无为的人
-        </p>
-      </div>
       <div class="box-right">
         <div class="right-login">
-          <p class="login-tit贵州省遵义市务川仡佬族苗族自治县丰乐镇le">标题</p>
+          <p class="login-title">登 录</p>
           <div class="login-form">
             <v-container>
-              <v-form>
+              <v-form ref="loginForm">
                 <v-text-field
                   v-model="adminForm.userName"
                   required
@@ -72,7 +64,9 @@
                   </v-checkbox>
                   <a class="tool-forget-password" href="#">忘记密码？</a>
                 </div>
-                <v-btn rounded="pill" color="primary" block> <span>登 录</span></v-btn>
+                <v-btn rounded="pill" color="primary" block :loading="submitBtnIsLoading" @click="submitLoginBtn">
+                  登 录
+                </v-btn>
               </v-form>
             </v-container>
           </div>
@@ -84,17 +78,17 @@
 
 <script lang="ts" setup>
 import { $ref } from 'vue/macros';
-let isLoading = $ref(false);
-const firstname = $ref('');
-const lastname = $ref('');
-const email = $ref('');
-
+import { useRouter } from 'vue-router';
+const router = useRouter();
+let isLoading = $ref<boolean>(false);
 onMounted(() => {
   isLoading = true;
   setTimeout(() => {
     isLoading = false;
-  }, 10000);
+  }, 2000);
 });
+
+const showPassword = $ref<boolean>(false);
 
 const adminForm = reactive({
   userName: '',
@@ -108,20 +102,32 @@ const adminFormRules = reactive({
   verifyCode: [(v: any) => !!v || '请输入验证码！']
 });
 
-const showPassword = $ref(false);
+const loginForm = $ref(null);
+
+let submitBtnIsLoading = $ref<boolean>(false);
+
+const submitLoginBtn = () => {
+  submitBtnIsLoading = true;
+  loginForm.validate();
+  setTimeout(() => {
+    submitBtnIsLoading = false;
+    loginForm.resetValidation();
+  }, 2000);
+  router.push('/');
+};
 </script>
 
 <style lang="scss" scoped>
 .login-container {
   width: 100vw;
   height: 100%;
-  // background-image: url('/src/assets/images/admin/login/spring.jpg');
-  background-size: cover;
+  background-image: url('/src/assets/images/login/login-background.png');
+  background-size: 60% 60%;
   background-repeat: no-repeat;
   background-position: center;
   .content-box {
-    width: 900px;
-    height: 550px;
+    width: 450px;
+    height: 500px;
     background: rgba(248, 248, 248, 1);
     box-shadow: 5px 5px 5px 0 rgb(185, 182, 182);
     position: absolute;
@@ -132,23 +138,8 @@ const showPassword = $ref(false);
     flex-direction: row;
     justify-content: center;
     border-radius: 10px;
-    .box-left {
-      width: 45%;
-      height: 100%;
-      border-right: 2px solid rgb(158, 150, 150);
-      img {
-        height: 50%;
-      }
-      p {
-        height: 50%;
-        text-indent: 2em;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: wrap;
-      }
-    }
     .box-right {
-      width: 55%;
+      width: 100%;
       .right-login {
         .login-title {
           font-size: 25px;

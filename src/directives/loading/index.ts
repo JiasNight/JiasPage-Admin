@@ -110,9 +110,19 @@ const dot = (
 
 export const loading: Directive = {
   beforeMount() {},
+  mounted() {},
   beforeUpdate() {}, // 新
-  updated() {},
-  mounted(el: HTMLElement, binding: DirectiveBinding) {
+  updated(el: HTMLElement, binding: DirectiveBinding) {
+    // 判断loading的风格样式
+    const hasCustomStyle = el.getAttribute('loading-style');
+
+    // 风格样式
+    let loadingStyle = '';
+    if (hasCustomStyle) {
+      loadingStyle = hasCustomStyle;
+    } else {
+      loadingStyle = 'default';
+    }
     // 更新的时候用这个
     if (binding.value) {
       /**
@@ -135,25 +145,18 @@ export const loading: Directive = {
       const hasCustomTextColor = el.getAttribute('loading-text-color');
       // 判断是否传入了自定义背景色
       const hasCustomBgColor = el.getAttribute('loading-background');
-      // 判断loading的风格样式
-      const hasCustomStyle = el.getAttribute('loading-style');
-
-      // 风格样式
-      let loadingStyle = '';
-      if (hasCustomStyle) {
-        loadingStyle = hasCustomStyle;
-      } else {
-        loadingStyle = 'default';
-      }
 
       switch (loadingStyle) {
         case 'wave':
           wave(el, hasCustomText, hasCustomTextColor, hasCustomBgColor);
           break;
-        case 'dot':
-          dot(el, hasCustomText, hasCustomTextColor, hasCustomBgColor);
-          break;
+        // case 'dot':
+        //   dot(el, hasCustomText, hasCustomTextColor, hasCustomBgColor);
+        //   break;
         case 'default':
+          normal(el, hasCustomText, hasCustomTextColor, hasCustomBgColor);
+          break;
+        default:
           normal(el, hasCustomText, hasCustomTextColor, hasCustomBgColor);
           break;
       }
@@ -162,9 +165,22 @@ export const loading: Directive = {
        * 传过来的值为false 不需要展示loading
        * 移除loading相关dom
        */
+      let divStr = '';
+      switch (loadingStyle) {
+        case 'wave':
+          divStr = 'wave';
+          break;
+        case 'default':
+          divStr = 'normal';
+          break;
+        default:
+          divStr = 'normal';
+          break;
+      }
+      const divClassName = 'v-' + divStr + '-loading';
       for (let i = 0; i < el.childNodes.length; i++) {
-        if ((el.childNodes[i] as any).className === 'v-loading') {
-          const childNodes = el.getElementsByClassName('v-loading')[0];
+        if ((el.childNodes[i] as any).className === divClassName) {
+          const childNodes = el.getElementsByClassName(divClassName)[0];
           el.removeChild(childNodes);
           break;
         }

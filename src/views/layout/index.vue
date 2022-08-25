@@ -1,14 +1,27 @@
 <template>
-  <v-navigation-drawer v-model="openMenu" app color="#218c74" :width="menuWidth">
+  <v-navigation-drawer v-model="openMenu" app color="#c8d6e5" :width="menuWidth">
     <!-- <VLogo></VLogo> -->
     <!-- <VMenu></VMenu> -->
+    <v-toolbar-items>
+      <v-list>
+        <v-list-item v-for="(item, index) in menusList" :key="index" :value="index">
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-toolbar-items>
   </v-navigation-drawer>
 
   <v-app-bar app> app-bar </v-app-bar>
 
   <!-- Sizes your content based upon application components -->
   <v-main>
-    面包屑
+    <v-card style="height: 35px; margin: 10px 0; line-height: 35px">
+      <v-breadcrumbs :items="breadcrumbList">
+        <template #text="{ item }">
+          {{ item.text.toUpperCase() }}
+        </template>
+      </v-breadcrumbs>
+    </v-card>
     <!-- Provides the application the proper gutter -->
     <v-container fluid>
       路由内容
@@ -21,53 +34,31 @@
 </template>
 
 <script lang="ts" setup>
-import VLogo from './logo/index.vue';
-import VMenu from './menu/index.vue';
+import { $ref } from 'vue/macros';
+// import VLogo from './logo/index.vue';
+// import VMenu from './menu/index.vue';
 
 const openMenu = $ref<boolean>(true);
-const menuWidth = openMenu ? '250' : '60';
-const desserts = [
+const menuWidth = openMenu ? '200' : '60';
+const breadcrumbList = [
   {
-    name: 'Frozen Yogurt',
-    calories: 159
+    text: 'Dashboard',
+    disabled: false,
+    href: 'breadcrumbs_dashboard'
   },
   {
-    name: 'Ice cream sandwich',
-    calories: 237
+    text: 'Link 1',
+    disabled: false,
+    href: 'breadcrumbs_link_1'
   },
   {
-    name: 'Eclair',
-    calories: 262
-  },
-  {
-    name: 'Cupcake',
-    calories: 305
-  },
-  {
-    name: 'Gingerbread',
-    calories: 356
-  },
-  {
-    name: 'Jelly bean',
-    calories: 375
-  },
-  {
-    name: 'Lollipop',
-    calories: 392
-  },
-  {
-    name: 'Honeycomb',
-    calories: 408
-  },
-  {
-    name: 'Donut',
-    calories: 452
-  },
-  {
-    name: 'KitKat',
-    calories: 518
+    text: 'Link 2',
+    disabled: true,
+    href: 'breadcrumbs_link_2'
   }
 ];
+
+const menusList = [{ title: 'Click Me' }, { title: 'Click Me' }, { title: 'Click Me' }, { title: 'Click Me 2' }];
 </script>
 
 <style lang="scss" scoped>

@@ -1,17 +1,51 @@
 <template>
-  <v-navigation-drawer v-model="openMenu" app color="#c8d6e5" :width="menuWidth">
+  <v-navigation-drawer v-model="openMenu" app :width="menuWidth">
     <!-- <VLogo></VLogo> -->
-    <!-- <VMenu></VMenu> -->
-    <v-toolbar-items>
+    <v-toolbar flat>
       <v-list>
-        <v-list-item v-for="(item, index) in menusList" :key="index" :value="index">
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        <v-list-item>
+          <v-list-item-avatar>
+            <img src="../../assets/images/logo.png" />
+          </v-list-item-avatar>
+          <v-list-item-title>帖标题</v-list-item-title>
+          <v-list-item-subtitle>管理员</v-list-item-subtitle>
         </v-list-item>
       </v-list>
-    </v-toolbar-items>
+    </v-toolbar>
+    <v-spacer></v-spacer>
+    <!-- 菜单 -->
+    <menus></menus>
   </v-navigation-drawer>
 
-  <v-app-bar app> app-bar </v-app-bar>
+  <v-app-bar app light clipped-right>
+    <v-app-bar-nav-icon v-if="!openMenu" @click="openMenu = !openMenu"></v-app-bar-nav-icon>
+    <div class="text-center">
+      <v-menu open-on-hover bottom offset-y>
+        <template #activator="{ props }">
+          <v-btn text v-bind="props" color="#444">
+            app
+            <v-icon class="ml-1">mdi-account</v-icon>
+          </v-btn>
+        </template>
+        <v-sheet class="overflow-hidden">
+          <v-list dense expand nav>
+            <v-list-item to="/user/home">
+              <v-list-item-title class="d-flex align-center">
+                <v-icon class="mr-2">mdi-account</v-icon>
+                用户首页
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="logout()">
+              <v-list-item-title class="d-flex align-center">
+                <v-icon class="mr-2">mdi-logout</v-icon>
+                登出
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-sheet>
+      </v-menu>
+    </div>
+  </v-app-bar>
 
   <!-- Sizes your content based upon application components -->
   <v-main>
@@ -36,7 +70,7 @@
 <script lang="ts" setup>
 import { $ref } from 'vue/macros';
 // import VLogo from './logo/index.vue';
-// import VMenu from './menu/index.vue';
+import menus from './menu/index.vue';
 
 const openMenu = $ref<boolean>(true);
 const menuWidth = openMenu ? '200' : '60';
@@ -57,8 +91,6 @@ const breadcrumbList = [
     href: 'breadcrumbs_link_2'
   }
 ];
-
-const menusList = [{ title: 'Click Me' }, { title: 'Click Me' }, { title: 'Click Me' }, { title: 'Click Me 2' }];
 </script>
 
 <style lang="scss" scoped>

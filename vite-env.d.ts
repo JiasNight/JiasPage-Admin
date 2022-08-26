@@ -15,4 +15,3 @@ declare module '@/api/markdown/index';
 declare module 'three/examples/jsm/controls/DragControls';
 declare module 'three/examples/jsm/controls/OrbitControls.js';
 declare module '@/router/index';
-declare module '$ref';

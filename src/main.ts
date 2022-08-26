@@ -19,6 +19,8 @@ import { loadFonts } from './plugins/webfontloader';
 // 引入自定义指令和样式
 import * as directives from '@/directives/index';
 import '@/directives/loading/style/index.scss';
+// 引入导航菜单
+import NavMenu from '@/components/NavMenu/index.vue';
 
 loadFonts();
 
@@ -34,5 +36,6 @@ app.config.globalProperties.$axios = axios;
 Object.keys(directives).forEach((key) => {
   app.directive(key, (directives as { [key: string]: Directive; })[key]);
 });
+app.component('NavMenu', NavMenu);
 // 挂载
 app.mount('#app');

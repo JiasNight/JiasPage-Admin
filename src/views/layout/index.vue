@@ -73,7 +73,7 @@ import { $ref } from 'vue/macros';
 import menus from './menu/index.vue';
 
 const openMenu = $ref<boolean>(true);
-const menuWidth = openMenu ? '200' : '60';
+const menuWidth = openMenu ? '250' : '60';
 const breadcrumbList = [
   {
     text: 'Dashboard',

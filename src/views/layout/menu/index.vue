@@ -10,6 +10,7 @@ import { $ref } from 'vue/macros';
 interface IMenu {
   id: string;
   pid: string;
+  type: number;
   name: string;
   icon: string;
   path: string;
@@ -22,16 +23,18 @@ const menusList = $ref<Array<IMenu>>([
   {
     id: '1',
     pid: '0',
-    name: '菜单1',
-    icon: 'mdi-account-multiple-outline',
-    path: '/login',
+    type: 1,
+    name: '系统设置',
+    icon: 'mdi-folder-lock',
+    path: '',
     show: true,
     description: '这是一个菜单',
     children: [
       {
         id: '12',
         pid: '1',
-        name: '菜单1-2',
+        type: 2,
+        name: '用户管理',
         icon: 'mdi-plus-outline',
         path: '/login',
         show: true,
@@ -40,16 +43,18 @@ const menusList = $ref<Array<IMenu>>([
       {
         id: '11',
         pid: '1',
-        name: '菜单1-1',
+        type: 1,
+        name: '权限设置',
         icon: 'mdi-plus-outline',
-        path: '/login',
+        path: '',
         show: true,
         description: '这是一个菜单1-1',
         children: [
           {
             id: '111',
             pid: '11',
-            name: '菜单1-1-1',
+            type: 2,
+            name: '用户权限',
             icon: 'mdi-plus-outline',
             path: '/',
             show: true,
@@ -58,17 +63,51 @@ const menusList = $ref<Array<IMenu>>([
           {
             id: '112',
             pid: '11',
-            name: '菜单1-1-2',
+            type: 2,
+            name: '菜单权限',
             icon: 'mdi-plus-outline',
             path: '/',
             show: true,
             description: '这是一个菜单1-2'
+          },
+          {
+            id: '112',
+            pid: '11',
+            type: 1,
+            name: '角色管理',
+            icon: 'mdi-plus-outline',
+            path: '/',
+            show: true,
+            description: '这是一个菜单1-2',
+            children: [
+              {
+                id: '112',
+                pid: '11',
+                type: 2,
+                name: '角色设置',
+                icon: 'mdi-plus-outline',
+                path: '/',
+                show: true,
+                description: '这是一个菜单1-2'
+              },
+              {
+                id: '112',
+                pid: '11',
+                type: 2,
+                name: '角色权限',
+                icon: 'mdi-plus-outline',
+                path: '/',
+                show: true,
+                description: '这是一个菜单1-2'
+              }
+            ]
           }
         ]
       },
       {
         id: '12',
         pid: '1',
+        type: 2,
         name: '菜单1-2',
         icon: 'mdi-plus-outline',
         path: '/login',
@@ -80,7 +119,8 @@ const menusList = $ref<Array<IMenu>>([
   {
     id: '2',
     pid: '0',
-    name: '菜单2',
+    type: 1,
+    name: '目录2',
     icon: 'mdi-account-multiple-outline',
     path: '',
     show: true,
@@ -89,6 +129,7 @@ const menusList = $ref<Array<IMenu>>([
       {
         id: '21',
         pid: '1',
+        type: 1,
         name: '菜单2-1',
         icon: 'mdi-plus-outline',
         path: '',
@@ -98,6 +139,7 @@ const menusList = $ref<Array<IMenu>>([
           {
             id: '211',
             pid: '11',
+            type: 2,
             name: '菜单2-1-1',
             icon: 'mdi-plus-outline',
             path: '/',
@@ -109,6 +151,7 @@ const menusList = $ref<Array<IMenu>>([
       {
         id: '22',
         pid: '1',
+        type: 2,
         name: '菜单2-2',
         icon: 'mdi-plus-outline',
         path: '/login',

@@ -7,7 +7,6 @@ import router from '../router';
 // 请求加密方法引入
 import { aesUtil, rsaUtil, publicKey, privateKey } from './transfer';
 
-const baseUrl = import.meta.env.VITE_APP_BASE_API;
 class Interceptors {
   instance: AxiosInstance;
   loading: any;
@@ -15,7 +14,7 @@ class Interceptors {
     // 基础配置
     this.instance = axios.create({
       // 服务接口请求
-      baseURL: baseUrl,
+      baseURL: import.meta.env.VITE_APP_BASE_URL,
       // 超时设置
       timeout: 1500,
       headers: {

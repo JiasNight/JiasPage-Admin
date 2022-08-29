@@ -50,7 +50,7 @@
                       shaped
                     ></v-text-field>
                   </div>
-                  <img class="code-look" src="https://picsum.photos/id/11/500/300" alt="verifyCode" />
+                  <img class="code-look" :src="verifyCodeImg" alt="verifyCode" @click="getCodeImgBtn" />
                 </div>
                 <v-divider></v-divider>
                 <div class="form-tool">
@@ -79,14 +79,39 @@
 <script lang="ts" setup>
 import { $ref } from 'vue/macros';
 import { useRouter } from 'vue-router';
+import { getValidateCode } from '@/api/login/index';
+
+interface Ires {
+  success?: boolean;
+  code?: number;
+  message?: string;
+  timestamp?: string;
+  data?: any;
+}
+
 const router = useRouter();
 let isLoading = $ref<boolean>(false);
+let verifyCodeImg = $ref<string>('');
+
 onMounted(() => {
+  getValidateCode().then((res: Ires) => {
+    if (res && res.code === 200) {
+      verifyCodeImg = res.data.base64;
+    }
+  });
   isLoading = true;
   setTimeout(() => {
     isLoading = false;
   }, 2000);
 });
+
+const getCodeImgBtn = () => {
+  getValidateCode().then((res: Ires) => {
+    if (res && res.code === 200) {
+      verifyCodeImg = res.data.base64;
+    }
+  });
+};
 
 const showPassword = $ref<boolean>(false);
 

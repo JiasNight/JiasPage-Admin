@@ -18,7 +18,6 @@ import * as path from 'path';
 
 // https://vitejs.dev/config/
 export default ({ mode }) => {
-  console.log(loadEnv(mode, process.cwd()));
   return defineConfig({
     define: {
       'process.env': loadEnv(mode, process.cwd())
@@ -108,18 +107,15 @@ export default ({ mode }) => {
       https: false, // 是否开启 https
       cors: true, // 默认启用并允许任何源
       open: false, // 在服务器启动时自动在浏览器中打开
-      hmr: {
-        overlay: false
-      },
       // 反向代理配置
       proxy: {
-        '/api/': {
+        '/api': {
           // 匹配请求路径，localhost:4000/api/
           target: loadEnv(mode, process.cwd()).VITE_APP_BASE_URL, // 代理的目标地址
           changeOrigin: true, // 开发模式，默认的origin是真实的 origin:localhost:3000 代理服务会把origin修改为目标地址
           // secure: true, // 是否https接口
           // ws: true, // 是否代理webSockets
-          rewrite: (path) => path.replace(/\/api/, '')
+          rewrite: (path) => path.replace(/^\/api/, '')
         }
       }
     }

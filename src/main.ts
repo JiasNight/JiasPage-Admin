@@ -21,6 +21,8 @@ import * as directives from '@/directives/index';
 import '@/directives/loading/style/index.scss';
 // 引入导航菜单
 import NavMenu from '@/components/NavMenu/index.vue';
+// 引入全局Message
+import Message from '@/components/Message/Message.vue';
 
 loadFonts();
 
@@ -37,5 +39,6 @@ Object.keys(directives).forEach((key) => {
   app.directive(key, (directives as { [key: string]: Directive; })[key]);
 });
 app.component('NavMenu', NavMenu);
+app.config.globalProperties.$Message = Message;
 // 挂载
 app.mount('#app');

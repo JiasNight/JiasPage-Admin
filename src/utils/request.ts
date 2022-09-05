@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import { errorCodeType } from './requestErrorCode';
+import { getCurrentInstance } from 'vue';
 
 // 这个就是上面创建的router实例，用来跳转到login页面的
 import router from '../router';
@@ -34,44 +35,43 @@ class Interceptors {
         const token = window.localStorage.getItem('TOKEN');
         token && (config.headers.Authorization = token);
 
+        // 请求方法类型
         const requestMethod = config.method;
-        if (requestMethod.toLocaleLowerCase() === 'post') {
-          if (config.data) {
-            const requestData = config.data;
-            if (Object.prototype.toString.call(requestData) === '[object FormData]') {
-              // 设置请求头为表单提交头
-              const jsonData: any = {};
-              for (const key of requestData.keys()) {
-                jsonData[key] = requestData.get(key);
-              }
-              const objData: any = {
-                data: aesUtil.encrypt(jsonData, aesKey),
-                aesKey: rsaUtil.encrypt(aesKey, window.sessionStorage.getItem('javaPublicKey')),
-                publicKey: publicKey
-              };
-              const fd: FormData = new FormData();
-              for (const key in objData) {
-                fd.append(key, objData[key]);
-              }
-              config.data = fd;
-            } else {
-              const objData: any = {
-                data: aesUtil.encrypt(requestData, aesKey),
-                aesKey: rsaUtil.encrypt(aesKey, window.sessionStorage.getItem('javaPublicKey')),
-                publicKey: publicKey
-              };
-              config.data = objData;
+
+        if (config.params) {
+          const requestParams = config.params;
+          const objParams: any = {
+            data: aesUtil.encrypt(requestParams, aesKey),
+            aesKey: rsaUtil.encrypt(aesKey, window.sessionStorage.getItem('javaPublicKey')),
+            publicKey: publicKey
+          };
+          config.params = objParams;
+        }
+        if (config.data) {
+          const requestData = config.data;
+          if (Object.prototype.toString.call(requestData) === '[object FormData]') {
+            // 设置请求头为表单提交头
+            const jsonData: any = {};
+            for (const key of requestData.keys()) {
+              jsonData[key] = requestData.get(key);
             }
-          }
-        } else if (requestMethod.toLocaleLowerCase() === 'get') {
-          if (config.params) {
-            const requestParams = config.params;
-            const objParams: any = {
-              data: aesUtil.encrypt(requestParams, aesKey),
+            const objData: any = {
+              data: aesUtil.encrypt(jsonData, aesKey),
               aesKey: rsaUtil.encrypt(aesKey, window.sessionStorage.getItem('javaPublicKey')),
               publicKey: publicKey
             };
-            config.params = objParams;
+            // const fd: FormData = new FormData();
+            // for (const key in objData) {
+            //   fd.append(key, objData[key]);
+            // }
+            config.data = objData;
+          } else {
+            const objData: any = {
+              data: aesUtil.encrypt(requestData, aesKey),
+              aesKey: rsaUtil.encrypt(aesKey, window.sessionStorage.getItem('javaPublicKey')),
+              publicKey: publicKey
+            };
+            config.data = objData;
           }
         }
         return config;
@@ -85,7 +85,8 @@ class Interceptors {
     // 响应拦截
     this.instance.interceptors.response.use(
       (response) => {
-        if (response.data.success) {
+        console.log(response);
+        if (response.status === 200) {
           return Promise.resolve(response.data);
         } else {
           // 这个就是错误的时候自行处理的代码了，具体业务具体处理，加上注释只供参考
@@ -93,12 +94,12 @@ class Interceptors {
             // 清除token
             localStorage.removeItem('TOKEN');
             router.push('/login');
-            window.$message.error(errorCodeType('401'));
+            ctx.$Message.error(errorCodeType('401'));
           } else if (response.status === 200) {
-            window.$message.error(response.data.message || '系统错误');
+            ctx.$Message.error(response.data.message || '系统错误');
             return Promise.resolve(response.data);
           } else {
-            window.$message.error(errorCodeType(response.data.code));
+            ctx.$Message.error(errorCodeType(response.data.code));
             return Promise.reject(response.data);
           }
           return;
@@ -108,13 +109,13 @@ class Interceptors {
         // 具体业务具体处理，加上注释只供参考
         const { status } = error.response;
         if (status === '401') {
-          window.$message.error(errorCodeType('401'));
+          ctx.$Message.error(errorCodeType('401'));
           // 清除token
           localStorage.removeItem('TOKEN');
           // 页面跳转
           router.push('/login');
         } else {
-          window.$message.error('系统错误');
+          ctx.$Message.error('系统错误');
         }
         return Promise.reject(error);
       }

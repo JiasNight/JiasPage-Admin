@@ -2,6 +2,8 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
 import Layout from '@/views/layout/index.vue';
 
+import { progressStart, progressEnd } from '@/utils/nporgress';
+
 const commonRoutes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -35,7 +37,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  // window.$loadingBar.start();
+  progressStart();
   const isLogin = localStorage.TOKEN ? true : false;
   if (to.path === '/login') {
     next();
@@ -45,7 +47,7 @@ router.beforeEach((to, from, next) => {
 });
 
 router.afterEach(() => {
-  // window.$loadingBar.finish();
+  progressEnd();
 });
 
 export default router;

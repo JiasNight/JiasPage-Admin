@@ -3,7 +3,7 @@
     <div class="content-box">
       <div class="box-right">
         <div class="right-login">
-          <p class="login-title">登 录</p>
+          <p class="login-title">PAGE后台系统登录</p>
           <div class="login-form">
             <v-container>
               <v-form ref="loginForm">
@@ -43,7 +43,7 @@
                       :rules="adminFormRules.verifyCode"
                       :counter="4"
                       label="验证码"
-                      prepend-inner-icon="mdi-barcode-scan"
+                      prepend-inner-icon="mdi-shield-key"
                       variant="outlined"
                       color="success"
                       density="compact"
@@ -79,7 +79,7 @@
 <script lang="ts" setup>
 import { $ref } from 'vue/macros';
 import { useRouter } from 'vue-router';
-import { getValidateCode } from '@/api/login/index';
+import { getValidateCode, userLogin } from '@/api/login/index';
 
 interface Ires {
   success?: boolean;
@@ -122,9 +122,17 @@ const adminForm = reactive({
 });
 
 const adminFormRules = reactive({
-  userName: [(v: any) => !!v || '请输入用户名！', (v: any) => v.length <= 3 || '用户名长度太短！'],
-  password: [(v: any) => !!v || '请输入密码！', (v: any) => /.+@.+/.test(v) || '密码过于简单了！'],
-  verifyCode: [(v: any) => !!v || '请输入验证码！']
+  userName: [
+    (v: string) => !!v || '请输入用户名！',
+    (v: string) => v.length >= 3 || '用户名长度太短！',
+    (v: string) => v.length < 10 || '用户名长度太长！'
+  ],
+  password: [
+    (v: string) => !!v || '请输入密码！',
+    (v: string) => /.+@.+/.test(v) || '密码过于简单了！',
+    (v: string) => v.length < 10 || '密码长度太长！'
+  ],
+  verifyCode: [(v: string) => !!v || '请输入验证码！']
 });
 
 const loginForm = $ref(null);
@@ -132,13 +140,20 @@ const loginForm = $ref(null);
 let submitBtnIsLoading = $ref<boolean>(false);
 
 const submitLoginBtn = () => {
-  submitBtnIsLoading = true;
-  loginForm.validate();
+  loginForm.validate().then((val: any) => {
+    console.log(val.valid);
+    if (val.valid) {
+      submitBtnIsLoading = true;
+      userLogin(adminForm).then((res: any) => {
+        console.log(res);
+        // router.push('/');
+      });
+    }
+  });
   setTimeout(() => {
     submitBtnIsLoading = false;
     loginForm.resetValidation();
-  }, 2000);
-  router.push('/');
+  }, 1000);
 };
 </script>
 
@@ -147,14 +162,15 @@ const submitLoginBtn = () => {
   width: 100vw;
   height: 100%;
   background-image: url('/src/assets/images/login/login-background.png');
-  background-size: 60% 60%;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
   .content-box {
     width: 450px;
     height: 500px;
-    background: rgba(248, 248, 248, 1);
-    box-shadow: 5px 5px 5px 0 rgb(185, 182, 182);
+    background: rgba(231, 229, 229, 0.5);
+    box-shadow: 5px 5px 5px 0 rgb(182, 179, 179);
+    border: 1px solid #fff;
     position: absolute;
     left: 50%;
     top: 50%;
@@ -167,7 +183,7 @@ const submitLoginBtn = () => {
       width: 100%;
       .right-login {
         .login-title {
-          font-size: 25px;
+          font-size: 30px;
           font-weight: 600;
           text-align: center;
           padding: 30px;

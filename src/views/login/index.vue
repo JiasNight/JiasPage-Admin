@@ -80,6 +80,9 @@
 import { $ref } from 'vue/macros';
 import { useRouter } from 'vue-router';
 import { getValidateCode, userLogin } from '@/api/login/index';
+import userStore from '@/store/module/user';
+
+const userConfig = userStore();
 
 interface Ires {
   success?: boolean;
@@ -144,10 +147,11 @@ const submitLoginBtn = () => {
     console.log(val.valid);
     if (val.valid) {
       submitBtnIsLoading = true;
-      userLogin(adminForm).then((res: any) => {
-        console.log(res);
-        // router.push('/');
-      });
+      userConfig.userLoginHandle(adminForm);
+      // userLogin(adminForm).then((res: any) => {
+      //   console.log(res);
+      //   // router.push('/');
+      // });
     }
   });
   setTimeout(() => {

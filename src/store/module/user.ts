@@ -1,15 +1,27 @@
 import { defineStore } from 'pinia';
+import { userLogin } from '@/api/login/index';
 
-export const useUserStore = defineStore({
+type IUserInfo = {
+  id: string;
+  token: string;
+};
+
+export default defineStore({
   id: 'user', // id必填，且需要唯一
-  state: () => {
+  state: (): IUserInfo => {
     return {
-      name: '张三'
+      id: '',
+      token: ''
     };
   },
   actions: {
-    updateName(name: string) {
-      this.name = name;
+    userLoginHandle(adminForm: object) {
+      userLogin(adminForm).then((res) => {
+        console.log(res + '登录成功');
+      });
+    },
+    updateName(token: string) {
+      this.token = token;
     }
   }
 });

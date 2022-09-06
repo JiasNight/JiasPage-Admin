@@ -38,7 +38,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   progressStart();
-  const isLogin = localStorage.TOKEN ? true : false;
+  const isLogin = sessionStorage.getItem('token') ? true : false;
   if (to.path === '/login') {
     next();
   } else {

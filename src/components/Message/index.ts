@@ -48,8 +48,8 @@ const message = function (options: Object | string) {
     },
     ...options
   })
-    .use(vuetify) // vuetify 的组件貌似必须挂载在具有 symbol(vuetify) 的节点上...
-    .mount(container);
+  .use(vuetify) // vuetify 的组件貌似必须挂载在具有 symbol(vuetify) 的节点上...
+  .mount(container);
 
   instances.push(app as any);
 

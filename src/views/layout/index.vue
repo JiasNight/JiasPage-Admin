@@ -17,8 +17,20 @@
     <menus></menus>
   </v-navigation-drawer>
 
-  <v-app-bar app light clipped-right>
+  <v-app-bar app>
     <v-app-bar-nav-icon v-if="!openMenu" @click="openMenu = !openMenu"></v-app-bar-nav-icon>
+    <v-app-bar-title tag="">PAGE</v-app-bar-title>
+    <v-spacer></v-spacer>
+    <v-progress-linear
+      v-show="loading"
+      :active="loading"
+      :indeterminate="progress === null"
+      :value="progress"
+      absolute
+      bottom
+      color="green accent-3"
+    >
+    </v-progress-linear>
     <div class="text-center">
       <v-menu open-on-hover bottom offset-y>
         <template #activator="{ props }">
@@ -71,6 +83,17 @@
 import { $ref } from 'vue/macros';
 // import VLogo from './logo/index.vue';
 import menus from './menu/index.vue';
+import globalStore from '@/store/module/global';
+
+const globalConfig = globalStore();
+
+const loading: Ref<boolean> = computed({
+  get: () => globalConfig.loading,
+  set: (v: any) => globalConfig.setLoading(v)
+});
+const progress: ComputedRef<number | null> = computed(() => globalConfig.progress);
+const snackbar: Ref<boolean> = ref(false);
+const snackbarText: ComputedRef<string | null> = computed(() => globalConfig.message);
 
 const openMenu = $ref<boolean>(true);
 const menuWidth = openMenu ? '250' : '60';

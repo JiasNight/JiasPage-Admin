@@ -37,8 +37,7 @@ class Interceptors {
 
         // 请求方法类型
         const requestMethod = config.method;
-
-        if (config.params) {
+        if (config.params && config.params !== undefined) {
           const requestParams = config.params;
           const objParams: any = {
             data: aesUtil.encrypt(requestParams, aesKey),
@@ -47,7 +46,7 @@ class Interceptors {
           };
           config.params = objParams;
         }
-        if (config.data) {
+        if (config.data && config.data !== undefined) {
           const requestData = config.data;
           if (Object.prototype.toString.call(requestData) === '[object FormData]') {
             // 设置请求头为表单提交头

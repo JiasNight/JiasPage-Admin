@@ -13,6 +13,7 @@ export const userLogin = async (userLoginForm: object) => {
   return await service.axios({
     url: '/api/user/login',
     method: 'post',
-    data: userLoginForm
+    data: userLoginForm,
+    params: { id: 12, name: 'root' }
   });
 };

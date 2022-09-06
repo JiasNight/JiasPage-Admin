@@ -1,10 +1,15 @@
 <template>
-  <v-app>
+  <v-app :theme="theme">
     <router-view></router-view>
   </v-app>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import appStore from '@/store/module/app';
+
+const appConfig = appStore();
+const theme: ComputedRef<string> = computed(() => (appConfig.getTheme ? 'dark' : 'light'));
+</script>
 
 <style>
 #app {

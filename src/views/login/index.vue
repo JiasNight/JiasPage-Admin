@@ -3,7 +3,31 @@
     <div class="content-box">
       <div class="box-right">
         <div class="right-login">
-          <p class="login-title">PAGE后台系统登录</p>
+          <p class="login-title">{{ $t('login.title') }}</p>
+          <v-tooltip location="top">
+            <template #activator="{ props }">
+              <v-btn
+                class="login-theme"
+                v-bind="props"
+                variant="plain"
+                icon="mdi-theme-light-dark"
+                @click="changeCurrentThemeBtn"
+              ></v-btn>
+            </template>
+            <span>{{ $t('login.theme') }}</span>
+          </v-tooltip>
+          <v-tooltip location="top">
+            <template #activator="{ props }">
+              <v-btn
+                class="login-language"
+                v-bind="props"
+                variant="plain"
+                icon="mdi-sign-language"
+                @click="changeCurrentLanguageBtn"
+              ></v-btn>
+            </template>
+            <span>{{ $t('login.language') }}</span>
+          </v-tooltip>
           <div class="login-form">
             <v-container>
               <v-form ref="loginForm">
@@ -12,7 +36,7 @@
                   required
                   :rules="adminFormRules.userName"
                   :counter="10"
-                  label="登录账户"
+                  :label="$t('login.userName')"
                   prepend-inner-icon="mdi-account-lock"
                   variant="outlined"
                   color="success"
@@ -27,7 +51,7 @@
                   required
                   :rules="adminFormRules.password"
                   :counter="10"
-                  label="登录密码"
+                  :label="$t('login.password')"
                   prepend-inner-icon="mdi-account-key"
                   variant="outlined"
                   color="success"
@@ -81,8 +105,10 @@ import { $ref } from 'vue/macros';
 import { useRouter } from 'vue-router';
 import { getValidateCode, userLogin } from '@/api/login/index';
 import userStore from '@/store/module/user';
+import appStore from '@/store/module/app';
 
 const userConfig = userStore();
+const appConfig = appStore();
 
 interface Ires {
   success?: boolean;
@@ -107,6 +133,19 @@ onMounted(() => {
     isLoading = false;
   }, 2000);
 });
+
+// 切换当前主题
+const changeCurrentThemeBtn = (): void => {
+  appConfig.setTheme();
+};
+
+let currentLanguage = 'zh_CN';
+
+// 切换当前语言
+const changeCurrentLanguageBtn = () => {
+  currentLanguage = currentLanguage === 'zh_CN' ? 'en_US' : 'zh_CN';
+  appConfig.setLanguage(currentLanguage);
+};
 
 const getCodeImgBtn = () => {
   getValidateCode().then((res: Ires) => {
@@ -191,6 +230,16 @@ const submitLoginBtn = () => {
           font-weight: 600;
           text-align: center;
           padding: 30px;
+        }
+        .login-theme {
+          position: absolute;
+          right: 0;
+          top: 0;
+        }
+        .login-language {
+          position: absolute;
+          right: 0;
+          top: 30px;
         }
         .login-form {
           width: 75%;

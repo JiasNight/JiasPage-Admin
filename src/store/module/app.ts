@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { useI18n } from 'vue-i18n';
 
 type IAppState = {
   theme: boolean;
@@ -8,7 +9,8 @@ type IAppState = {
 export default defineStore({
   id: 'app', // id必填，且需要唯一
   state: (): IAppState => ({
-    theme: window.matchMedia('(prefers-color-scheme: dark)').matches,
+    // theme: window.matchMedia('(prefers-color-scheme: dark)').matches,
+    theme: false,
     language: (window.navigator.languages && window.navigator.languages[0]) || window.navigator.language
   }),
   getters: {
@@ -25,6 +27,7 @@ export default defineStore({
     },
     setLanguage(language: string) {
       this.language = language;
+      useI18n().locale.value = language;
     }
   }
 });

@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-import { useI18n } from 'vue-i18n';
 
 type IAppState = {
   theme: boolean;
@@ -27,7 +26,6 @@ export default defineStore({
     },
     setLanguage(language: string) {
       this.language = language;
-      useI18n().locale.value = language;
     }
   }
 });

@@ -106,6 +106,7 @@ import { useRouter } from 'vue-router';
 import { getValidateCode, userLogin } from '@/api/login/index';
 import userStore from '@/store/module/user';
 import appStore from '@/store/module/app';
+import { useI18n } from 'vue-i18n';
 
 const userConfig = userStore();
 const appConfig = appStore();
@@ -144,6 +145,7 @@ let currentLanguage = 'zh_CN';
 // 切换当前语言
 const changeCurrentLanguageBtn = () => {
   currentLanguage = currentLanguage === 'zh_CN' ? 'en_US' : 'zh_CN';
+  useI18n().locale.value = currentLanguage;
   appConfig.setLanguage(currentLanguage);
 };
 

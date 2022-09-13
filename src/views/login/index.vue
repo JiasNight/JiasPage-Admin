@@ -104,12 +104,13 @@
 import { $ref } from 'vue/macros';
 import { useRouter } from 'vue-router';
 import { getValidateCode, userLogin } from '@/api/login/index';
-import userStore from '@/store/module/user';
-import appStore from '@/store/module/app';
+import useUserStore from '@/store/module/user';
+import useAppStore from '@/store/module/app';
 import { useI18n } from 'vue-i18n';
 
-const userConfig = userStore();
-const appConfig = appStore();
+const userStore = useUserStore();
+const appStore = useAppStore();
+const { locale } = useI18n();
 
 interface Ires {
   success?: boolean;
@@ -137,16 +138,16 @@ onMounted(() => {
 
 // 切换当前主题
 const changeCurrentThemeBtn = (): void => {
-  appConfig.setTheme();
+  appStore.setTheme();
 };
 
 let currentLanguage = 'zh_CN';
 
 // 切换当前语言
-const changeCurrentLanguageBtn = () => {
+const changeCurrentLanguageBtn = (): void => {
   currentLanguage = currentLanguage === 'zh_CN' ? 'en_US' : 'zh_CN';
-  useI18n().locale.value = currentLanguage;
-  appConfig.setLanguage(currentLanguage);
+  locale.value = currentLanguage;
+  appStore.setLanguage(currentLanguage);
 };
 
 const getCodeImgBtn = () => {
@@ -188,7 +189,7 @@ const submitLoginBtn = () => {
     console.log(val.valid);
     if (val.valid) {
       submitBtnIsLoading = true;
-      userConfig.userLoginHandle(adminForm);
+      userStore.userLoginHandle(adminForm);
       // userLogin(adminForm).then((res: any) => {
       //   console.log(res);
       //   // router.push('/');

@@ -1,16 +1,10 @@
 const en_US = {
-  // 登陆
-  login: {},
-  navMenu: {
-    menu1: 'Menu',
-    menu2: 'Question',
-    menu3: 'Three',
-    menu4: 'Markdown',
-    user: {
-      userInfo: 'User Info',
-      defaultLanguage: 'English',
-      logout: 'Log Out'
-    }
+  login: {
+    title: 'PAGE MANAGE SYSTEM',
+    theme: 'change theme',
+    language: 'change language',
+    userName: 'userName',
+    password: 'password'
   }
 };
 export default en_US;

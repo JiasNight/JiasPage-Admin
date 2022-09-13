@@ -10,7 +10,7 @@ const i18n = createI18n({
   // 全局注册 $t方法
   globalInjection: true,
   // 默认语言
-  locale: 'zh_CN',
+  locale: localStorage.getItem('language') || 'zh_CN',
   // 语言库
   messages: {
     zh_CN: zh_CN,

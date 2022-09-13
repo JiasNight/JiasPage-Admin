@@ -26,6 +26,7 @@ export default defineStore({
     },
     setLanguage(language: string) {
       this.language = language;
+      localStorage.setItem('language', language);
     }
   }
 });

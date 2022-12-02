@@ -6,7 +6,7 @@ import { getCurrentInstance } from 'vue';
 import router from '../router';
 
 // 请求加密方法引入
-import { aesUtil, rsaUtil, publicKey, privateKey } from './transfer';
+import { aesUtil, rsaUtil, publicKey, privateKey } from './transferEncryption';
 
 class Interceptors {
   instance: AxiosInstance;

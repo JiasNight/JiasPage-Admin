@@ -3,8 +3,6 @@
 // Read more: https://github.com/vuejs/core/pull/3399
 import '@vue/runtime-core'
 
-export {}
-
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     RouterLink: typeof import('vue-router')['RouterLink']
@@ -12,31 +10,21 @@ declare module '@vue/runtime-core' {
     VApp: typeof import('vuetify/components')['VApp']
     VAppBar: typeof import('vuetify/components')['VAppBar']
     VAppBarNavIcon: typeof import('vuetify/components')['VAppBarNavIcon']
-    VAppBarTitle: typeof import('vuetify/components')['VAppBarTitle']
-    VAvatar: typeof import('vuetify/components')['VAvatar']
     VBreadcrumbs: typeof import('vuetify/components')['VBreadcrumbs']
     VBtn: typeof import('vuetify/components')['VBtn']
     VCard: typeof import('vuetify/components')['VCard']
-    VCarousel: typeof import('vuetify/components')['VCarousel']
-    VCarouselItem: typeof import('vuetify/components')['VCarouselItem']
     VCheckbox: typeof import('vuetify/components')['VCheckbox']
     VContainer: typeof import('vuetify/components')['VContainer']
     VDivider: typeof import('vuetify/components')['VDivider']
     VFooter: typeof import('vuetify/components')['VFooter']
     VForm: typeof import('vuetify/components')['VForm']
     VIcon: typeof import('vuetify/components')['VIcon']
-    VImg: typeof import('vuetify/components')['VImg']
     VList: typeof import('vuetify/components')['VList']
     VListItem: typeof import('vuetify/components')['VListItem']
-    VListItemAvatar: typeof import('vuetify/components')['VListItemAvatar']
-    VListItemSubtitle: typeof import('vuetify/components')['VListItemSubtitle']
     VListItemTitle: typeof import('vuetify/components')['VListItemTitle']
     VMain: typeof import('vuetify/components')['VMain']
     VMenu: typeof import('vuetify/components')['VMenu']
     VNavigationDrawer: typeof import('vuetify/components')['VNavigationDrawer']
-    VProgressCircular: typeof import('vuetify/components')['VProgressCircular']
-    VProgressLinear: typeof import('vuetify/components')['VProgressLinear']
-    VRow: typeof import('vuetify/components')['VRow']
     VSheet: typeof import('vuetify/components')['VSheet']
     VSpacer: typeof import('vuetify/components')['VSpacer']
     VTextField: typeof import('vuetify/components')['VTextField']
@@ -45,3 +33,5 @@ declare module '@vue/runtime-core' {
     VTooltip: typeof import('vuetify/components')['VTooltip']
   }
 }
+
+export {}

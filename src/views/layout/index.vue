@@ -1,8 +1,13 @@
 <template>
-  <v-navigation-drawer v-model="openMenu" app :width="menuWidth">
+  <v-navigation-drawer v-model="openMenu" app :width="drawerWidth">
     <!-- <VLogo></VLogo> -->
     <v-toolbar flat>
-      <v-list>
+      <v-toolbar-title>
+        <img src="../../assets/images/logo.png" />
+        <span>Hello</span>
+        <span>Piconjo</span>
+      </v-toolbar-title>
+      <!-- <v-list>
         <v-list-item>
           <v-list-item-avatar>
             <img src="../../assets/images/logo.png" />
@@ -10,18 +15,24 @@
           <v-list-item-title>帖标题</v-list-item-title>
           <v-list-item-subtitle>管理员</v-list-item-subtitle>
         </v-list-item>
-      </v-list>
+      </v-list> -->
     </v-toolbar>
     <v-spacer></v-spacer>
     <!-- 菜单 -->
     <menus></menus>
   </v-navigation-drawer>
 
-  <v-app-bar app>
-    <v-app-bar-nav-icon v-if="!openMenu" @click="openMenu = !openMenu"></v-app-bar-nav-icon>
-    <v-app-bar-title tag="">PAGE</v-app-bar-title>
+  <v-app-bar app flat>
+    <v-app-bar-nav-icon @click="drawerWidth = drawerWidth === 50 ? 250 : 50"></v-app-bar-nav-icon>
+    <!-- <v-app-bar-title tag="">PAGE</v-app-bar-title> -->
+    <v-breadcrumbs :items="breadcrumbList">
+      <template #text="{ item }">
+        {{ item.text.toUpperCase() }}
+      </template>
+    </v-breadcrumbs>
+    <!-- 在v-spacer上面的标签将会在导航栏左侧 在v-spacer下面的标签将会在导航栏右侧 -->
     <v-spacer></v-spacer>
-    <v-progress-linear
+    <!-- <v-progress-linear
       v-show="loading"
       :active="loading"
       :indeterminate="progress === null"
@@ -30,7 +41,7 @@
       bottom
       color="green accent-3"
     >
-    </v-progress-linear>
+    </v-progress-linear> -->
     <div class="text-center">
       <v-menu open-on-hover bottom offset-y>
         <template #activator="{ props }">
@@ -62,11 +73,11 @@
   <!-- Sizes your content based upon application components -->
   <v-main>
     <v-card style="height: 35px; margin: 10px 0; line-height: 35px">
-      <v-breadcrumbs :items="breadcrumbList">
+      <!-- <v-breadcrumbs :items="breadcrumbList">
         <template #text="{ item }">
           {{ item.text.toUpperCase() }}
         </template>
-      </v-breadcrumbs>
+      </v-breadcrumbs> -->
     </v-card>
     <!-- Provides the application the proper gutter -->
     <v-container fluid>
@@ -80,23 +91,27 @@
 </template>
 
 <script lang="ts" setup>
-import { $ref } from 'vue/macros';
+// import { $ref } from 'vue/macros';
 // import VLogo from './logo/index.vue';
 import menus from './menu/index.vue';
 import globalStore from '@/store/module/global';
 
 const globalConfig = globalStore();
 
-const loading: Ref<boolean> = computed({
-  get: () => globalConfig.loading,
-  set: (v: any) => globalConfig.setLoading(v)
-});
+// const loading: Ref<boolean> = computed({
+//   get: () => globalConfig.loading,
+//   set: (v: any) => {
+//     globalConfig.setLoading(v);
+//     return true;
+//   }
+// });
 const progress: ComputedRef<number | null> = computed(() => globalConfig.progress);
 const snackbar: Ref<boolean> = ref(false);
 const snackbarText: ComputedRef<string | null> = computed(() => globalConfig.message);
 
 const openMenu = $ref<boolean>(true);
-const menuWidth = openMenu ? '250' : '60';
+let drawerWidth = $ref<number>(250);
+
 const breadcrumbList = [
   {
     text: 'Dashboard',

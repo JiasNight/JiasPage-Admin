@@ -3,15 +3,15 @@ import vuePlugin from '@vitejs/plugin-vue';
 // 组件样式按需加载
 // import usePluginImport from 'vite-plugin-importer';
 // 自动引入vue函数
-import autoImport from 'unplugin-auto-import/vite';
+import AutoImport from 'unplugin-auto-import/vite';
+// 自动引入组件
+import Components from 'unplugin-vue-components/vite';
 // 添加tsx和jsx语法
 import vueJsx from '@vitejs/plugin-vue-jsx';
 // 打包压缩
 import viteCompression from 'vite-plugin-compression';
 // 在开发和构建中进行代码规范校验
 import eslintPlugin from 'vite-plugin-eslint';
-// 按需引入Naive
-import Components from 'unplugin-vue-components/vite';
 import { Vuetify3Resolver } from 'unplugin-vue-components/resolvers';
 
 import * as path from 'path';
@@ -97,8 +97,8 @@ export default ({ mode }) => {
         // 禁用 eslint 缓存
         cache: false
       }),
-      autoImport({
-        resolvers: [],
+      AutoImport({
+        resolvers: [Vuetify3Resolver()],
         // 自定引入 Vue VueRouter API,如果还需要其他的可以自行引入
         imports: ['vue', 'vue-router', 'pinia'],
         // 可以自定义文件生成的位置，默认是根目录下
@@ -111,15 +111,15 @@ export default ({ mode }) => {
           globalsPropValue: true
         }
       }),
-      vueJsx(),
-      // gzip压缩
-      viteCompression(),
       Components({
         // 需要自动导入的组件
         dts: true,
         dirs: '/components.d.ts',
         resolvers: [Vuetify3Resolver()]
-      })
+      }),
+      vueJsx(),
+      // gzip压缩
+      viteCompression()
     ],
     // 样式相关规则
     css: {

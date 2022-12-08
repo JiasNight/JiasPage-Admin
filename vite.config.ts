@@ -126,7 +126,7 @@ export default ({ mode }) => {
       preprocessorOptions: {
         // 导入variables.scss, 这样就可以在vue全局中使用variables.scss中定义的变量了
         scss: {
-          additionalData: '@import "./src/assets/css/variables.scss";'
+          additionalData: '@import "./src/style/variables.scss";'
         }
       }
     }

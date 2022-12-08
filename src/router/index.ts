@@ -3,6 +3,8 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import Layout from '@/views/layout/index.vue';
 
 // import { progressStart, progressEnd } from '@/utils/nporgress';
+// 引入模块路由
+import baseRouters from './modules/base';
 
 const commonRoutes: Array<RouteRecordRaw> = [
   {
@@ -33,7 +35,14 @@ const commonRoutes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHistory(), // History 路由
   // history: createWebHashHistory(), // Hash 路由
-  routes: [...commonRoutes]
+  routes: [...commonRoutes],
+  scrollBehavior() {
+    return {
+      el: '#app',
+      top: 0,
+      behavior: 'smooth'
+    };
+  }
 });
 
 router.beforeEach((to, from, next) => {

@@ -28,7 +28,7 @@ const commonRoutes: Array<RouteRecordRaw> = [
     meta: {
       title: '登录'
     },
-    component: () => import('@/views/login/index.vue')
+    component: () => import('@/views/signIn/index.vue')
   }
 ];
 

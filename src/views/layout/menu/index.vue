@@ -5,6 +5,7 @@
 </template>
 
 <script lang="ts" setup>
+import NavMenu from '@/components/NavMenu/index.vue';
 import { $ref } from 'vue/macros';
 
 interface IMenu {

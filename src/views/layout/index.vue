@@ -2,27 +2,17 @@
   <v-navigation-drawer v-model="openMenu" app :width="drawerWidth">
     <!-- <VLogo></VLogo> -->
     <v-toolbar flat>
-      <v-toolbar-title>
-        <img src="../../assets/images/logo.png" />
-        <span>Hello</span>
-        <span>Piconjo</span>
+      <v-toolbar-title class="nav-logo">
+        <img class="nav-logo-img" src="../../assets/images/logo.png" />
+        <span class="nav-logo-title">Hello</span>
       </v-toolbar-title>
-      <!-- <v-list>
-        <v-list-item>
-          <v-list-item-avatar>
-            <img src="../../assets/images/logo.png" />
-          </v-list-item-avatar>
-          <v-list-item-title>帖标题</v-list-item-title>
-          <v-list-item-subtitle>管理员</v-list-item-subtitle>
-        </v-list-item>
-      </v-list> -->
     </v-toolbar>
     <v-spacer></v-spacer>
     <!-- 菜单 -->
-    <menus></menus>
+    <Menus></Menus>
   </v-navigation-drawer>
 
-  <v-app-bar app flat>
+  <v-app-bar app flat :elevation="5">
     <v-app-bar-nav-icon @click="drawerWidth = drawerWidth === 50 ? 250 : 50"></v-app-bar-nav-icon>
     <!-- <v-app-bar-title tag="">PAGE</v-app-bar-title> -->
     <v-breadcrumbs :items="breadcrumbList">
@@ -42,7 +32,10 @@
       color="green accent-3"
     >
     </v-progress-linear> -->
-    <div class="text-center">
+    <template #append>
+      <v-btn icon="mdi-heart"></v-btn>
+      <v-btn icon="mdi-magnify"></v-btn>
+      <v-btn icon="mdi-dots-vertical"></v-btn>
       <v-menu open-on-hover bottom offset-y>
         <template #activator="{ props }">
           <v-btn text v-bind="props" color="#444">
@@ -67,17 +60,13 @@
           </v-list>
         </v-sheet>
       </v-menu>
-    </div>
+    </template>
   </v-app-bar>
 
   <!-- Sizes your content based upon application components -->
   <v-main>
-    <v-card style="height: 35px; margin: 10px 0; line-height: 35px">
-      <!-- <v-breadcrumbs :items="breadcrumbList">
-        <template #text="{ item }">
-          {{ item.text.toUpperCase() }}
-        </template>
-      </v-breadcrumbs> -->
+    <v-card class="top-bar-chips">
+      <VChips></VChips>
     </v-card>
     <!-- Provides the application the proper gutter -->
     <v-container fluid>
@@ -93,7 +82,8 @@
 <script lang="ts" setup>
 // import { $ref } from 'vue/macros';
 // import VLogo from './logo/index.vue';
-import menus from './menu/index.vue';
+import Menus from './menu/index.vue';
+import VChips from './viewChips/index.vue';
 import globalStore from '@/store/module/global';
 
 const globalConfig = globalStore();
@@ -132,22 +122,20 @@ const breadcrumbList = [
 </script>
 
 <style lang="scss" scoped>
-.app-container {
-  width: 100vw;
-  height: 100%;
-  .container-layout {
-    height: 100%;
-    .layout-sider {
-      min-height: 100vh;
-      background: linear-gradient(0deg, #abdcff, #2396e9);
-      transition: all 0.2s ease-in-out;
-    }
+.nav-logo {
+  display: flex;
+  flex: 1;
+  cursor: pointer;
+  .nav-logo-img {
+    width: 100px;
   }
-  .layout-body {
-    height: 100%;
-    .body-header {
-      height: 200px;
-    }
+  .nav-logo-title {
+    font-size: 20px;
+    font-weight: bolder;
   }
+}
+.top-bar-chips {
+  display: flex;
+  flex: 1;
 }
 </style>

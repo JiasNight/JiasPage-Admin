@@ -3,6 +3,8 @@
 // Read more: https://github.com/vuejs/core/pull/3399
 import '@vue/runtime-core'
 
+export {}
+
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     RouterLink: typeof import('vue-router')['RouterLink']
@@ -14,12 +16,14 @@ declare module '@vue/runtime-core' {
     VBtn: typeof import('vuetify/components')['VBtn']
     VCard: typeof import('vuetify/components')['VCard']
     VCheckbox: typeof import('vuetify/components')['VCheckbox']
+    VChip: typeof import('vuetify/components')['VChip']
     VContainer: typeof import('vuetify/components')['VContainer']
     VDivider: typeof import('vuetify/components')['VDivider']
     VFooter: typeof import('vuetify/components')['VFooter']
     VForm: typeof import('vuetify/components')['VForm']
     VIcon: typeof import('vuetify/components')['VIcon']
     VList: typeof import('vuetify/components')['VList']
+    VListGroup: typeof import('vuetify/components')['VListGroup']
     VListItem: typeof import('vuetify/components')['VListItem']
     VListItemTitle: typeof import('vuetify/components')['VListItemTitle']
     VMain: typeof import('vuetify/components')['VMain']
@@ -33,5 +37,3 @@ declare module '@vue/runtime-core' {
     VTooltip: typeof import('vuetify/components')['VTooltip']
   }
 }
-
-export {}

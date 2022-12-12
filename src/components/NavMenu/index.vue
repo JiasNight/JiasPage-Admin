@@ -13,6 +13,7 @@
 </template>
 
 <script lang="ts" setup>
+import NavMenu from '@/components/NavMenu/index.vue';
 interface IMenu {
   id: string;
   pid: string;

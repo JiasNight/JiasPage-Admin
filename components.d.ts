@@ -17,6 +17,7 @@ declare module '@vue/runtime-core' {
     VCard: typeof import('vuetify/components')['VCard']
     VCheckbox: typeof import('vuetify/components')['VCheckbox']
     VChip: typeof import('vuetify/components')['VChip']
+    VChips: typeof import('vuetify/components')['VChips']
     VContainer: typeof import('vuetify/components')['VContainer']
     VDivider: typeof import('vuetify/components')['VDivider']
     VFooter: typeof import('vuetify/components')['VFooter']
@@ -35,5 +36,6 @@ declare module '@vue/runtime-core' {
     VToolbar: typeof import('vuetify/components')['VToolbar']
     VToolbarTitle: typeof import('vuetify/components')['VToolbarTitle']
     VTooltip: typeof import('vuetify/components')['VTooltip']
+    VTooltop: typeof import('vuetify/components')['VTooltop']
   }
 }

@@ -1,7 +1,7 @@
 <template>
-  <v-navigation-drawer v-model="openMenu" app :width="drawerWidth">
+  <v-navigation-drawer v-model="openMenu" app :width="drawerWidth" color="#3c6382">
     <!-- <VLogo></VLogo> -->
-    <v-toolbar flat>
+    <v-toolbar flat color="#3c6382">
       <v-toolbar-title class="nav-logo">
         <img class="nav-logo-img" src="../../assets/images/logo.png" />
         <span class="nav-logo-title">Hello</span>
@@ -13,7 +13,7 @@
   </v-navigation-drawer>
 
   <v-app-bar app flat :elevation="5">
-    <v-app-bar-nav-icon @click="drawerWidth = drawerWidth === 50 ? 250 : 50"></v-app-bar-nav-icon>
+    <v-app-bar-nav-icon @click="drawerWidth = drawerWidth === 50 ? 230 : 50"></v-app-bar-nav-icon>
     <!-- <v-app-bar-title tag="">PAGE</v-app-bar-title> -->
     <v-breadcrumbs :items="breadcrumbList">
       <template #text="{ item }">
@@ -36,11 +36,17 @@
       <v-btn icon="mdi-heart"></v-btn>
       <v-btn icon="mdi-magnify"></v-btn>
       <v-btn icon="mdi-dots-vertical"></v-btn>
+      <v-tooltip location="bottom">
+        <template #activator="{ props }">
+          <v-btn v-bind="props" variant="plain" icon="mdi-theme-light-dark" @click="changeCurrentThemeBtn"></v-btn>
+        </template>
+        <span> 切换主题 </span>
+      </v-tooltip>
       <v-menu open-on-hover bottom offset-y>
         <template #activator="{ props }">
-          <v-btn text v-bind="props" color="#444">
-            app
-            <v-icon class="ml-1">mdi-account</v-icon>
+          <v-btn text v-bind="props">
+            admin
+            <v-icon icon="mdi-account"></v-icon>
           </v-btn>
         </template>
         <v-sheet class="overflow-hidden">
@@ -51,7 +57,7 @@
                 用户首页
               </v-list-item-title>
             </v-list-item>
-            <v-list-item @click="logout()">
+            <v-list-item @click="signOutBtn">
               <v-list-item-title class="d-flex align-center">
                 <v-icon class="mr-2">mdi-logout</v-icon>
                 登出
@@ -66,7 +72,8 @@
   <!-- Sizes your content based upon application components -->
   <v-main>
     <v-card class="top-bar-chips">
-      <VChips></VChips>
+      <!-- 标签页组件 -->
+      <Tags></Tags>
     </v-card>
     <!-- Provides the application the proper gutter -->
     <v-container fluid>
@@ -83,8 +90,11 @@
 // import { $ref } from 'vue/macros';
 // import VLogo from './logo/index.vue';
 import Menus from './menu/index.vue';
-import VChips from './viewChips/index.vue';
+import Tags from './tags/index.vue';
 import globalStore from '@/store/module/global';
+import useAppStore from '@/store/module/app';
+
+const appStore = useAppStore();
 
 const globalConfig = globalStore();
 
@@ -100,7 +110,7 @@ const snackbar: Ref<boolean> = ref(false);
 const snackbarText: ComputedRef<string | null> = computed(() => globalConfig.message);
 
 const openMenu = $ref<boolean>(true);
-let drawerWidth = $ref<number>(250);
+let drawerWidth = $ref<number>(230);
 
 const breadcrumbList = [
   {
@@ -119,6 +129,16 @@ const breadcrumbList = [
     href: 'breadcrumbs_link_2'
   }
 ];
+
+// 切换当前主题
+const changeCurrentThemeBtn = (): void => {
+  appStore.setTheme();
+};
+
+// 退出登录
+const signOutBtn = (): void => {
+  alert('退出成功！');
+};
 </script>
 
 <style lang="scss" scoped>

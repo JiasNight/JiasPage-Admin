@@ -3,12 +3,12 @@
     <!-- 目录 -->
     <v-list-group v-if="item.type === 1">
       <template #activator="{ props }">
-        <v-list-item v-bind="props" :prepend-icon="item.icon" :title="item.name"></v-list-item>
+        <v-list-item class="menu-item" v-bind="props" :prepend-icon="item.icon" :title="item.name"></v-list-item>
       </template>
       <NavMenu v-if="'children' in item" :data="item.children"></NavMenu>
     </v-list-group>
     <!-- 菜单 -->
-    <v-list-item v-else :title="item.name" :value="item.name" :to="item.path"></v-list-item>
+    <v-list-item v-else class="menu-item" :title="item.name" :value="item.name" :to="item.path"></v-list-item>
   </template>
 </template>
 
@@ -32,4 +32,13 @@ const currentProps = defineProps({
     default: () => []
   }
 });
-</script>
+</script>3
+
+<style lang="scss" scoped>
+.menu-item {
+  :deep(.v-list-item__content) {
+    position: relative;
+    left: 0;
+  }
+}
+</style>

@@ -1,6 +1,6 @@
 <template>
   <v-list>
-    <NavMenu :data="menusList"></NavMenu>
+    <NavMenu :nav-menus="menusList"></NavMenu>
   </v-list>
 </template>
 
@@ -160,6 +160,16 @@ const menusList = $ref<Array<IMenu>>([
         description: '这是一个菜单1-2'
       }
     ]
+  },
+  {
+    id: '2',
+    pid: '0',
+    type: 1,
+    name: '菜单3',
+    icon: 'mdi-account-multiple-outline',
+    path: '',
+    show: true,
+    description: '这是一个菜单'
   }
 ]);
 </script>

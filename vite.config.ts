@@ -105,6 +105,7 @@ export default ({ mode }) => {
         dts: './auto-imports.d.ts',
         // 解决自动引入eslint报错问题 需要在eslintrc的extend选项中引入
         eslintrc: {
+          // 1、true时生成eslint配置文件，2、生成后改为false，避免重复消耗
           enabled: true,
           // 配置文件的位置
           filepath: './.eslintrc-auto-import.json',

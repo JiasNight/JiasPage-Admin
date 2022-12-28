@@ -22,6 +22,13 @@ module.exports = {
     },
     sourceType: 'module' // 允许使用导入
   },
+  globals: {
+    $ref: 'readonly',
+    $computed: 'readonly',
+    $shallowRef: 'readonly',
+    $customRef: 'readonly',
+    $toRef: 'readonly'
+  },
   plugins: ['vue', '@typescript-eslint', 'prettier'], // 表示 eslint-config-prettier
   extends: [
     './.eslintrc-auto-import.json',

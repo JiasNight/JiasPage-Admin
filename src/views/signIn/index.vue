@@ -180,7 +180,7 @@ const adminFormRules = reactive({
   verifyCode: [(v: string) => !!v || '请输入验证码！']
 });
 
-const loginForm = $ref(null);
+const loginForm: any = $ref(null);
 
 let submitBtnIsLoading = $ref<boolean>(false);
 
@@ -208,50 +208,50 @@ const submitLoginBtn = () => {
   width: 100vw;
   height: 100%;
   background-image: url('/src/assets/images/login/login-background-1.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
   background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   .content-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    justify-content: center;
     width: 450px;
     height: 500px;
+    border: 2px solid #8e44ad;
+    border-radius: 10px;
     background: rgba(194, 188, 188, 0.5);
     box-shadow: 5px 3px 7px rgb(142, 131, 238);
-    border: 2px solid #8e44ad;
-    position: absolute;
-    left: 50%;
-    top: 50%;
     transform: translate(-50%, -50%);
-    display: flex;
     flex-direction: row;
-    justify-content: center;
-    border-radius: 10px;
     .box-right {
       width: 100%;
       .right-login {
         .login-title {
+          padding: 30px;
           font-size: 30px;
           font-weight: 600;
           text-align: center;
-          padding: 30px;
         }
         .login-theme {
           position: absolute;
-          right: 0;
           top: 0;
+          right: 0;
         }
         .login-language {
           position: absolute;
-          right: 0;
           top: 30px;
+          right: 0;
         }
         .login-form {
-          width: 75%;
           margin: 0 auto;
+          width: 75%;
           .form-verify-code {
             display: flex;
+            justify-content: space-between;
             flex-direction: row;
             align-items: flex-start;
-            justify-content: space-between;
             .code-input {
               width: 60%;
             }
@@ -264,15 +264,15 @@ const submitLoginBtn = () => {
           .form-tool {
             display: flex;
             flex-direction: row;
-            align-items: center;
             justify-content: space-around;
+            align-items: center;
 
             :deep(.v-selection-control--inline) {
               display: flex;
             }
             .tool-remember-password {
-              color: #5b1ee9;
               left: 0;
+              color: #5b1ee9;
             }
             .tool-remember-password:hover {
               color: #2ecc71;

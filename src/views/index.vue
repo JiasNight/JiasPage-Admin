@@ -1,15 +1,14 @@
 <template>
-  <div ref="mapChart" style="height: 800px; width: 90%"></div>
+  <div ref="mapChart" style="width: 90%; height: 800px"></div>
 </template>
 
 <script lang="ts" setup>
 import * as echarts from 'echarts';
 import china from '../../public/map/china.json';
-let mapChart = $ref<HTMLElement>();
+let mapChart: HTMLElement | undefined = $ref<HTMLElement>();
 const initMapChart = () => {
-  echarts.registerMap('china', china);
-  console.log(mapChart);
-  let myChart = echarts.init(mapChart);
+  echarts.registerMap('china', china as any);
+  let myChart = echarts.init(mapChart as HTMLElement);
   let option = {
     geo: {
       map: 'china',

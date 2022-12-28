@@ -5,6 +5,7 @@
 </template>
 
 <script lang="ts" setup>
+import { ComputedRef } from 'vue';
 import appStore from '@/store/module/app';
 
 const appConfig = appStore();
@@ -16,8 +17,8 @@ const theme: ComputedRef<string> = computed(() => (appConfig.getTheme ? 'dark' :
   /* font-family: Avenir, Helvetica, Arial, sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
   width: 100%;
   height: 100vh;
+  color: #2c3e50;
 }
 </style>

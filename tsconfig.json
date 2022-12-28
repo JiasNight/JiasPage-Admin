@@ -24,9 +24,10 @@
     "paths": {
       // 用于设置模块名到基于baseUrl的路径映射
       "@/*": ["src/*"],
-      "components":["src/components/*"]
-    }
+      "components": ["src/components/*"]
+    },
+    "types": ["vue/ref-macros"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "./auto-imports.d.ts"],
   "references": [{ "path": "./tsconfig.vite.json" }]
 }

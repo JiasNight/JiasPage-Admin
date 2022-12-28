@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { Axios, AxiosResponse, AxiosRequestConfig, AxiosInstance } from 'axios';
 import { errorCodeType } from './requestErrorCode';
 import { getCurrentInstance } from 'vue';
 
@@ -86,7 +86,6 @@ class Interceptors {
     // 响应拦截
     this.instance.interceptors.response.use(
       (response) => {
-        console.log(response);
         if (response.status === 200) {
           return Promise.resolve(response.data);
         } else {
@@ -95,12 +94,12 @@ class Interceptors {
             // 清除token
             localStorage.removeItem('TOKEN');
             router.push('/login');
-            ctx.$Message.error(errorCodeType('401'));
+            // ctx.$Message.error(errorCodeType('401'));
           } else if (response.status === 200) {
-            ctx.$Message.error(response.data.message || '系统错误');
+            // ctx.$Message.error(response.data.message || '系统错误');
             return Promise.resolve(response.data);
           } else {
-            ctx.$Message.error(errorCodeType(response.data.code));
+            // ctx.$Message.error(errorCodeType(response.data.code));
             return Promise.reject(response.data);
           }
           return;
@@ -110,13 +109,13 @@ class Interceptors {
         // 具体业务具体处理，加上注释只供参考
         const { status } = error.response;
         if (status === '401') {
-          ctx.$Message.error(errorCodeType('401'));
+          // ctx.$Message.error(errorCodeType('401'));
           // 清除token
           localStorage.removeItem('TOKEN');
           // 页面跳转
           router.push('/login');
         } else {
-          ctx.$Message.error('系统错误');
+          // ctx.$Message.error('系统错误');
         }
         return Promise.reject(error);
       }

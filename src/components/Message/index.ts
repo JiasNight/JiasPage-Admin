@@ -21,13 +21,13 @@ export function useMessage() {
 
 type MessageQueue = App[];
 
-const instances: MessageQueue = []; // 消息队列
+const instances: any = []; // 消息队列
 
 const offset = 60; // 单个消息框偏移
 
 let seed = 1;
 
-const message = function (options: Object | string) {
+const message: any = function (options: Object | string) {
   if (typeof options === 'string') {
     options = {
       message: options

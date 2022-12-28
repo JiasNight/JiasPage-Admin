@@ -1,5 +1,5 @@
 <template>
-  <router-link class="tag-width" :to="{ path: '/', query: '', fullPath: '' }">
+  <router-link class="tag-width" :to="{ path: '/' }">
     <v-icon icon="mdi-home"></v-icon>
     首页
   </router-link>
@@ -7,7 +7,7 @@
     v-for="(item, index) in tagsList"
     :key="index"
     class="tag-width"
-    :to="{ path: item.path, query: item.query, fullPath: item.fullPath }"
+    :to="{ path: item.path }"
     @contextmenu.prevent="rightClickBtn(item, $event)"
   >
     <v-icon icon="mdi-account"></v-icon>
@@ -86,7 +86,7 @@ const closeTagBtn = (tag: ITags) => {
   tagsList.splice(i, 1);
 };
 // 右键按钮
-const rightClickBtn = (tag: ITags, e) => {
+const rightClickBtn = (tag: ITags, e: any) => {
   console.log(tag);
   console.log(e);
 };

@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="openMenu" app :width="drawerWidth" color="#3c6382">
+  <v-navigation-drawer v-model="openMenu" app :width="drawerWidth" color="#001428">
     <!-- <VLogo></VLogo> -->
     <v-toolbar flat color="#3c6382">
       <v-toolbar-title class="nav-logo">

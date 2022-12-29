@@ -9,7 +9,7 @@
         </div>
         <v-icon v-if="menu.children" icon="mdi-chevron-up"></v-icon>
       </div>
-      <NavMenu v-if="menu.children" :nav-menus="menu.children"></NavMenu>
+      <NavMenu v-if="menu.children" :nav-menus="menu.children" class="menu-subitem"></NavMenu>
     </div>
   </div>
 </template>
@@ -68,20 +68,21 @@ const currentProps = defineProps({
         margin-left: 10px;
         width: 85%;
         .item-name {
-          overflow: hidden; //超出的文本隐藏
-          margin-left: 10px;
+          overflow: hidden;
+          margin-left: 5px;
           width: 100%;
-          text-overflow: ellipsis; //溢出用省略号显示
-          white-space: nowrap; // 默认不换行；
+          text-align: left;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
       }
       &:hover {
         background-color: #7f8c8d6e;
       }
     }
-  }
-  .menu-subitem {
-    padding-left: 30px;
+    .menu-subitem {
+      // background-color: rgba(59, 61, 61, 0.431);
+    }
   }
 }
 </style>

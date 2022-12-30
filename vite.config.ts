@@ -12,7 +12,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx';
 import viteCompression from 'vite-plugin-compression';
 // 在开发和构建中进行代码规范校验
 import eslintPlugin from 'vite-plugin-eslint';
-import { Vuetify3Resolver } from 'unplugin-vue-components/resolvers';
+import { Vuetify3Resolver, NaiveUiResolver } from 'unplugin-vue-components/resolvers';
 
 import * as path from 'path';
 
@@ -98,9 +98,16 @@ export default ({ mode }) => {
         cache: false
       }),
       AutoImport({
-        resolvers: [Vuetify3Resolver()],
+        resolvers: [Vuetify3Resolver(), NaiveUiResolver()],
         // 自定引入 Vue VueRouter API,如果还需要其他的可以自行引入
-        imports: ['vue', 'vue-router', 'pinia'],
+        imports: [
+          'vue',
+          'vue-router',
+          'pinia',
+          {
+            'naive-ui': ['useDialog', 'useMessage', 'useNotification', 'useLoadingBar']
+          }
+        ],
         // 可以自定义文件生成的位置，默认是根目录下
         dts: './auto-imports.d.ts',
         // 解决自动引入eslint报错问题 需要在eslintrc的extend选项中引入
@@ -116,7 +123,7 @@ export default ({ mode }) => {
         // 需要自动导入的组件
         dts: true,
         dirs: '/components.d.ts',
-        resolvers: [Vuetify3Resolver()]
+        resolvers: [Vuetify3Resolver(), NaiveUiResolver()]
       }),
       vueJsx(),
       // gzip压缩

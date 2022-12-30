@@ -1,7 +1,7 @@
 <template>
-  <v-list>
+  <div>
     <NavMenu :nav-menus="menusList"></NavMenu>
-  </v-list>
+  </div>
 </template>
 
 <script lang="ts" setup>

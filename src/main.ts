@@ -10,15 +10,18 @@ import store from './store';
 import axios from 'axios';
 // 引入i18n
 import i18n from './i18n';
-// 引入vuetify组件
-import { vuetify } from './plugins/vuetify';
+// 引入Naive-Ui组件
+// import naive from 'naive-ui';
+// 通用字体
+import 'vfonts/Lato.css';
+// 等宽字体
+import 'vfonts/FiraCode.css';
 
 // 创建app实例
 const app = createApp(App);
 app.use(router);
 app.use(i18n);
 app.use(store);
-app.use(vuetify);
 // 全局挂在axios
 app.config.globalProperties.$axios = axios;
 // 全局指令

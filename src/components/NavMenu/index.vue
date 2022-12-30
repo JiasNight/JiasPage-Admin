@@ -4,10 +4,10 @@
       <!-- 菜单 -->
       <div class="menu-item">
         <div class="item-left" :style="{ 'padding-left': (menu.level - 1) * 30 + 'px' }">
-          <v-icon :icon="menu.icon"></v-icon>
+          <n-icon :icon="menu.icon"></n-icon>
           <span class="item-name" :title="menu.name">{{ menu.name }}</span>
         </div>
-        <v-icon v-if="menu.children" icon="mdi-chevron-up"></v-icon>
+        <n-icon v-if="menu.children" icon="mdi-chevron-up"></n-icon>
       </div>
       <NavMenu v-if="menu.children" :nav-menus="menu.children" class="menu-subitem"></NavMenu>
     </div>
@@ -16,7 +16,6 @@
 
 <script lang="ts" setup>
 import NavMenu from '@/components/NavMenu/index.vue';
-import SubMenu from '@/components/NavMenu/submenu.vue';
 interface IMenu {
   id: string;
   pid: string;

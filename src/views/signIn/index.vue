@@ -4,95 +4,64 @@
       <div class="box-right">
         <div class="right-login">
           <p class="login-title">{{ $t('login.title') }}</p>
-          <v-tooltip location="top">
-            <template #activator="{ props }">
-              <v-btn
-                class="login-theme"
-                v-bind="props"
-                variant="plain"
-                icon="mdi-theme-light-dark"
-                @click="changeCurrentThemeBtn"
-              ></v-btn>
+          <n-tooltip trigger="hover">
+            <template #trigger>
+              <n-button class="login-theme" @click="changeCurrentThemeBtn">
+                <n-icon>
+                  <NightlightFilled></NightlightFilled>
+                </n-icon>
+              </n-button>
             </template>
             <span>{{ $t('login.theme') }}</span>
-          </v-tooltip>
-          <v-tooltip location="top">
-            <template #activator="{ props }">
-              <v-btn
-                class="login-language"
-                v-bind="props"
-                variant="plain"
-                icon="mdi-sign-language"
-                @click="changeCurrentLanguageBtn"
-              ></v-btn>
+          </n-tooltip>
+          <n-tooltip trigger="hover">
+            <template #trigger>
+              <n-button class="login-language" @click="changeCurrentLanguageBtn">
+                <n-icon>
+                  <SignLanguageFilled></SignLanguageFilled>
+                </n-icon>
+              </n-button>
             </template>
             <span>{{ $t('login.language') }}</span>
-          </v-tooltip>
+          </n-tooltip>
           <div class="login-form">
-            <v-container>
-              <v-form ref="loginForm">
-                <v-text-field
-                  v-model="adminForm.userName"
-                  required
-                  :rules="adminFormRules.userName"
-                  :counter="10"
-                  :label="$t('login.userName')"
-                  prepend-inner-icon="mdi-account-lock"
-                  variant="outlined"
-                  color="success"
-                  density="compact"
-                  shaped
-                >
-                </v-text-field>
-                <v-text-field
-                  v-model="adminForm.password"
-                  :type="showPassword ? 'text' : 'password'"
-                  :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                  required
-                  :rules="adminFormRules.password"
-                  :counter="10"
-                  :label="$t('login.password')"
-                  prepend-inner-icon="mdi-account-key"
-                  variant="outlined"
-                  color="success"
-                  density="compact"
-                  shaped
-                  @click:append-inner="showPassword = !showPassword"
-                ></v-text-field>
-                <div class="form-verify-code">
-                  <div class="code-input">
-                    <v-text-field
-                      v-model="adminForm.verifyCode"
-                      required
-                      :rules="adminFormRules.verifyCode"
-                      :counter="4"
-                      :label="$t('login.verifyCode')"
-                      prepend-inner-icon="mdi-shield-key"
-                      variant="outlined"
-                      color="success"
-                      density="compact"
-                      shaped
-                    ></v-text-field>
-                  </div>
-                  <img class="code-look" :src="verifyCodeImg" alt="verifyCode" @click="getCodeImgBtn" />
+            <n-form
+              ref="loginForm"
+              :model="adminFormData"
+              :rules="adminFormRules"
+              label-placement="left"
+              label-width="auto"
+              require-mark-placement="right-hanging"
+            >
+              <n-form-item :label="$t('login.userName')" path="userName">
+                <n-input v-model:value="adminFormData.userName" placeholder="Input" />
+              </n-form-item>
+              <n-form-item :label="$t('login.password')" path="password">
+                <n-input
+                  v-model:value="adminFormData.password"
+                  type="password"
+                  show-password-on="mousedown"
+                  placeholder="Input"
+                />
+              </n-form-item>
+              <div class="form-verify-code">
+                <div class="code-input">
+                  <n-form-item :label="$t('login.verifyCode')" path="verifyCode">
+                    <n-input v-model:value="adminFormData.password" placeholder="Input" />
+                  </n-form-item>
                 </div>
-                <v-divider></v-divider>
-                <div class="form-tool">
-                  <v-checkbox
-                    class="tool-remember-password"
-                    :label="$t('login.rememberPassword')"
-                    color="orange"
-                    value="success"
-                    hide-details
-                  >
-                  </v-checkbox>
-                  <a class="tool-forget-password" href="#">{{ $t('login.forgetPassword') }}</a>
-                </div>
-                <v-btn rounded="pill" color="primary" block :loading="submitBtnIsLoading" @click="submitLoginBtn">
-                  {{ $t('login.signInBtn') }}
-                </v-btn>
-              </v-form>
-            </v-container>
+                <img class="code-look" :src="verifyCodeImg" alt="verifyCode" @click="getCodeImgBtn" />
+              </div>
+              <n-divider></n-divider>
+              <div class="form-tool">
+                <n-checkbox class="tool-remember-password" :label="$t('login.rememberPassword')" value="success">
+                </n-checkbox>
+                <a class="tool-forget-password" href="#">{{ $t('login.forgetPassword') }}</a>
+              </div>
+              <n-button class="form-submit" :loading="submitBtnIsLoading" round @click="submitLoginBtn">
+                {{ $t('login.signInBtn') }}
+              </n-button>
+            </n-form>
           </div>
         </div>
       </div>
@@ -102,14 +71,16 @@
 
 <script lang="ts" setup>
 import { $ref } from 'vue/macros';
+import { SignLanguageFilled, NightlightFilled } from '@vicons/material';
+import { FormInst, FormItemRule, useMessage } from 'naive-ui';
 import { useRouter } from 'vue-router';
 import { getValidateCode, userLogin } from '@/api/login/index';
-import useUserStore from '@/store/module/user';
-import useAppStore from '@/store/module/app';
+import userStore from '@/store/module/user';
+import appStore from '@/store/module/app';
 import { useI18n } from 'vue-i18n';
 
-const userStore = useUserStore();
-const appStore = useAppStore();
+const useUserStore = userStore();
+const useAppStore = appStore();
 const { locale } = useI18n();
 
 interface Ires {
@@ -138,7 +109,7 @@ onMounted(() => {
 
 // 切换当前主题
 const changeCurrentThemeBtn = (): void => {
-  appStore.setTheme();
+  useAppStore.setTheme();
 };
 
 let currentLanguage = 'zh_CN';
@@ -147,7 +118,7 @@ let currentLanguage = 'zh_CN';
 const changeCurrentLanguageBtn = (): void => {
   currentLanguage = currentLanguage === 'zh_CN' ? 'en_US' : 'zh_CN';
   locale.value = currentLanguage;
-  appStore.setLanguage(currentLanguage);
+  useAppStore.setLanguage(currentLanguage);
 };
 
 const getCodeImgBtn = () => {
@@ -160,27 +131,21 @@ const getCodeImgBtn = () => {
 
 const showPassword = $ref<boolean>(false);
 
-const adminForm = reactive({
+const adminFormData = reactive({
   userName: '',
   password: '',
   verifyCode: ''
 });
 
 const adminFormRules = reactive({
-  userName: [
-    (v: string) => !!v || '请输入用户名！',
-    (v: string) => v.length >= 3 || '用户名长度太短！',
-    (v: string) => v.length < 10 || '用户名长度太长！'
-  ],
-  password: [
-    (v: string) => !!v || '请输入密码！',
-    (v: string) => /.+@.+/.test(v) || '密码过于简单了！',
-    (v: string) => v.length < 10 || '密码长度太长！'
-  ],
-  verifyCode: [(v: string) => !!v || '请输入验证码！']
+  userName: {
+    required: true,
+    trigger: ['blur', 'input'],
+    message: '请输入 inputValue'
+  }
 });
 
-const loginForm: any = $ref(null);
+const loginForm: any = $ref<FormInst | null>(null);
 
 let submitBtnIsLoading = $ref<boolean>(false);
 
@@ -189,8 +154,8 @@ const submitLoginBtn = () => {
     console.log(val.valid);
     if (val.valid) {
       submitBtnIsLoading = true;
-      userStore.userLoginHandle(adminForm);
-      // userLogin(adminForm).then((res: any) => {
+      useUserStore.userLoginHandle(adminFormData);
+      // userLogin(adminFormData).then((res: any) => {
       //   console.log(res);
       //   // router.push('/');
       // });
@@ -283,6 +248,9 @@ const submitLoginBtn = () => {
             .tool-forget-password:hover {
               color: #2ecc71;
             }
+          }
+          .form-submit {
+            width: 90%;
           }
         }
       }

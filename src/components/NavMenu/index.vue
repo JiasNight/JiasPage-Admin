@@ -7,7 +7,9 @@
           <n-icon :icon="menu.icon"></n-icon>
           <span class="item-name" :title="menu.name">{{ menu.name }}</span>
         </div>
-        <n-icon v-if="menu.children" icon="mdi-chevron-up"></n-icon>
+        <n-icon v-if="menu.children">
+          <KeyboardArrowDownFilled></KeyboardArrowDownFilled>
+        </n-icon>
       </div>
       <NavMenu v-if="menu.children" :nav-menus="menu.children" class="menu-subitem"></NavMenu>
     </div>
@@ -16,6 +18,7 @@
 
 <script lang="ts" setup>
 import NavMenu from '@/components/NavMenu/index.vue';
+import { KeyboardArrowDownFilled } from '@vicons/material';
 interface IMenu {
   id: string;
   pid: string;
@@ -39,13 +42,6 @@ const currentProps = defineProps({
 3
 
 <style lang="scss" scoped>
-.menu-item {
-  :deep(.v-list-item__content) {
-    position: relative;
-    left: 0;
-  }
-}
-
 .nav-wrapper {
   width: 100%;
   .wrapper-menu {
@@ -58,7 +54,6 @@ const currentProps = defineProps({
       padding: 10px 0;
       width: 100%;
       cursor: pointer;
-      color: #f3eaf7;
       .item-left {
         display: flex;
         flex-direction: row;
@@ -69,7 +64,7 @@ const currentProps = defineProps({
         .item-name {
           overflow: hidden;
           margin-left: 5px;
-          width: 100%;
+          width: 90%;
           text-align: left;
           text-overflow: ellipsis;
           white-space: nowrap;

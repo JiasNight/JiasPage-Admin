@@ -45,6 +45,5 @@ let currentDateLocale: ComputedRef<NDateLocale | null> = computed(() => dateZhCN
   -moz-osx-font-smoothing: grayscale;
   width: 100%;
   height: 100vh;
-  color: #2c3e50;
 }
 </style>

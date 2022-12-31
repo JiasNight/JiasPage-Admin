@@ -93,7 +93,7 @@ class Interceptors {
           if (response.data.code === '401') {
             // 清除token
             localStorage.removeItem('TOKEN');
-            router.push('/login');
+            router.push('/signIn');
             // ctx.$Message.error(errorCodeType('401'));
           } else if (response.status === 200) {
             // ctx.$Message.error(response.data.message || '系统错误');
@@ -113,7 +113,7 @@ class Interceptors {
           // 清除token
           localStorage.removeItem('TOKEN');
           // 页面跳转
-          router.push('/login');
+          router.push('/signIn');
         } else {
           // ctx.$Message.error('系统错误');
         }

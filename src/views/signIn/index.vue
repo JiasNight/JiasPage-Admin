@@ -6,7 +6,7 @@
           <p class="login-title">{{ $t('login.title') }}</p>
           <n-tooltip trigger="hover">
             <template #trigger>
-              <n-button class="login-theme" @click="changeCurrentThemeBtn">
+              <n-button tertiary circle class="login-theme" @click="changeCurrentThemeBtn">
                 <n-icon>
                   <NightlightFilled></NightlightFilled>
                 </n-icon>
@@ -16,7 +16,7 @@
           </n-tooltip>
           <n-tooltip trigger="hover">
             <template #trigger>
-              <n-button class="login-language" @click="changeCurrentLanguageBtn">
+              <n-button tertiary circle class="login-language" @click="changeCurrentLanguageBtn">
                 <n-icon>
                   <SignLanguageFilled></SignLanguageFilled>
                 </n-icon>
@@ -31,26 +31,38 @@
               :rules="adminFormRules"
               label-placement="left"
               label-width="auto"
-              require-mark-placement="right-hanging"
+              require-mark-placement="left"
             >
               <n-form-item :label="$t('login.userName')" path="userName">
-                <n-input v-model:value="adminFormData.userName" placeholder="Input" />
+                <n-input
+                  v-model:value="adminFormData.userName"
+                  round
+                  clearable
+                  :placeholder="$t('login.inputUserNamePlaceholder')"
+                />
               </n-form-item>
               <n-form-item :label="$t('login.password')" path="password">
                 <n-input
                   v-model:value="adminFormData.password"
                   type="password"
+                  round
+                  clearable
                   show-password-on="mousedown"
-                  placeholder="Input"
+                  :placeholder="$t('login.inputPasswordPlaceholder')"
                 />
               </n-form-item>
               <div class="form-verify-code">
                 <div class="code-input">
                   <n-form-item :label="$t('login.verifyCode')" path="verifyCode">
-                    <n-input v-model:value="adminFormData.password" placeholder="Input" />
+                    <n-input
+                      v-model:value="adminFormData.password"
+                      round
+                      clearable
+                      :placeholder="$t('login.inputVerifyCodePlaceholder')"
+                    />
                   </n-form-item>
                 </div>
-                <img class="code-look" :src="verifyCodeImg" alt="verifyCode" @click="getCodeImgBtn" />
+                <img class="code-img" :src="verifyCodeImg" alt="verifyCode" @click="getCodeImgBtn" />
               </div>
               <n-divider></n-divider>
               <div class="form-tool">
@@ -58,7 +70,7 @@
                 </n-checkbox>
                 <a class="tool-forget-password" href="#">{{ $t('login.forgetPassword') }}</a>
               </div>
-              <n-button class="form-submit" :loading="submitBtnIsLoading" round @click="submitLoginBtn">
+              <n-button class="form-submit" :loading="submitBtnIsLoading" type="primary" round @click="submitLoginBtn">
                 {{ $t('login.signInBtn') }}
               </n-button>
             </n-form>
@@ -70,6 +82,7 @@
 </template>
 
 <script lang="ts" setup>
+import { defineComponent, getCurrentInstance } from 'vue';
 import { $ref } from 'vue/macros';
 import { SignLanguageFilled, NightlightFilled } from '@vicons/material';
 import { FormInst, FormItemRule, useMessage } from 'naive-ui';
@@ -82,6 +95,9 @@ import { useI18n } from 'vue-i18n';
 const useUserStore = userStore();
 const useAppStore = appStore();
 const { locale } = useI18n();
+// 获取当前组件实例
+const { appContext } = getCurrentInstance();
+const globalProxy = appContext.config.globalProperties;
 
 interface Ires {
   success?: boolean;
@@ -141,7 +157,17 @@ const adminFormRules = reactive({
   userName: {
     required: true,
     trigger: ['blur', 'input'],
-    message: '请输入 inputValue'
+    message: globalProxy.$t('login.inputUserNamePlaceholder')
+  },
+  password: {
+    required: true,
+    trigger: ['blur', 'input'],
+    message: globalProxy.$t('login.inputPasswordPlaceholder')
+  },
+  verifyCode: {
+    required: true,
+    trigger: ['blur', 'input'],
+    message: globalProxy.$t('login.inputVerifyCodePlaceholder')
   }
 });
 
@@ -171,7 +197,7 @@ const submitLoginBtn = () => {
 <style lang="scss" scoped>
 .login-container {
   width: 100vw;
-  height: 100%;
+  height: 100vh;
   background-image: url('/src/assets/images/login/login-background-1.jpg');
   background-position: center;
   background-repeat: no-repeat;
@@ -218,9 +244,9 @@ const submitLoginBtn = () => {
             flex-direction: row;
             align-items: flex-start;
             .code-input {
-              width: 60%;
+              width: 62%;
             }
-            .code-look {
+            .code-img {
               width: 35%;
               height: 40px;
               cursor: pointer;
@@ -229,18 +255,14 @@ const submitLoginBtn = () => {
           .form-tool {
             display: flex;
             flex-direction: row;
-            justify-content: space-around;
+            justify-content: space-between;
             align-items: center;
 
-            :deep(.v-selection-control--inline) {
-              display: flex;
+            .tool-remember-password :deep(.n-checkbox__label) {
+              color: #5b1ee9 !important;
             }
-            .tool-remember-password {
-              left: 0;
-              color: #5b1ee9;
-            }
-            .tool-remember-password:hover {
-              color: #2ecc71;
+            .tool-remember-password :deep(.n-checkbox__label):hover {
+              color: #2ecc71 !important;
             }
             .tool-forget-password {
               color: #5b1ee9;
@@ -250,7 +272,8 @@ const submitLoginBtn = () => {
             }
           }
           .form-submit {
-            width: 90%;
+            width: 100%;
+            margin-top: 20px;
           }
         }
       }

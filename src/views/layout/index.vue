@@ -1,16 +1,27 @@
 <template>
   <n-layout has-sider>
     <n-layout-sider
+      class="layout-sider"
       collapse-mode="transform"
-      :collapsed-width="120"
+      :collapsed-width="50"
       :width="240"
       show-trigger="bar"
       content-style="padding: 24px;"
       bordered
     >
       <n-h2>海淀桥</n-h2>
+      <Menus></Menus>
     </n-layout-sider>
-    <n-layout-content content-style="padding: 24px;"> 平山道 </n-layout-content>
+    <n-layout>
+      <n-layout-header bordered> 这是头 </n-layout-header>
+
+      <n-layout-content class="layout-content">
+        <div class="layout-content-main">
+          <div class="main-view">主要内容</div>
+        </div>
+      </n-layout-content>
+      <n-back-top :right="100" />
+    </n-layout>
   </n-layout>
 </template>
 
@@ -70,6 +81,13 @@ const signOutBtn = (): void => {
 </script>
 
 <style lang="scss" scoped>
+.layout-sider {
+  min-height: 100vh;
+  box-shadow: 2px 0 8px 0 rgb(29 35 41 / 5%);
+  position: relative;
+  z-index: 13;
+  transition: all 0.2s ease-in-out;
+}
 .nav-logo {
   display: flex;
   flex: 1;

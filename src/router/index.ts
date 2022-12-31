@@ -4,7 +4,7 @@ import Layout from '@/views/layout/index.vue';
 
 // import { progressStart, progressEnd } from '@/utils/nporgress';
 // 引入模块路由
-import baseRouters from './modules/base';
+// import baseRouters from './modules/base';
 
 const commonRoutes: Array<RouteRecordRaw> = [
   {
@@ -23,8 +23,8 @@ const commonRoutes: Array<RouteRecordRaw> = [
     ]
   },
   {
-    path: '/login',
-    name: 'Login',
+    path: '/signIn',
+    name: 'SignIn',
     meta: {
       title: '登录'
     },
@@ -48,10 +48,10 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   // progressStart();
   const isLogin = sessionStorage.getItem('token') ? true : false;
-  if (to.path === '/login') {
+  if (to.path === '/signIn') {
     next();
   } else {
-    isLogin ? next() : next('/login');
+    isLogin ? next() : next('/signIn');
   }
 });
 

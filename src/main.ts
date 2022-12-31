@@ -24,6 +24,7 @@ app.use(i18n);
 app.use(store);
 // 全局挂在axios
 app.config.globalProperties.$axios = axios;
+app.config.globalProperties.$t = i18n.global.t;
 // 全局指令
 // Object.keys(directives).forEach((key) => {
 //   app.directive(key, (directives as { [key: string]: Directive })[key]);

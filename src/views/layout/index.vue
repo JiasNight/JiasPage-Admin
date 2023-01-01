@@ -2,15 +2,18 @@
   <n-layout has-sider>
     <n-layout-sider
       class="layout-sider"
-      collapse-mode="transform"
+      collapse-mode="width"
+      :collapsed="siderCollapsed"
       :collapsed-width="50"
       :width="240"
       show-trigger="bar"
-      content-style="padding: 24px;"
       bordered
+      :native-scrollbar="false"
+      @collapse="siderCollapsed = true"
+      @expand="siderCollapsed = false"
     >
       <n-h2>海淀桥</n-h2>
-      <Menus></Menus>
+      <Menus :collapsed="siderCollapsed"></Menus>
     </n-layout-sider>
     <n-layout>
       <n-layout-header bordered> 这是头 </n-layout-header>
@@ -45,6 +48,12 @@ const useGlobalStore = globalStore();
 //     return true;
 //   }
 // });
+
+let siderCollapsed = $ref<boolean>(false);
+
+const changeSiderCollapsed = (collapsed: boolean): void => {
+  console.log(collapsed);
+};
 const progress: ComputedRef<number | null> = computed(() => useGlobalStore.progress);
 const snackbarText: ComputedRef<string | null> = computed(() => useGlobalStore.message);
 
@@ -82,10 +91,10 @@ const signOutBtn = (): void => {
 
 <style lang="scss" scoped>
 .layout-sider {
-  min-height: 100vh;
-  box-shadow: 2px 0 8px 0 rgb(29 35 41 / 5%);
   position: relative;
   z-index: 13;
+  min-height: 100vh;
+  box-shadow: 2px 0 8px 0 rgb(29 35 41 / 5%);
   transition: all 0.2s ease-in-out;
 }
 .nav-logo {

@@ -31,11 +31,13 @@
               :rules="adminFormRules"
               label-placement="left"
               label-width="auto"
+              size="large"
               require-mark-placement="left"
             >
               <n-form-item :label="$t('login.userName')" path="userName">
                 <n-input
                   v-model:value="adminFormData.userName"
+                  size="large"
                   round
                   clearable
                   :placeholder="$t('login.inputUserNamePlaceholder')"
@@ -45,6 +47,7 @@
                 <n-input
                   v-model:value="adminFormData.password"
                   type="password"
+                  size="large"
                   round
                   clearable
                   show-password-on="mousedown"
@@ -56,6 +59,7 @@
                   <n-form-item :label="$t('login.verifyCode')" path="verifyCode">
                     <n-input
                       v-model:value="adminFormData.password"
+                      size="large"
                       round
                       clearable
                       :placeholder="$t('login.inputVerifyCodePlaceholder')"
@@ -237,7 +241,7 @@ const submitLoginBtn = () => {
         }
         .login-form {
           margin: 0 auto;
-          width: 75%;
+          width: 80%;
           .form-verify-code {
             display: flex;
             justify-content: space-between;

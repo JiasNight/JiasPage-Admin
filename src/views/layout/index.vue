@@ -16,10 +16,14 @@
       <Menus :collapsed="siderCollapsed"></Menus>
     </n-layout-sider>
     <n-layout>
-      <n-layout-header bordered> 这是头 </n-layout-header>
+      <n-layout-header bordered>
+        <Header></Header>
+      </n-layout-header>
 
       <n-layout-content class="layout-content">
         <div class="layout-content-main">
+          <!-- 标签页 -->
+          <PageTags></PageTags>
           <div class="main-view">主要内容</div>
         </div>
       </n-layout-content>
@@ -32,8 +36,10 @@
 // import { $ref } from 'vue/macros';
 // import VLogo from './logo/index.vue';
 import { Ref, ComputedRef } from 'vue';
-import Menus from './menu/index.vue';
-import Tags from './tags/index.vue';
+import Menus from './component/menu/index.vue';
+import Header from './component/header/index.vue';
+import PageTags from './component/tags/index.vue';
+import { MenuFilled, HomeFilled } from '@vicons/material';
 import globalStore from '@/store/module/global';
 import appStore from '@/store/module/app';
 
@@ -97,6 +103,9 @@ const signOutBtn = (): void => {
   box-shadow: 2px 0 8px 0 rgb(29 35 41 / 5%);
   transition: all 0.2s ease-in-out;
 }
+.n-layout-header {
+  padding: 10px;
+}
 .nav-logo {
   display: flex;
   flex: 1;
@@ -108,9 +117,5 @@ const signOutBtn = (): void => {
     font-size: 20px;
     font-weight: bolder;
   }
-}
-.top-bar-chips {
-  display: flex;
-  flex: 1;
 }
 </style>

@@ -16,6 +16,7 @@ import i18n from './i18n';
 import 'vfonts/Lato.css';
 // 等宽字体
 import 'vfonts/FiraCode.css';
+import 'uno.css';
 
 // 创建app实例
 const app = createApp(App);

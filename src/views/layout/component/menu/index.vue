@@ -1,5 +1,8 @@
 <template>
   <n-menu
+    class="side-menu"
+    accordion
+    :indent="18"
     :collapsed="currentProps.collapsed"
     :collapsed-width="50"
     :collapsed-icon-size="20"
@@ -32,7 +35,7 @@ const menusList = $ref<MenuOption[]>([
     label: '系统设置',
     icon: renderIcon(SettingsRound),
     disabled: false,
-    key: '',
+    key: 'sys',
     show: true,
     description: '这是一个菜单',
     children: [
@@ -52,63 +55,9 @@ const menusList = $ref<MenuOption[]>([
         label: '权限设置',
         disabled: false,
         icon: renderIcon(),
-        key: '',
+        key: 'role',
         show: true,
-        description: '这是一个菜单1-1',
-        children: [
-          {
-            id: '111',
-            pid: '11',
-            label: '用户权限',
-            disabled: false,
-            icon: renderIcon(),
-            key: '/userAuth',
-            show: true,
-            description: '这是一个菜单1-1'
-          },
-          {
-            id: '112',
-            pid: '11',
-            label: '菜单权限',
-            disabled: true,
-            icon: renderIcon(),
-            key: '/menuAuth',
-            show: true,
-            description: '这是一个菜单1-2'
-          },
-          {
-            id: '112',
-            pid: '11',
-            label: '角色管理',
-            disabled: false,
-            icon: renderIcon(),
-            key: '/roleManage',
-            show: true,
-            description: '这是一个菜单1-2',
-            children: [
-              {
-                id: '112',
-                pid: '11',
-                label: '角色设置',
-                disabled: false,
-                icon: renderIcon(),
-                key: '/roleSetting',
-                show: true,
-                description: '这是一个菜单1-2'
-              },
-              {
-                id: '112',
-                pid: '11',
-                label: '角色权限',
-                disabled: false,
-                icon: renderIcon(),
-                key: '/roleAuth',
-                show: true,
-                description: '这是一个菜单1-2'
-              }
-            ]
-          }
-        ]
+        description: '这是一个菜单1-1'
       },
       {
         id: '12',
@@ -128,7 +77,7 @@ const menusList = $ref<MenuOption[]>([
     label: '目录2',
     disabled: false,
     icon: renderIcon(),
-    key: '',
+    key: '211',
     show: true,
     description: '这是一个菜单',
     children: [
@@ -138,7 +87,7 @@ const menusList = $ref<MenuOption[]>([
         label: '这是菜单2-1',
         disabled: false,
         icon: renderIcon(),
-        key: '',
+        key: '212',
         show: true,
         description: '这是一个菜单2-1',
         children: [
@@ -180,7 +129,18 @@ const menusList = $ref<MenuOption[]>([
 </script>
 
 <style lang="scss" scoped>
-.menu-label {
-  color: #fff !important;
+.side-menu {
+  &:deep(.n-menu-item-content) {
+    &::before {
+      right: 5px;
+      left: 5px;
+    }
+    &.n-menu-item-content--selected,
+    &:hover {
+      &::before {
+        border-left: 4px solid #2ecc71;
+      }
+    }
+  }
 }
 </style>

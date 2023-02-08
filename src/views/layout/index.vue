@@ -5,7 +5,7 @@
       collapse-mode="width"
       :collapsed="siderCollapsed"
       :collapsed-width="50"
-      :width="240"
+      :width="220"
       show-trigger="bar"
       bordered
       :native-scrollbar="false"

@@ -12,6 +12,10 @@ import vueJsx from '@vitejs/plugin-vue-jsx';
 import viteCompression from 'vite-plugin-compression';
 // 在开发和构建中进行代码规范校验
 import eslintPlugin from 'vite-plugin-eslint';
+// 引入unocss
+import Unocss from 'unocss/vite';
+import presetUno from '@unocss/preset-uno';
+
 import { Vuetify3Resolver, NaiveUiResolver } from 'unplugin-vue-components/resolvers';
 
 import * as path from 'path';
@@ -93,6 +97,7 @@ export default ({ mode }) => {
         // 开启ref转换
         reactivityTransform: true
       }),
+      Unocss(),
       eslintPlugin({
         // 禁用 eslint 缓存
         cache: false

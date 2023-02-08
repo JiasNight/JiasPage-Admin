@@ -38,7 +38,6 @@
                 <n-input
                   v-model:value="adminFormData.userName"
                   size="large"
-                  round
                   clearable
                   :placeholder="$t('login.inputUserNamePlaceholder')"
                 />
@@ -48,7 +47,6 @@
                   v-model:value="adminFormData.password"
                   type="password"
                   size="large"
-                  round
                   clearable
                   show-password-on="mousedown"
                   :placeholder="$t('login.inputPasswordPlaceholder')"
@@ -60,7 +58,6 @@
                     <n-input
                       v-model:value="adminFormData.password"
                       size="large"
-                      round
                       clearable
                       :placeholder="$t('login.inputVerifyCodePlaceholder')"
                     />

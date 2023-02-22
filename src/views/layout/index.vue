@@ -12,7 +12,7 @@
       @collapse="siderCollapsed = true"
       @expand="siderCollapsed = false"
     >
-      <n-h2>海淀桥</n-h2>
+      <Logo :collapsed="siderCollapsed"></Logo>
       <Menus :collapsed="siderCollapsed"></Menus>
     </n-layout-sider>
     <n-layout>
@@ -24,7 +24,7 @@
         <div class="layout-content-main">
           <!-- 标签页 -->
           <PageTags></PageTags>
-          <div class="main-view">主要内容</div>
+          <div class="main-view" style="height: 500px;">主要内容</div>
         </div>
       </n-layout-content>
       <n-back-top :right="100" />
@@ -34,8 +34,8 @@
 
 <script lang="ts" setup>
 // import { $ref } from 'vue/macros';
-// import VLogo from './logo/index.vue';
 import { Ref, ComputedRef } from 'vue';
+import Logo from './component/logo/index.vue';
 import Menus from './component/menu/index.vue';
 import Header from './component/header/index.vue';
 import PageTags from './component/tags/index.vue';

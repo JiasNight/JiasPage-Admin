@@ -1,4 +1,12 @@
-<template>logo</template>
+<template>
+  <router-link to="/">
+    <img src="@/assets/images/logo.png" alt="logo">
+    <h2 v-show="!collapsed">
+      PAGE
+    </h2>
+  </router-link>
+
+</template>
 
 <script lang="ts" setup>
 const props = defineProps({
@@ -19,25 +27,11 @@ watch(
 </script>
 
 <style lang="scss" scoped>
-.box-logo {
-  height: 50px;
-  color: #f1f3f5;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  line-height: 50px;
-  overflow: hidden;
-  white-space: nowrap;
-  border-bottom: 1px dashed #fff;
-  padding-bottom: 10px;
-  img {
-    height: 60px;
-  }
-  .logo-title {
-    text-align: center;
-    font-size: 20px;
-    font-weight: 900;
-  }
+img {
+  display: inline-block;
+  width: 100px;
+}
+h2 {
+  display: inline-block;
 }
 </style>

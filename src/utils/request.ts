@@ -17,7 +17,7 @@ class Interceptors {
       // 服务接口请求
       // baseURL: import.meta.env.VITE_APP_BASE_URL,
       // 超时设置
-      timeout: 1500,
+      timeout: 10000,
       headers: {
         'Content-Type': 'application/json; charset=UTF-8;'
       },

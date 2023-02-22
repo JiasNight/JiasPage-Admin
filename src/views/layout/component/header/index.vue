@@ -1,7 +1,7 @@
 <template>
   <div class="content-header">
     <div class="header-left">
-      <n-icon size="20"><MenuFilled></MenuFilled></n-icon>
+      <n-icon size="20" style="cursor: pointer;"><MenuFilled></MenuFilled></n-icon>
       <!-- 面包屑 -->
       <n-breadcrumb>
         <n-breadcrumb-item> <n-icon :component="HomeFilled" /> 首页</n-breadcrumb-item>

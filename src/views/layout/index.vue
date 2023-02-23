@@ -1,5 +1,5 @@
 <template>
-  <n-layout has-sider>
+  <n-layout class="screen-layout" has-sider>
     <n-layout-sider
       class="layout-sider"
       collapse-mode="width"
@@ -20,12 +20,10 @@
         <Header></Header>
       </n-layout-header>
 
+      <!-- 标签页 -->
+      <PageTags></PageTags>
       <n-layout-content class="layout-content">
-        <div class="layout-content-main">
-          <!-- 标签页 -->
-          <PageTags></PageTags>
-          <div class="main-view" style="height: 500px;">主要内容</div>
-        </div>
+        <div class="main-view" style="height: 100px">主要内容</div>
       </n-layout-content>
       <n-back-top :right="100" />
     </n-layout>
@@ -33,7 +31,6 @@
 </template>
 
 <script lang="ts" setup>
-// import { $ref } from 'vue/macros';
 import { Ref, ComputedRef } from 'vue';
 import Logo from './component/logo/index.vue';
 import Menus from './component/menu/index.vue';
@@ -96,26 +93,14 @@ const signOutBtn = (): void => {
 </script>
 
 <style lang="scss" scoped>
-.layout-sider {
-  position: relative;
-  z-index: 13;
-  min-height: 100vh;
-  box-shadow: 2px 0 8px 0 rgb(29 35 41 / 5%);
-  transition: all 0.2s ease-in-out;
-}
-.n-layout-header {
-  padding: 10px;
-}
-.nav-logo {
-  display: flex;
-  flex: 1;
-  cursor: pointer;
-  .nav-logo-img {
-    width: 100px;
+.screen-layout {
+  .layout-sider {
+    position: relative;
+    min-height: 100vh;
+    box-shadow: 2px 0 8px 0 rgb(29 35 41 / 5%);
+    transition: all 0.2s ease-in-out;
   }
-  .nav-logo-title {
-    font-size: 20px;
-    font-weight: bolder;
+  .layout-content {
   }
 }
 </style>

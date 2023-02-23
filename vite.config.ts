@@ -13,8 +13,9 @@ import viteCompression from 'vite-plugin-compression';
 // 在开发和构建中进行代码规范校验
 import eslintPlugin from 'vite-plugin-eslint';
 // 引入unocss
-import Unocss from 'unocss/vite';
-import presetUno from '@unocss/preset-uno';
+import unoCss from 'unocss/vite';
+// 安装unocss和三个预设，第一个是工具类预设，第二个是属性化模式支持，第三个是icon支持
+import { presetUno, presetAttributify, presetIcons } from 'unocss';
 
 import { Vuetify3Resolver, NaiveUiResolver } from 'unplugin-vue-components/resolvers';
 
@@ -97,11 +98,35 @@ export default ({ mode }) => {
         // 开启ref转换
         reactivityTransform: true
       }),
-      Unocss(),
+      // 配置css原子化
+      unoCss({
+        presets: [presetUno(), presetAttributify(), presetIcons()],
+        rules: [
+          // 在这个可以增加预设规则, 也可以使用正则表达式
+          ['flex', { display: 'flex' }],
+          ['c-p', { cursor: 'pointer' }],
+          ['p-r', { position: 'relative' }],
+          [
+            'p-c', // 使用时只需要写 p-c 即可应用该组样式
+            {
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)'
+            }
+          ],
+          [/^m-(\d+)$/, ([, d]) => ({ margin: `${Number(d) * 10}px` })]
+        ],
+        // 组合样式 自定义
+        shortcuts: {
+          fuck: ['green', 'font28']
+        }
+      }),
       eslintPlugin({
         // 禁用 eslint 缓存
         cache: false
       }),
+      // 配置自动导入
       AutoImport({
         resolvers: [Vuetify3Resolver(), NaiveUiResolver()],
         // 自定引入 Vue VueRouter API,如果还需要其他的可以自行引入
@@ -130,6 +155,7 @@ export default ({ mode }) => {
         dirs: '/components.d.ts',
         resolvers: [Vuetify3Resolver(), NaiveUiResolver()]
       }),
+      // 配置jsx
       vueJsx(),
       // gzip压缩
       viteCompression()

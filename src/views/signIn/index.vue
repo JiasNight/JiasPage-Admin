@@ -34,31 +34,42 @@
               size="large"
               require-mark-placement="left"
             >
-              <n-form-item :label="$t('login.userName')" path="userName">
+              <n-form-item path="userName">
                 <n-input
                   v-model:value="adminFormData.userName"
                   size="large"
+                  round
                   clearable
                   :placeholder="$t('login.inputUserNamePlaceholder')"
-                />
+                >
+                  <template #prefix>
+                    <n-icon size="25" :component="PersonOutlineRound" />
+                  </template>
+                </n-input>
               </n-form-item>
-              <n-form-item :label="$t('login.password')" path="password">
+              <n-form-item path="password">
                 <n-input
                   v-model:value="adminFormData.password"
                   type="password"
                   size="large"
                   clearable
+                  round
                   show-password-on="mousedown"
                   :placeholder="$t('login.inputPasswordPlaceholder')"
-                />
+                >
+                  <template #prefix>
+                    <n-icon size="25" :component="PasswordRound" />
+                  </template>
+                </n-input>
               </n-form-item>
               <div class="form-verify-code">
                 <div class="code-input">
-                  <n-form-item :label="$t('login.verifyCode')" path="verifyCode">
+                  <n-form-item path="verifyCode">
                     <n-input
-                      v-model:value="adminFormData.password"
+                      v-model:value="adminFormData.verifyCode"
                       size="large"
                       clearable
+                      round
                       :placeholder="$t('login.inputVerifyCodePlaceholder')"
                     />
                   </n-form-item>
@@ -83,12 +94,11 @@
 </template>
 
 <script lang="ts" setup>
-import { defineComponent, getCurrentInstance } from 'vue';
 import { $ref } from 'vue/macros';
-import { SignLanguageFilled, NightlightFilled } from '@vicons/material';
-import { FormInst, FormItemRule, useMessage } from 'naive-ui';
+import { FormInst } from 'naive-ui';
+import { SignLanguageFilled, NightlightFilled, PersonOutlineRound, PasswordRound } from '@vicons/material';
 import { useRouter } from 'vue-router';
-import { getValidateCode, userLogin } from '@/api/login/index';
+import { getValidateCode } from '@/api/login/index';
 import userStore from '@/store/module/user';
 import appStore from '@/store/module/app';
 import { useI18n } from 'vue-i18n';
@@ -176,16 +186,14 @@ const loginForm: any = $ref<FormInst | null>(null);
 
 let submitBtnIsLoading = $ref<boolean>(false);
 
-const submitLoginBtn = () => {
-  loginForm.validate().then((val: any) => {
-    console.log(val.valid);
-    if (val.valid) {
+const submitLoginBtn = (e: MouseEvent) => {
+  e.preventDefault();
+  loginForm.validate((valid: any) => {
+    if (!valid) {
       submitBtnIsLoading = true;
       useUserStore.userLoginHandle(adminFormData);
-      // userLogin(adminFormData).then((res: any) => {
-      //   console.log(res);
-      //   // router.push('/');
-      // });
+    } else {
+      console.log('验证失败');
     }
   });
   setTimeout(() => {
@@ -211,11 +219,13 @@ const submitLoginBtn = () => {
     justify-content: center;
     width: 450px;
     height: 500px;
-    border: 2px solid #8e44ad;
     border-radius: 10px;
     background: rgba(194, 188, 188, 0.5);
-    box-shadow: 5px 3px 7px rgb(142, 131, 238);
+    box-shadow: 20px 20px 50px rgba(142, 131, 238, 0.5);
     transform: translate(-50%, -50%);
+    border-top: 2px solid rgba(142, 131, 238, 0.5);
+    border-left: 2px solid rgba(142, 131, 238, 0.5);
+    backdrop-filter: blur(5px);
     flex-direction: row;
     .box-right {
       width: 100%;

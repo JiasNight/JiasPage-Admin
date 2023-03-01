@@ -30,7 +30,9 @@ class Interceptors {
 
   init() {
     // 请求拦截
-    const aesKey = aesUtil.genKey();
+    // const aesKey = aesUtil.genKey();
+    const aesKey = '3nuQF6e4LCyt48GX';
+    console.log(aesKey);
     this.instance.interceptors.request.use(
       (config: any) => {
         // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token，不用每次请求都手动添加了

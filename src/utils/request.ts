@@ -6,7 +6,7 @@ import { getCurrentInstance } from 'vue';
 import router from '../router';
 
 // 请求加密方法引入
-import { aesUtil, rsaUtil, publicKey, privateKey } from './transferEncryption';
+import { aesUtil, rsaUtil, publicKey } from './common/cryption';
 
 class Interceptors {
   instance: AxiosInstance;
@@ -31,7 +31,9 @@ class Interceptors {
   init() {
     // 请求拦截
     // const aesKey = aesUtil.genKey();
+    // const iv = aesUtil.genKey();
     const aesKey = '3nuQF6e4LCyt48GX';
+    const iv = '3nuQF6e4LCyt48GX';
     console.log(aesKey);
     this.instance.interceptors.request.use(
       (config: any) => {
@@ -44,7 +46,7 @@ class Interceptors {
         if (config.params && config.params !== undefined) {
           const requestParams = config.params;
           const objParams: any = {
-            data: aesUtil.encrypt(requestParams, aesKey),
+            data: aesUtil.encrypt(requestParams, aesKey, iv),
             aesKey: rsaUtil.encrypt(aesKey, window.sessionStorage.getItem('javaPublicKey')),
             publicKey: publicKey
           };
@@ -59,7 +61,7 @@ class Interceptors {
               jsonData[key] = requestData.get(key);
             }
             const objData: any = {
-              data: aesUtil.encrypt(jsonData, aesKey),
+              data: aesUtil.encrypt(jsonData, aesKey, iv),
               aesKey: rsaUtil.encrypt(aesKey, window.sessionStorage.getItem('javaPublicKey')),
               publicKey: publicKey
             };
@@ -70,7 +72,7 @@ class Interceptors {
             config.data = objData;
           } else {
             const objData: any = {
-              data: aesUtil.encrypt(requestData, aesKey),
+              data: aesUtil.encrypt(requestData, aesKey, iv),
               aesKey: rsaUtil.encrypt(aesKey, window.sessionStorage.getItem('javaPublicKey')),
               publicKey: publicKey
             };

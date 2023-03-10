@@ -32,9 +32,7 @@ class Interceptors {
     // 请求拦截
     // const aesKey = aesUtil.genKey();
     // const iv = aesUtil.genKey();
-    const aesKey = '3nuQF6e4LCyt48GX';
-    const iv = '3nuQF6e4LCyt48GX';
-    console.log(aesKey);
+    const aesKey = window.sessionStorage.getItem('aesKey');
     this.instance.interceptors.request.use(
       (config: any) => {
         // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token，不用每次请求都手动添加了
@@ -46,7 +44,7 @@ class Interceptors {
         if (config.params && config.params !== undefined) {
           const requestParams = config.params;
           const objParams: any = {
-            data: aesUtil.encrypt(requestParams, aesKey, iv),
+            data: aesUtil.encrypt(requestParams, aesKey),
             aesKey: rsaUtil.encrypt(aesKey, window.sessionStorage.getItem('javaPublicKey')),
             publicKey: publicKey
           };
@@ -61,7 +59,7 @@ class Interceptors {
               jsonData[key] = requestData.get(key);
             }
             const objData: any = {
-              data: aesUtil.encrypt(jsonData, aesKey, iv),
+              data: aesUtil.encrypt(jsonData, aesKey),
               aesKey: rsaUtil.encrypt(aesKey, window.sessionStorage.getItem('javaPublicKey')),
               publicKey: publicKey
             };
@@ -72,7 +70,7 @@ class Interceptors {
             config.data = objData;
           } else {
             const objData: any = {
-              data: aesUtil.encrypt(requestData, aesKey, iv),
+              data: aesUtil.encrypt(requestData, aesKey),
               aesKey: rsaUtil.encrypt(aesKey, window.sessionStorage.getItem('javaPublicKey')),
               publicKey: publicKey
             };

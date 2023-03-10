@@ -16,33 +16,30 @@ export const aesUtil = {
   },
 
   // 加密
-  encrypt: (textStr: any, key: string, iv: string) => {
+  encrypt: (textStr: any, key: string) => {
     if (textStr instanceof Object) {
       // JSON.stringify
       textStr = JSON.stringify(textStr);
     }
     const encrypted = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(textStr), CryptoJS.enc.Utf8.parse(key), {
-      iv:  CryptoJS.enc.Utf8.parse(iv),
-      mode: CryptoJS.mode.CBC,
-      padding: CryptoJS.pad.ZeroPadding
+      // iv:  CryptoJS.enc.Utf8.parse(iv),
+      mode: CryptoJS.mode.ECB,
+      padding: CryptoJS.pad.Pkcs7
     });
-    return encrypted.toString();
+    return CryptoJS.enc.Base64.stringify(encrypted.ciphertext);
   },
 
   // 解密
-  decrypt: (textStr: any, key: string, iv: string) => {
-    const decrypt = CryptoJS.AES.decrypt(textStr, CryptoJS.enc.Utf8.parse(key), {
-      iv: CryptoJS.enc.Utf8.parse(iv),
-      mode: CryptoJS.mode.CBC,
-      padding: CryptoJS.pad.ZeroPadding
+  decrypt: (textStr: any, key: string) => {
+    const base64 = CryptoJS.enc.Base64.parse(textStr);
+    const src = CryptoJS.enc.Base64.stringify(base64);
+    const decrypt = CryptoJS.AES.decrypt(src, CryptoJS.enc.Utf8.parse(key), {
+      // iv: CryptoJS.enc.Utf8.parse(iv),
+      mode: CryptoJS.mode.ECB,
+      padding: CryptoJS.pad.Pkcs7
     });
-    // let decString = CryptoJS.enc.Utf8.stringify(decrypt).toString();
-    // if (decString.charAt(0) === '{' || decString.charAt(0) === '[') {
-    //   // JSON.parse
-    //   decString = JSON.parse(decString);
-    // }
     const decString = decrypt.toString(CryptoJS.enc.Utf8);
-    return decString;
+    return decString.toString();
   }
 };
 

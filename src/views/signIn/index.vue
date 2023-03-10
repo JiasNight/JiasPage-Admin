@@ -98,7 +98,7 @@ import { $ref } from 'vue/macros';
 import { FormInst } from 'naive-ui';
 import { SignLanguageFilled, NightlightFilled, PersonOutlineRound, PasswordRound } from '@vicons/material';
 import { useRouter } from 'vue-router';
-import { getValidateCode } from '@/api/login/index';
+import { getValidateCode, getAesKey } from '@/api/login/index';
 import userStore from '@/store/module/user';
 import appStore from '@/store/module/app';
 import { useI18n } from 'vue-i18n';
@@ -123,16 +123,32 @@ let isLoading = $ref<boolean>(false);
 let verifyCodeImg = $ref<string>('');
 
 onMounted(() => {
-  getValidateCode().then((res: Ires) => {
-    if (res && res.code === 200) {
-      verifyCodeImg = res.data.base64;
-    }
-  });
+  getCurrentAesKey();
+  getCurrentVerifyCode();
   isLoading = true;
   setTimeout(() => {
     isLoading = false;
   }, 2000);
 });
+
+// 获取加密密钥
+const getCurrentAesKey = () => {
+  const sessionAesKey = window.sessionStorage.getItem('aesKey');
+  if (!sessionAesKey) {
+    getAesKey().then((res: Ires) => {
+      window.sessionStorage.setItem('aesKey', res.data);
+    });
+  }
+};
+
+// 获取验证码
+const getCurrentVerifyCode = () => {
+  getValidateCode().then((res: Ires) => {
+    if (res && res.code === 200) {
+      verifyCodeImg = res.data.base64;
+    }
+  });
+};
 
 // 切换当前主题
 const changeCurrentThemeBtn = (): void => {

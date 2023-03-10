@@ -1,5 +1,13 @@
 import service from '@/utils/request';
 
+// 获取AesKey
+export const getAesKey = () => {
+  return service.axios({
+    url: '/api/system/aesKey',
+    method: 'get'
+  });
+};
+
 // 获取验证码
 export const getValidateCode = () => {
   return service.axios({

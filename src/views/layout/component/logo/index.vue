@@ -1,5 +1,5 @@
 <template>
-  <router-link to="/">
+  <router-link to="/index">
     <img src="@/assets/images/logo.png" alt="logo">
     <h2 v-show="!collapsed">
       PAGE

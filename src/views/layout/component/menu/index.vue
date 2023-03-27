@@ -7,6 +7,7 @@
     :collapsed-width="50"
     :collapsed-icon-size="20"
     :options="menusList"
+    :on-update:value="clickMenuHandler"
   ></n-menu>
 </template>
 
@@ -14,7 +15,12 @@
 import { Component } from 'vue';
 import { $ref } from 'vue/macros';
 import type { MenuOption } from 'naive-ui';
-import { MenuFilled, SettingsRound } from '@vicons/material';
+import { MenuFilled, SettingsRound, PersonRound } from '@vicons/material';
+import useAppStore from '@/store/module/app';
+
+const router = useRouter();
+const appStore = useAppStore();
+const currentRoute = useRoute();
 
 function renderIcon(icon?: Component) {
   if (!icon) icon = MenuFilled;
@@ -28,14 +34,19 @@ const currentProps = defineProps({
   }
 });
 
+watch(currentRoute, async () => {
+  await nextTick();
+});
+
 const menusList = $ref<MenuOption[]>([
   {
     id: '1',
     pid: '0',
-    label: '系统设置',
+    label: '系统管理',
     icon: renderIcon(SettingsRound),
     disabled: false,
-    key: 'sys',
+    key: 'system',
+    path: '/system',
     show: true,
     description: '这是一个菜单',
     children: [
@@ -44,8 +55,9 @@ const menusList = $ref<MenuOption[]>([
         pid: '1',
         label: '用户管理',
         disabled: false,
-        icon: renderIcon(),
-        key: '/userManage',
+        icon: renderIcon(PersonRound),
+        key: 'userManage',
+        path: '/userManage',
         show: true,
         description: '这是一个菜单1-2'
       },
@@ -56,6 +68,7 @@ const menusList = $ref<MenuOption[]>([
         disabled: false,
         icon: renderIcon(),
         key: 'role',
+        path: '/system/userManage',
         show: true,
         description: '这是一个菜单1-1'
       },
@@ -66,66 +79,23 @@ const menusList = $ref<MenuOption[]>([
         disabled: false,
         icon: renderIcon(),
         key: '/333',
+        path: '/system/userManage',
         show: true,
         description: '这是一个菜单1-2'
       }
     ]
-  },
-  {
-    id: '2',
-    pid: '0',
-    label: '目录2',
-    disabled: false,
-    icon: renderIcon(),
-    key: '211',
-    show: true,
-    description: '这是一个菜单',
-    children: [
-      {
-        id: '21',
-        pid: '1',
-        label: '这是菜单2-1',
-        disabled: false,
-        icon: renderIcon(),
-        key: '212',
-        show: true,
-        description: '这是一个菜单2-1',
-        children: [
-          {
-            id: '211',
-            pid: '11',
-            label: '反对法烦烦烦方法菜单2-1-1',
-            disabled: false,
-            icon: renderIcon(),
-            key: '/4444',
-            show: true,
-            description: '这是一个菜单1-1'
-          }
-        ]
-      },
-      {
-        id: '22',
-        pid: '1',
-        label: '菜单2-2',
-        disabled: false,
-        icon: renderIcon(),
-        key: '/login2',
-        show: true,
-        description: '这是一个菜单1-2'
-      }
-    ]
-  },
-  {
-    id: '2',
-    pid: '0',
-    label: '菜单3',
-    disabled: false,
-    icon: renderIcon(),
-    key: '8888',
-    show: true,
-    description: '这是一个菜单'
   }
 ]);
+
+// 点击菜单
+const clickMenuHandler = (key: string, item: MenuOption | any) => {
+  console.log(item.path);
+  if (item.path === currentRoute.path) {
+    appStore.reloadPage();
+  } else {
+    router.push(item.path);
+  }
+};
 </script>
 
 <style lang="scss" scoped>

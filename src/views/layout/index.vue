@@ -22,8 +22,10 @@
 
       <!-- 标签页 -->
       <PageTags></PageTags>
+      <!-- <n-scrollbar x-scrollable>
+      </n-scrollbar> -->
       <n-layout-content class="layout-content">
-        <div class="main-view" style="height: 100px">主要内容</div>
+        <ViewMain></ViewMain>
       </n-layout-content>
       <n-back-top :right="100" />
     </n-layout>
@@ -36,7 +38,7 @@ import Logo from './component/logo/index.vue';
 import Menus from './component/menu/index.vue';
 import Header from './component/header/index.vue';
 import PageTags from './component/tags/index.vue';
-import { MenuFilled, HomeFilled } from '@vicons/material';
+import ViewMain from './component/main/index.vue';
 import globalStore from '@/store/module/global';
 import appStore from '@/store/module/app';
 

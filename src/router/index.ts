@@ -10,15 +10,32 @@ const commonRoutes: Array<RouteRecordRaw> = [
   {
     path: '/',
     component: Layout,
-    redirect: 'index',
+    redirect: '/index',
     children: [
       {
-        path: 'index',
+        path: '/index',
         name: 'Index',
         meta: {
           title: '首页'
         },
         component: () => import('@/views/index.vue')
+      },
+      {
+        path: '/system',
+        name: 'System',
+        meta: {
+          title: '系统管理'
+        },
+        children: [
+          {
+            path: '/userManage',
+            name: 'UserManage',
+            meta: {
+              title: '用户管理'
+            },
+            component: () => import('@/views/system/userManage/index.vue')
+          }
+        ]
       }
     ]
   },

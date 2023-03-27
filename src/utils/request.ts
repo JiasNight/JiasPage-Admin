@@ -29,55 +29,61 @@ class Interceptors {
   }
 
   init() {
+    // 判断是否需要对请求和响应加解密
+    const isEncrypt: boolean | string | null = window.sessionStorage.getItem('safe');
     // 请求拦截
     // const aesKey = aesUtil.genKey();
     // const iv = aesUtil.genKey();
-    const aesKey = window.sessionStorage.getItem('aesKey');
+    const aesKey: string = window.sessionStorage.getItem('aesKey') || '';
     this.instance.interceptors.request.use(
       (config: any) => {
         // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token，不用每次请求都手动添加了
         const token = window.localStorage.getItem('TOKEN');
         token && (config.headers.Authorization = token);
-
-        // 请求方法类型
-        const requestMethod = config.method;
-        if (config.params && config.params !== undefined) {
-          const requestParams = config.params;
-          const objParams: any = {
-            data: aesUtil.encrypt(requestParams, aesKey),
-            aesKey: rsaUtil.encrypt(aesKey, window.sessionStorage.getItem('javaPublicKey')),
-            publicKey: publicKey
-          };
-          config.params = objParams;
-        }
-        if (config.data && config.data !== undefined) {
-          const requestData = config.data;
-          if (Object.prototype.toString.call(requestData) === '[object FormData]') {
-            // 设置请求头为表单提交头
-            const jsonData: any = {};
-            for (const key of requestData.keys()) {
-              jsonData[key] = requestData.get(key);
-            }
-            const objData: any = {
-              data: aesUtil.encrypt(jsonData, aesKey),
+        if (isEncrypt) {
+          // 请求方法类型
+          const requestMethod = config.method;
+          if (config.params && config.params !== undefined) {
+            const requestParams = config.params;
+            const objParams: any = {
+              data: aesUtil.encrypt(requestParams, aesKey),
               aesKey: rsaUtil.encrypt(aesKey, window.sessionStorage.getItem('javaPublicKey')),
               publicKey: publicKey
             };
-            // const fd: FormData = new FormData();
-            // for (const key in objData) {
-            //   fd.append(key, objData[key]);
-            // }
-            config.data = objData;
-          } else {
-            const objData: any = {
-              data: aesUtil.encrypt(requestData, aesKey),
-              aesKey: rsaUtil.encrypt(aesKey, window.sessionStorage.getItem('javaPublicKey')),
-              publicKey: publicKey
-            };
-            config.data = objData;
+            config.params = objParams;
           }
+          if (config.data && config.data !== undefined) {
+            const requestData = config.data;
+            if (Object.prototype.toString.call(requestData) === '[object FormData]') {
+              // 设置请求头为表单提交头
+              const jsonData: any = {};
+              for (const key of requestData.keys()) {
+                jsonData[key] = requestData.get(key);
+              }
+              const objData: any = {
+                data: aesUtil.encrypt(jsonData, aesKey),
+                aesKey: rsaUtil.encrypt(aesKey, window.sessionStorage.getItem('javaPublicKey')),
+                publicKey: publicKey
+              };
+              // const fd: FormData = new FormData();
+              // for (const key in objData) {
+              //   fd.append(key, objData[key]);
+              // }
+              config.data = objData;
+            } else {
+              const objData: any = {
+                data: aesUtil.encrypt(requestData, aesKey),
+                aesKey: rsaUtil.encrypt(aesKey, window.sessionStorage.getItem('javaPublicKey')),
+                publicKey: publicKey
+              };
+              config.data = objData;
+            }
+          }
+          return config;
+
+        } else {
+          return config;
         }
-        return config;
       },
       (error) => {
         // 失败就简单处理了

@@ -4,6 +4,7 @@
       <n-notification-provider>
         <n-message-provider>
           <n-loading-bar-provider>
+            <!-- <NaiveProviderContent></NaiveProviderContent> -->
             <router-view></router-view>
           </n-loading-bar-provider>
         </n-message-provider>
@@ -36,6 +37,24 @@ const useAppStore = appStore();
 let currentTheme: ComputedRef<GlobalTheme | null> = computed(() => (useAppStore.getTheme ? darkTheme : null));
 let currentLanguage: ComputedRef<NLocale | null> = computed(() => (useAppStore.getLanguage ? zhCN : null));
 let currentDateLocale: ComputedRef<NDateLocale | null> = computed(() => dateZhCN);
+
+// 挂载naive组件的方法至window, 以便在全局使用
+// function setupNaiveTools() {
+//   window.$loadingBar = useLoadingBar();
+//   window.$notification = useNotification();
+
+//   window.$message = setupMessage(useMessage());
+//   window.$dialog = setupDialog(useDialog());
+// }
+
+const NaiveProviderContent = defineComponent({
+  setup() {
+    // setupNaiveTools();
+  },
+  render() {
+    return h('div');
+  }
+});
 </script>
 
 <style>

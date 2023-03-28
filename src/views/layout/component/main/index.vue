@@ -5,16 +5,17 @@
     </KeepAlive>
   </router-view> -->
   <router-view v-slot="{ Component, route }">
-    <transition :name="route.meta.transition || 'fade'" mode="out-in">
+    <transition name="fade" mode="out-in">
       <keep-alive>
         <suspense>
           <template #default>
-            <component :is="Component" :key="route.meta.name ? route.path : undefined" />
+            <component :is="Component" :key="route.name ? route.path : undefined" />
           </template>
           <template #fallback> Loading... </template>
         </suspense>
       </keep-alive>
     </transition>
+    <div>{{ route }}</div>
   </router-view>
 </template>
 
@@ -24,8 +25,8 @@ import { useRouter } from 'vue-router';
 const appStore = useAppStore();
 const router = useRouter();
 
-watch(router, () => {
-  console.log(router);
+watch(router, (n) => {
+  console.log(n);
 });
 
 const allRoutes = router.getRoutes();

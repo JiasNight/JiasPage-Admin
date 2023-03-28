@@ -25,7 +25,8 @@
       <!-- <n-scrollbar x-scrollable>
       </n-scrollbar> -->
       <n-layout-content class="layout-content">
-        <ViewMain></ViewMain>
+        <!-- <ViewMain></ViewMain> -->
+        <router-view></router-view>
       </n-layout-content>
       <n-back-top :right="100" />
     </n-layout>
@@ -103,6 +104,7 @@ const signOutBtn = (): void => {
     transition: all 0.2s ease-in-out;
   }
   .layout-content {
+    padding: .625rem;
   }
 }
 </style>

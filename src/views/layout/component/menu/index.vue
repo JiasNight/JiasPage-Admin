@@ -57,7 +57,7 @@ const menusList = $ref<MenuOption[]>([
         disabled: false,
         icon: renderIcon(PersonRound),
         key: 'userManage',
-        path: '/userManage',
+        path: '/system/userManage',
         show: true,
         description: '这是一个菜单1-2'
       },

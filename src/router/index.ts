@@ -19,23 +19,24 @@ const commonRoutes: Array<RouteRecordRaw> = [
           title: '首页'
         },
         component: () => import('@/views/index.vue')
-      },
+      }
+    ]
+  },
+  {
+    path: '/system',
+    name: 'SystemManage',
+    meta: {
+      title: '系统管理'
+    },
+    component: Layout,
+    children: [
       {
-        path: '/system',
-        name: 'System',
+        path: 'userManage',
+        name: 'UserManage',
         meta: {
-          title: '系统管理'
+          title: '用户管理'
         },
-        children: [
-          {
-            path: '/userManage',
-            name: 'UserManage',
-            meta: {
-              title: '用户管理'
-            },
-            component: () => import('@/views/system/userManage/index.vue')
-          }
-        ]
+        component: () => import('@/views/system/userManage/index.vue')
       }
     ]
   },

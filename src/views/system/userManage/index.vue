@@ -144,15 +144,9 @@ let userTableHeader = $ref<DataTableColumns>([
             console.log(row);
           }
         },
-        [
-          {
-            icon: () =>
-              h(NIcon, {
-                default: () => Battery50Round
-              })
-          },
-          '查看'
-        ]
+        {
+          default: () => 
+        }
       );
     }
   }

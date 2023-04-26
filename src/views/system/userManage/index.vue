@@ -68,7 +68,7 @@
 <script lang="ts" setup>
 import { Ref, ComputedRef } from 'vue';
 import { TreeOption, FormInst, DataTableColumns } from 'naive-ui';
-import { SearchRound, AutorenewRound, Battery50Round } from '@vicons/material';
+import { SearchRound, AutorenewRound, Battery50Round, AcUnitRound } from '@vicons/material';
 
 let treePattern = $ref<string>('');
 
@@ -140,12 +140,14 @@ let userTableHeader = $ref<DataTableColumns>([
         {
           text: true,
           size: 'small',
-          onClick: (row) => {
+          onClick: (e) => {
+            console.log(e);
             console.log(row);
           }
         },
         {
-          default: () => 
+          icon: () => h(NIcon, { size: 20, component: AcUnitRound }),
+          default: '操作'
         }
       );
     }

@@ -23,6 +23,24 @@ const commonRoutes: Array<RouteRecordRaw> = [
     ]
   },
   {
+    path: '/article',
+    name: 'ArticleManage',
+    meta: {
+      title: '文章管理'
+    },
+    component: Layout,
+    children: [
+      {
+        path: 'releaseArticle',
+        name: 'ReleaseArticle',
+        meta: {
+          title: '发布文章'
+        },
+        component: () => import('@/views/article/index.vue')
+      }
+    ]
+  },
+  {
     path: '/system',
     name: 'SystemManage',
     meta: {

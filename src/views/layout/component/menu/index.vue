@@ -15,7 +15,7 @@
 import { Component } from 'vue';
 import { $ref } from 'vue/macros';
 import type { MenuOption } from 'naive-ui';
-import { MenuFilled, SettingsRound, PersonRound } from '@vicons/material';
+import { MenuFilled, SettingsRound, PersonRound, ArticleRound } from '@vicons/material';
 import useAppStore from '@/store/module/app';
 
 const router = useRouter();
@@ -41,6 +41,30 @@ watch(currentRoute, async () => {
 const menusList = $ref<MenuOption[]>([
   {
     id: '1',
+    pid: '0',
+    label: '文章管理',
+    icon: renderIcon(ArticleRound),
+    disabled: false,
+    key: 'article',
+    path: '/article',
+    show: true,
+    description: '这是一个菜单',
+    children: [
+      {
+        id: '12',
+        pid: '1',
+        label: '文章发布',
+        disabled: false,
+        icon: renderIcon(PersonRound),
+        key: 'releaseArticle',
+        path: '/article/releaseArticle',
+        show: true,
+        description: '这是一个菜单1-2'
+      }
+    ]
+  },
+  {
+    id: '99',
     pid: '0',
     label: '系统管理',
     icon: renderIcon(SettingsRound),

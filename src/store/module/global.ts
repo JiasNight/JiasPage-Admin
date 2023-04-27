@@ -6,7 +6,7 @@ type IGlobalState = {
   message: string | null;
 };
 
-export default defineStore({
+const useGlobalStore = defineStore({
   id: 'global',
   state: (): IGlobalState => ({
     loading: false,
@@ -38,3 +38,5 @@ export default defineStore({
     }
   }
 });
+
+export default useGlobalStore;

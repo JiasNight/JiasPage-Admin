@@ -15,6 +15,7 @@
 import { Component } from 'vue';
 import { $ref } from 'vue/macros';
 import type { MenuOption } from 'naive-ui';
+import { useRouter } from 'vue-router';
 import { MenuFilled, SettingsRound, PersonRound, ArticleRound } from '@vicons/material';
 import useAppStore from '@/store/module/app';
 
@@ -34,9 +35,20 @@ const currentProps = defineProps({
   }
 });
 
+// 监听当前路由
 watch(currentRoute, async () => {
   await nextTick();
 });
+
+// 创建之前
+onBeforeMount(() => {
+  generateMenuByRoute(router);
+});
+
+// 生成菜单
+const generateMenuByRoute = (router: any) => {
+  console.log(router.getRoutes());
+};
 
 const menusList = $ref<MenuOption[]>([
   {
@@ -117,6 +129,7 @@ const clickMenuHandler = (key: string, item: MenuOption | any) => {
   if (item.path === currentRoute.path) {
     appStore.reloadPage();
   } else {
+    console.log('不断');
     router.push(item.path);
   }
 };

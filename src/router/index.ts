@@ -6,7 +6,35 @@ import Layout from '@/views/layout/index.vue';
 // 引入模块路由
 // import baseRouters from './modules/base';
 
-const commonRoutes: Array<RouteRecordRaw> = [
+// 公共路由
+export const commonRoutes: Array<RouteRecordRaw> = [
+  {
+    path: '/signIn',
+    name: 'SignIn',
+    meta: {
+      title: '登录'
+    },
+    component: () => import('@/views/signIn/index.vue')
+  },
+  {
+    path: '/signUp',
+    name: 'SignUp',
+    meta: {
+      title: '注册'
+    },
+    component: () => import('@/views/signIn/index.vue')
+  },
+  {
+    path: '/404',
+    name: '404',
+    meta: {
+      title: '404'
+    },
+    component: () => import('@/views/abnormal/404.vue')
+  }
+];
+
+export const customRoutes: Array<RouteRecordRaw> = [
   {
     path: '/',
     component: Layout,
@@ -57,21 +85,14 @@ const commonRoutes: Array<RouteRecordRaw> = [
         component: () => import('@/views/system/userManage/index.vue')
       }
     ]
-  },
-  {
-    path: '/signIn',
-    name: 'SignIn',
-    meta: {
-      title: '登录'
-    },
-    component: () => import('@/views/signIn/index.vue')
   }
 ];
 
 const router = createRouter({
-  history: createWebHistory(), // History 路由
+  history: createWebHistory(), // History 路由，无#号
   // history: createWebHashHistory(), // Hash 路由
-  routes: [...commonRoutes],
+  // routes: [...commonRoutes],
+  routes: [],
   scrollBehavior() {
     return {
       el: '#app',
@@ -79,20 +100,6 @@ const router = createRouter({
       behavior: 'smooth'
     };
   }
-});
-
-router.beforeEach((to, from, next) => {
-  // progressStart();
-  const isLogin = sessionStorage.getItem('token') ? true : false;
-  if (to.path === '/signIn') {
-    next();
-  } else {
-    isLogin ? next() : next('/signIn');
-  }
-});
-
-router.afterEach(() => {
-  // progressEnd();
 });
 
 export default router;

@@ -25,8 +25,8 @@
       <!-- <n-scrollbar x-scrollable>
       </n-scrollbar> -->
       <n-layout-content class="layout-content">
-        <!-- <ViewMain></ViewMain> -->
-        <router-view></router-view>
+        <ViewMain></ViewMain>
+        <!-- <router-view></router-view> -->
       </n-layout-content>
       <n-back-top :right="100" />
     </n-layout>

@@ -31,11 +31,10 @@ import {
   zhCN
 } from 'naive-ui';
 import type { GlobalTheme, NLocale, NDateLocale } from 'naive-ui';
-import appStore from '@/store/module/app';
+import useAppStore from '@/store/module/app';
 
-const useAppStore = appStore();
-let currentTheme: ComputedRef<GlobalTheme | null> = computed(() => (useAppStore.getTheme ? darkTheme : null));
-let currentLanguage: ComputedRef<NLocale | null> = computed(() => (useAppStore.getLanguage ? zhCN : null));
+let currentTheme: ComputedRef<GlobalTheme | null> = computed(() => (useAppStore().getTheme ? darkTheme : null));
+let currentLanguage: ComputedRef<NLocale | null> = computed(() => (useAppStore().getLanguage ? zhCN : null));
 let currentDateLocale: ComputedRef<NDateLocale | null> = computed(() => dateZhCN);
 
 // 挂载naive组件的方法至window, 以便在全局使用

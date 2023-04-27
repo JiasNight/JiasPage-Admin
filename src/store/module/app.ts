@@ -7,7 +7,7 @@ type IAppState = {
   pageKeys: object;
 };
 
-export default defineStore({
+const useAppStore = defineStore({
   id: 'app', // id必填，且需要唯一
   state: (): IAppState => ({
     // theme: window.matchMedia('(prefers-color-scheme: dark)').matches,
@@ -48,3 +48,5 @@ export default defineStore({
     }
   }
 });
+
+export default useAppStore;

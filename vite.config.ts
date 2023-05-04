@@ -16,6 +16,8 @@ import eslintPlugin from 'vite-plugin-eslint';
 import unoCss from 'unocss/vite';
 // 安装unocss和三个预设，第一个是工具类预设，第二个是属性化模式支持，第三个是icon支持
 import { presetUno, presetAttributify, presetIcons } from 'unocss';
+// 引入mock
+import { viteMockServe } from 'vite-plugin-mock';
 
 import { Vuetify3Resolver, NaiveUiResolver } from 'unplugin-vue-components/resolvers';
 
@@ -29,14 +31,14 @@ export default ({ mode }) => {
     },
     // 为服务器设置代理规则
     server: {
-      host: '127.0.0.1',
+      host: '0.0.0.0', // 支持从IP启动访问
       port: 3000, // 设置服务启动端口号
       strictPort: true, // 若端口被占用,直接结束项目
       https: false, // 是否开启
       cors: true, // 默认启用并允许任何源
       open: false, // 在服务器启动时自动在浏览器中打开
       hmr: {
-        overlay: false
+        overlay: false // 禁用或配置 HMR 连接 设置 server.hmr.overlay 为 false 可以禁用服务器错误遮罩层
       },
       // 反向代理配置，注意rewrite写法
       proxy: {
@@ -65,7 +67,7 @@ export default ({ mode }) => {
     build: {
       target: 'modules', // 指定es版本,浏览器的兼容性,es2015(编译成es5)
       outDir: 'page', // 指定打包输出路径  默认：dist
-      assetsDir: 'assets', // 指定静态资源存放路径
+      assetsDir: 'static', // 指定静态资源存放路径
       minify: 'terser', // 项目压缩 :boolean | 'terser' | 'esbuild'
       chunkSizeWarningLimit: 1000, // chunk 大小警告的限制（以 kbs 为单位）默认：500
       cssCodeSplit: true, // css代码拆分,false则所有样式保存在一个css里面
@@ -83,10 +85,19 @@ export default ({ mode }) => {
         }
       },
       rollupOptions: {
+        // input:{
+        //   index:resolve(__dirname,"index.html"),
+        //   project:resolve(__dirname,"project.html")
+        // },
+        // output:{
+        //   chunkFileNames:'static/js/[name]-[hash].js',
+        //   entryFileNames:"static/js/[name]-[hash].js",
+        //   assetFileNames:"static/[ext]/name-[hash].[ext]"
+        // }
         output: {
           manualChunks: {
             // 拆分代码，这个就是分包，配置完后自动按需加载，现在还比不上webpack的splitchunk，不过也能用了。
-            vue: ['vue', 'vue-router', 'vuex'],
+            vue: ['vue', 'vue-router'],
             echarts: ['echarts']
           }
         }
@@ -158,7 +169,12 @@ export default ({ mode }) => {
       // 配置jsx
       vueJsx(),
       // gzip压缩
-      viteCompression()
+      viteCompression(),
+      viteMockServe({
+        mockPath: './mock/',
+        supportTs: true, // 监听TS文件，这里要注意下js文件的话填false
+        localEnabled: true // 开发环境
+      })
     ],
     // 样式相关规则
     css: {

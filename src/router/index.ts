@@ -91,8 +91,7 @@ export const customRoutes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHistory(), // History 路由，无#号
   // history: createWebHashHistory(), // Hash 路由
-  // routes: [...commonRoutes],
-  routes: [],
+  routes: [...commonRoutes],
   scrollBehavior() {
     return {
       el: '#app',

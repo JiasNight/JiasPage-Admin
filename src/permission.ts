@@ -1,7 +1,8 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import { useRouter } from 'vue-router';
 import router from '@/router/';
-import useUserStore from '@/store/module/user';
+import useAppStore from '@/store/module/app';
 import { createDiscreteApi } from 'naive-ui';
+import { getDynamicRoutes } from '@/api/app';
 
 const { loadingBar } = createDiscreteApi(['loadingBar']);
 
@@ -16,17 +17,18 @@ router.beforeEach((to, from, next) => {
       next({ path: '/' });
       loadingBar.finish();
     } else {
-      useUserStore()
-      .getUserRouter()
-      .then((res) => {
+      console.log(isLogin);
+      getDynamicRoutes().then((res: any) => {
         console.log(res);
+        useAppStore().addRoutes(res.data, useRouter());
+        console.log(useRouter().getRoutes());
       });
     }
   } else {
     if (whiteList.indexOf(to.path) !== -1) {
       next();
     } else {
-      next(`/login?redirect=${to.fullPath}`);
+      next(`/signIn?redirect=${to.fullPath}`);
     }
   }
 });

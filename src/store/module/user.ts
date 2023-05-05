@@ -1,7 +1,5 @@
 import { defineStore } from 'pinia';
 import { userLogin } from '@/api/login/index';
-import router, { commonRoutes } from '@/router/index';
-import { RouteRecordRaw } from 'vue-router';
 
 type IUserInfo = {
   id: string;
@@ -24,22 +22,8 @@ const useUserStore = defineStore({
     },
     updateName(token: string) {
       this.token = token;
-    },
-    // 获取路由
-    async getUserRouter() {
-      console.log(commonRoutes);
-      return new Promise((resolve, reject) => {
-        const routerList = generateRouter(commonRoutes);
-        resolve(routerList);
-      });
     }
   }
 });
-
-function generateRouter(routers: Array<RouteRecordRaw>) {
-  routers.forEach((route: RouteRecordRaw) => {
-    router.addRoute(route);
-  });
-}
 
 export default useUserStore;

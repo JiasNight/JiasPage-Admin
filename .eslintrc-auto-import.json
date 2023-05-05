@@ -1,6 +1,7 @@
 {
   "globals": {
     "EffectScope": true,
+    "NIcon": true,
     "acceptHMRUpdate": true,
     "computed": true,
     "createApp": true,

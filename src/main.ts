@@ -11,7 +11,7 @@ import axios from 'axios';
 // 引入i18n
 import i18n from './i18n';
 // 引入权限控制
-// import './permission';
+import './permission';
 // 引入Naive-Ui组件
 // import naive from 'naive-ui';
 // 通用字体

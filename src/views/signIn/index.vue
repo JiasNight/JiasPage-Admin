@@ -145,7 +145,7 @@ const getCurrentAesKey = () => {
 const getCurrentVerifyCode = () => {
   getValidateCode().then((res: Ires) => {
     if (res && res.code === 200) {
-      verifyCodeImg = res.data.base64;
+      verifyCodeImg = res.data;
     }
   });
 };

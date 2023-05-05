@@ -24,7 +24,7 @@ import { Vuetify3Resolver, NaiveUiResolver } from 'unplugin-vue-components/resol
 import * as path from 'path';
 
 // https://vitejs.dev/config/
-export default ({ mode }) => {
+export default ({ command, mode }) => {
   return defineConfig({
     define: {
       'process.env': loadEnv(mode, process.cwd())
@@ -171,9 +171,10 @@ export default ({ mode }) => {
       // gzip压缩
       viteCompression(),
       viteMockServe({
-        mockPath: './mock/',
-        supportTs: true, // 监听TS文件，这里要注意下js文件的话填false
-        localEnabled: true // 开发环境
+        mockPath: './src/mock/',
+        watchFiles: true, // 监视文件夹中的文件更改
+        enable: command === 'dev', // 是否启用 mock 功能
+        logger: true, // 是否在控制台显示请求日志
       })
     ],
     // 样式相关规则

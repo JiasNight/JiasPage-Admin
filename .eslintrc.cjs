@@ -67,7 +67,7 @@ module.exports = {
     'vue/html-indent': [2, 2], // 在<template>中强制一致缩进
     'vue/html-self-closing': 0, // 执行自闭合的风格
     'vue/singleline-html-element-content-newline': 0, // 要求单行元素的内容前后有一个换行符
-    'max-len': [2, 120], // 强制一行的最大长度
+    'max-len': [2, { code: 120 }], // 强制一行的最大长度
     'no-unreachable': 2, // 不能有无法执行的代码
     'no-unused-expressions': 0, // 禁止无用的表达式
     'no-unused-vars': [0, { vars: 'all', args: 'after-used' }], // 不能有声明后未被使用的变量或参数

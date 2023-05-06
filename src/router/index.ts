@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
-import Layout from '@/views/layout/index.vue';
+import Layout from '@/layout/index.vue';
 
 // import { progressStart, progressEnd } from '@/utils/nporgress';
 // 引入模块路由
@@ -8,6 +8,21 @@ import Layout from '@/views/layout/index.vue';
 
 // 公共路由
 export const commonRoutes: Array<RouteRecordRaw> = [
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/index',
+    children: [
+      {
+        path: '/index',
+        name: 'Index',
+        meta: {
+          title: '首页'
+        },
+        component: () => import('@/views/index.vue')
+      }
+    ]
+  },
   {
     path: '/signIn',
     name: 'SignIn',

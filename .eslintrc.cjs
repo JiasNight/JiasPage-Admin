@@ -49,7 +49,7 @@ module.exports = {
     camelcase: [1, { allow: ['drop_console', 'drop_debugger', 'zh_CN', 'en_US'] }], // 强制驼峰法命名
     eqeqeq: [2, 'allow-null'], // 必须使用全等
     // indent: [2, 2], // 缩进风格
-    indent: [2, 2, { MemberExpression: 0, SwitchCase: 1, ignoredNodes: ['TemplateLiteral'] }],
+    indent: [2, 2, { MemberExpression: 1, SwitchCase: 1, ignoredNodes: ['TemplateLiteral'] }],
     'vue/multi-word-component-names': [
       0,
       {

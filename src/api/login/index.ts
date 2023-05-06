@@ -24,3 +24,11 @@ export const userLogin = async (userLoginForm: object) => {
     data: userLoginForm
   });
 };
+
+// 获取用户信息
+export const getUserInfo = () => {
+  return service.axios({
+    url: '/api/user/info',
+    method: 'get'
+  });
+};

@@ -173,8 +173,9 @@ export default ({ command, mode }) => {
       viteMockServe({
         mockPath: './src/mock/',
         watchFiles: true, // 监视文件夹中的文件更改
-        enable: command === 'dev', // 是否启用 mock 功能
-        logger: true, // 是否在控制台显示请求日志
+        // enable: command === 'development', // 是否启用 mock 功能
+        localEnabled: true,
+        logger: true // 是否在控制台显示请求日志
       })
     ],
     // 样式相关规则

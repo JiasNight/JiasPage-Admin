@@ -1,8 +1,10 @@
 import { defineStore } from 'pinia';
 import { RouteRecordRaw } from 'vue-router';
-import router, { commonRoutes } from '@/router/index';
+import router, { commonRoutes } from '@/router';
+import { getDynamicRoutes } from '@/api/app';
+import { getToken } from '@/utils/auth';
 
-const modules = import.meta.glob('../views/*.vue');
+const modules = import.meta.glob('../views/**/*.vue');
 
 type IAppState = {
   theme: boolean;
@@ -65,15 +67,26 @@ const useAppStore = defineStore({
         });
       });
 
+      console.log(this.routes);
       this.routes.forEach((m) => router.addRoute(m));
       commonRoutes.forEach((m) => router.addRoute(m));
     },
-    // 获取路由
-    async getUserRouter() {
-      console.log(commonRoutes);
-      return new Promise((resolve, reject) => {
-        const routerList = generateRouter(commonRoutes);
-        resolve(routerList);
+    // 生成路由
+    generateRoutes() {
+      return new Promise((resolve: any, reject: any) => {
+        getDynamicRoutes({ token: getToken() })
+          .then((res: any) => {
+            if (res && res.code === 200) {
+              // router.addRoute(res.data);
+              console.log(res.data);
+              this.addRoutes(res.data, router);
+              console.log(router.getRoutes());
+              resolve();
+            }
+          })
+          .catch(() => {
+            reject();
+          });
       });
     }
   }

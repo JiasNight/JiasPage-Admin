@@ -70,11 +70,18 @@
                       size="large"
                       clearable
                       round
+                      maxlength="4"
                       :placeholder="$t('login.inputVerifyCodePlaceholder')"
-                    />
+                    >
+                      <template #prefix>
+                        <n-icon size="25" :component="PasswordRound" />
+                      </template>
+                    </n-input>
                   </n-form-item>
                 </div>
-                <img class="code-img" :src="verifyCodeImg" alt="verifyCode" @click="getCodeImgBtn" />
+                <n-spin :show="verifyImgLoading">
+                  <img class="code-img" :src="verifyCodeImg" alt="verifyCode" @click="clickCodeImgBtn" />
+                </n-spin>
               </div>
               <n-divider></n-divider>
               <div class="form-tool">
@@ -97,30 +104,28 @@
 import { $ref } from 'vue/macros';
 import { FormInst } from 'naive-ui';
 import { SignLanguageFilled, NightlightFilled, PersonOutlineRound, PasswordRound } from '@vicons/material';
-import { useRouter } from 'vue-router';
 import { getValidateCode, getAesKey } from '@/api/login/index';
-import userStore from '@/store/module/user';
-import appStore from '@/store/module/app';
+import useUserStore from '@/store/module/user';
+import useAppStore from '@/store/module/app';
 import { useI18n } from 'vue-i18n';
-
-const useUserStore = userStore();
-const useAppStore = appStore();
+import router from '@/router/';
 const { locale } = useI18n();
 // 获取当前组件实例
 const { appContext } = getCurrentInstance();
 const globalProxy = appContext.config.globalProperties;
 
 interface Ires {
-  success?: boolean;
-  code?: number;
-  message?: string;
-  timestamp?: string;
-  data?: any;
+  success: boolean;
+  code: number;
+  message: string;
+  timestamp: string;
+  data: any;
 }
 
-const router = useRouter();
+// 响应式变量
 let isLoading = $ref<boolean>(false);
 let verifyCodeImg = $ref<string>('');
+let verifyImgLoading = $ref<boolean>(false);
 
 onMounted(() => {
   getCurrentAesKey();
@@ -136,23 +141,35 @@ const getCurrentAesKey = () => {
   const sessionAesKey = window.sessionStorage.getItem('aesKey');
   if (!sessionAesKey) {
     getAesKey().then((res: Ires) => {
-      window.sessionStorage.setItem('aesKey', res.data);
+      if (res && res.code === 200) {
+        window.sessionStorage.setItem('aesKey', res.data);
+      } else {
+        window.sessionStorage.setItem('aesKey', '');
+      }
     });
   }
 };
 
 // 获取验证码
 const getCurrentVerifyCode = () => {
-  getValidateCode().then((res: Ires) => {
-    if (res && res.code === 200) {
-      verifyCodeImg = res.data;
-    }
-  });
+  verifyImgLoading = true;
+  getValidateCode()
+    .then((res: Ires) => {
+      if (res && res.code === 200) {
+        verifyCodeImg = res.data;
+        verifyImgLoading = false;
+      } else {
+        verifyImgLoading = false;
+      }
+    })
+    .catch(() => {
+      verifyImgLoading = false;
+    });
 };
 
 // 切换当前主题
 const changeCurrentThemeBtn = (): void => {
-  useAppStore.setTheme();
+  useAppStore().setTheme();
 };
 
 let currentLanguage = 'zh_CN';
@@ -161,18 +178,12 @@ let currentLanguage = 'zh_CN';
 const changeCurrentLanguageBtn = (): void => {
   currentLanguage = currentLanguage === 'zh_CN' ? 'en_US' : 'zh_CN';
   locale.value = currentLanguage;
-  useAppStore.setLanguage(currentLanguage);
+  useAppStore().setLanguage(currentLanguage);
 };
 
-const getCodeImgBtn = () => {
-  getValidateCode().then((res: Ires) => {
-    if (res && res.code === 200) {
-      verifyCodeImg = res.data.base64;
-    }
-  });
+const clickCodeImgBtn = () => {
+  getCurrentVerifyCode();
 };
-
-const showPassword = $ref<boolean>(false);
 
 const adminFormData = reactive({
   userName: '',
@@ -207,14 +218,19 @@ const submitLoginBtn = (e: MouseEvent) => {
   loginForm.validate((valid: any) => {
     if (!valid) {
       submitBtnIsLoading = true;
-      useUserStore.userLoginHandle(adminFormData);
+      useUserStore()
+        .userLoginHandle(adminFormData)
+        .then(() => {
+          router.push('/');
+          submitBtnIsLoading = false;
+        });
     } else {
       console.log('验证失败');
     }
   });
   setTimeout(() => {
     submitBtnIsLoading = false;
-    loginForm.resetValidation();
+    // loginForm.resetValidation();
   }, 1000);
 };
 </script>
@@ -235,12 +251,12 @@ const submitLoginBtn = (e: MouseEvent) => {
     justify-content: center;
     width: 450px;
     height: 500px;
+    border-top: 2px solid rgba(142, 131, 238, 0.5);
+    border-left: 2px solid rgba(142, 131, 238, 0.5);
     border-radius: 10px;
     background: rgba(194, 188, 188, 0.5);
     box-shadow: 20px 20px 50px rgba(142, 131, 238, 0.5);
     transform: translate(-50%, -50%);
-    border-top: 2px solid rgba(142, 131, 238, 0.5);
-    border-left: 2px solid rgba(142, 131, 238, 0.5);
     backdrop-filter: blur(5px);
     flex-direction: row;
     .box-right {
@@ -273,10 +289,14 @@ const submitLoginBtn = (e: MouseEvent) => {
             .code-input {
               width: 62%;
             }
-            .code-img {
+            .n-spin-container {
               width: 35%;
               height: 40px;
-              cursor: pointer;
+              .code-img {
+                width: 90%;
+                height: 90%;
+                cursor: pointer;
+              }
             }
           }
           .form-tool {
@@ -299,8 +319,8 @@ const submitLoginBtn = (e: MouseEvent) => {
             }
           }
           .form-submit {
-            width: 100%;
             margin-top: 20px;
+            width: 100%;
           }
         }
       }

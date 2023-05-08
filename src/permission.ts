@@ -24,7 +24,7 @@ router.beforeEach((to, from, next) => {
           useAppStore()
             .generateRoutes()
             .then(() => {
-              // next();
+              console.log(to);
             });
         });
       // getDynamicRoutes({ token }).then((res: any) => {

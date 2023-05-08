@@ -46,6 +46,10 @@ export const commonRoutes: Array<RouteRecordRaw> = [
       title: '404'
     },
     component: () => import('@/views/abnormal/404.vue')
+  },
+  {
+    path: '/:catchAll(.*)', // 自动匹配不识别的path 404
+    redirect: '/404'
   }
 ];
 

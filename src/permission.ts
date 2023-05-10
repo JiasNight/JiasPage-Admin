@@ -13,27 +13,23 @@ router.beforeEach((to, from, next) => {
   loadingBar.start();
   const isLogin: boolean = getToken() ? true : false;
   if (isLogin) {
-    const token = getToken();
     if (to.path === '/login') {
       next({ path: '/' });
       loadingBar.finish();
     } else {
-      useUserStore()
-        .getCurrentUserInfo()
-        .then(() => {
-          useAppStore()
-            .generateRoutes()
-            .then(() => {
-              console.log(to);
-            });
-        });
-      // getDynamicRoutes({ token }).then((res: any) => {
-      //   // useAppStore().addRoutes(res.data, router);
-      //   console.log(res.data);
-      //   router.addRoute(res.data);
-      //   console.log(router.getRoutes());
-      //   // next({ ...to, replace: true });
-      // });
+      if (useAppStore().routes.length === 0) {
+        useUserStore()
+          .getCurrentUserInfo()
+          .then(() => {
+            useAppStore()
+              .generateRoutes()
+              .then(() => {
+                next();
+              });
+          });
+      } else {
+        next();
+      }
     }
   } else {
     if (whiteList.indexOf(to.path) !== -1) {

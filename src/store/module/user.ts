@@ -21,7 +21,7 @@ const useUserStore = defineStore({
       return await new Promise((resolve: any, reject: any) => {
         userLogin(adminForm).then((res) => {
           if (res && res.code === 200) {
-            setToken(res.data.token, '10s');
+            setToken(res.data.token, '1d');
             resolve();
           } else {
             removeToken();

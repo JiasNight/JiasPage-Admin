@@ -22,6 +22,6 @@ export function getSessionId() {
   return cookies.get(sessionId);
 }
 
-export function setSessionId(session) {
+export function setSessionId(session: string) {
   return cookies.set(sessionId, session);
 }

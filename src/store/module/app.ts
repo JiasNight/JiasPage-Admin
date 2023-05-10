@@ -69,7 +69,6 @@ const useAppStore = defineStore({
 
       console.log(this.routes);
       this.routes.forEach((m) => router.addRoute(m));
-      // commonRoutes.forEach((m) => router.addRoute(m));
     },
     // 生成路由
     generateRoutes() {
@@ -77,9 +76,7 @@ const useAppStore = defineStore({
         getDynamicRoutes({ token: getToken() })
           .then((res: any) => {
             if (res && res.code === 200) {
-              // router.addRoute(res.data);
               this.addRoutes(res.data, router);
-              console.log(router.getRoutes());
               resolve();
             }
           })

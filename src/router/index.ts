@@ -50,6 +50,24 @@ export const commonRoutes: Array<RouteRecordRaw> = [
   {
     path: '/:catchAll(.*)', // 自动匹配不识别的path 404
     redirect: '/404'
+  },
+  {
+    path: '/system',
+    name: 'SystemManage',
+    meta: {
+      title: '系统管理'
+    },
+    component: Layout,
+    children: [
+      {
+        path: 'menuManage',
+        name: 'MenuManage',
+        meta: {
+          title: '菜单管理'
+        },
+        component: () => import('@/views/system/menuManage/index.vue')
+      }
+    ]
   }
 ];
 

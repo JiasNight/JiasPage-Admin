@@ -20,7 +20,7 @@ import 'vfonts/Lato.css';
 import 'vfonts/FiraCode.css';
 import 'uno.css';
 // 引入工具函数
-import { formatDate } from '@/utils/common';
+// import { formatDate, renderIcon } from '@/utils/common';
 
 // 创建app实例
 const app = createApp(App);
@@ -30,7 +30,6 @@ app.use(store);
 // 全局挂载axios
 app.config.globalProperties.$axios = axios;
 app.config.globalProperties.$t = i18n.global.t;
-app.config.globalProperties.formatDate = formatDate;
 // 全局指令
 // Object.keys(directives).forEach((key) => {
 //   app.directive(key, (directives as { [key: string]: Directive })[key]);

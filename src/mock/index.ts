@@ -1,14 +1,6 @@
 import { MockMethod } from 'vite-plugin-mock';
 import { formatDate } from '@/utils/common';
-
-// 接口返回标准
-interface IResponse {
-  success: boolean;
-  code: number;
-  message: string;
-  timestamp: string;
-  data: any;
-}
+import { IResponse } from '@/interface/IAdmin';
 
 const mock: Array<MockMethod> = [
   {
@@ -81,6 +73,8 @@ const mock: Array<MockMethod> = [
         timestamp: formatDate(),
         data: {
           userId: '220101197812079303',
+          userName: 'admin',
+          userNickName: '超级管理员',
           token: 'Yji4yUXtgppyAb6IXBW5B4CEPtYzBoC0yODiOo4biBIY0cSzCb2VuZKEPdD1qLv0',
           deptId: 100,
           deptName: '行政部'
@@ -104,7 +98,10 @@ const mock: Array<MockMethod> = [
             meta: {
               title: '文章管理'
             },
-            component: 'layout/index.vue',
+            isShow: true,
+            isCache: false,
+            menuType: 1,
+            component: 'layout/index',
             children: [
               {
                 path: 'releaseArticle',
@@ -112,28 +109,37 @@ const mock: Array<MockMethod> = [
                 meta: {
                   title: '发布文章'
                 },
-                component: '/article/index.vue'
-              }
-            ]
-          },
-          {
-            path: '/system',
-            name: 'SystemManage',
-            meta: {
-              title: '系统管理'
-            },
-            component: 'layout/index.vue',
-            children: [
-              {
-                path: 'userManage',
-                name: 'UserManage',
-                meta: {
-                  title: '用户管理'
-                },
-                component: 'system/userManage/index.vue'
+                isShow: true,
+                isCache: false,
+                menuType: 2,
+                component: '/article/index'
               }
             ]
           }
+          // {
+          //   path: '/system',
+          //   name: 'SystemManage',
+          //   meta: {
+          //     title: '系统管理'
+          //   },
+          //   isShow: true,
+          //   isCache: false,
+          //   menuType: 1,
+          //   component: 'layout/index',
+          //   children: [
+          //     {
+          //       path: 'userManage',
+          //       name: 'UserManage',
+          //       meta: {
+          //         title: '用户管理'
+          //       },
+          //       isShow: true,
+          //       isCache: false,
+          //       menuType: 2,
+          //       component: 'system/userManage/index'
+          //     }
+          //   ]
+          // }
         ]
       };
     }

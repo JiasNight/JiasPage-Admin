@@ -7,26 +7,19 @@
     :collapsed-width="50"
     :collapsed-icon-size="20"
     :options="menusList"
-    :on-update:value="clickMenuHandler"
+    :on-update:value="handleClickMenu"
   ></n-menu>
 </template>
 
 <script lang="ts" setup>
-import { Component } from 'vue';
-import { $ref } from 'vue/macros';
 import type { MenuOption } from 'naive-ui';
-import { useRouter } from 'vue-router';
-import { MenuFilled, SettingsRound, PersonRound, ArticleRound } from '@vicons/material';
+import router from '@/router';
+import { SettingsRound, PersonRound, ArticleRound, MenuRound } from '@vicons/material';
 import useAppStore from '@/store/module/app';
+import { renderIcon } from '@/utils/common';
+import { RouteRecordRaw } from 'vue-router';
 
-const router = useRouter();
-const appStore = useAppStore();
-const currentRoute = useRoute();
-
-function renderIcon(icon?: Component) {
-  if (!icon) icon = MenuFilled;
-  return () => h(NIcon, null, { default: () => h(icon as Component) });
-}
+const currentRoute = router.currentRoute;
 
 const currentProps = defineProps({
   collapsed: {
@@ -35,21 +28,7 @@ const currentProps = defineProps({
   }
 });
 
-// 监听当前路由
-watch(currentRoute, async () => {
-  await nextTick();
-});
-
-// 创建之前
-onBeforeMount(() => {
-  generateMenuByRoute(router);
-});
-
-// 生成菜单
-const generateMenuByRoute = (router: any) => {
-  console.log(router.getRoutes());
-};
-
+// 响应式数据
 const menusList = $ref<MenuOption[]>([
   {
     id: '1',
@@ -98,6 +77,17 @@ const menusList = $ref<MenuOption[]>([
         description: '这是一个菜单1-2'
       },
       {
+        id: '12',
+        pid: '1',
+        label: '菜单管理',
+        disabled: false,
+        icon: renderIcon(MenuRound),
+        key: 'menuManage',
+        path: '/system/menuManage',
+        show: true,
+        description: '这是一个菜单1-2'
+      },
+      {
         id: '11',
         pid: '1',
         label: '权限设置',
@@ -107,29 +97,38 @@ const menusList = $ref<MenuOption[]>([
         path: '/system/userManage',
         show: true,
         description: '这是一个菜单1-1'
-      },
-      {
-        id: '12',
-        pid: '1',
-        label: '菜单1-2',
-        disabled: false,
-        icon: renderIcon(),
-        key: '/333',
-        path: '/system/userManage',
-        show: true,
-        description: '这是一个菜单1-2'
       }
     ]
   }
 ]);
 
+// 监听当前路由
+watch(currentRoute, async () => {
+  await nextTick();
+});
+
+// 创建之前
+onBeforeMount(() => {
+  generateMenuByRoute(router.getRoutes());
+});
+
+// 生成菜单
+const generateMenuByRoute = (routerList: any) => {
+  console.log(routerList);
+  routerList.forEach((item: RouteRecordRaw) => {
+    console.log(item);
+    if (item.children && item.children.length > 0) {
+      generateMenuByRoute(item.children);
+    }
+  });
+};
+
 // 点击菜单
-const clickMenuHandler = (key: string, item: MenuOption | any) => {
-  console.log(item.path);
-  if (item.path === currentRoute.path) {
-    appStore.reloadPage();
+const handleClickMenu = (key: string, item: MenuOption | any) => {
+  if (item.path === currentRoute.value.path) {
+    console.log('ddd');
+    useAppStore().reloadPage();
   } else {
-    console.log('不断');
     router.push(item.path);
   }
 };

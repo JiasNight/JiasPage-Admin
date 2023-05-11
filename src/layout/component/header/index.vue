@@ -8,32 +8,45 @@
       </n-breadcrumb>
     </div>
     <div class="header-right">
-      <n-dropdown :options="dropdownOptions">
-        <n-avatar size="small" src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg" />
+      <n-tooltip placement="bottom" trigger="hover">
+        <template #trigger>
+          <n-badge class="right-todo" :value="todoNumVal">
+            <n-icon size="30">
+              <ListAltRound />
+            </n-icon>
+          </n-badge>
+        </template>
+        <span> 你有{{ todoNumVal }}条消息待处理！</span>
+      </n-tooltip>
+      <span class="right-user"> 欢迎您，{{ currentUserName }} </span>
+      <n-dropdown trigger="click" :options="dropdownOptions" :show-arrow="true" @select="handleSelectDropdown">
+        <img class="right-avatar" src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg" alt="用户头像" />
       </n-dropdown>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-// import { $ref } from 'vue/macros';
-// import VLogo from './logo/index.vue';
-import { Ref, ComputedRef, Component } from 'vue';
+import { renderIcon } from '@/utils/common';
+import useUserStore from '@/store/module/user';
+import router from '@/router';
 import {
   MenuFilled,
   HomeFilled,
+  ListAltRound,
   SupervisedUserCircleFilled,
   PersonOutlineFilled,
   LogOutFilled
 } from '@vicons/material';
 
-const renderIcon = (icon: Component) => {
-  return () => {
-    return h(NIcon, null, {
-      default: () => h(icon)
-    });
-  };
-};
+// 定义响应式数据
+let todoNumVal = $ref<number>(10);
+let currentUserName = $ref<string>('');
+
+// 挂载
+onMounted(() => {
+  currentUserName = useUserStore().userInfo.userNickName;
+});
 
 const breadcrumbList = [
   {
@@ -53,10 +66,11 @@ const breadcrumbList = [
   }
 ];
 
+// 用户下拉菜单选项
 const dropdownOptions = [
   {
     label: '用户资料',
-    key: 'profile',
+    key: 'userInfo',
     icon: renderIcon(PersonOutlineFilled)
   },
   {
@@ -65,6 +79,16 @@ const dropdownOptions = [
     icon: renderIcon(LogOutFilled)
   }
 ];
+
+// 处理下拉菜单按钮点击
+const handleSelectDropdown = (key: string) => {
+  console.log(key);
+  if (key === 'userInfo') {
+    router.push('userInfo');
+  } else if (key === 'logout') {
+    useUserStore().logoutSystem();
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -81,6 +105,23 @@ const dropdownOptions = [
     flex-direction: row;
     justify-content: start;
     align-items: center;
+  }
+  .header-right {
+    .right-todo {
+      margin-left: 2rem;
+      cursor: pointer;
+    }
+    .right-user {
+      margin: 0 1rem;
+      font-size: large;
+      font-weight: bold;
+    }
+    .right-avatar {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      cursor: pointer;
+    }
   }
 }
 </style>

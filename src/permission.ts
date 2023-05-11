@@ -13,7 +13,7 @@ router.beforeEach((to, from, next) => {
   loadingBar.start();
   const isLogin: boolean = getToken() ? true : false;
   if (isLogin) {
-    if (to.path === '/login') {
+    if (to.path === '/signIn') {
       next({ path: '/' });
       loadingBar.finish();
     } else {

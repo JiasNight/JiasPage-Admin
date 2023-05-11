@@ -1,22 +1,23 @@
 import { defineStore } from 'pinia';
 import { userLogin, getUserInfo } from '@/api/login/index';
 import { setToken, removeToken } from '@/utils/auth';
+import { IUserInfo } from '@/interface/IAdmin';
 import router from '@/router';
-
-type IUserInfo = {
+interface IUserState {
   token: string;
-  userInfo: object;
-};
+  userInfo: IUserInfo | any;
+}
 
 const useUserStore = defineStore({
   id: 'user', // id必填，且需要唯一
-  state: (): IUserInfo => {
+  state: (): IUserState => {
     return {
       token: '',
-      userInfo: {}
+      userInfo: undefined
     };
   },
   actions: {
+    // 用户登录
     async userLoginHandle(adminForm: object) {
       return await new Promise((resolve: any, reject: any) => {
         userLogin(adminForm).then((res) => {
@@ -33,6 +34,7 @@ const useUserStore = defineStore({
     updateName(token: string) {
       this.token = token;
     },
+    // 获取当前用户信息
     getCurrentUserInfo() {
       return new Promise((resolve: any, reject: any) => {
         getUserInfo().then((res: any) => {
@@ -45,6 +47,12 @@ const useUserStore = defineStore({
           }
         });
       });
+    },
+    // 退出系统
+    logoutSystem() {
+      removeToken();
+      this.userInfo = undefined;
+      router.push('/signIn');
     }
   }
 });

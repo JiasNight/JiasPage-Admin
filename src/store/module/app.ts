@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { RouteRecordRaw } from 'vue-router';
+import { RouteLocationNormalizedLoaded, RouteRecordRaw } from 'vue-router';
 import router from '@/router';
 import { getDynamicRoutes } from '@/api/app';
 import { getToken } from '@/utils/auth';
@@ -12,6 +12,7 @@ type IAppState = {
   pageLoading: boolean;
   pageKeys: object;
   routes: Array<RouteRecordRaw>;
+  currentRoute: object;
 };
 
 const useAppStore = defineStore({
@@ -23,7 +24,8 @@ const useAppStore = defineStore({
     pageLoading: false,
     pageKeys: {},
     // 路由表
-    routes: [] as Array<RouteRecordRaw>
+    routes: [] as Array<RouteRecordRaw>,
+    currentRoute: {}
   }),
   getters: {
     getTheme(state): boolean {
@@ -54,6 +56,10 @@ const useAppStore = defineStore({
     setLanguage(language: string) {
       this.language = language;
       localStorage.setItem('language', language);
+    },
+    // 设置当前路由内容
+    setCurrentRoute(route: RouteLocationNormalizedLoaded) {
+      this.currentRoute = route;
     },
     // 添加动态路由，并同步到状态管理器中
     addRoutes(data: Array<any>, router: any) {

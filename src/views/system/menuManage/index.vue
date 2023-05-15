@@ -59,7 +59,7 @@
           </n-grid>
         </n-form>
         <!-- 表格 -->
-        <n-data-table :columns="userTableHeader" :data="userTableData" :bordered="true" />
+        <n-data-table :loading="tableIsLoading" :data="menuTableData" :columns="menuTableHeader" :bordered="true" />
       </n-grid-item>
     </n-grid>
   </div>
@@ -71,7 +71,7 @@ import { TreeOption, FormInst, DataTableColumns } from 'naive-ui';
 import { SearchRound, AutorenewRound, Battery50Round, AcUnitRound } from '@vicons/material';
 
 let treePattern = $ref<string>('');
-
+let tableIsLoading = $ref<boolean>(false);
 let treeData = $ref<TreeOption[]>([
   {
     label: '部门1',
@@ -91,7 +91,15 @@ let treeData = $ref<TreeOption[]>([
 
 // 树点击
 const handleClickNode = ({ option }: { option: TreeOption }) => {
-  console.log(option);
+  return {
+    onClick () {
+      console.log('[Click] ' + option.label);
+      tableIsLoading = true;
+      setTimeout(() => {
+        tableIsLoading = false;
+      }, 600);
+    }
+  };
 };
 
 let queryForm = $ref<FormInst | null>(null);
@@ -122,7 +130,7 @@ let roleOptions = $ref<Array<object>>([
   { label: '角2', value: 'role3' }
 ]);
 
-let userTableHeader = $ref<DataTableColumns>([
+let menuTableHeader = $ref<DataTableColumns>([
   {
     title: '序号',
     key: 'index',
@@ -131,8 +139,8 @@ let userTableHeader = $ref<DataTableColumns>([
       return index + 1;
     }
   },
-  { title: '用户名', key: 'userName', align: 'center' },
-  { title: '登录账户', key: 'userAccount', align: 'center' },
+  { title: '菜单名称', key: 'userName', align: 'center' },
+  { title: '菜单名称', key: 'userAccount', align: 'center' },
   { title: '角色', key: 'userRole', align: 'center' },
   { title: '创建时间', key: 'createTime', align: 'center' },
   {
@@ -166,7 +174,7 @@ type IUserTable = {
   createTime: string;
 };
 
-let userTableData = $ref<IUserTable[]>([
+let menuTableData = $ref<IUserTable[]>([
   { userName: 'admin', userAccount: 'admin', userRole: '超级管理员', createTime: '2023-03-30 12:23:30' }
 ]);
 </script>

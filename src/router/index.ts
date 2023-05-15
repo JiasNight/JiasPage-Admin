@@ -66,6 +66,14 @@ export const commonRoutes: Array<RouteRecordRaw> = [
           title: '菜单管理'
         },
         component: () => import('@/views/system/menuManage/index.vue')
+      },
+      {
+        path: 'userManage',
+        name: 'UserManage',
+        meta: {
+          title: '菜单管理'
+        },
+        component: () => import('@/views/system/userManage/index.vue')
       }
     ]
   }

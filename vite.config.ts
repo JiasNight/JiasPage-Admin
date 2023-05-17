@@ -25,6 +25,9 @@ import * as path from 'path';
 
 // https://vitejs.dev/config/
 export default ({ command, mode }) => {
+  // 设置第三个参数为 '' 来加载所有环境变量，而不管是否有 `VITE_` 前缀。
+  const env = loadEnv(mode, process.cwd(), '');
+  console.log(env);
   return defineConfig({
     define: {
       'process.env': loadEnv(mode, process.cwd())
@@ -43,7 +46,7 @@ export default ({ command, mode }) => {
       // 反向代理配置，注意rewrite写法
       proxy: {
         '/api': {
-          target: loadEnv(mode, process.cwd()).VITE_APP_BASE_API,
+          target: env.VITE_APP_BASE_API,
           ws: true,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, '')

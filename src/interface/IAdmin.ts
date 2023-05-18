@@ -1,10 +1,10 @@
 // 接口返回统一标准
-export interface IResponse {
+export interface IResponse<T = any> {
   success: boolean;
   code: number;
   message: string;
   timestamp: string;
-  data: any;
+  data: T;
 }
 
 // 用户信息

@@ -25,19 +25,23 @@ import * as path from 'path';
 
 // https://vitejs.dev/config/
 export default ({ command, mode }) => {
+  const isProduction = process.env.NODE_ENV === 'production';
   // 设置第三个参数为 '' 来加载所有环境变量，而不管是否有 `VITE_` 前缀。
-  const env = loadEnv(mode, process.cwd(), '');
-  console.log(env);
+  const env = loadEnv(mode, process.cwd());
+  console.log(command);
+  console.log(mode);
+  console.log(isProduction);
   return defineConfig({
     define: {
-      'process.env': loadEnv(mode, process.cwd())
+      'process.env': env
     },
+    base: '/', // 开发或生产环境服务的公共基础路径：默认'/'   1、绝对URL路径名： /foo/；  2、完整的URL： https://foo.com/； 3、空字符串或 ./（用于开发环境）
     // 为服务器设置代理规则
     server: {
       host: '0.0.0.0', // 支持从IP启动访问
       port: 3000, // 设置服务启动端口号
       strictPort: true, // 若端口被占用,直接结束项目
-      https: false, // 是否开启
+      https: false, // 是否开启https接口
       cors: true, // 默认启用并允许任何源
       open: false, // 在服务器启动时自动在浏览器中打开
       hmr: {
@@ -47,7 +51,7 @@ export default ({ command, mode }) => {
       proxy: {
         '/api': {
           target: env.VITE_APP_BASE_API,
-          ws: true,
+          ws: true, // websocket支持
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, '')
         }
@@ -71,10 +75,10 @@ export default ({ command, mode }) => {
       target: 'modules', // 指定es版本,浏览器的兼容性,es2015(编译成es5)
       outDir: 'page', // 指定打包输出路径  默认：dist
       assetsDir: 'static', // 指定静态资源存放路径
-      minify: 'terser', // 项目压缩 :boolean | 'terser' | 'esbuild'
+      minify: 'esbuild', // 项目压缩 :boolean | 'terser' | 'esbuild'
       chunkSizeWarningLimit: 1000, // chunk 大小警告的限制（以 kbs 为单位）默认：500
       cssCodeSplit: true, // css代码拆分,false则所有样式保存在一个css里面
-      sourcemap: false, // 构建后是否生成 source map 文件
+      sourcemap: !isProduction, // 构建后是否生成 source map 文件，生产环境禁用
       cssTarget: 'chrome61', //防止 vite 将 rgba() 颜色转化为 #RGBA 十六进制符号的形式
       terserOptions: {
         // 生产环境移除console

@@ -111,8 +111,9 @@ import { useI18n } from 'vue-i18n';
 import router from '@/router/';
 const { locale } = useI18n();
 // 获取当前组件实例
-const { appContext } = getCurrentInstance();
-const globalProxy = appContext.config.globalProperties;
+const instance = getCurrentInstance()?.appContext;
+// let globalProxy = instance.appContext.config.globalProperties;
+let globalProxy = instance?.config.globalProperties;
 
 interface Ires {
   success: boolean;
@@ -195,17 +196,17 @@ const adminFormRules = reactive({
   userName: {
     required: true,
     trigger: ['blur', 'input'],
-    message: globalProxy.$t('login.inputUserNamePlaceholder')
+    message: globalProxy?.$t('login.inputUserNamePlaceholder')
   },
   password: {
     required: true,
     trigger: ['blur', 'input'],
-    message: globalProxy.$t('login.inputPasswordPlaceholder')
+    message: globalProxy?.$t('login.inputPasswordPlaceholder')
   },
   verifyCode: {
     required: true,
     trigger: ['blur', 'input'],
-    message: globalProxy.$t('login.inputVerifyCodePlaceholder')
+    message: globalProxy?.$t('login.inputVerifyCodePlaceholder')
   }
 });
 
@@ -225,7 +226,7 @@ const submitLoginBtn = (e: MouseEvent) => {
           submitBtnIsLoading = false;
         });
     } else {
-      console.log('验证失败');
+      // console.log('验证失败');
     }
   });
   setTimeout(() => {

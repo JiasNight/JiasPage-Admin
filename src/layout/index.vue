@@ -57,9 +57,9 @@ const useGlobalStore = globalStore();
 
 let siderCollapsed = $ref<boolean>(false);
 
-const changeSiderCollapsed = (collapsed: boolean): void => {
-  console.log(collapsed);
-};
+// const changeSiderCollapsed = (collapsed: boolean): void => {
+//   console.log(collapsed);
+// };
 const progress: ComputedRef<number | null> = computed(() => useGlobalStore.progress);
 const snackbarText: ComputedRef<string | null> = computed(() => useGlobalStore.message);
 

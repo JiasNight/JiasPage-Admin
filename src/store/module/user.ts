@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { userLogin, getUserInfo } from '@/api/login/index';
 import { setToken, removeToken } from '@/utils/auth';
-import { IUserInfo } from '@/interface/IAdmin';
+import { IResponse, IUserInfo } from '@/interface/IAdmin';
 import router from '@/router';
 interface IUserState {
   token: string;
@@ -20,7 +20,7 @@ const useUserStore = defineStore({
     // 用户登录
     async userLoginHandle(adminForm: object) {
       return await new Promise((resolve: any, reject: any) => {
-        userLogin(adminForm).then((res) => {
+        userLogin(adminForm).then((res: IResponse) => {
           if (res && res.code === 200) {
             setToken(res.data.token, '1d');
             resolve();

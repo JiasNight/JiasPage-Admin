@@ -1,7 +1,6 @@
 <template>
   <div>
     <MdEditor
-      toolbarsExclude="['link', 'mermaid', 'katex', 'github']"
       v-model="mdText"
       @on-save="saveMdTextBtn"
     ></MdEditor>

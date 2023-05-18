@@ -67,7 +67,7 @@
 
 <script lang="ts" setup>
 import { Ref, ComputedRef } from 'vue';
-import { TreeOption, FormInst, DataTableColumns } from 'naive-ui';
+import { TreeOption, FormInst, DataTableColumns, NButton, NIcon } from 'naive-ui';
 import { SearchRound, AutorenewRound, Battery50Round, AcUnitRound } from '@vicons/material';
 
 let treePattern = $ref<string>('');
@@ -122,7 +122,7 @@ let queryFormData = $ref<userForm>({
 
 // 重置查询内容
 const resetQueryFormBtn = () => {
-  queryForm.restoreValidation();
+  if(queryForm) queryForm.restoreValidation();
 };
 
 let roleOptions = $ref<Array<object>>([
@@ -153,7 +153,7 @@ let menuTableHeader = $ref<DataTableColumns>([
         {
           text: true,
           size: 'small',
-          onClick: (e) => {
+          onClick: (e: any) => {
             console.log(e);
             console.log(row);
           }

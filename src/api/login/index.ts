@@ -2,7 +2,7 @@ import service from '@/utils/request';
 
 // 获取AesKey
 export const getAesKey = () => {
-  return service.axios({
+  return service.request({
     url: '/api/system/aesKey',
     method: 'get'
   });
@@ -10,7 +10,7 @@ export const getAesKey = () => {
 
 // 获取验证码
 export const getValidateCode = () => {
-  return service.axios({
+  return service.request({
     url: '/api/user/validateCode',
     method: 'get'
   });
@@ -18,7 +18,7 @@ export const getValidateCode = () => {
 
 // 用户登录
 export const userLogin = async (userLoginForm: object) => {
-  return await service.axios({
+  return await service.request({
     url: '/api/user/login',
     method: 'post',
     data: userLoginForm
@@ -27,7 +27,7 @@ export const userLogin = async (userLoginForm: object) => {
 
 // 获取用户信息
 export const getUserInfo = () => {
-  return service.axios({
+  return service.request({
     url: '/api/user/info',
     method: 'get'
   });

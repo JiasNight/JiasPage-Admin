@@ -42,7 +42,7 @@ module.exports = {
     // 'warn' 或 1 - 开启规则，使用警告级别的错误：warn (不会导致程序退出)
     // 'error' 或 2 - 开启规则，使用错误级别的错误：error (当被触发的时候，程序会退出)
     // 'prettier/prettier': 1, // 使用prettier
-    'no-console': process.env.NODE_ENV === 'production' ? 2 : 0, // 禁止使用console
+    'no-console': 0, // 禁止使用console
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0, // 禁止使用debugger
     semi: [2, 'always'], // 语句强制分号结尾
     quotes: [2, 'single'], // 引号类型''
@@ -99,6 +99,7 @@ module.exports = {
     '@typescript-eslint/no-empty-function': 0, // 不允许空函数
     '@typescript-eslint/no-explicit-any': 0, // 禁止使用 any 类型
     '@typescript-eslint/ban-types': 0,
+    '@typescript-eslint/no-unused-vars': 0,
     'eol-last': 2, // 文件末尾强制换行
     'no-multi-spaces': 1 // 不能用多余的空格
   },

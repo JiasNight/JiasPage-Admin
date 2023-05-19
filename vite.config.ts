@@ -5,7 +5,11 @@ import vuePlugin from '@vitejs/plugin-vue';
 // 自动引入vue函数
 import AutoImport from 'unplugin-auto-import/vite';
 // 自动引入组件
-import Components from 'unplugin-vue-components/vite';
+import UnpluginVueComponents from 'unplugin-vue-components/vite';
+// 自动导入图标组件
+import Icons from 'unplugin-icons/vite';
+import IconsResolver from 'unplugin-icons/resolver';
+import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 // 添加tsx和jsx语法
 import vueJsx from '@vitejs/plugin-vue-jsx';
 // 打包压缩
@@ -25,6 +29,7 @@ import * as path from 'path';
 
 // https://vitejs.dev/config/
 export default ({ command, mode }) => {
+  // 是否生产环境
   const isProduction = process.env.NODE_ENV === 'production';
   // 设置第三个参数为 '' 来加载所有环境变量，而不管是否有 `VITE_` 前缀。
   const env = loadEnv(mode, process.cwd());
@@ -167,11 +172,19 @@ export default ({ command, mode }) => {
           globalsPropValue: true
         }
       }),
-      Components({
-        // 需要自动导入的组件
+      // 配置自动导入的组件
+      UnpluginVueComponents({
         dts: true,
         dirs: '/components.d.ts',
         resolvers: [Vuetify3Resolver(), NaiveUiResolver()]
+      }),
+      // 配置自动导入图标
+      Icons({
+        compiler: 'vue3',
+        customCollections: {
+          // 这里是存放svg图标的文件地址，custom是自定义图标库的名称
+          custom: FileSystemIconLoader('./src/assets/icons')
+        }
       }),
       // 配置jsx
       vueJsx(),

@@ -8,6 +8,14 @@
       </n-breadcrumb>
     </div>
     <div class="header-right">
+      <!-- 搜索框 -->
+      <n-input class="right-search" placeholder="输入搜索">
+        <template #prefix>
+          <n-icon>
+            <i-material-symbols:search></i-material-symbols:search>
+          </n-icon>
+        </template>
+      </n-input>
       <n-tooltip placement="bottom" trigger="hover">
         <template #trigger>
           <n-badge class="right-todo" :value="todoNumVal">
@@ -36,7 +44,8 @@ import {
   ListAltRound,
   SupervisedUserCircleFilled,
   PersonOutlineFilled,
-  LogOutFilled
+  LogOutFilled,
+  SearchFilled
 } from '@vicons/material';
 
 // 定义响应式数据
@@ -107,13 +116,20 @@ const handleSelectDropdown = (key: string) => {
     align-items: center;
   }
   .header-right {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    .right-search {
+      display: inline-block;
+    }
     .right-todo {
       margin-left: 2rem;
       cursor: pointer;
     }
     .right-user {
       margin: 0 1rem;
-      font-size: large;
+      font-size: 1.1rem;
       font-weight: bold;
     }
     .right-avatar {

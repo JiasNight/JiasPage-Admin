@@ -176,14 +176,16 @@ export default ({ command, mode }) => {
       UnpluginVueComponents({
         dts: true,
         dirs: '/components.d.ts',
-        resolvers: [Vuetify3Resolver(), NaiveUiResolver()]
+        resolvers: [Vuetify3Resolver(), NaiveUiResolver(), IconsResolver({ componentPrefix: 'icon' })]
       }),
       // 配置自动导入图标
       Icons({
         compiler: 'vue3',
+        autoInstall: true,
+        // 自定义图标加载
         customCollections: {
-          // 这里是存放svg图标的文件地址，custom是自定义图标库的名称
-          custom: FileSystemIconLoader('./src/assets/icons')
+          // 这里是存放svg图标的文件地址，custom是自定义图标库的名称，给svg文件设置fill="currentColor"属性，使图标的颜色具有适应性
+          custom: FileSystemIconLoader('./src/assets/icons', svg => svg.replace(/^<svg /, '<svg fill="currentColor" '))
         }
       }),
       // 配置jsx

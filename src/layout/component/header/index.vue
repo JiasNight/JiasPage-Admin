@@ -26,7 +26,12 @@
         </template>
         <span> 你有{{ todoNumVal }}条消息待处理！</span>
       </n-tooltip>
-      <span class="right-user"> 欢迎您，{{ currentUserName }} </span>
+      <n-tooltip placement="top-start" trigger="hover">
+        <template #trigger>
+          <span class="right-user"> 欢迎您，{{ currentUserName }} </span>
+        </template>
+        <span class="right-user"> 欢迎您，{{ currentUserName }} </span>
+      </n-tooltip>
       <n-dropdown trigger="click" :options="dropdownOptions" :show-arrow="true" @select="handleSelectDropdown">
         <img class="right-avatar" src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg" alt="用户头像" />
       </n-dropdown>
@@ -129,6 +134,7 @@ const handleSelectDropdown = (key: string) => {
     }
     .right-user {
       margin: 0 1rem;
+      width: 9.375rem;
       font-size: 1.1rem;
       font-weight: bold;
     }

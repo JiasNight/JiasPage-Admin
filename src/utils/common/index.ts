@@ -1,17 +1,74 @@
 import { h, Component } from 'vue';
 import { InsertEmoticonFilled } from '@vicons/material';
 import { NIcon } from 'naive-ui';
-// import SvgIcon from '@/components/icon/SvgIcon.vue';
+import RenderIcon from '@/components/RenderIcon/index.vue';
 
 // 渲染图标通用方法
-export function renderIcon(icon?: Component, props = { size: 12 }) {
-  if (!icon) icon = InsertEmoticonFilled;
-  return () => h(NIcon, props, { default: () => h(icon as Component, { icon }) });
+export function renderIcon(icon?: string, props = { size: 12 }) {
+  if (icon) {
+    icon = 'icon-' + icon;
+  } else {
+    icon = 'icon-material-symbols:emoticon';
+  }
+  return () => h(NIcon, props, { default: () => h(icon as string, { icon }) });
 }
 
 // export function renderCustomIcon(icon, props = { size: 12 }) {
 //   return () => h(NIcon, props, { default: () => h(SvgIcon, { icon }) });
 // }
+
+/**
+ * 图标渲染
+ * - 用于vue的render函数
+ */
+export const useIconRender = () => {
+  interface IconConfig {
+    // 图标名称(iconify图标的名称),例如：mdi-account 或者 mdi:account
+    icon?: string;
+    // 本地svg图标文件名(assets/icon文件夹下)
+    localIcon?: string;
+    // 图标颜色
+    color?: string;
+    // 图标大小
+    fontSize?: number;
+  }
+
+  interface IconStyle {
+    color?: string;
+    fontSize?: string;
+  }
+
+  /**
+   * 图标渲染
+   * @param config
+   * @property icon - 图标名称(iconify图标的名称), 例如：mdi-account 或者 mdi:account
+   * @property localIcon - 本地svg图标文件名(assets/svg文件夹下)
+   * @property color - 图标颜色
+   * @property fontSize - 图标大小
+   */
+  const iconRender = (config: IconConfig) => {
+    const { color, fontSize, icon, localIcon } = config;
+
+    const style: IconStyle = {};
+
+    if (color) {
+      style.color = color;
+    }
+    if (fontSize) {
+      style.fontSize = `${fontSize}px`;
+    }
+
+    if (!icon && !localIcon) {
+      console.warn('没有传递图标名称，请确保给icon或localIcon传递有效值!');
+    }
+
+    return () => h(RenderIcon, { icon, localIcon, style });
+  };
+
+  return {
+    iconRender
+  };
+};
 
 /**
  *

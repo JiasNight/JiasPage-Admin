@@ -11,16 +11,21 @@
       <!-- 搜索框 -->
       <n-input class="right-search" placeholder="输入搜索">
         <template #prefix>
-          <n-icon>
-            <i-material-symbols:search></i-material-symbols:search>
-          </n-icon>
+          <icon-material-symbols:search></icon-material-symbols:search>
         </template>
       </n-input>
+      <n-button circle :bordered="false">
+        <template #icon>
+          <n-icon size="30">
+            <icon-material-symbols:search></icon-material-symbols:search>
+          </n-icon>
+        </template>
+      </n-button>
       <n-tooltip placement="bottom" trigger="hover">
         <template #trigger>
           <n-badge class="right-todo" :value="todoNumVal">
             <n-icon size="30">
-              <ListAltRound />
+              <icon-material-symbols:list-alt-outline></icon-material-symbols:list-alt-outline>
             </n-icon>
           </n-badge>
         </template>
@@ -30,7 +35,7 @@
         <template #trigger>
           <span class="right-user"> 欢迎您，{{ currentUserName }} </span>
         </template>
-        <span class="right-user"> 欢迎您，{{ currentUserName }} </span>
+        <span> 欢迎您，{{ currentUserName }} </span>
       </n-tooltip>
       <n-dropdown trigger="click" :options="dropdownOptions" :show-arrow="true" @select="handleSelectDropdown">
         <img class="right-avatar" src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg" alt="用户头像" />
@@ -40,18 +45,9 @@
 </template>
 
 <script lang="ts" setup>
-import { renderIcon } from '@/utils/common';
+import { renderIcon, useIconRender } from '@/utils/common';
 import useUserStore from '@/store/module/user';
 import router from '@/router';
-import {
-  MenuFilled,
-  HomeFilled,
-  ListAltRound,
-  SupervisedUserCircleFilled,
-  PersonOutlineFilled,
-  LogOutFilled,
-  SearchFilled
-} from '@vicons/material';
 
 // 定义响应式数据
 let todoNumVal = $ref<number>(10);
@@ -61,6 +57,8 @@ let currentUserName = $ref<string>('');
 onMounted(() => {
   currentUserName = useUserStore().userInfo.userNickName;
 });
+
+const { iconRender } = useIconRender();
 
 const breadcrumbList = [
   {
@@ -85,12 +83,12 @@ const dropdownOptions = [
   {
     label: '用户资料',
     key: 'userInfo',
-    icon: renderIcon(PersonOutlineFilled)
+    icon: iconRender({ icon: 'material-symbols:person' })
   },
   {
     label: '退出登录',
     key: 'logout',
-    icon: renderIcon(LogOutFilled)
+    icon: iconRender({ icon: 'material-symbols:logout' })
   }
 ];
 
@@ -129,14 +127,17 @@ const handleSelectDropdown = (key: string) => {
       display: inline-block;
     }
     .right-todo {
-      margin-left: 2rem;
+      margin-left: 1rem;
       cursor: pointer;
     }
     .right-user {
+      overflow: hidden;
       margin: 0 1rem;
       width: 9.375rem;
       font-size: 1.1rem;
       font-weight: bold;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .right-avatar {
       width: 2.5rem;

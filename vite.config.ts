@@ -181,12 +181,15 @@ export default ({ command, mode }) => {
       // 配置自动导入图标
       Icons({
         compiler: 'vue3',
+        // 自动安装图标
         autoInstall: true,
         // 自定义图标加载
         customCollections: {
           // 这里是存放svg图标的文件地址，custom是自定义图标库的名称，给svg文件设置fill="currentColor"属性，使图标的颜色具有适应性
           custom: FileSystemIconLoader('./src/assets/icons', svg => svg.replace(/^<svg /, '<svg fill="currentColor" '))
-        }
+        },
+        scale: 1,
+        defaultClass: 'inline-block'
       }),
       // 配置jsx
       vueJsx(),

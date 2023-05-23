@@ -9,6 +9,8 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    'IconMaterialSymbols:listAltOutline': typeof import('~icons/material-symbols/list-alt-outline')['default']
+    'IconMaterialSymbols:search': typeof import('~icons/material-symbols/search')['default']
     NBackTop: typeof import('naive-ui')['NBackTop']
     NBadge: typeof import('naive-ui')['NBadge']
     NBreadcrumb: typeof import('naive-ui')['NBreadcrumb']

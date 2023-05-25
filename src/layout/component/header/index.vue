@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts" setup>
-import { renderIcon, iconRender } from '@/utils/common';
+import { renderIcon } from '@/utils/common';
 import useUserStore from '@/store/module/user';
 import router from '@/router';
 import {HomeFilled} from '@vicons/material';

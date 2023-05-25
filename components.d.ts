@@ -9,6 +9,11 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    Icon: typeof import('@iconify/vue')['Icon']
+    'IconIc:baselineClose': typeof import('~icons/ic/baseline-close')['default']
+    'IconIc:baselineMenu': typeof import('~icons/ic/baseline-menu')['default']
+    'IconIc:outlineHome': typeof import('~icons/ic/outline-home')['default']
+    'IconIc:sharpHome': typeof import('~icons/ic/sharp-home')['default']
     'IconMaterialSymbols:listAltOutline': typeof import('~icons/material-symbols/list-alt-outline')['default']
     'IconMaterialSymbols:search': typeof import('~icons/material-symbols/search')['default']
     NBackTop: typeof import('naive-ui')['NBackTop']

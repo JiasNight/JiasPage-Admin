@@ -1,10 +1,13 @@
 import { defineStore } from 'pinia';
-import { RouteLocationNormalizedLoaded, RouteRecordRaw } from 'vue-router';
+import { useRouter, RouteLocationNormalizedLoaded, RouteRecordRaw } from 'vue-router';
 import router from '@/router';
 import { getDynamicRoutes } from '@/api/app';
 import { getToken } from '@/utils/auth';
+import Layout from '@/layout/index.vue';
 
 const modules = import.meta.glob('../../views/**/*.vue');
+
+// const router = useRouter();
 
 type IAppState = {
   theme: boolean;
@@ -33,6 +36,10 @@ const useAppStore = defineStore({
     },
     getLanguage(state): string {
       return state.language;
+    },
+    // 获取当前所有路由
+    getRoutes(state): [] | Array<RouteRecordRaw> {
+      return state.routes;
     }
   },
   actions: {
@@ -62,19 +69,13 @@ const useAppStore = defineStore({
       this.currentRoute = route;
     },
     // 添加动态路由，并同步到状态管理器中
-    addRoutes(data: Array<any>, router: any) {
-      data.forEach((m) => {
-        this.routes.push({
-          path: m.path,
-          name: m.name,
-          // 错误示例：components:()=>import(`../views/Pages/${m.component}`)
-          // 正确示例如下：
-          component: modules[`../../views/${m.component}`]
-        });
+    addRoutes(data: Array<RouteRecordRaw>) {
+      recursionRouter(data);
+      data.forEach(item => {
+        router.addRoute(item);
+        this.routes.push(item);
       });
-
-      console.log(this.routes);
-      this.routes.forEach((m) => router.addRoute(m));
+      // console.log(router.getRoutes());
     },
     // 生成路由
     generateRoutes() {
@@ -82,7 +83,7 @@ const useAppStore = defineStore({
         getDynamicRoutes({ token: getToken() })
           .then((res: any) => {
             if (res && res.code === 200) {
-              this.addRoutes(res.data, router);
+              this.addRoutes(res.data);
               resolve();
             }
           })
@@ -94,38 +95,29 @@ const useAppStore = defineStore({
   }
 });
 
-function generateRouter(routers: Array<RouteRecordRaw>) {
-  routers.forEach((route: RouteRecordRaw) => {
-    router.addRoute(route);
-  });
-}
-
-// 遍历后台传来的路由字符串，转换为组件对象
-export function filterAsyncRouter(asyncRouterMap: any, lastRouter = false, type = false) {
-  // filter() 创建一个新的数组，新数组中的元素是通过检查指定数组中符合条件的所有元素
-  return asyncRouterMap.filter((route: any) => {
-    if (route.component) {
-      route.component = loadView(route.component);
-    }
-    if (route.children != null && route.children && route.children.length) {
-      route.children = filterAsyncRouter(route.children, route, type);
-    } else {
-      delete route['children'];
-      delete route['redirect'];
-    }
-    return true;
-  });
-}
-
-export const loadView = (view: any) => {
+function loadView(view: any) {
   let res;
   for (const path in modules) {
-    const dir = path.split('view')[1].split('.vue')[0];
+    const dir = path.split('views')[1].split('.vue')[0];
     if (dir === view) {
       res = () => modules[path]();
     }
   }
   return res;
-};
+}
+
+function recursionRouter(routeList: Array<any>) {
+  routeList.forEach((item: any) => {
+    if (item.component && item.component !== '') {
+      item.component = loadView(item.component);
+    } else {
+      item.component = Layout;
+    }
+    if (item.children && item.children.length > 0) {
+      recursionRouter(item.children);
+    }
+  });
+}
+
 
 export default useAppStore;

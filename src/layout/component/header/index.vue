@@ -1,10 +1,14 @@
 <template>
   <div class="content-header">
     <div class="header-left">
-      <n-icon size="20" style="cursor: pointer"><MenuFilled></MenuFilled></n-icon>
       <!-- 面包屑 -->
       <n-breadcrumb>
-        <n-breadcrumb-item> <n-icon :component="HomeFilled" /> 首页</n-breadcrumb-item>
+        <n-breadcrumb-item> 
+          <n-icon size="20">
+            <icon-ic:sharp-home></icon-ic:sharp-home>
+          </n-icon>
+          首页
+        </n-breadcrumb-item>
       </n-breadcrumb>
     </div>
     <div class="header-right">
@@ -14,13 +18,13 @@
           <icon-material-symbols:search></icon-material-symbols:search>
         </template>
       </n-input>
-      <n-button circle :bordered="false">
+      <!-- <n-button circle :bordered="false">
         <template #icon>
           <n-icon size="30">
             <icon-material-symbols:search></icon-material-symbols:search>
           </n-icon>
         </template>
-      </n-button>
+      </n-button> -->
       <n-tooltip placement="bottom" trigger="hover">
         <template #trigger>
           <n-badge class="right-todo" :value="todoNumVal">
@@ -33,7 +37,7 @@
       </n-tooltip>
       <n-tooltip placement="top-start" trigger="hover">
         <template #trigger>
-          <span class="right-user"> 欢迎您，{{ currentUserName }} </span>
+          <span class="right-user"> {{ currentUserName }} </span>
         </template>
         <span> 欢迎您，{{ currentUserName }} </span>
       </n-tooltip>
@@ -45,10 +49,10 @@
 </template>
 
 <script lang="ts" setup>
-import { renderIcon, useIconRender } from '@/utils/common';
+import { renderIcon, iconRender } from '@/utils/common';
 import useUserStore from '@/store/module/user';
 import router from '@/router';
-
+import {HomeFilled} from '@vicons/material';
 // 定义响应式数据
 let todoNumVal = $ref<number>(10);
 let currentUserName = $ref<string>('');
@@ -58,7 +62,7 @@ onMounted(() => {
   currentUserName = useUserStore().userInfo.userNickName;
 });
 
-const { iconRender } = useIconRender();
+// const { iconRender } = useIconRender();
 
 const breadcrumbList = [
   {
@@ -83,18 +87,17 @@ const dropdownOptions = [
   {
     label: '用户资料',
     key: 'userInfo',
-    icon: iconRender({ icon: 'material-symbols:person' })
+    icon: renderIcon('ic:baseline-person')
   },
   {
     label: '退出登录',
     key: 'logout',
-    icon: iconRender({ icon: 'material-symbols:logout' })
+    icon: renderIcon('ic:baseline-logout')
   }
 ];
 
 // 处理下拉菜单按钮点击
 const handleSelectDropdown = (key: string) => {
-  console.log(key);
   if (key === 'userInfo') {
     router.push('userInfo');
   } else if (key === 'logout') {

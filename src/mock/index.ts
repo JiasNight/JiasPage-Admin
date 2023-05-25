@@ -96,50 +96,62 @@ const mock: Array<MockMethod> = [
             path: '/article',
             name: 'ArticleManage',
             meta: {
-              title: '文章管理'
+              title: '文章管理',
+              icon: 'ic:outline-article',
+              show: true,
+              disabled: false,
+              cache: false,
+              menuType: 1,
+              description: '文章管理'
             },
-            isShow: true,
-            isCache: false,
-            menuType: 1,
-            component: 'layout/index',
+            component: '',
             children: [
               {
                 path: 'releaseArticle',
                 name: 'ReleaseArticle',
                 meta: {
-                  title: '发布文章'
+                  title: '发布文章',
+                  icon: 'ic:outline-article',
+                  show: true,
+                  disabled: false,
+                  cache: false,
+                  menuType: 2,
+                  description: '发布文章'
                 },
-                isShow: true,
-                isCache: false,
-                menuType: 2,
                 component: '/article/index'
               }
             ]
+          },
+          {
+            path: '/system',
+            name: 'SystemManage',
+            meta: {
+              title: '系统管理',
+              icon: 'ic:outline-article',
+              show: true,
+              disabled: false,
+              cache: false,
+              menuType: 1,
+              description: '系统管理'
+            },
+            component: '',
+            children: [
+              {
+                path: 'userManage',
+                name: 'UserManage',
+                meta: {
+                  title: '用户管理',
+                  icon: 'ic:outline-article',
+                  show: true,
+                  disabled: false,
+                  cache: false,
+                  menuType: 2,
+                  description: '用户管理'
+                },
+                component: '/system/userManage/index'
+              }
+            ]
           }
-          // {
-          //   path: '/system',
-          //   name: 'SystemManage',
-          //   meta: {
-          //     title: '系统管理'
-          //   },
-          //   isShow: true,
-          //   isCache: false,
-          //   menuType: 1,
-          //   component: 'layout/index',
-          //   children: [
-          //     {
-          //       path: 'userManage',
-          //       name: 'UserManage',
-          //       meta: {
-          //         title: '用户管理'
-          //       },
-          //       isShow: true,
-          //       isCache: false,
-          //       menuType: 2,
-          //       component: 'system/userManage/index'
-          //     }
-          //   ]
-          // }
         ]
       };
     }

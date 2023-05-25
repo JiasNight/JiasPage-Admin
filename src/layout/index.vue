@@ -12,7 +12,9 @@
       @collapse="siderCollapsed = true"
       @expand="siderCollapsed = false"
     >
+      <!-- logo -->
       <Logo :collapsed="siderCollapsed"></Logo>
+      <!-- 菜单 -->
       <Menus :collapsed="siderCollapsed"></Menus>
     </n-layout-sider>
     <n-layout>
@@ -102,6 +104,7 @@ const signOutBtn = (): void => {
     min-height: 100vh;
     box-shadow: 2px 0 8px 0 rgb(29 35 41 / 5%);
     transition: all 0.2s ease-in-out;
+    background-color: '#061427';
   }
   .layout-content {
     padding: .625rem;

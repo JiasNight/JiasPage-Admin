@@ -2,7 +2,7 @@
   <div class="content-tags">
     <div class="tag-width" :to="{ path: '/' }">
       <n-icon size="20">
-        <HomeFilled></HomeFilled>
+        <icon-ic:outline-home></icon-ic:outline-home>
       </n-icon>
       <n-tooltip placement="top" trigger="hover">
         <template #trigger>
@@ -20,7 +20,7 @@
       @contextmenu.prevent="rightClickTagBtn(item, $event)"
     >
       <n-icon size="20">
-        <MenuFilled></MenuFilled>
+        <icon-ic:baseline-menu></icon-ic:baseline-menu>
       </n-icon>
       <n-tooltip placement="top" trigger="hover">
         <template #trigger>
@@ -29,7 +29,7 @@
         <span> {{ item.label }} </span>
       </n-tooltip>
       <n-icon class="tag-item-end-icon" size="20" @click.prevent.stop="closeTagBtn(item)">
-        <CloseRound></CloseRound>
+        <icon-ic:baseline-close></icon-ic:baseline-close>
       </n-icon>
     </div>
     <!-- 右键菜单内容 -->
@@ -44,9 +44,7 @@
 
 <script lang="ts" setup>
 import { $ref } from 'vue/macros';
-import { renderIcon } from '@/utils/common/index';
 import ContextMenu from './contextmenu.vue';
-import { HomeFilled, MenuFilled, CloseRound } from '@vicons/material';
 
 interface ITags {
   id: string;

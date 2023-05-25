@@ -1,17 +1,19 @@
 <template>
   <router-view v-slot="{ Component, route }">
-    <Transition name="fade" mode="out-in">
-      <KeepAlive>
-        <Suspense>
-          <!-- 主要内容 -->
-          <template #default>
-            <component :is="Component" :key="route.fullPath" />
-          </template>
-          <!-- 加载状态 -->
-          <template #fallback> 正在加载... </template>
-        </Suspense>
-      </KeepAlive>
-    </Transition>
+    <Suspense>
+      <!-- 主要内容 -->
+      <template #default>
+        <KeepAlive>
+          <Transition name="fade" mode="out-in">
+            <div v-if="Component">
+              <component :is="Component" :key="route.fullPath" />
+            </div>
+          </Transition>
+        </KeepAlive>
+      </template>
+      <!-- 加载状态 -->
+      <template #fallback> 正在加载... </template>
+    </Suspense>
   </router-view>
 </template>
 
@@ -52,6 +54,6 @@ watch(
   opacity: 1;
 }
 .fade-leave-active,.fade-enter-active {
-  transition: all 0.5s ease-out;
+  transition: all 4.5s ease-out;
 }
 </style>

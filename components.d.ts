@@ -9,7 +9,6 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    Icon: typeof import('@iconify/vue')['Icon']
     'IconIc:baselineClose': typeof import('~icons/ic/baseline-close')['default']
     'IconIc:baselineMenu': typeof import('~icons/ic/baseline-menu')['default']
     'IconIc:outlineHome': typeof import('~icons/ic/outline-home')['default']

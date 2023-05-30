@@ -102,9 +102,10 @@ const signOutBtn = (): void => {
   .layout-sider {
     position: relative;
     min-height: 100vh;
+    color: #fff;
+    background-color: rgb(0, 20, 40);
     box-shadow: 2px 0 8px 0 rgb(29 35 41 / 5%);
     transition: all 0.2s ease-in-out;
-    background-color: '#061427';
   }
   .layout-content {
     padding: .625rem;

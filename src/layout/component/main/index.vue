@@ -26,10 +26,10 @@ import { RouteLocationNormalizedLoaded } from 'vue-router';
 
 watch(
   () => router.currentRoute.value,
-  (newValue, oldValue) => {
-    console.log('watch', newValue.path);
+  (newRoute, oldRoute) => {
+    console.log('watch', newRoute.path);
     // currentRoute = newValue || undefined;
-    useAppStore().setCurrentRoute(newValue);
+    useAppStore().setCurrentRoute(newRoute);
   },
   { immediate: true }
 );

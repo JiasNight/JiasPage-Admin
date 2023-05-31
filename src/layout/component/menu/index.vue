@@ -26,78 +26,7 @@ const currentProps = defineProps({
 });
 
 // 响应式数据
-let menusList = $ref<MenuOption[]>([
-  // {
-  //   id: '1',
-  //   pid: '0',
-  //   label: '文章管理',
-  //   icon: renderIcon('ic:outline-article'),
-  //   disabled: false,
-  //   key: 'article',
-  //   path: '/article',
-  //   show: true,
-  //   description: '这是一个菜单',
-  //   children: [
-  //     {
-  //       id: '12',
-  //       pid: '1',
-  //       label: '文章发布',
-  //       disabled: false,
-  //       icon: renderIcon('ic:outline-article'),
-  //       key: 'releaseArticle',
-  //       path: '/article/releaseArticle',
-  //       show: true,
-  //       description: '这是一个菜单1-2'
-  //     }
-  //   ]
-  // },
-  // {
-  //   id: '99',
-  //   pid: '0',
-  //   label: '系统管理',
-  //   icon: renderIcon('ic:baseline-settings'),
-  //   disabled: false,
-  //   key: 'system',
-  //   path: '/system',
-  //   show: true,
-  //   description: '这是一个菜单',
-  //   children: [
-  //     {
-  //       id: '12',
-  //       pid: '1',
-  //       label: '用户管理',
-  //       disabled: false,
-  //       icon: renderIcon('ic:baseline-supervisor-account'),
-  //       key: 'userManage',
-  //       path: '/system/userManage',
-  //       show: true,
-  //       description: '这是一个菜单1-2'
-  //     },
-  //     {
-  //       id: '12',
-  //       pid: '1',
-  //       label: '菜单管理',
-  //       disabled: false,
-  //       icon: renderIcon('ic:baseline-menu'),
-  //       key: 'menuManage',
-  //       path: '/system/menuManage',
-  //       show: true,
-  //       description: '这是一个菜单1-2'
-  //     },
-  //     {
-  //       id: '11',
-  //       pid: '1',
-  //       label: '权限设置',
-  //       disabled: false,
-  //       icon: renderIcon(),
-  //       key: 'role',
-  //       path: '/system/userManage',
-  //       show: true,
-  //       description: '这是一个菜单1-1'
-  //     }
-  //   ]
-  // }
-]);
+let menusList = $ref<MenuOption[]>([]);
 
 // 创建之前
 onBeforeMount(() => {
@@ -138,7 +67,6 @@ const generateMenuByRoute = (routerList: Array<any>) => {
 
 // 点击菜单
 const handleClickMenu = (key: string, item: MenuOption | any) => {
-  console.log(router.getRoutes());
   if (item.path === router.currentRoute.value.path) {
     useAppStore().reloadPage();
   } else {

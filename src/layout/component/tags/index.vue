@@ -24,9 +24,9 @@
       </n-icon>
       <n-tooltip placement="top" trigger="hover">
         <template #trigger>
-          <span class="tag-item-span"> {{ item.label }}</span>
+          <span class="tag-item-span"> {{ item.meta.title }}</span>
         </template>
-        <span> {{ item.label }} </span>
+        <span> {{ item.meta.title }} </span>
       </n-tooltip>
       <n-icon class="tag-item-end-icon" size="20" @click.prevent.stop="closeTagBtn(item)">
         <icon-ic:baseline-close></icon-ic:baseline-close>
@@ -44,18 +44,14 @@
 
 <script lang="ts" setup>
 import { $ref } from 'vue/macros';
+import type { MenuOption } from 'naive-ui';
 import ContextMenu from './contextmenu.vue';
+import useAppStore from '@/store/module/app';
 
-interface ITags {
-  id: string;
-  type: number;
-  label: string;
-  name: string;
+// 扩展ITags的属性
+type ITags = MenuOption & {
   path: string;
-  fullPath: string;
-  query: string;
-  description: string;
-}
+};
 
 onMounted(() => {
   window.addEventListener('click', () => {
@@ -63,67 +59,29 @@ onMounted(() => {
   });
 });
 
-let tagsList = $ref<ITags[]>([
-  {
-    id: '11',
-    type: 1,
-    label: '页面1',
-    name: '123',
-    path: '/index',
-    fullPath: '',
-    query: '',
-    description: '页面1'
-  },
-  {
-    id: '12',
-    type: 1,
-    label: '页面1看看大家的方式方法',
-    name: 'age',
-    path: '/index2',
-    fullPath: '',
-    query: '',
-    description: '页面1'
-  },
-  {
-    id: '13',
-    type: 1,
-    label: '页面133',
-    name: 'bir',
-    path: '/index3',
-    fullPath: '',
-    query: '',
-    description: '页面1'
-  },
-  {
-    id: '14',
-    type: 1,
-    label: '页面1',
-    name: 'fdj',
-    path: '/index4',
-    fullPath: '',
-    query: '',
-    description: '页面1'
-  },
-  {
-    id: '15',
-    type: 1,
-    label: '页面1',
-    name: 'name',
-    path: '/index5',
-    fullPath: '',
-    query: '',
-    description: '页面1'
-  }
-]);
+// let tagsList = $ref<ITags[]>([
+//   {
+//     id: '11',
+//     type: 1,
+//     label: '页面1',
+//     name: '123',
+//     path: '/index',
+//     fullPath: '',
+//     query: '',
+//     description: '页面1'
+//   }
+// ]);
+
+let tagsList = $ref<Array<any>>(useAppStore().getPageTags);
 
 // 关闭按钮
 const closeTagBtn = (tag: ITags) => {
-  let i: number = tagsList.findIndex((item: ITags) => item.id === tag.id);
+  let i: number = tagsList.findIndex((item: ITags) => item.path === tag.path);
   tagsList.splice(i, 1);
 };
 
 // 当前活动路径
-let currentActivePath = $ref<string>('/index');
+let currentActivePath = $ref<string>('');
 
 // 点击标签
 const clickTagViewBtn = (tag: ITags) => {

@@ -16,6 +16,7 @@ type IAppState = {
   pageKeys: object;
   routes: Array<RouteRecordRaw>;
   currentRoute: object;
+  pageTags: Array<object>
 };
 
 const useAppStore = defineStore({
@@ -28,7 +29,8 @@ const useAppStore = defineStore({
     pageKeys: {},
     // 路由表
     routes: [] as Array<RouteRecordRaw>,
-    currentRoute: {}
+    currentRoute: {},
+    pageTags: []
   }),
   getters: {
     getTheme(state): boolean {
@@ -37,9 +39,17 @@ const useAppStore = defineStore({
     getLanguage(state): string {
       return state.language;
     },
-    // 获取当前所有路由
+    // 获取所有路由信息
     getRoutes(state): [] | Array<RouteRecordRaw> {
       return state.routes;
+    },
+    // 获取当前路由信息
+    getCurrentRoute(state): object | undefined {
+      return state.currentRoute;
+    },
+    // 获取当前路由信息
+    getPageTags(state): [] | Array<any> {
+      return state.pageTags;
     }
   },
   actions: {
@@ -67,6 +77,8 @@ const useAppStore = defineStore({
     // 设置当前路由内容
     setCurrentRoute(route: RouteLocationNormalizedLoaded) {
       this.currentRoute = route;
+      console.log(route);
+      this.setPageTags(route);
     },
     // 添加动态路由，并同步到状态管理器中
     addRoutes(data: Array<RouteRecordRaw>) {
@@ -91,6 +103,21 @@ const useAppStore = defineStore({
             reject();
           });
       });
+    },
+    // 标签页变动
+    setPageTags(tag: any) {
+      if (this.pageTags.length === 0) {
+        this.pageTags.push(tag);
+      } else {
+        for (let i = 0; i < this.pageTags.length; i++) {
+          const item: any = this.pageTags[i];
+          if (item.path === tag.path) {
+            continue;
+          } else {
+            this.pageTags.push(tag);
+          }
+        }
+      }
     }
   }
 });

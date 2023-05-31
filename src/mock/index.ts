@@ -111,7 +111,7 @@ const mock: Array<MockMethod> = [
                 name: 'ReleaseArticle',
                 meta: {
                   title: '发布文章',
-                  icon: 'ic:outline-article',
+                  icon: 'ic:baseline-new-releases',
                   show: true,
                   disabled: false,
                   cache: false,
@@ -127,7 +127,7 @@ const mock: Array<MockMethod> = [
             name: 'SystemManage',
             meta: {
               title: '系统管理',
-              icon: 'ic:outline-article',
+              icon: 'ic:baseline-settings',
               show: true,
               disabled: false,
               cache: false,
@@ -141,7 +141,7 @@ const mock: Array<MockMethod> = [
                 name: 'UserManage',
                 meta: {
                   title: '用户管理',
-                  icon: 'ic:outline-article',
+                  icon: 'ic:baseline-person-search',
                   show: true,
                   disabled: false,
                   cache: false,
@@ -149,6 +149,20 @@ const mock: Array<MockMethod> = [
                   description: '用户管理'
                 },
                 component: '/system/userManage/index'
+              },
+              {
+                path: 'menuManage',
+                name: 'MenuManage',
+                meta: {
+                  title: '菜单管理',
+                  icon: 'ic:baseline-list-alt',
+                  show: true,
+                  disabled: false,
+                  cache: false,
+                  menuType: 2,
+                  description: '菜单管理'
+                },
+                component: '/system/menuManage/index'
               }
             ]
           }

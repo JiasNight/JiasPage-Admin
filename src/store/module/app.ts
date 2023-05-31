@@ -109,15 +109,18 @@ const useAppStore = defineStore({
       if (this.pageTags.length === 0) {
         this.pageTags.push(tag);
       } else {
+        console.log('********' + tag.path);
         for (let i = 0; i < this.pageTags.length; i++) {
           const item: any = this.pageTags[i];
           if (item.path === tag.path) {
-            continue;
+            break;
           } else {
+            console.log(tag.path);
             this.pageTags.push(tag);
           }
         }
       }
+      console.log(this.pageTags);
     }
   }
 });

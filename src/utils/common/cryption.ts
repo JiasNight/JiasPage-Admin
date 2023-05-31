@@ -57,6 +57,7 @@ export const rsaUtil: any = {
   genKeyPair: (bits = rsaUtil.bits) => {
     const genKeyPair: any = {};
     rsaUtil.thisKeyPair = new JSEncrypt({
+      // eslint-disable-next-line camelcase
       default_key_size: bits
     });
     // 这里项目使用的是静态秘钥，所以该方法在本地执行一次，获取到配对的公私钥保存下即可

@@ -4,6 +4,7 @@ import router from '@/router';
 import { getDynamicRoutes } from '@/api/app';
 import { getToken } from '@/utils/auth';
 import Layout from '@/layout/index.vue';
+import useTagStore from './tag';
 
 const modules = import.meta.glob('../../views/**/*.vue');
 
@@ -16,7 +17,6 @@ type IAppState = {
   pageKeys: object;
   routes: Array<RouteRecordRaw>;
   currentRoute: object;
-  pageTags: Array<object>
 };
 
 const useAppStore = defineStore({
@@ -29,8 +29,7 @@ const useAppStore = defineStore({
     pageKeys: {},
     // 路由表
     routes: [] as Array<RouteRecordRaw>,
-    currentRoute: {},
-    pageTags: []
+    currentRoute: {}
   }),
   getters: {
     getTheme(state): boolean {
@@ -46,10 +45,6 @@ const useAppStore = defineStore({
     // 获取当前路由信息
     getCurrentRoute(state): object | undefined {
       return state.currentRoute;
-    },
-    // 获取当前路由信息
-    getPageTags(state): [] | Array<any> {
-      return state.pageTags;
     }
   },
   actions: {
@@ -77,8 +72,7 @@ const useAppStore = defineStore({
     // 设置当前路由内容
     setCurrentRoute(route: RouteLocationNormalizedLoaded) {
       this.currentRoute = route;
-      console.log(route);
-      this.setPageTags(route);
+      useTagStore().setActiveTagPath(route);
     },
     // 添加动态路由，并同步到状态管理器中
     addRoutes(data: Array<RouteRecordRaw>) {
@@ -103,24 +97,6 @@ const useAppStore = defineStore({
             reject();
           });
       });
-    },
-    // 标签页变动
-    setPageTags(tag: any) {
-      if (this.pageTags.length === 0) {
-        this.pageTags.push(tag);
-      } else {
-        console.log('********' + tag.path);
-        for (let i = 0; i < this.pageTags.length; i++) {
-          const item: any = this.pageTags[i];
-          if (item.path === tag.path) {
-            break;
-          } else {
-            console.log(tag.path);
-            this.pageTags.push(tag);
-          }
-        }
-      }
-      console.log(this.pageTags);
     }
   }
 });

@@ -1,6 +1,6 @@
 <template>
   <div class="content-tags">
-    <div class="tag-width" :to="{ path: '/' }">
+    <!-- <div class="tag-width" :to="{ path: '/' }">
       <n-icon size="20">
         <icon-ic:outline-home></icon-ic:outline-home>
       </n-icon>
@@ -10,7 +10,7 @@
         </template>
         <span> 首页 </span>
       </n-tooltip>
-    </div>
+    </div> -->
     <div
       v-for="(item, index) in tagsList"
       :key="index"
@@ -46,7 +46,8 @@
 import { $ref } from 'vue/macros';
 import type { MenuOption } from 'naive-ui';
 import ContextMenu from './contextmenu.vue';
-import useAppStore from '@/store/module/app';
+import useTagStore from '@/store/module/tag';
+import router from '@/router';
 
 // 扩展ITags的属性
 type ITags = MenuOption & {
@@ -72,7 +73,7 @@ onMounted(() => {
 //   }
 // ]);
 
-let tagsList = $ref<Array<any>>(useAppStore().getPageTags);
+let tagsList = $ref<Array<any>>(useTagStore().getPageTagList);
 
 // 关闭按钮
 const closeTagBtn = (tag: ITags) => {
@@ -81,11 +82,12 @@ const closeTagBtn = (tag: ITags) => {
 };
 
 // 当前活动路径
-let currentActivePath = $ref<string>('');
+let currentActivePath = $ref<string>(useTagStore().getActiveTagPath);
 
 // 点击标签
 const clickTagViewBtn = (tag: ITags) => {
   currentActivePath = tag.path;
+  router.push(tag.path);
 };
 
 // 是否显示右键菜单
@@ -118,14 +120,14 @@ const rightClickTagBtn = (tag: ITags, e: any) => {
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    margin: 5px 5px;
-    margin-left: 0;
-    width: 100px;
-    height: 25px;
-    line-height: 25px;
-    font-size: 10px;
+    margin: .3125rem 0;
+    margin-left: .3125rem;
+    width: 6.25rem;
+    height: 1.5625rem;
+    line-height: 1.5625rem;
+    font-size: .625rem;
     border: 1px solid #d8dce5;
-    border-radius: 3px;
+    border-radius: .1875rem;
     cursor: pointer;
     color: #495060;
     background: #fff;
@@ -144,7 +146,11 @@ const rightClickTagBtn = (tag: ITags, e: any) => {
     .tag-item-end-icon {
       color: #bdc3c7;
       &:hover {
+        width: 1.25rem;
+        height: 1.25rem;
+        border-radius: 50%;
         color: #ffa502;
+        background-color: #dee4e7;
       }
     }
   }

@@ -30,8 +30,8 @@ const useTagStore = defineStore({
   actions: {
     // 设置当前tag
     setActiveTagPath(route: RouteLocationNormalizedLoaded) {
-      this.activeTagPath = route.path;
       this.makePageTags(route);
+      this.activeTagPath = route.path;
     },
     // 标签页变动
     makePageTags(route: RouteLocationNormalizedLoaded) {

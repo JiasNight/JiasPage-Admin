@@ -84,6 +84,14 @@ const closeTagBtn = (tag: ITags) => {
 // 当前活动路径
 let currentActivePath = $ref<string>(useTagStore().getActiveTagPath);
 
+watch(
+  () => currentActivePath,
+  (newRoute, oldRoute) => {
+    console.log('path', newRoute);
+  },
+  { immediate: true }
+);
+
 // 点击标签
 const clickTagViewBtn = (tag: ITags) => {
   currentActivePath = tag.path;

@@ -15,7 +15,7 @@
       v-for="(item, index) in tagsList"
       :key="index"
       class="tag-width"
-      :class="currentActivePath === item.path ? 'tag-active' : ''"
+      :class="useTagStore().getActiveTagPath === item.path ? 'tag-active' : ''"
       @click="clickTagViewBtn(item)"
       @contextmenu.prevent="rightClickTagBtn(item, $event)"
     >
@@ -54,26 +54,27 @@ type ITags = MenuOption & {
   path: string;
 };
 
+// 标签列表
+let tagsList = $ref<Array<any>>(useTagStore().getPageTagList);
+
+// 当前活动路径
+// let currentActivePath = $ref<string>(useTagStore().getActiveTagPath);
+
+// 加载之后
 onMounted(() => {
   window.addEventListener('click', () => {
     showRightMenuBox = false;
   });
 });
 
-// let tagsList = $ref<ITags[]>([
-//   {
-//     id: '11',
-//     type: 1,
-//     label: '页面1',
-//     name: '123',
-//     path: '/index',
-//     fullPath: '',
-//     query: '',
-//     description: '页面1'
-//   }
-// ]);
-
-let tagsList = $ref<Array<any>>(useTagStore().getPageTagList);
+// 监听
+watch(
+  () => tagsList,
+  (newRoute, oldRoute) => {
+    console.log(newRoute);
+  },
+  { immediate: true }
+);
 
 // 关闭按钮
 const closeTagBtn = (tag: ITags) => {
@@ -81,20 +82,9 @@ const closeTagBtn = (tag: ITags) => {
   tagsList.splice(i, 1);
 };
 
-// 当前活动路径
-let currentActivePath = $ref<string>(useTagStore().getActiveTagPath);
-
-watch(
-  () => currentActivePath,
-  (newRoute, oldRoute) => {
-    console.log('path', newRoute);
-  },
-  { immediate: true }
-);
-
 // 点击标签
 const clickTagViewBtn = (tag: ITags) => {
-  currentActivePath = tag.path;
+  // currentActivePath = tag.path;
   router.push(tag.path);
 };
 
@@ -163,6 +153,7 @@ const rightClickTagBtn = (tag: ITags, e: any) => {
     }
   }
   .tag-active {
+    border: .0625rem solid #9b59b6;
     background-color: #2ed573;
   }
   .right-menu-box {

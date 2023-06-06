@@ -1,7 +1,6 @@
 <template>
   <router-view v-slot="{ Component, route }">
     <Suspense>
-      <!-- 主要内容 -->
       <template #default>
         <KeepAlive>
           <Transition name="fade" mode="out-in">
@@ -11,7 +10,6 @@
           </Transition>
         </KeepAlive>
       </template>
-      <!-- 加载状态 -->
       <template #fallback> 正在加载... </template>
     </Suspense>
   </router-view>
@@ -27,33 +25,33 @@ import { RouteLocationNormalizedLoaded } from 'vue-router';
 watch(
   () => router.currentRoute.value,
   (newRoute, oldRoute) => {
-    console.log('watch', newRoute.path);
+    console.log('路由', newRoute.path);
     // currentRoute = newValue || undefined;
     useAppStore().setCurrentRoute(newRoute);
   },
   { immediate: true }
 );
-
 </script>
 
 <style lang="scss" scoped>
+// 定义进入开始和离开结束的透明度为0
 .fade-enter-from,
 .fade-leave-to {
-  /*定义进入开始和离开结束的透明度为0*/
   opacity: 0;
 }
 .fade-leave-to {
-  transform: translateX(20px);
+  transform: translateX(10px);
 }
 .fade-enter-to {
-  transform: translateX(-20px);
+  transform: translateX(-10px);
 }
+// 定义进入结束和离开开始的透明度为
 .fade-enter-to,
 .fade-leave-from {
-  /*定义进入结束和离开开始的透明度为1*/
   opacity: 1;
 }
-.fade-leave-active,.fade-enter-active {
-  transition: all 4.5s ease-out;
+.fade-leave-active,
+.fade-enter-active {
+  transition: all 0.5s ease-out;
 }
 </style>

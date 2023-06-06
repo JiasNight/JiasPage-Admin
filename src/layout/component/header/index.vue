@@ -137,8 +137,8 @@ const handleSelectDropdown = (key: string) => {
       overflow: hidden;
       margin: 0 1rem;
       width: 9.375rem;
-      font-size: 1.1rem;
-      font-weight: bold;
+      font-size: 1rem;
+      font-weight: bolder;
       text-overflow: ellipsis;
       white-space: nowrap;
     }

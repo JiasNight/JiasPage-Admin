@@ -4,6 +4,7 @@ type IGlobalState = {
   loading: boolean;
   progress: number | null;
   message: string | null;
+  isLock: boolean;
 };
 
 const useGlobalStore = defineStore({
@@ -11,18 +12,22 @@ const useGlobalStore = defineStore({
   state: (): IGlobalState => ({
     loading: false,
     progress: null,
-    message: null
+    message: null,
+    isLock: false
   }),
   getters: {
-    loading(state): boolean {
+    getLoading(state): boolean {
       return state.loading;
     },
-    progress(state): number | null {
+    getProgress(state): number | null {
       state.loading = true;
       return state.progress;
     },
-    message(state): string | null {
+    getMessage(state): string | null {
       return state.message;
+    },
+    getIsLock(state): boolean {
+      return state.isLock;
     }
   },
   actions: {

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { userLogin, getUserInfo } from '@/api/login/index';
 import { setToken, removeToken } from '@/utils/auth';
-import { IResponse, IUserInfo } from '@/interface/IAdmin';
+import { IResponse, IUserInfo } from '@/interface/index';
 import router from '@/router';
 interface IUserState {
   token: string;

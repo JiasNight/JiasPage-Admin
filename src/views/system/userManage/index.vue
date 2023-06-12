@@ -3,8 +3,30 @@
     <n-grid cols="5" :x-gap="15" item-responsive>
       <n-grid-item span="1">
         <n-card>
-          <n-input v-model:value="treePattern" placeholder="搜索" />
-          <n-tree :pattern="treePattern" :data="treeData" block-line />
+          <n-space justify="end" item-style="margin-bottom: 0.625rem">
+            <n-button strong secondary circle type="info" size="small">
+              <template #icon>
+                <n-icon>
+                  <icon-material-symbols:autorenew></icon-material-symbols:autorenew>
+                </n-icon>
+              </template>
+            </n-button>
+          </n-space>
+          <template v-if="treeLoading">
+            <div class="flex items-center justify-center py-4">
+              <n-spin size="medium" />
+            </div>
+          </template>
+          <template v-else>
+            <n-input v-model:value="deptTreePattern" placeholder="搜索" />
+            <n-tree
+              :pattern="deptTreePattern"
+              :data="deptTreeData"
+              key-field="id"
+              block-line
+              @update:selected-keys="handleClickTree"
+            />
+          </template>
         </n-card>
       </n-grid-item>
       <n-grid-item span="400:1 600:2 800:4">
@@ -40,17 +62,17 @@
               <n-button attr-type="reset" @click="resetQueryFormBtn">
                 <template #icon>
                   <n-icon>
-                    <AutorenewRound />
+                    <icon-material-symbols:autorenew></icon-material-symbols:autorenew>
                   </n-icon>
                 </template>
                 重 置
               </n-button>
             </n-form-item-gi>
             <n-form-item-gi :span="2">
-              <n-button attr-type="submit" type="primary">
+              <n-button attr-type="submit" type="primary" @click="queryTableDataBtn">
                 <template #icon>
                   <n-icon>
-                    <SearchRound />
+                    <icon-material-symbols:search></icon-material-symbols:search>
                   </n-icon>
                 </template>
                 查 询
@@ -59,20 +81,50 @@
           </n-grid>
         </n-form>
         <!-- 表格 -->
-        <n-data-table :columns="userTableHeader" :data="userTableData" :bordered="true" />
+        <n-data-table
+          :columns="userTableHeader"
+          :data="userTableData"
+          :loading="tableIsLoading"
+          :bordered="true"
+          :pagination="tablePagination"
+        />
       </n-grid-item>
     </n-grid>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { Ref, ComputedRef } from 'vue';
-import { TreeOption, FormInst, DataTableColumns, NButton, NIcon } from 'naive-ui';
+import { Ref, ComputedRef, h, Component } from 'vue';
+import { TreeOption, FormInst, DataTableColumns, NButton, NIcon, useDialog, useMessage } from 'naive-ui';
 import { SearchRound, AutorenewRound, Battery50Round, AcUnitRound } from '@vicons/material';
+import { renderIcon } from '@/utils/common';
+import { IRes } from '@/interface';
+import useUserStore from '@/store/module/user';
+import { Icon } from '@iconify/vue';
+import { getDeptTree, getUserList } from '@/api/system/userManage';
 
-let treePattern = $ref<string>('');
+interface IUserForm {
+  userName: string | null;
+  userAccount: string | null;
+  userPhone: string | null;
+  userRole: string | null;
+  dataRange: Array<[string, string]> | null;
+}
 
-let treeData = $ref<TreeOption[]>([
+type IUserTable = {
+  userName: string;
+  userAccount: string;
+  userRole: string;
+  createTime: string;
+};
+
+let treeLoading = $ref<boolean>(false);
+
+let currentSelectedTreeKey: any = null;
+
+let deptTreePattern = $ref<string>('');
+
+let deptTreeData = $ref<TreeOption[]>([
   {
     label: '部门1',
     key: '0',
@@ -91,15 +143,7 @@ let treeData = $ref<TreeOption[]>([
 
 let queryForm = $ref<FormInst | null>(null);
 
-interface userForm {
-  userName: string | null;
-  userAccount: string | null;
-  userPhone: string | null;
-  userRole: string | null;
-  dataRange: Array<[string, string]> | null;
-}
-
-let queryFormData = $ref<userForm>({
+let queryFormData = $ref<IUserForm>({
   userName: null,
   userAccount: null,
   userPhone: null,
@@ -107,15 +151,12 @@ let queryFormData = $ref<userForm>({
   dataRange: null
 });
 
-// 重置查询内容
-const resetQueryFormBtn = () => {
-  if (queryForm) queryForm.restoreValidation();
-};
-
 let roleOptions = $ref<Array<object>>([
   { label: '角1', value: 'role1' },
   { label: '角2', value: 'role3' }
 ]);
+
+let tableIsLoading = $ref<boolean>(false);
 
 let userTableHeader = $ref<DataTableColumns>([
   {
@@ -135,35 +176,120 @@ let userTableHeader = $ref<DataTableColumns>([
     key: 'ops',
     align: 'center',
     render(row) {
-      return h(
-        NButton,
-        {
-          text: true,
-          size: 'small',
-          onClick: (e: any) => {
-            // console.log(e);
-            // console.log(row);
+      return h('span', [
+        h(
+          NButton,
+          {
+            text: true,
+            size: 'small',
+            onClick: (e: any) => {
+              // console.log(e);
+              // console.log(row);
+            }
+          },
+          {
+            icon: () => h(NIcon, { size: 20, component: AcUnitRound }),
+            default: '操作'
           }
-        },
-        {
-          icon: () => h(NIcon, { size: 20, component: AcUnitRound }),
-          default: '操作'
-        }
-      );
+        ),
+        h(
+          NButton,
+          {
+            text: true,
+            size: 'small',
+            color: 'red',
+            style: {
+              margin: '0 .3rem'
+            },
+            onClick: (e: any) => {
+              window.$dialog.warning({
+                title: '警告',
+                content: '你是否确定进行删除？',
+                positiveText: '确定',
+                negativeText: '不确定',
+                onPositiveClick: () => {
+                  console.log(row);
+                  window.$message.success('确定');
+                },
+                onNegativeClick: () => {
+                  window.$message.error('不确定');
+                }
+              });
+            }
+          },
+          {
+            icon: () =>
+              h(NIcon, {
+                size: 20,
+                component: () => h(Icon as Component, { icon: 'ic:baseline-delete-forever' })
+              }),
+            default: () => h('span', '删除')
+          }
+        )
+      ]);
     }
   }
 ]);
 
-type IUserTable = {
-  userName: string;
-  userAccount: string;
-  userRole: string;
-  createTime: string;
+let userTableData = $ref<IUserTable[]>([]);
+
+let tablePagination = $ref<object>({
+  page: 1,
+  pageCount: 1,
+  pageSize: 10,
+  prefix({ itemCount }: any) {
+    return `Total is ${itemCount}.`;
+  }
+});
+
+// 加载之前
+onMounted(() => {
+  getDeptData();
+});
+
+// 获取部门树
+const getDeptData = () => {
+  const data = {
+    token: useUserStore().token
+  };
+  getDeptTree(data).then((res: IRes) => {
+    if (res && res.code === 200) {
+      deptTreeData = res.data;
+    }
+  });
 };
 
-let userTableData = $ref<IUserTable[]>([
-  { userName: 'admin', userAccount: 'admin', userRole: '超级管理员', createTime: '2023-03-30 12:23:30' }
-]);
+// 点击树
+const handleClickTree = (keys: Array<any>) => {
+  currentSelectedTreeKey = keys[0];
+  getUserTable();
+};
+
+// 查询用户列表
+const getUserTable = () => {
+  const data = {
+    ...queryFormData,
+    deptId: currentSelectedTreeKey,
+    ...tablePagination
+  };
+  tableIsLoading = true;
+  getUserList(data).then((res: IRes) => {
+    if (res && res.code === 200) {
+      userTableData = res.data;
+    }
+    tableIsLoading = false;
+  });
+};
+
+// 重置查询内容
+const resetQueryFormBtn = () => {
+  if (queryForm) queryForm.restoreValidation();
+};
+
+// 查询按钮
+const queryTableDataBtn = () => {
+  getUserTable();
+};
 </script>
 
 <style lang="scss" scoped>

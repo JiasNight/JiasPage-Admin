@@ -7,6 +7,8 @@ export interface IResponse<T = any> {
   data: T;
 }
 
+export type IRes = IResponse;
+
 // 用户信息
 export interface IUserInfo {
   userId: string;

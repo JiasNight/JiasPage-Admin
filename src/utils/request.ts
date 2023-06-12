@@ -8,7 +8,7 @@ import router from '../router';
 
 // 请求加密方法引入
 import { aesUtil, rsaUtil, publicKey } from './common/cryption';
-import { IResponse } from '@/interface/IAdmin';
+import { IResponse } from '@/interface/index';
 
 const config = {
   // 默认地址

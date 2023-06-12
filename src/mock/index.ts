@@ -1,6 +1,6 @@
 import { MockMethod } from 'vite-plugin-mock';
 import { formatDate } from '@/utils/common';
-import { IResponse } from '@/interface/IAdmin';
+import { IResponse } from '@/interface/index';
 
 const mock: Array<MockMethod> = [
   {
@@ -165,6 +165,107 @@ const mock: Array<MockMethod> = [
                 component: '/system/menuManage/index'
               }
             ]
+          }
+        ]
+      };
+    }
+  },
+  {
+    url: '/api/system/getDept',
+    method: 'post',
+    response: (): IResponse => {
+      return {
+        success: true,
+        code: 200,
+        message: '获取部门数据成功！',
+        timestamp: formatDate(),
+        data: [
+          {
+            label: '部门1',
+            id: '1',
+            parentId: '0',
+            isLeaf: false,
+            children: [
+              {
+                label: '部门1.1',
+                id: '11',
+                parentId: '1',
+                isLeaf: true
+              },
+              {
+                label: '部门1.2',
+                id: '12',
+                parentId: '1',
+                isLeaf: true
+              }
+            ]
+          },
+          {
+            label: '部门2',
+            id: '2',
+            parentId: '0',
+            isLeaf: false,
+            children: [
+              {
+                label: '部门2.1',
+                id: '21',
+                parentId: '2',
+                isLeaf: true
+              },
+              {
+                label: '部门2.2',
+                id: '22',
+                parentId: '2',
+                isLeaf: true
+              }
+            ]
+          }
+        ]
+      };
+    }
+  },
+  {
+    url: '/api/system/getUsers',
+    method: 'post',
+    response: (): IResponse => {
+      return {
+        success: true,
+        code: 200,
+        message: '获取用户数据成功！',
+        timestamp: formatDate(),
+        data: [
+          {
+            userId: '121321',
+            userName: 'hjh_df',
+            nickName: '郝佳惠',
+            gender: 1,
+            deptId: '',
+            phoneNumber: 18564796520,
+            userRole: '0',
+            isActice: true,
+            createTime: '2022-06-12 15:36:20'
+          },
+          {
+            userId: '1212321',
+            userName: 'dfa',
+            nickName: '袁佳昊',
+            gender: 1,
+            deptId: '',
+            phoneNumber: 17774096498,
+            userRole: '0',
+            isActice: false,
+            createTime: '2022-06-12 15:36:20'
+          },
+          {
+            userId: '13132',
+            userName: 'test',
+            nickName: '邱添池',
+            gender: 1,
+            deptId: '',
+            phoneNumber: 15599530093,
+            userRole: '0',
+            isActice: true,
+            createTime: '2022-06-12 15:36:20'
           }
         ]
       };

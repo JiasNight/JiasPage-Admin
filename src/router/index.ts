@@ -37,7 +37,7 @@ export const commonRoutes: Array<RouteRecordRaw> = [
     meta: {
       title: '注册'
     },
-    component: () => import('@/views/signIn/index.vue')
+    component: () => import('@/views/signUp/index.vue')
   },
   {
     path: '/404',

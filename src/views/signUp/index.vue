@@ -92,9 +92,6 @@
               <n-button class="form-submit" :loading="submitBtnIsLoading" type="primary" round @click="submitLoginBtn">
                 {{ $t('login.signInBtn') }}
               </n-button>
-              <n-button class="form-submit" :loading="submitBtnIsLoading" type="primary" round @click="testBtn">
-                测试
-              </n-button>
             </n-form>
           </div>
         </div>
@@ -105,7 +102,7 @@
 
 <script lang="ts" setup>
 import { $ref } from 'vue/macros';
-import { FormInst, useMessage } from 'naive-ui';
+import { FormInst } from 'naive-ui';
 import { SignLanguageFilled, NightlightFilled, PersonOutlineRound, PasswordRound } from '@vicons/material';
 import { getValidateCode, getAesKey } from '@/api/login/index';
 import useUserStore from '@/store/module/user';
@@ -237,7 +234,6 @@ const submitLoginBtn = (e: MouseEvent) => {
     // loginForm.resetValidation();
   }, 1000);
 };
-
 </script>
 
 <style lang="scss" scoped>

@@ -3,7 +3,7 @@
     <div class="header-left">
       <!-- 面包屑 -->
       <n-breadcrumb>
-        <n-breadcrumb-item> 
+        <n-breadcrumb-item>
           <n-icon size="20">
             <icon-ic:sharp-home></icon-ic:sharp-home>
           </n-icon>
@@ -35,6 +35,15 @@
         </template>
         <span> 你有{{ todoNumVal }}条消息待处理！</span>
       </n-tooltip>
+      <!-- 锁屏 -->
+      <n-tooltip placement="top-start" trigger="hover">
+        <template #trigger>
+          <n-icon class="right-todo" size="30">
+            <icon-material-symbols:lock></icon-material-symbols:lock>
+          </n-icon>
+        </template>
+        <span>锁屏</span>
+      </n-tooltip>
       <n-tooltip placement="top-start" trigger="hover">
         <template #trigger>
           <span class="right-user"> {{ currentUserName }} </span>
@@ -52,7 +61,7 @@
 import { renderIcon } from '@/utils/common';
 import useUserStore from '@/store/module/user';
 import router from '@/router';
-import {HomeFilled} from '@vicons/material';
+import { HomeFilled } from '@vicons/material';
 // 定义响应式数据
 let todoNumVal = $ref<number>(10);
 let currentUserName = $ref<string>('');

@@ -1,5 +1,10 @@
 <template>
-  <NConfigProvider :theme="currentTheme" :locale="currentLanguage" :date-locale="currentDateLocale">
+  <NConfigProvider
+    :theme-overrides="themeOverrides"
+    :theme="currentTheme"
+    :locale="currentLanguage"
+    :date-locale="currentDateLocale"
+  >
     <AppProvider>
       <RouterView></RouterView>
     </AppProvider>
@@ -11,11 +16,14 @@
 
 <script lang="ts" setup>
 import { ComputedRef } from 'vue';
-import { darkTheme, dateZhCN, zhCN } from 'naive-ui';
+import { GlobalThemeOverrides, darkTheme, dateZhCN, zhCN } from 'naive-ui';
 import type { GlobalTheme, NLocale, NDateLocale } from 'naive-ui';
 import useAppStore from '@/store/module/app';
 import useGlobalStore from '@/store/module/global';
 import AppProvider from '@/components/AppProvider/index.vue';
+import { naiveThemeOverrides } from '@/style/theme/naiveTheme.json';
+
+const themeOverrides: GlobalThemeOverrides = naiveThemeOverrides;
 
 let currentTheme: ComputedRef<GlobalTheme | null> = computed(() => (useAppStore().getTheme ? darkTheme : null));
 let currentLanguage: ComputedRef<NLocale | null> = computed(() => (useAppStore().getLanguage ? zhCN : null));

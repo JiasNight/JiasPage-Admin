@@ -11,7 +11,9 @@ const zh_CN = {
     inputVerifyCodePlaceholder: '请输入验证码',
     rememberPassword: '记住密码',
     forgetPassword: '忘记密码？',
-    signInBtn: '登 录'
+    signInBtn: '登 录',
+    QRSignIn: '扫码登录',
+    githubSignIn: 'GitHub登录'
   }
 };
 export default zh_CN;

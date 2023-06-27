@@ -154,7 +154,7 @@ const rightClickTagBtn = (tag: ITags, e: any) => {
   }
   .tag-active {
     border: .0625rem solid #9b59b6;
-    background-color: #2ed573;
+    background-color: #5f6fd0;
   }
   .right-menu-box {
     position: absolute;

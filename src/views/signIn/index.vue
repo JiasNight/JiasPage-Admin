@@ -8,7 +8,7 @@
             <template #trigger>
               <n-button tertiary circle class="login-theme" @click="changeCurrentThemeBtn">
                 <n-icon>
-                  <NightlightFilled></NightlightFilled>
+                  <icon-mdi:theme-light-dark></icon-mdi:theme-light-dark>
                 </n-icon>
               </n-button>
             </template>
@@ -18,7 +18,7 @@
             <template #trigger>
               <n-button tertiary circle class="login-language" @click="changeCurrentLanguageBtn">
                 <n-icon>
-                  <SignLanguageFilled></SignLanguageFilled>
+                  <icon-mdi:translate></icon-mdi:translate>
                 </n-icon>
               </n-button>
             </template>
@@ -43,7 +43,9 @@
                   :placeholder="$t('login.inputUserNamePlaceholder')"
                 >
                   <template #prefix>
-                    <n-icon size="25" :component="PersonOutlineRound" />
+                    <n-icon :size="25">
+                      <icon-mdi:account></icon-mdi:account>
+                    </n-icon>
                   </template>
                 </n-input>
               </n-form-item>
@@ -58,7 +60,9 @@
                   :placeholder="$t('login.inputPasswordPlaceholder')"
                 >
                   <template #prefix>
-                    <n-icon size="25" :component="PasswordRound" />
+                    <n-icon :size="25">
+                      <icon-mdi:lock></icon-mdi:lock>
+                    </n-icon>
                   </template>
                 </n-input>
               </n-form-item>
@@ -74,7 +78,9 @@
                       :placeholder="$t('login.inputVerifyCodePlaceholder')"
                     >
                       <template #prefix>
-                        <n-icon size="25" :component="PasswordRound" />
+                        <n-icon :size="25">
+                          <icon-mdi:alphabetical-variant></icon-mdi:alphabetical-variant>
+                        </n-icon>
                       </template>
                     </n-input>
                   </n-form-item>
@@ -92,10 +98,25 @@
               <n-button class="form-submit" :loading="submitBtnIsLoading" type="primary" round @click="submitLoginBtn">
                 {{ $t('login.signInBtn') }}
               </n-button>
-              <n-button class="form-submit" :loading="submitBtnIsLoading" type="primary" round @click="testBtn">
-                测试
-              </n-button>
             </n-form>
+            <div class="other-signIn">
+              <n-tooltip trigger="hover">
+                <template #trigger>
+                  <n-icon :size="30">
+                    <icon-mdi:qrcode></icon-mdi:qrcode>
+                  </n-icon>
+                </template>
+                <span>{{ $t('login.QRSignIn') }}</span>
+              </n-tooltip>
+              <n-tooltip trigger="hover">
+                <template #trigger>
+                  <n-icon :size="30">
+                    <icon-mdi:github></icon-mdi:github>
+                  </n-icon>
+                </template>
+                <span>{{ $t('login.githubSignIn') }}</span>
+              </n-tooltip>
+            </div>
           </div>
         </div>
       </div>
@@ -106,12 +127,13 @@
 <script lang="ts" setup>
 import { $ref } from 'vue/macros';
 import { FormInst, useMessage } from 'naive-ui';
-import { SignLanguageFilled, NightlightFilled, PersonOutlineRound, PasswordRound } from '@vicons/material';
 import { getValidateCode, getAesKey } from '@/api/login/index';
 import useUserStore from '@/store/module/user';
 import useAppStore from '@/store/module/app';
 import { useI18n } from 'vue-i18n';
 import router from '@/router/';
+import 'animate.css';
+
 const { locale } = useI18n();
 // 获取当前组件实例
 const instance = getCurrentInstance()?.appContext;
@@ -237,7 +259,6 @@ const submitLoginBtn = (e: MouseEvent) => {
     // loginForm.resetValidation();
   }, 1000);
 };
-
 </script>
 
 <style lang="scss" scoped>
@@ -250,17 +271,23 @@ const submitLoginBtn = (e: MouseEvent) => {
   background-size: cover;
   .content-box {
     position: absolute;
-    top: 50%;
+    top: 45%;
     left: 50%;
     display: flex;
     justify-content: center;
-    width: 450px;
+    width: 30%;
+    min-width: 450px;
+    max-width: 450px;
     height: 500px;
     border-top: 2px solid rgba(142, 131, 238, 0.5);
     border-left: 2px solid rgba(142, 131, 238, 0.5);
     border-radius: 10px;
-    background: rgba(194, 188, 188, 0.5);
-    box-shadow: 20px 20px 50px rgba(142, 131, 238, 0.5);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 10px rgba(142, 131, 238, 0.5);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     backdrop-filter: blur(5px);
     flex-direction: row;
@@ -311,21 +338,33 @@ const submitLoginBtn = (e: MouseEvent) => {
             align-items: center;
 
             .tool-remember-password :deep(.n-checkbox__label) {
-              color: #5b1ee9 !important;
+              color: #000 !important;
             }
             .tool-remember-password :deep(.n-checkbox__label):hover {
-              color: #2ecc71 !important;
+              color: #5b1ee9 !important;
             }
             .tool-forget-password {
-              color: #5b1ee9;
+              color: #000;
             }
             .tool-forget-password:hover {
-              color: #2ecc71;
+              color: #5b1ee9;
             }
           }
           .form-submit {
             margin-top: 20px;
             width: 100%;
+          }
+        }
+        .other-signIn {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          margin: 0 auto;
+          margin-top: 1.25rem;
+          width: 80%;
+          svg {
+            cursor: pointer;
           }
         }
       }

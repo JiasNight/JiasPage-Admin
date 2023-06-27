@@ -11,7 +11,9 @@ const en_US = {
     inputVerifyCodePlaceholder: 'please input verify code',
     rememberPassword: 'remember me',
     forgetPassword: 'forget password',
-    signInBtn: 'Sign In'
+    signInBtn: 'Sign In',
+    QRSignIn: 'QR SignIn',
+    githubSignIn: 'GitHub SignIn'
   }
 };
 export default en_US;

@@ -68,6 +68,7 @@ let currentUserName = $ref<string>('');
 
 // 挂载
 onMounted(() => {
+  console.log(useUserStore().userInfo);
   currentUserName = useUserStore().userInfo.userNickName;
 });
 

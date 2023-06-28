@@ -9,15 +9,10 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    'IconGrommetIcons:github': typeof import('~icons/grommet-icons/github')['default']
-    'IconGrommetIcons:qr': typeof import('~icons/grommet-icons/qr')['default']
-    'IconIc:baselineClose': typeof import('~icons/ic/baseline-close')['default']
-    'IconIc:baselineMenu': typeof import('~icons/ic/baseline-menu')['default']
     'IconIc:sharpHome': typeof import('~icons/ic/sharp-home')['default']
     'IconMaterialSymbols:autorenew': typeof import('~icons/material-symbols/autorenew')['default']
     'IconMaterialSymbols:listAltOutline': typeof import('~icons/material-symbols/list-alt-outline')['default']
     'IconMaterialSymbols:lock': typeof import('~icons/material-symbols/lock')['default']
-    'IconMaterialSymbols:qrCode': typeof import('~icons/material-symbols/qr-code')['default']
     'IconMaterialSymbols:search': typeof import('~icons/material-symbols/search')['default']
     'IconMdi:account': typeof import('~icons/mdi/account')['default']
     'IconMdi:alphabeticalVariant': typeof import('~icons/mdi/alphabetical-variant')['default']
@@ -58,8 +53,6 @@ declare module '@vue/runtime-core' {
     NMenu: typeof import('naive-ui')['NMenu']
     NMessageProvider: typeof import('naive-ui')['NMessageProvider']
     NNotificationProvider: typeof import('naive-ui')['NNotificationProvider']
-    NResult: typeof import('naive-ui')['NResult']
-    NScrollbar: typeof import('naive-ui')['NScrollbar']
     NSelect: typeof import('naive-ui')['NSelect']
     NSpace: typeof import('naive-ui')['NSpace']
     NSpin: typeof import('naive-ui')['NSpin']

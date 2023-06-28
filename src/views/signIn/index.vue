@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <div class="content-box">
+    <div class="content-box animate__animated animate__slideInLeft">
       <div class="box-right">
         <div class="right-login">
           <p class="login-title">{{ $t('login.title') }}</p>
@@ -263,6 +263,7 @@ const submitLoginBtn = (e: MouseEvent) => {
 
 <style lang="scss" scoped>
 .login-container {
+  position: relative;
   width: 100vw;
   height: 100vh;
   background-image: url('/src/assets/images/login/login-background-1.jpg');
@@ -271,8 +272,8 @@ const submitLoginBtn = (e: MouseEvent) => {
   background-size: cover;
   .content-box {
     position: absolute;
-    top: 45%;
-    left: 50%;
+    top: 25%;
+    left: 42%;
     display: flex;
     justify-content: center;
     width: 30%;
@@ -284,11 +285,6 @@ const submitLoginBtn = (e: MouseEvent) => {
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.1);
     box-shadow: 0 0 10px rgba(142, 131, 238, 0.5);
-    -moz-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    -webkit-transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
     backdrop-filter: blur(5px);
     flex-direction: row;
     .box-right {

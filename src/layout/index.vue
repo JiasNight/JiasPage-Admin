@@ -12,10 +12,7 @@
       @collapse="siderCollapsed = true"
       @expand="siderCollapsed = false"
     >
-      <!-- logo -->
-      <Logo :collapsed="siderCollapsed"></Logo>
-      <!-- 菜单 -->
-      <Menus :collapsed="siderCollapsed"></Menus>
+      <Sider :collapsed="siderCollapsed"></Sider>
     </n-layout-sider>
     <n-layout>
       <n-layout-header bordered>
@@ -24,8 +21,6 @@
 
       <!-- 标签页 -->
       <PageTags></PageTags>
-      <!-- <n-scrollbar x-scrollable>
-      </n-scrollbar> -->
       <n-layout-content class="layout-content">
         <ViewMain></ViewMain>
         <!-- <router-view></router-view> -->
@@ -37,8 +32,7 @@
 
 <script lang="ts" setup>
 import { Ref, ComputedRef } from 'vue';
-import Logo from './component/logo/index.vue';
-import Menus from './component/menu/index.vue';
+import Sider from './component/sider/index.vue';
 import Header from './component/header/index.vue';
 import PageTags from './component/tags/index.vue';
 import ViewMain from './component/main/index.vue';
@@ -107,7 +101,7 @@ const signOutBtn = (): void => {
     transition: all 0.2s ease-in-out;
   }
   .layout-content {
-    padding: .625rem;
+    padding: 0.625rem;
   }
 }
 </style>

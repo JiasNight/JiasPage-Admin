@@ -85,7 +85,7 @@ const handleClickMenu = (key: string, item: MenuOption | any) => {
     &.n-menu-item-content--selected,
     &:hover {
       &::before {
-        border-left: 4px solid #2ecc71;
+        border-left: 4px solid #5b1ee9;
       }
     }
   }

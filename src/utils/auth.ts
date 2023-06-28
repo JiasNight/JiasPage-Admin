@@ -2,7 +2,9 @@
 import { useCookies } from 'vue3-cookies';
 const { cookies } = useCookies();
 
-const tokenKey = 'jias-token';
+const tokenKey = 'page-token';
+
+const expireTimes = '1d';
 
 const sessionId = 'xxl_sso_sessionid';
 
@@ -10,7 +12,7 @@ export function getToken() {
   return cookies.get(tokenKey);
 }
 
-export function setToken(tokenVal: string, expireTimes?: string) {
+export function setToken(tokenVal: string) {
   return cookies.set(tokenKey, tokenVal, expireTimes);
 }
 

@@ -1,6 +1,6 @@
 import { MockMethod } from 'vite-plugin-mock';
 import { formatDate } from '@/utils/common';
-import { IResponse } from '@/interface/index';
+import { IResponse } from '@/interface/common';
 
 const mock: Array<MockMethod> = [
   {

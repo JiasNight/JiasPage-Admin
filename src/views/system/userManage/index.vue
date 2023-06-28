@@ -296,3 +296,4 @@ const queryTableDataBtn = () => {
 .screen-layout {
 }
 </style>
+@/interface/common

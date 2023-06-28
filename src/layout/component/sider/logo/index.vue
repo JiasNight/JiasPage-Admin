@@ -17,13 +17,13 @@ const props = defineProps({
   }
 });
 
-watch(
-  () => props.collapsed,
-  (newValue: boolean, oldValue: boolean) => {
-    console.log(newValue);
-  },
-  { deep: true }
-);
+// watch(
+//   () => props.collapsed,
+//   (newValue: boolean, oldValue: boolean) => {
+//     console.log(newValue);
+//   },
+//   { deep: true }
+// );
 </script>
 
 <style lang="scss" scoped>

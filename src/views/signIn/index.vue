@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <div class="content-box animate__animated animate__slideInLeft">
+    <div class="content-box animate__animated animate__bounceInLeft">
       <div class="box-right">
         <div class="right-login">
           <p class="login-title">{{ $t('login.title') }}</p>
@@ -120,6 +120,10 @@
           </div>
         </div>
       </div>
+    </div>
+    <!-- 版权信息 -->
+    <div class="copyright">
+      Copyright &copy; 2023 Powered by <a href="#">JIAS</a>&trade;
     </div>
   </div>
 </template>
@@ -272,13 +276,15 @@ const submitLoginBtn = (e: MouseEvent) => {
   background-size: cover;
   .content-box {
     position: absolute;
-    top: 25%;
-    left: 42%;
+    top: 20%;
+    right:0;
+    left: 0;
     display: flex;
     justify-content: center;
+    margin: 0 auto;
     width: 30%;
-    min-width: 450px;
-    max-width: 450px;
+    min-width: 25rem;
+    max-width: 28.125rem;
     height: 500px;
     border-top: 2px solid rgba(142, 131, 238, 0.5);
     border-left: 2px solid rgba(142, 131, 238, 0.5);
@@ -365,6 +371,12 @@ const submitLoginBtn = (e: MouseEvent) => {
         }
       }
     }
+  }
+  .copyright {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
   }
 }
 

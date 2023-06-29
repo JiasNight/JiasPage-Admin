@@ -61,15 +61,16 @@
 import { renderIcon } from '@/utils/common';
 import useUserStore from '@/store/module/user';
 import router from '@/router';
-import { HomeFilled } from '@vicons/material';
+
+let userStore = useUserStore();
+
 // 定义响应式数据
 let todoNumVal = $ref<number>(10);
 let currentUserName = $ref<string>('');
 
 // 挂载
 onMounted(() => {
-  console.log(useUserStore().userInfo);
-  currentUserName = useUserStore().userInfo.userNickName;
+  currentUserName = userStore.userInfo.userNickName;
 });
 
 // const { iconRender } = useIconRender();
@@ -95,14 +96,19 @@ const breadcrumbList = [
 // 用户下拉菜单选项
 const dropdownOptions = [
   {
-    label: '用户资料',
+    label: '用户信息',
     key: 'userInfo',
-    icon: renderIcon('ic:baseline-person')
+    icon: renderIcon('mdi:account-box')
+  },
+  {
+    label: '主题模式',
+    key: 'theme',
+    icon: renderIcon('mdi:palette')
   },
   {
     label: '退出登录',
     key: 'logout',
-    icon: renderIcon('ic:baseline-logout')
+    icon: renderIcon('mdi:logout')
   }
 ];
 
@@ -110,8 +116,10 @@ const dropdownOptions = [
 const handleSelectDropdown = (key: string) => {
   if (key === 'userInfo') {
     router.push('userInfo');
+  } else if (key === 'theme') {
+    console.log('主题设置');
   } else if (key === 'logout') {
-    useUserStore().logoutSystem();
+    userStore.logoutSystem();
   }
 };
 </script>

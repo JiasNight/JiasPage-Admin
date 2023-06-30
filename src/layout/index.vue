@@ -19,11 +19,12 @@
         <Header></Header>
       </n-layout-header>
 
-      <!-- 标签页 -->
-      <PageTags></PageTags>
       <n-layout-content class="layout-content">
-        <ViewMain></ViewMain>
-        <!-- <router-view></router-view> -->
+        <!-- 标签页 -->
+        <PageTags></PageTags>
+        <div class="content-main">
+          <ViewMain></ViewMain>
+        </div>
       </n-layout-content>
       <n-back-top :right="100" />
     </n-layout>
@@ -93,15 +94,25 @@ const signOutBtn = (): void => {
 
 <style lang="scss" scoped>
 .screen-layout {
+  display: flex;
+  flex-direction: row;
+  flex: auto;
   .layout-sider {
     position: relative;
     min-height: 100vh;
-    color: #fff;
+    // background-color: #001428;
     box-shadow: 2px 0 8px 0 rgb(29 35 41 / 5%);
     transition: all 0.2s ease-in-out;
   }
   .layout-content {
-    padding: 0.625rem;
+    position: relative;
+    min-height: 100vh;
+    .content-main {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: rgb(245, 245, 245);
+    }
   }
 }
 </style>

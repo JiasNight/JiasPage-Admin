@@ -2,13 +2,12 @@
   <router-view v-slot="{ Component, route }">
     <Suspense>
       <template #default>
-        <KeepAlive>
-          <Transition name="fade" mode="out-in">
-            <div v-if="Component">
-              <component :is="Component" :key="route.fullPath" />
-            </div>
-          </Transition>
-        </KeepAlive>
+        <Transition name="fade" mode="out-in">
+          <KeepAlive v-if="route.meta.cache">
+            <component :is="Component" :key="route.fullPath" />
+          </KeepAlive>
+          <component :is="Component" v-else :key="route.fullPath" />
+        </Transition>
       </template>
       <template #fallback> 正在加载... </template>
     </Suspense>
@@ -34,24 +33,25 @@ watch(
 </script>
 
 <style lang="scss" scoped>
-// 定义进入开始和离开结束的透明度为0
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease-in-out;
+}
+
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
 }
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s, transform 0.3s;
+}
+.fade-enter-from {
+  opacity: 0;
+  transform: translateY(-10%);
+}
 .fade-leave-to {
-  transform: translateX(10px);
-}
-.fade-enter-to {
-  transform: translateX(-10px);
-}
-// 定义进入结束和离开开始的透明度为
-.fade-enter-to,
-.fade-leave-from {
-  opacity: 1;
-}
-.fade-leave-active,
-.fade-enter-active {
-  transition: all 0.5s ease-out;
+  opacity: 0;
+  transform: translateY(10%);
 }
 </style>

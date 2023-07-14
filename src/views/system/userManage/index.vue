@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="view-container">
     <n-grid cols="5" :x-gap="15" item-responsive>
       <n-grid-item span="1">
         <n-card>
@@ -98,7 +98,7 @@ import { Ref, ComputedRef, h, Component } from 'vue';
 import { TreeOption, FormInst, DataTableColumns, NButton, NIcon, useDialog, useMessage } from 'naive-ui';
 import { SearchRound, AutorenewRound, Battery50Round, AcUnitRound } from '@vicons/material';
 import { renderIcon } from '@/utils/common';
-import { IRes } from '@/interface';
+import { IRes } from '@/interface/common';
 import useUserStore from '@/store/module/user';
 import { Icon } from '@iconify/vue';
 import { getDeptTree, getUserList } from '@/api/system/userManage';

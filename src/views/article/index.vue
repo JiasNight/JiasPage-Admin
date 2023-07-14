@@ -1,9 +1,6 @@
 <template>
-  <div>
-    <MdEditor
-      v-model="mdText"
-      @on-save="saveMdTextBtn"
-    ></MdEditor>
+  <div class="view-container">
+    <MdEditor v-model="mdText" @on-save="saveMdTextBtn"></MdEditor>
   </div>
 </template>
 

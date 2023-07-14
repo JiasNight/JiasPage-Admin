@@ -14,8 +14,8 @@
         @click="clickTagViewBtn(item)"
         @contextmenu.prevent="rightClickTagBtn(item, $event)"
       >
-        <n-icon size="15" color="#e95b1e">
-          <icon-mdi:alpha-p-circle></icon-mdi:alpha-p-circle>
+        <n-icon size="15" color="#A163F7">
+          <icon-mdi:star-face></icon-mdi:star-face>
         </n-icon>
         <n-tooltip placement="top" trigger="hover">
           <template #trigger>
@@ -195,7 +195,7 @@ const clickScrollRightBtn = (e: Event) => {
       color: #495060;
       background: #fff;
       &:hover {
-        border: 1px solid #9b59b6;
+        border: 1px solid #A163F7;
       }
       .tag-item-span {
         display: inline-block;
@@ -217,8 +217,8 @@ const clickScrollRightBtn = (e: Event) => {
       }
     }
     .tag-active {
-      border: 0.0625rem solid #9b59b6;
-      background-color: #c6b4fd;
+      // border: 0.0625rem solid #A163F7;
+      background-color: #45E3FF;
     }
     // 定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸
     &::-webkit-scrollbar {

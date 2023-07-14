@@ -102,8 +102,8 @@ import router from '@/router';
 import { FormInst } from 'naive-ui';
 
 interface IThemeFormData {
-  model: boolean;
-  color: string;
+  model?: boolean;
+  color?: string;
 }
 
 let userStore = useUserStore();

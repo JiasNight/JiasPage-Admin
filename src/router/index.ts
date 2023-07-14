@@ -1,8 +1,7 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import { createRouter, createWebHistory, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 
 import Layout from '@/layout/index.vue';
 
-// import { progressStart, progressEnd } from '@/utils/nporgress';
 // 引入模块路由
 // import baseRouters from './modules/base';
 

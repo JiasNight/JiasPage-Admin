@@ -23,14 +23,18 @@ import useGlobalStore from '@/store/module/global';
 import AppProvider from '@/components/AppProvider/index.vue';
 import { naiveThemeOverrides } from '@/style/theme/naiveTheme.json';
 
+const appStore = useAppStore();
+const globalStore = useGlobalStore();
+
+// 自定义的样式
 const themeOverrides: GlobalThemeOverrides = naiveThemeOverrides;
 
-let currentTheme: ComputedRef<GlobalTheme | null> = computed(() => (useAppStore().getTheme ? darkTheme : null));
-let currentLanguage: ComputedRef<NLocale | null> = computed(() => (useAppStore().getLanguage ? zhCN : null));
+let currentTheme: ComputedRef<GlobalTheme | null> = computed(() => (appStore.getTheme ? darkTheme : null));
+let currentLanguage: ComputedRef<NLocale | null> = computed(() => (appStore.getLanguage ? zhCN : null));
 let currentDateLocale: ComputedRef<NDateLocale | null> = computed(() => dateZhCN);
 
-const isLock = computed(() => useGlobalStore().getIsLock);
-// let
+const isLock = computed(() => globalStore.getIsLock);
+
 </script>
 
 <style>

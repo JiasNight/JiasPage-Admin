@@ -76,6 +76,7 @@
                       round
                       maxlength="4"
                       :placeholder="$t('login.inputVerifyCodePlaceholder')"
+                      @keydown.enter="submitLoginBtn"
                     >
                       <template #prefix>
                         <n-icon :size="25">
@@ -95,7 +96,14 @@
                 </n-checkbox>
                 <a class="tool-forget-password" href="#">{{ $t('login.forgetPassword') }}</a>
               </div>
-              <n-button class="form-submit" :loading="submitBtnIsLoading" type="primary" round @click="submitLoginBtn">
+              <n-button
+                class="form-submit"
+                :loading="submitBtnIsLoading"
+                type="primary"
+                round
+                keyboard
+                @click="submitLoginBtn"
+              >
                 {{ $t('login.signInBtn') }}
               </n-button>
             </n-form>
@@ -122,9 +130,7 @@
       </div>
     </div>
     <!-- 版权信息 -->
-    <div class="copyright">
-      Copyright &copy; 2023 Powered by <a href="#">JIAS</a>&trade;
-    </div>
+    <div class="copyright">Copyright &copy; 2023 Powered by <a href="#">JIAS</a>&trade;</div>
   </div>
 </template>
 
@@ -136,21 +142,16 @@ import useUserStore from '@/store/module/user';
 import useAppStore from '@/store/module/app';
 import { useI18n } from 'vue-i18n';
 import router from '@/router/';
+import { IRes } from '@/interface/common';
 import 'animate.css';
 
 const { locale } = useI18n();
+const userStore = useUserStore();
+const appStore = useAppStore();
 // 获取当前组件实例
 const instance = getCurrentInstance()?.appContext;
 // let globalProxy = instance.appContext.config.globalProperties;
 let globalProxy = instance?.config.globalProperties;
-
-interface Ires {
-  success: boolean;
-  code: number;
-  message: string;
-  timestamp: string;
-  data: any;
-}
 
 // 响应式变量
 let isLoading = $ref<boolean>(false);
@@ -170,7 +171,7 @@ onMounted(() => {
 const getCurrentAesKey = () => {
   const sessionAesKey = window.sessionStorage.getItem('aesKey');
   if (!sessionAesKey) {
-    getAesKey().then((res: Ires) => {
+    getAesKey().then((res: IRes) => {
       if (res && res.code === 200) {
         window.sessionStorage.setItem('aesKey', res.data);
       } else {
@@ -184,7 +185,7 @@ const getCurrentAesKey = () => {
 const getCurrentVerifyCode = () => {
   verifyImgLoading = true;
   getValidateCode()
-    .then((res: Ires) => {
+    .then((res: IRes) => {
       if (res && res.code === 200) {
         verifyCodeImg = res.data;
         verifyImgLoading = false;
@@ -199,7 +200,7 @@ const getCurrentVerifyCode = () => {
 
 // 切换当前主题
 const changeCurrentThemeBtn = (): void => {
-  useAppStore().setTheme();
+  appStore.setTheme();
 };
 
 let currentLanguage = 'zh_CN';
@@ -208,7 +209,7 @@ let currentLanguage = 'zh_CN';
 const changeCurrentLanguageBtn = (): void => {
   currentLanguage = currentLanguage === 'zh_CN' ? 'en_US' : 'zh_CN';
   locale.value = currentLanguage;
-  useAppStore().setLanguage(currentLanguage);
+  appStore.setLanguage(currentLanguage);
 };
 
 const clickCodeImgBtn = () => {
@@ -248,12 +249,10 @@ const submitLoginBtn = (e: MouseEvent) => {
   loginForm.validate((valid: any) => {
     if (!valid) {
       submitBtnIsLoading = true;
-      useUserStore()
-        .userLoginHandle(adminFormData)
-        .then(() => {
-          router.push('/');
-          submitBtnIsLoading = false;
-        });
+      userStore.userLoginHandle(adminFormData).then(() => {
+        router.push('/');
+        submitBtnIsLoading = false;
+      });
     } else {
       // console.log('验证失败');
     }
@@ -277,7 +276,7 @@ const submitLoginBtn = (e: MouseEvent) => {
   .content-box {
     position: absolute;
     top: 20%;
-    right:0;
+    right: 0;
     left: 0;
     display: flex;
     justify-content: center;

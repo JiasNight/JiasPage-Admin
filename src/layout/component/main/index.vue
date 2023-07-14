@@ -2,12 +2,13 @@
   <router-view v-slot="{ Component, route }">
     <Suspense>
       <template #default>
-        <Transition name="fade" mode="out-in">
-          <KeepAlive v-if="route.meta.cache">
-            <component :is="Component" :key="route.fullPath" />
-          </KeepAlive>
-          <component :is="Component" v-else :key="route.fullPath" />
-        </Transition>
+        <KeepAlive>
+          <Transition name="fade" mode="out-in">
+            <div>
+              <component :is="Component" :key="route.fullPath" />
+            </div>
+          </Transition>
+        </KeepAlive>
       </template>
       <template #fallback> 正在加载... </template>
     </Suspense>
@@ -20,13 +21,12 @@ import useAppStore from '@/store/module/app';
 import { RouteLocationNormalizedLoaded } from 'vue-router';
 
 // let currentRoute: RouteLocationNormalizedLoaded | undefined = $ref<RouteLocationNormalizedLoaded>();
+const appStore = useAppStore();
 
 watch(
   () => router.currentRoute.value,
   (newRoute, oldRoute) => {
-    console.log('路由', newRoute.path);
-    // currentRoute = newValue || undefined;
-    useAppStore().setCurrentRoute(newRoute);
+    appStore.setCurrentRoute(newRoute);
   },
   { immediate: true }
 );

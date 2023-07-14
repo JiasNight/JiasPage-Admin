@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="view-container">
     <n-grid cols="5" :x-gap="15" item-responsive>
       <n-grid-item span="1">
         <n-card>
@@ -92,7 +92,7 @@ let treeData = $ref<TreeOption[]>([
 // 树点击
 const handleClickNode = ({ option }: { option: TreeOption }) => {
   return {
-    onClick () {
+    onClick() {
       console.log('[Click] ' + option.label);
       tableIsLoading = true;
       setTimeout(() => {
@@ -122,7 +122,7 @@ let queryFormData = $ref<userForm>({
 
 // 重置查询内容
 const resetQueryFormBtn = () => {
-  if(queryForm) queryForm.restoreValidation();
+  if (queryForm) queryForm.restoreValidation();
 };
 
 let roleOptions = $ref<Array<object>>([

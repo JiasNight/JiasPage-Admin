@@ -29,13 +29,13 @@ import * as path from 'path';
 
 // https://vitejs.dev/config/
 export default ({ command, mode }) => {
-  // 是否生产环境
-  const isProduction = process.env.NODE_ENV === 'production';
   // 设置第三个参数为 '' 来加载所有环境变量，而不管是否有 `VITE_` 前缀。
   const env = loadEnv(mode, process.cwd());
+  // 是否生产环境
+  const isProduction = mode === 'production';
   console.log(command);
   console.log(mode);
-  console.log(isProduction);
+  console.log(env);
   return defineConfig({
     define: {
       'process.env': env
@@ -186,7 +186,9 @@ export default ({ command, mode }) => {
         // 自定义图标加载
         customCollections: {
           // 这里是存放svg图标的文件地址，custom是自定义图标库的名称，给svg文件设置fill="currentColor"属性，使图标的颜色具有适应性
-          custom: FileSystemIconLoader('./src/assets/icons', svg => svg.replace(/^<svg /, '<svg fill="currentColor" '))
+          custom: FileSystemIconLoader('./src/assets/icons', (svg) =>
+            svg.replace(/^<svg /, '<svg fill="currentColor" ')
+          )
         },
         scale: 1,
         defaultClass: 'inline-block'

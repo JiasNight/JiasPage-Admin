@@ -32,12 +32,8 @@ const useAppStore = defineStore({
     currentRoute: {}
   }),
   getters: {
-    getTheme(state): boolean {
-      return state.theme;
-    },
-    getLanguage(state): string {
-      return state.language;
-    },
+    getTheme: (state) => state.theme,
+    getLanguage: (state) => state.language,
     // 获取所有路由信息
     getRoutes(state): [] | Array<RouteRecordRaw> {
       return state.routes;
@@ -77,8 +73,9 @@ const useAppStore = defineStore({
     // 添加动态路由，并同步到状态管理器中
     addRoutes(data: Array<RouteRecordRaw>) {
       recursionRouter(data);
-      data.forEach(item => {
+      data.forEach((item) => {
         router.addRoute(item);
+        console.log('田家庵');
         this.routes.push(item);
       });
       // console.log(router.getRoutes());
@@ -124,6 +121,5 @@ function recursionRouter(routeList: Array<any>) {
     }
   });
 }
-
 
 export default useAppStore;

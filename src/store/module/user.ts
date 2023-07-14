@@ -35,15 +35,15 @@ const useUserStore = defineStore({
       this.token = token;
     },
     // 获取当前用户信息
-    getCurrentUserInfo() {
-      return new Promise((resolve: any, reject: any) => {
+    async getCurrentUserInfo() {
+      return await new Promise((resolve: any, reject: any) => {
         getUserInfo().then((res: any) => {
           if (res && res.code === 200) {
             this.userInfo = res.data;
-            resolve();
+            resolve(this.userInfo);
           } else {
             this.userInfo = {};
-            reject();
+            reject(this.userInfo);
           }
         });
       });

@@ -14,7 +14,7 @@ export function renderIcon(icon = 'ic:baseline-insert-emoticon', props = { size:
 }
 
 /**
- *
+ * * 格式化时间
  * @param date 标准时间格式
  * @param fmt 输出格式
  * @returns 期望的输出格式
@@ -42,6 +42,15 @@ export function formatDate(date = new Date(), fmt = 'yyyy-MM-dd hh:mm:ss') {
   }
   return fmt;
 }
+
+/**
+ * * 生成一个不重复的ID
+ * @param randomLength 需要生成的长度
+ * @returns
+ */
+export const getUUID = (randomLength = 10) => {
+  return Number(Math.random().toString().substring(2, randomLength) + Date.now()).toString(36);
+};
 
 // /**
 //  * @desc  函数节流

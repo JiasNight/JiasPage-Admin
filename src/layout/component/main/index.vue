@@ -2,13 +2,12 @@
   <router-view v-slot="{ Component, route }">
     <Suspense>
       <template #default>
-        <KeepAlive>
-          <Transition name="fade" mode="out-in">
-            <div>
-              <component :is="Component" :key="route.fullPath" />
-            </div>
-          </Transition>
-        </KeepAlive>
+        <Transition name="fade" mode="out-in">
+          <component :is="Component" v-if="!route.meta.cache" :key="route.fullPath" />
+          <KeepAlive v-else>
+            <component :is="Component" :key="route.fullPath" />
+          </KeepAlive>
+        </Transition>
       </template>
       <template #fallback> 正在加载... </template>
     </Suspense>

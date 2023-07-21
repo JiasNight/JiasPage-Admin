@@ -73,40 +73,51 @@ export default ({ command, mode }) => {
           find: 'components',
           replacement: path.resolve(__dirname, 'src/components')
         }
-      ]
+      ],
+      dedupe: ['vue']
     },
     // 打包相关规则
     build: {
-      target: 'modules', // 指定es版本,浏览器的兼容性,es2015(编译成es5)
-      outDir: 'page', // 指定打包输出路径  默认：dist
-      assetsDir: 'static', // 指定静态资源存放路径
-      minify: 'esbuild', // 项目压缩 :boolean | 'terser' | 'esbuild'
-      chunkSizeWarningLimit: 1000, // chunk 大小警告的限制（以 kbs 为单位）默认：500
-      cssCodeSplit: true, // css代码拆分,false则所有样式保存在一个css里面
-      sourcemap: !isProduction, // 构建后是否生成 source map 文件，生产环境禁用
-      cssTarget: 'chrome61', //防止 vite 将 rgba() 颜色转化为 #RGBA 十六进制符号的形式
+      // 指定es版本,浏览器的兼容性,es2015(编译成es5)
+      target: 'modules',
+      // 指定打包输出路径  默认：dist
+      outDir: 'page',
+      // 指定静态资源存放路径
+      assetsDir: 'static',
+      // 项目压缩 :boolean | 'terser' | 'esbuild'
+      minify: 'esbuild',
+      // chunk 大小警告的限制（以 kbs 为单位）默认：500
+      chunkSizeWarningLimit: 1000,
+      // css代码拆分,false则所有样式保存在一个css里面
+      cssCodeSplit: true,
+      // 构建后是否生成 source map 文件，生产环境禁用
+      sourcemap: !isProduction,
+      //防止 vite 将 rgba() 颜色转化为 #RGBA 十六进制符号的形式
+      cssTarget: 'chrome61',
       terserOptions: {
         // 生产环境移除console
         compress: {
-          drop_console: true, // 打包时删除console
-          drop_debugger: true // 打包时删除 debugger
+          // 打包时删除console
+          drop_console: true,
+          // 打包时删除 debugger
+          drop_debugger: true
         },
         output: {
           // 去掉注释内容
           comments: true
         }
       },
+      // 分包
       rollupOptions: {
-        // input:{
-        //   index:resolve(__dirname,"index.html"),
-        //   project:resolve(__dirname,"project.html")
-        // },
-        // output:{
-        //   chunkFileNames:'static/js/[name]-[hash].js',
-        //   entryFileNames:"static/js/[name]-[hash].js",
-        //   assetFileNames:"static/[ext]/name-[hash].[ext]"
-        // }
         output: {
+          chunkFileNames: 'static/js/[name]-[hash].js',
+          entryFileNames: 'static/js/[name]-[hash].js',
+          assetFileNames: (chunkInfo) => {
+            if (['.png', '.jpg', '.jpeg'].includes(path.extname(chunkInfo.name))) {
+              return 'static/[ext]/[name].[ext]';
+            }
+            return 'static/[ext]/[name]-[hash].[ext]';
+          },
           manualChunks: {
             // 拆分代码，这个就是分包，配置完后自动按需加载，现在还比不上webpack的splitchunk，不过也能用了。
             vue: ['vue', 'vue-router'],
@@ -129,8 +140,9 @@ export default ({ command, mode }) => {
           ['flex', { display: 'flex' }],
           ['c-p', { cursor: 'pointer' }],
           ['p-r', { position: 'relative' }],
+          // 使用时只需要写 p-c 即可应用该组样式
           [
-            'p-c', // 使用时只需要写 p-c 即可应用该组样式
+            'p-c',
             {
               position: 'absolute',
               top: '50%',
@@ -196,20 +208,32 @@ export default ({ command, mode }) => {
       // 配置jsx
       vueJsx(),
       // gzip压缩
-      viteCompression(),
+      viteCompression({
+        verbose: true,
+        disable: false,
+        threshold: 10240,
+        algorithm: 'gzip',
+        ext: '.gz'
+      }),
       viteMockServe({
         mockPath: './src/mock/',
-        watchFiles: true, // 监视文件夹中的文件更改
-        // enable: command === 'development', // 是否启用 mock 功能
+        // 监视文件夹中的文件更改
+        watchFiles: true,
+        // 开发打包开关
         localEnabled: true,
+        // 生产打包开关
+        prodEnabled: true,
+        // 打开后，可以读取 ts 文件模块。 请注意，打开后将无法监视.js 文件
+        supportTs: true,
         logger: true // 是否在控制台显示请求日志
       })
     ],
-    // 样式相关规则
+    // 全局 css 注册
     css: {
       preprocessorOptions: {
         // 导入variables.scss, 这样就可以在vue全局中使用variables.scss中定义的变量了
         scss: {
+          javascriptEnabled: true,
           additionalData: '@import "./src/style/variables.scss";'
         }
       }

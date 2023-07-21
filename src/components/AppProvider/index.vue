@@ -1,7 +1,4 @@
 <template>
-  <!-- <NConfigProvider :theme="currentTheme" :locale="currentLanguage" :date-locale="currentDateLocale">
-    
-  </NConfigProvider> -->
   <n-loading-bar-provider>
     <n-dialog-provider>
       <n-notification-provider>
@@ -30,7 +27,6 @@ function setupNaiveTools() {
   window.$dialog = useDialog();
   window.$message = useMessage();
   window.$notification = useNotification();
-  console.log(window);
 }
 
 const NaiveProviderContent = defineComponent({

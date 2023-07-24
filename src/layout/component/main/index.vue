@@ -3,9 +3,13 @@
     <Suspense>
       <template #default>
         <Transition name="fade" mode="out-in">
-          <component :is="Component" v-if="!route.meta.cache" :key="route.fullPath" />
-          <KeepAlive v-else>
+          <div v-if="!route.meta.cache">
             <component :is="Component" :key="route.fullPath" />
+          </div>
+          <KeepAlive v-else>
+            <div>
+              <component :is="Component" :key="route.fullPath" />
+            </div>
           </KeepAlive>
         </Transition>
       </template>

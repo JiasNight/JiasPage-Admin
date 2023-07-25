@@ -39,6 +39,14 @@ export const commonRoutes: Array<RouteRecordRaw> = [
     component: () => import('@/views/signUp/index.vue')
   },
   {
+    path: '/personalCenter',
+    name: 'PersonalCenter',
+    meta: {
+      title: '个人中心'
+    },
+    component: () => import('@/views/personalCenter/index.vue')
+  },
+  {
     path: '/404',
     name: '404',
     meta: {

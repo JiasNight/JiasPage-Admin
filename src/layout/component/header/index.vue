@@ -162,7 +162,7 @@ const dropdownOptions = [
 // 处理下拉菜单按钮点击
 const handleSelectDropdown = (key: string) => {
   if (key === 'userInfo') {
-    router.push('userInfo');
+    router.push('/personalCenter');
   } else if (key === 'theme') {
     console.log('主题设置');
     themeDrawerShow = true;

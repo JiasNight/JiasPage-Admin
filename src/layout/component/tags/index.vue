@@ -10,12 +10,12 @@
         v-for="(item, index) in tagsList"
         :key="index"
         class="tag-item"
-        :class="useTagStore().getActiveTagPath === item.path ? 'tag-active' : ''"
+        :class="tagStore.getActiveTagPath === item.path ? 'tag-active' : ''"
         @click="clickTagViewBtn(item)"
         @contextmenu.prevent="rightClickTagBtn(item, $event)"
       >
-        <n-icon size="15" color="#A163F7">
-          <icon-mdi:star-face></icon-mdi:star-face>
+        <n-icon size="15" color="#A163F7" :component="renderIcon(item.meta.icon)">
+          <!-- <icon-mdi:star-face></icon-mdi:star-face> -->
         </n-icon>
         <n-tooltip placement="top" trigger="hover">
           <template #trigger>
@@ -49,19 +49,22 @@ import type { MenuOption } from 'naive-ui';
 import ContextMenu from './contextmenu.vue';
 import useTagStore from '@/store/module/tag';
 import router from '@/router';
+import { renderIcon } from '@/utils/common';
 
 // 扩展ITags的属性
 type ITags = MenuOption & {
   path: string;
 };
 
+const tagStore = useTagStore();
+
 // 标签列表
-let tagsList = $ref<Array<any>>(useTagStore().getPageTagList);
+let tagsList = $ref<Array<any>>(tagStore.getPageTagList);
 
 let tagScroll = $ref<HTMLElement>();
 
 // 当前活动路径
-// let currentActivePath = $ref<string>(useTagStore().getActiveTagPath);
+// let currentActivePath = $ref<string>(tagStore.getActiveTagPath);
 
 // 加载之后
 onMounted(() => {
@@ -195,7 +198,7 @@ const clickScrollRightBtn = (e: Event) => {
       color: #495060;
       background: #fff;
       &:hover {
-        border: 1px solid #A163F7;
+        border: 1px solid #a163f7;
       }
       .tag-item-span {
         display: inline-block;
@@ -218,7 +221,7 @@ const clickScrollRightBtn = (e: Event) => {
     }
     .tag-active {
       // border: 0.0625rem solid #A163F7;
-      background-color: #45E3FF;
+      background-color: #45e3ff;
     }
     // 定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸
     &::-webkit-scrollbar {

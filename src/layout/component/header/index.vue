@@ -54,44 +54,8 @@
         <img class="right-avatar" src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg" alt="用户头像" />
       </n-dropdown>
     </div>
-    <!-- 主题设置 -->
-    <n-drawer v-model:show="themeDrawerShow" :width="300" :default-width="300" placement="right" resizable>
-      <n-drawer-content>
-        <template #header>
-          <n-icon>
-            <icon-mdi:palette></icon-mdi:palette>
-          </n-icon>
-          主题画盘
-        </template>
-        <n-form ref="themeForm" label-placement="left" label-width="auto" :model="themeFormData">
-          <n-form-item label="主题">
-            <n-switch :rail-style="themeFormData.model">
-              <template #checked> 傍晚六点下班 </template>
-              <template #unchecked> 午夜零点下班 </template>
-            </n-switch>
-          </n-form-item>
-          <n-form-item label="颜色">
-            <n-color-picker
-              v-model:value="themeFormData.color"
-              :show-alpha="true"
-              show-preview
-              :actions="['confirm', 'clear']"
-            />
-          </n-form-item>
-          <n-form-item label="颜色">
-            <n-color-picker
-              v-model:value="themeFormData.color"
-              :show-alpha="true"
-              show-preview
-              :actions="['confirm', 'clear']"
-            />
-          </n-form-item>
-        </n-form>
-        <template #footer>
-          <n-button>Footer</n-button>
-        </template>
-      </n-drawer-content>
-    </n-drawer>
+    <!-- 样式设置 -->
+    <ConfigStyle :drawer-show=""></ConfigStyle>
   </div>
 </template>
 
@@ -100,20 +64,13 @@ import { renderIcon } from '@/utils/common';
 import useUserStore from '@/store/module/user';
 import router from '@/router';
 import { FormInst } from 'naive-ui';
-
-interface IThemeFormData {
-  model?: boolean;
-  color?: string;
-}
+import ConfigStyle from '@/layout/component/configStyle/index.vue';
 
 let userStore = useUserStore();
 
 // 定义响应式数据
 let todoNumVal = $ref<number>(10);
 let currentUserName = $ref<string>('');
-let themeDrawerShow = $ref<boolean>(false);
-let themeForm = $ref<FormInst | null>(null);
-let themeFormData = $ref<IThemeFormData>({});
 
 // 挂载
 onMounted(() => {
@@ -165,7 +122,7 @@ const handleSelectDropdown = (key: string) => {
     router.push('/personalCenter');
   } else if (key === 'theme') {
     console.log('主题设置');
-    themeDrawerShow = true;
+    // themeDrawerShow = true;
   } else if (key === 'logout') {
     userStore.logoutSystem();
   }

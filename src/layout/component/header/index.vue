@@ -55,7 +55,7 @@
       </n-dropdown>
     </div>
     <!-- 样式设置 -->
-    <ConfigStyle :drawer-show=""></ConfigStyle>
+    <ConfigStyle :drawer-show="themeDrawerShow" @close="themeDrawerShow = false"></ConfigStyle>
   </div>
 </template>
 
@@ -71,6 +71,7 @@ let userStore = useUserStore();
 // 定义响应式数据
 let todoNumVal = $ref<number>(10);
 let currentUserName = $ref<string>('');
+let themeDrawerShow = $ref<boolean>(false);
 
 // 挂载
 onMounted(() => {
@@ -121,8 +122,7 @@ const handleSelectDropdown = (key: string) => {
   if (key === 'userInfo') {
     router.push('/personalCenter');
   } else if (key === 'theme') {
-    console.log('主题设置');
-    // themeDrawerShow = true;
+    themeDrawerShow = true;
   } else if (key === 'logout') {
     userStore.logoutSystem();
   }

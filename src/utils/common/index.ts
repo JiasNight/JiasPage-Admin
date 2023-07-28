@@ -1,5 +1,5 @@
 import { h, Component } from 'vue';
-import { NIcon } from 'naive-ui';
+import { NIcon, FormInst } from 'naive-ui';
 import { Icon } from '@iconify/vue';
 
 // 渲染图标通用方法
@@ -50,6 +50,25 @@ export function formatDate(date = new Date(), fmt = 'yyyy-MM-dd hh:mm:ss') {
  */
 export const getUUID = (randomLength = 10) => {
   return Number(Math.random().toString().substring(2, randomLength) + Date.now()).toString(36);
+};
+
+/**
+ * * 重置表单对象
+ * @param refsEl 表单元素
+ */
+export const resetForm = (refsEl: FormInst | null, formObj: any) => {
+  const object = formObj;
+  const resultObj: any = {};
+  for (const key in object) {
+    if (Object.prototype.hasOwnProperty.call(object, key)) {
+      let ele = object[key];
+      // Array.isArray(ele) ? (ele = []) : (ele = null);
+      ele = null;
+      resultObj[key] = ele;
+    }
+  }
+  if (refsEl) refsEl.restoreValidation();
+  return resultObj;
 };
 
 // /**

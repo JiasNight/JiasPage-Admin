@@ -1,11 +1,16 @@
 <template>
   <div class="content-header">
     <div class="header-left">
+      <n-button text style="font-size: 24px">
+        <n-icon>
+          <icon-mdi:format-list-bulleted></icon-mdi:format-list-bulleted>
+        </n-icon>
+      </n-button>
       <!-- 面包屑 -->
       <n-breadcrumb>
         <n-breadcrumb-item>
           <n-icon size="20">
-            <icon-ic:sharp-home></icon-ic:sharp-home>
+            <icon-mdi:home></icon-mdi:home>
           </n-icon>
           首页
         </n-breadcrumb-item>
@@ -15,13 +20,13 @@
       <!-- 搜索框 -->
       <n-input class="right-search" placeholder="输入搜索">
         <template #prefix>
-          <icon-material-symbols:search></icon-material-symbols:search>
+          <icon-mdi:magnify></icon-mdi:magnify>
         </template>
       </n-input>
       <!-- <n-button circle :bordered="false">
         <template #icon>
           <n-icon size="30">
-            <icon-material-symbols:search></icon-material-symbols:search>
+            <icon-mdi:magnify></icon-mdi:magnify>
           </n-icon>
         </template>
       </n-button> -->
@@ -29,7 +34,7 @@
         <template #trigger>
           <n-badge class="right-todo" :value="todoNumVal">
             <n-icon size="30">
-              <icon-material-symbols:list-alt-outline></icon-material-symbols:list-alt-outline>
+              <icon-mdi:list-box-outline></icon-mdi:list-box-outline>
             </n-icon>
           </n-badge>
         </template>
@@ -39,7 +44,7 @@
       <n-tooltip placement="top-start" trigger="hover">
         <template #trigger>
           <n-icon class="right-todo" size="30">
-            <icon-material-symbols:lock></icon-material-symbols:lock>
+            <icon-mdi:lock></icon-mdi:lock>
           </n-icon>
         </template>
         <span>锁屏</span>

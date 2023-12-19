@@ -100,7 +100,7 @@ const signOutBtn = (): void => {
   .layout-sider {
     position: relative;
     min-height: 100vh;
-    // background-color: #001428;
+    background-color: $siderBarBgColor;
     box-shadow: 2px 0 8px 0 rgb(29 35 41 / 5%);
     transition: all 0.2s ease-in-out;
   }

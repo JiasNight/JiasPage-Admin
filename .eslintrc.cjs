@@ -13,14 +13,16 @@ module.exports = {
   // 定义ESLint的解析器
   parser: 'vue-eslint-parser',
   parserOptions: {
-    parser: '@typescript-eslint/parser', // 指定ESLint解析器
+    // 指定ESLint解析器
+    parser: '@typescript-eslint/parser',
     ecmaVersion: 'latest',
     ecmaFeatures: {
       jsx: true,
       // 允许使用模块，模块内默认严格模式
       modules: true
     },
-    sourceType: 'module' // 允许使用导入
+    // 允许使用导入
+    sourceType: 'module'
   },
   globals: {
     $ref: 'readonly',
@@ -29,7 +31,8 @@ module.exports = {
     $customRef: 'readonly',
     $toRef: 'readonly'
   },
-  plugins: ['vue', '@typescript-eslint', 'prettier'], // 表示 eslint-config-prettier
+  // 表示 eslint-config-prettier
+  plugins: ['vue', '@typescript-eslint', 'prettier'],
   extends: [
     './.eslintrc-auto-import.json',
     'eslint:recommended', // 继承Eslint中推荐的（打钩的）规则项http://eslint.cn/docs/rules/

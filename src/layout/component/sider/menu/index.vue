@@ -77,6 +77,8 @@ const handleClickMenu = (key: string, item: MenuOption | any) => {
 
 <style lang="scss" scoped>
 .side-menu {
+  font-size: 1rem;
+  color: $siderBarColor !important;
   &:deep(.n-menu-item-content) {
     &::before {
       right: 5px;
@@ -85,7 +87,7 @@ const handleClickMenu = (key: string, item: MenuOption | any) => {
     &.n-menu-item-content--selected,
     &:hover {
       &::before {
-        border-left: 4px solid #5b1ee9;
+        border-left: 5px solid #5b1ee9;
       }
     }
   }

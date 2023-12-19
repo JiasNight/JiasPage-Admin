@@ -1,7 +1,6 @@
 <template>
   <n-menu
     class="side-menu"
-    accordion
     :indent="18"
     :collapsed="currentProps.collapsed"
     :collapsed-width="50"
@@ -78,13 +77,22 @@ const handleClickMenu = (key: string, item: MenuOption | any) => {
 <style lang="scss" scoped>
 .side-menu {
   font-size: 1rem;
-  color: $siderBarColor !important;
   &:deep(.n-menu-item-content) {
     &::before {
       right: 5px;
       left: 5px;
     }
-    &.n-menu-item-content--selected,
+    .n-menu-item-content__icon,
+    .n-menu-item-content-header,
+    .n-menu-item-content__arrow {
+      color: $siderBarColor;
+    }
+    &.n-menu-item-content--selected {
+      &::before {
+        border-left: 5px solid #5b1ee9;
+        background-color: $siderBarMenuSelected;
+      }
+    }
     &:hover {
       &::before {
         border-left: 5px solid #5b1ee9;

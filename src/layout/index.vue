@@ -22,9 +22,9 @@
       <n-layout-content class="layout-content">
         <!-- 标签页 -->
         <PageTags></PageTags>
-        <div class="content-main">
-          <ViewMain></ViewMain>
-        </div>
+        <ViewMain></ViewMain>
+        <!-- <div class="content-main">
+        </div> -->
       </n-layout-content>
       <n-back-top :right="100" />
     </n-layout>
@@ -96,23 +96,14 @@ const signOutBtn = (): void => {
 .screen-layout {
   display: flex;
   flex-direction: row;
-  flex: auto;
   .layout-sider {
     position: relative;
     min-height: 100vh;
-    background-color: $siderBarBgColor;
+    background: $siderBarBgColor;
     box-shadow: 2px 0 8px 0 rgb(29 35 41 / 5%);
     transition: all 0.2s ease-in-out;
   }
   .layout-content {
-    position: relative;
-    min-height: 100vh;
-    .content-main {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-color: rgb(245, 245, 245);
-    }
   }
 }
 </style>

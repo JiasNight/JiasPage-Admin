@@ -193,7 +193,8 @@ let userTableHeader = $ref<DataTableColumns>([
             }
           },
           {
-            icon: () => h(NIcon, { size: 20, component: AcUnitRound }),
+            icon: () =>
+              h(NIcon, { size: 20, component: () => h(Icon as Component, { icon: 'mdi:chevron-triple-right' }) }),
             default: '操作'
           }
         ),
@@ -226,7 +227,7 @@ let userTableHeader = $ref<DataTableColumns>([
             icon: () =>
               h(NIcon, {
                 size: 20,
-                component: () => h(Icon as Component, { icon: 'ic:baseline-delete-forever' })
+                component: () => h(Icon as Component, { icon: 'mdi:delete' })
               }),
             default: () => h('span', '删除')
           }
@@ -313,7 +314,6 @@ const queryTableDataBtn = () => {
   .grid-right {
     padding: 0.625rem;
     min-width: 12.5rem;
-    background: #fff;
   }
 }
 </style>

@@ -128,7 +128,7 @@ h1 {
 // }
 
 .card {
-  padding: 2em;
+  padding: 2rem;
 }
 
 #app {
@@ -136,8 +136,13 @@ h1 {
   height: 100%;
 }
 
+.n-button__icon {
+  margin: 0 !important;
+}
+
 .view-container {
-  margin: 0.625rem;
+  height: 100vh;
+  background: #fff;
 }
 
 @media (prefers-color-scheme: light) {

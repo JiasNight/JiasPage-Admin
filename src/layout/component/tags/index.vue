@@ -14,7 +14,7 @@
         @click="clickTagViewBtn(item)"
         @contextmenu.prevent="rightClickTagBtn(item, $event)"
       >
-        <n-icon size="15" color="#A163F7" :component="renderIcon(item.meta.icon)">
+        <n-icon size="20" color="#A163F7" :component="renderIcon(item.meta.icon)">
           <!-- <icon-mdi:star-face></icon-mdi:star-face> -->
         </n-icon>
         <n-tooltip placement="top" trigger="hover">
@@ -198,7 +198,7 @@ const clickScrollRightBtn = (e: Event) => {
       color: #495060;
       background: #fff;
       &:hover {
-        border: 1px solid #a163f7;
+        border: 1px solid transparent;
       }
       .tag-item-span {
         display: inline-block;
@@ -220,7 +220,7 @@ const clickScrollRightBtn = (e: Event) => {
       }
     }
     .tag-active {
-      // border: 0.0625rem solid #A163F7;
+      // border: 0.0625rem solid #a163f7;
       background-color: #45e3ff;
     }
     // 定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸

@@ -25,6 +25,9 @@
       "errorColorHover": "#DB2820",
       "errorColorPressed": "#B7161D",
       "errorColorSuppl": "#930E1E"
+    },
+    "LoadingBar": {
+      "colorLoading": "#5B1EE9ff"
     }
   }
 }

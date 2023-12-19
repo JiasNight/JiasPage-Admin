@@ -33,5 +33,6 @@ img {
 }
 h2 {
   display: inline-block;
+  color: #F3ECFF;
 }
 </style>

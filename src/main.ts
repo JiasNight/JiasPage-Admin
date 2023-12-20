@@ -20,19 +20,27 @@ import 'vfonts/Lato.css';
 import 'vfonts/FiraCode.css';
 import 'uno.css';
 // 引入工具函数
-// import { formatDate, renderIcon } from '@/utils/common';
+import { formatDate, renderIcon, renderMenuIcon } from '@/utils/common';
 
 // 创建app实例
 const app = createApp(App);
 app.use(router);
 app.use(i18n);
 app.use(store);
+
+// 挂载全局方法
+app.provide('renderIcon', renderIcon);
+app.provide('renderMenuIcon', renderMenuIcon);
+app.provide('formatDate', formatDate);
+
 // 全局挂载axios
 app.config.globalProperties.$axios = axios;
 app.config.globalProperties.$t = i18n.global.t;
+
 // 全局指令
 // Object.keys(directives).forEach((key) => {
 //   app.directive(key, (directives as { [key: string]: Directive })[key]);
 // });
+
 // 挂载
 app.mount('#app');

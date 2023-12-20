@@ -15,6 +15,7 @@
         @contextmenu.prevent="rightClickTagBtn(item, $event)"
       >
         <n-icon size="18" color="#A163F7" :component="renderIcon(item.meta.icon)"> </n-icon>
+        <!-- <n-icon size="18" color="#A163F7" :component="AbcFilled"> </n-icon> -->
         <n-tooltip placement="top" trigger="hover">
           <template #trigger>
             <span class="tag-item-span"> {{ item.meta.title }}</span>
@@ -47,6 +48,7 @@ import type { MenuOption } from 'naive-ui';
 import ContextMenu from './contextmenu.vue';
 import useTagStore from '@/store/module/tag';
 import router from '@/router';
+import { AbcFilled } from '@vicons/material';
 import { renderIcon } from '@/utils/common';
 
 // 扩展ITags的属性
@@ -189,7 +191,7 @@ const clickScrollRightBtn = (e: Event) => {
       width: 6.25rem;
       height: 1.5625rem;
       line-height: 1.5625rem;
-      font-size: .75rem;
+      font-size: 0.75rem;
       border: 1px solid #d8dce5;
       border-radius: 0.125rem;
       cursor: pointer;
@@ -213,7 +215,6 @@ const clickScrollRightBtn = (e: Event) => {
       }
     }
     .tag-active {
-      // border: 0.0625rem solid #a163f7;
       background-color: #45e3ff;
     }
     // 定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸

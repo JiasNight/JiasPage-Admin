@@ -68,7 +68,7 @@
                 <n-button attr-type="reset" @click="resetQueryFormBtn">
                   <template #icon>
                     <n-icon>
-                      <icon-material-symbols:autorenew></icon-material-symbols:autorenew>
+                      <icon-mdi:autorenew></icon-mdi:autorenew>
                     </n-icon>
                   </template>
                   重 置
@@ -76,7 +76,7 @@
                 <n-button attr-type="submit" type="primary" @click="queryTableDataBtn">
                   <template #icon>
                     <n-icon>
-                      <icon-material-symbols:search></icon-material-symbols:search>
+                      <icon-mdi:magnify></icon-mdi:magnify>
                     </n-icon>
                   </template>
                   查 询
@@ -89,10 +89,14 @@
         <n-data-table
           :columns="userTableHeader"
           :data="userTableData"
-          :loading="tableIsLoading"
+          :row-key="tableRowKey"
           :bordered="true"
+          :single-line="false"
+          :loading="tableIsLoading"
           :pagination="tablePagination"
-        />
+        >
+          <!-- <template #loading> 正在加载 </template> -->
+        </n-data-table>
       </n-grid-item>
     </n-grid>
   </div>
@@ -102,7 +106,7 @@
 import { Ref, ComputedRef, h, Component } from 'vue';
 import { TreeOption, FormInst, DataTableColumns, NButton, NIcon, useDialog, useMessage } from 'naive-ui';
 import { SearchRound, AutorenewRound, Battery50Round, AcUnitRound } from '@vicons/material';
-import { renderIcon, resetForm } from '@/utils/common';
+import { resetForm } from '@/utils/common';
 import { IRes } from '@/interface/common';
 import useUserStore from '@/store/module/user';
 import { Icon } from '@iconify/vue';
@@ -117,11 +121,15 @@ interface IUserForm {
 }
 
 type IUserTable = {
+  userId: string;
   userName: string;
   userAccount: string;
   userRole: string;
   createTime: string;
 };
+
+// 引入全局方法
+const renderIcon: any = inject('renderIcon');
 
 let deptTreeLoading = $ref<boolean>(false);
 
@@ -146,6 +154,10 @@ let deptTreeData = $ref<TreeOption[]>([
   }
 ]);
 
+let tableRowKey = (rowData: IUserTable) => {
+  return rowData.userId;
+};
+
 let queryForm = $ref<FormInst | null>(null);
 
 let queryFormData = $ref<IUserForm>({
@@ -161,20 +173,29 @@ let roleOptions = $ref<Array<object>>([
   { label: '角2', value: 'role3' }
 ]);
 
-let tableIsLoading = $ref<boolean>(false);
+let tableIsLoading = $ref<boolean | null>(false);
 
 let userTableHeader = $ref<DataTableColumns>([
   {
     title: '序号',
     key: 'index',
     align: 'center',
+    width: '60',
     render(row, index) {
       return index + 1;
     }
   },
   { title: '用户名', key: 'userName', align: 'center' },
   { title: '登录账户', key: 'userAccount', align: 'center' },
-  { title: '角色', key: 'userRole', align: 'center' },
+  {
+    title: '角色',
+    key: 'userRole',
+    align: 'center',
+    render(row, index) {
+      if (row.userRole === '0') return '角色1';
+      if (row.userRole === '1') return '角色2';
+    }
+  },
   { title: '创建时间', key: 'createTime', align: 'center' },
   {
     title: '操作',
@@ -193,9 +214,8 @@ let userTableHeader = $ref<DataTableColumns>([
             }
           },
           {
-            icon: () =>
-              h(NIcon, { size: 20, component: () => h(Icon as Component, { icon: 'mdi:chevron-triple-right' }) }),
-            default: '操作'
+            icon: () => h(NIcon, { size: 20, component: renderIcon('mdi:playlist-edit') }),
+            default: () => h('span', '详细')
           }
         ),
         h(
@@ -224,11 +244,7 @@ let userTableHeader = $ref<DataTableColumns>([
             }
           },
           {
-            icon: () =>
-              h(NIcon, {
-                size: 20,
-                component: () => h(Icon as Component, { icon: 'mdi:delete' })
-              }),
+            icon: () => h(NIcon, { size: 20, component: renderIcon('mdi:delete') }),
             default: () => h('span', '删除')
           }
         )
@@ -286,14 +302,14 @@ const getUserTable = () => {
     deptId: currentSelectedTreeKey,
     ...tablePagination
   };
-  // tableIsLoading = true;
+  tableIsLoading = true;
   getUserList(data)
     .then((res: IRes) => {
       if (res && res.code === 200) {
         let reData = res.data;
         userTableData = reData;
       }
-      // tableIsLoading = false;
+      tableIsLoading = false;
     })
     .catch(() => {
       tableIsLoading = false;

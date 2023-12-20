@@ -9,16 +9,11 @@ const { loadingBar } = createDiscreteApi(['loadingBar']);
 const whiteList: Array<String> = ['/signIn'];
 
 let load = 0;
-console.log('进来了2222');
 router.beforeEach((to, from, next) => {
   loadingBar.start();
   const appStore = useAppStore();
   const userStore = useUserStore();
-  const isLogin: boolean = getToken() ? true : false;
-  console.log(isLogin);
-  console.log(appStore.routes);
-  console.log(appStore.routes.length);
-  console.log(JSON.parse(JSON.stringify(to)));
+  const isLogin: boolean | string | null = getToken();
   // 判断是否登录
   if (isLogin) {
     if (to.path === '/signIn') {
@@ -27,14 +22,12 @@ router.beforeEach((to, from, next) => {
     } else {
       // 如果没有路由信息，则通过当前用户获取路由表
       if (appStore.routes.length === 0 || load === 0) {
-        console.log('进来了');
         const getUser = userStore.getCurrentUserInfo();
         getUser
           .then(() => {
             load++;
             appStore.generateRoutes().then(async () => {
               await next({ ...to, replace: true });
-              console.log(JSON.parse(JSON.stringify(to)));
             });
           })
           .catch(() => {

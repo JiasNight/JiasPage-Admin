@@ -2,6 +2,169 @@ import { MockMethod } from 'vite-plugin-mock';
 import { formatDate } from '@/utils/common';
 import { IResponse } from '@/interface/common';
 
+const MENU_LIST = [
+  {
+    path: '/article',
+    name: 'ArticleManage',
+    meta: {
+      title: '文章管理',
+      icon: 'ic:outline-article',
+      show: true,
+      disabled: false,
+      cache: false,
+      menuType: 1,
+      description: '文章管理'
+    },
+    component: '',
+    children: [
+      {
+        path: 'releaseArticle',
+        name: 'ReleaseArticle',
+        meta: {
+          title: '发布文章',
+          icon: 'ic:baseline-new-releases',
+          show: true,
+          disabled: false,
+          cache: false,
+          menuType: 2,
+          description: '发布文章'
+        },
+        component: '/article/index'
+      }
+    ]
+  },
+  {
+    path: '/system',
+    name: 'SystemManage',
+    meta: {
+      title: '系统管理',
+      icon: 'ic:baseline-settings',
+      show: true,
+      disabled: false,
+      cache: false,
+      menuType: 1,
+      description: '系统管理'
+    },
+    component: '',
+    children: [
+      {
+        path: 'userManage',
+        name: 'UserManage',
+        meta: {
+          title: '用户管理',
+          icon: 'mdi:account-details',
+          show: true,
+          disabled: false,
+          cache: false,
+          menuType: 2,
+          description: '用户管理'
+        },
+        component: '/system/userManage/index'
+      },
+      {
+        path: 'menuManage',
+        name: 'MenuManage',
+        meta: {
+          title: '菜单管理',
+          icon: 'mdi:menu',
+          show: true,
+          disabled: false,
+          cache: false,
+          menuType: 2,
+          description: '菜单管理'
+        },
+        component: '/system/menuManage/index'
+      },
+      {
+        path: 'roleManage',
+        name: 'RoleManage',
+        meta: {
+          title: '角色管理',
+          icon: 'mdi:account-lock',
+          show: true,
+          disabled: false,
+          cache: false,
+          menuType: 2,
+          description: '角色管理'
+        },
+        component: '/system/roleManage/index'
+      },
+      {
+        path: 'dictManage',
+        name: 'DictManage',
+        meta: {
+          title: '字典管理',
+          icon: 'mdi:book-open',
+          show: true,
+          disabled: false,
+          cache: false,
+          menuType: 2,
+          description: '字典管理'
+        },
+        component: '/system/dictManage/index'
+      },
+      {
+        path: 'sysMonitor',
+        name: 'SysMonitor',
+        meta: {
+          title: '系统监控',
+          icon: 'mdi:monitor-dashboard',
+          show: true,
+          disabled: true,
+          cache: false,
+          menuType: 2,
+          description: '系统监控'
+        },
+        component: '/system/dictManage/index'
+      },
+      {
+        path: 'logManage',
+        name: 'LogManage',
+        meta: {
+          title: '日志管理',
+          icon: 'mdi:book-open',
+          show: true,
+          disabled: true,
+          cache: false,
+          menuType: 2,
+          description: '日志管理'
+        },
+        component: '',
+        children: [
+          {
+            path: 'loginLog',
+            name: 'LoginLog',
+            meta: {
+              title: '登录日志',
+              icon: 'mdi:message-reply-text',
+              show: true,
+              disabled: false,
+              cache: false,
+              menuType: 2,
+              description: '登录日志'
+            },
+            component: '/system/logManage/index'
+          },
+          {
+            path: 'operLog',
+            name: 'OperLog',
+            meta: {
+              title: '操作日志',
+              icon: 'mdi:wrench-cog',
+              show: true,
+              disabled: false,
+              cache: false,
+              menuType: 2,
+              description: '操作日志'
+            },
+            component: '/system/logManage/index'
+          }
+        ]
+      }
+    ]
+  }
+];
+
 const mock: Array<MockMethod> = [
   {
     // 接口路径
@@ -83,6 +246,19 @@ const mock: Array<MockMethod> = [
     }
   },
   {
+    url: '/api/system/menu/list',
+    method: 'post',
+    response: (): IResponse => {
+      return {
+        success: true,
+        code: 200,
+        message: '获取菜单数据成功！',
+        timestamp: formatDate(),
+        data: MENU_LIST
+      };
+    }
+  },
+  {
     url: '/api/system/routes',
     method: 'post',
     response: (): IResponse => {
@@ -91,82 +267,7 @@ const mock: Array<MockMethod> = [
         code: 200,
         message: '获取路由表成功！',
         timestamp: formatDate(),
-        data: [
-          {
-            path: '/article',
-            name: 'ArticleManage',
-            meta: {
-              title: '文章管理',
-              icon: 'ic:outline-article',
-              show: true,
-              disabled: false,
-              cache: false,
-              menuType: 1,
-              description: '文章管理'
-            },
-            component: '',
-            children: [
-              {
-                path: 'releaseArticle',
-                name: 'ReleaseArticle',
-                meta: {
-                  title: '发布文章',
-                  icon: 'ic:baseline-new-releases',
-                  show: true,
-                  disabled: false,
-                  cache: false,
-                  menuType: 2,
-                  description: '发布文章'
-                },
-                component: '/article/index'
-              }
-            ]
-          },
-          {
-            path: '/system',
-            name: 'SystemManage',
-            meta: {
-              title: '系统管理',
-              icon: 'ic:baseline-settings',
-              show: true,
-              disabled: false,
-              cache: false,
-              menuType: 1,
-              description: '系统管理'
-            },
-            component: '',
-            children: [
-              {
-                path: 'userManage',
-                name: 'UserManage',
-                meta: {
-                  title: '用户管理',
-                  icon: 'ic:baseline-person-search',
-                  show: true,
-                  disabled: false,
-                  cache: false,
-                  menuType: 2,
-                  description: '用户管理'
-                },
-                component: '/system/userManage/index'
-              },
-              {
-                path: 'menuManage',
-                name: 'MenuManage',
-                meta: {
-                  title: '菜单管理',
-                  icon: 'ic:baseline-list-alt',
-                  show: true,
-                  disabled: false,
-                  cache: false,
-                  menuType: 2,
-                  description: '菜单管理'
-                },
-                component: '/system/menuManage/index'
-              }
-            ]
-          }
-        ]
+        data: MENU_LIST
       };
     }
   },

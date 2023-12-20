@@ -1,16 +1,21 @@
-import { h, Component } from 'vue';
+import { h, Component, defineComponent } from 'vue';
 import { NIcon, FormInst } from 'naive-ui';
 import { Icon } from '@iconify/vue';
 
-// 渲染图标通用方法
-// export function renderIcon(icon?: Component, props = { size: 12 }) {
-//   // icon += 'icon-';
-//   if (!icon) icon = InsertEmoticonFilled;
-//   return () => h(NIcon, props, { default: () => h(icon as Component, { icon }) });
-// }
-
-export function renderIcon(icon = 'ic:baseline-insert-emoticon', props = { size: 16 }) {
+// 渲染菜单图标方法
+export function renderMenuIcon(icon = 'mdi:emoticon', props = { size: 16 }) {
   return () => h(NIcon, props, { default: () => h(Icon as Component, { icon: icon }) });
+}
+
+// 图标渲染
+export function renderIcon(icon = 'mdi:emoticon', props = { size: 16 }) {
+  const iconInfo = {
+    name: icon,
+    render: () => {
+      return h(NIcon, props, { default: () => h(Icon as Component, { icon: icon }) });
+    }
+  };
+  return iconInfo;
 }
 
 /**

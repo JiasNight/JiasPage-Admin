@@ -14,8 +14,10 @@
 import type { MenuOption } from 'naive-ui';
 import router from '@/router';
 import useAppStore from '@/store/module/app';
-import { renderIcon } from '@/utils/common';
 import { RouteRecordRaw } from 'vue-router';
+
+// 引入全局方法
+const renderMenuIcon: any = inject('renderMenuIcon');
 
 const currentProps = defineProps({
   collapsed: {
@@ -46,7 +48,7 @@ const generateMenuByRoute = (routerList: Array<any>) => {
         pid: '1',
         label: item.meta.title,
         disabled: item.meta.disabled,
-        icon: renderIcon(item.meta.icon),
+        icon: renderMenuIcon(item.meta.icon),
         key: item.name,
         path: item.path,
         show: item.meta.show,

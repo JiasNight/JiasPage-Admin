@@ -75,7 +75,6 @@ const useAppStore = defineStore({
       recursionRouter(data);
       data.forEach((item) => {
         router.addRoute(item);
-        console.log('田家庵');
         this.routes.push(item);
       });
       // console.log(router.getRoutes());

@@ -237,7 +237,7 @@ let userTableHeader = $ref<DataTableColumns>([
   }
 ]);
 
-let userTableData = $ref<IUserTable[]>([]);
+let userTableData: Array<IUserTable[]> = [];
 
 let tablePagination = $ref<object>({
   page: 1,
@@ -286,13 +286,18 @@ const getUserTable = () => {
     deptId: currentSelectedTreeKey,
     ...tablePagination
   };
-  tableIsLoading = true;
-  getUserList(data).then((res: IRes) => {
-    if (res && res.code === 200) {
-      userTableData = res.data;
-    }
-    tableIsLoading = false;
-  });
+  // tableIsLoading = true;
+  getUserList(data)
+    .then((res: IRes) => {
+      if (res && res.code === 200) {
+        let reData = res.data;
+        userTableData = reData;
+      }
+      // tableIsLoading = false;
+    })
+    .catch(() => {
+      tableIsLoading = false;
+    });
 };
 
 // 重置查询内容

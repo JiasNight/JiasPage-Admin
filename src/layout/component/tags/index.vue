@@ -14,16 +14,14 @@
         @click="clickTagViewBtn(item)"
         @contextmenu.prevent="rightClickTagBtn(item, $event)"
       >
-        <n-icon size="20" color="#A163F7" :component="renderIcon(item.meta.icon)">
-          <!-- <icon-mdi:star-face></icon-mdi:star-face> -->
-        </n-icon>
+        <n-icon size="18" color="#A163F7" :component="renderIcon(item.meta.icon)"> </n-icon>
         <n-tooltip placement="top" trigger="hover">
           <template #trigger>
             <span class="tag-item-span"> {{ item.meta.title }}</span>
           </template>
           <span> {{ item.meta.title }} </span>
         </n-tooltip>
-        <n-icon class="tag-item-end-icon" size="20" @click.prevent.stop="closeTagBtn(item)">
+        <n-icon class="tag-item-end-icon" size="18" @click.prevent.stop="closeTagBtn(item)">
           <icon-mdi:window-close></icon-mdi:window-close>
         </n-icon>
       </div>
@@ -175,13 +173,13 @@ const clickScrollRightBtn = (e: Event) => {
     }
   }
   .tags-wrap {
-    display: inherit;
+    display: flex;
     overflow: hidden;
     padding: 0 0.3125rem;
     width: 100%;
     border-radius: 0.125rem;
     .tag-item {
-      display: inline-flex;
+      display: flex;
       flex-direction: row;
       justify-content: space-around;
       align-items: center;
@@ -191,15 +189,12 @@ const clickScrollRightBtn = (e: Event) => {
       width: 6.25rem;
       height: 1.5625rem;
       line-height: 1.5625rem;
-      font-size: 0.625rem;
+      font-size: .75rem;
       border: 1px solid #d8dce5;
       border-radius: 0.125rem;
       cursor: pointer;
       color: #495060;
       background: #fff;
-      &:hover {
-        border: 1px solid transparent;
-      }
       .tag-item-span {
         display: inline-block;
         overflow: hidden;
@@ -211,11 +206,9 @@ const clickScrollRightBtn = (e: Event) => {
       .tag-item-end-icon {
         color: #8c8e91;
         &:hover {
-          width: 1.25rem;
-          height: 1.25rem;
           border-radius: 50%;
           color: #ffa502;
-          background-color: #dee4e7;
+          background-color: #d1d1d1ad;
         }
       }
     }

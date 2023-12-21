@@ -2,7 +2,9 @@ import { defineStore } from 'pinia';
 import { userLogin, getUserInfo } from '@/api/login/index';
 import { setToken, removeToken } from '@/utils/auth';
 import { IResponse, IUserInfo } from '@/interface/common';
-import router from '@/router';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 interface IUserState {
   token: string;
   userInfo: IUserInfo | any;

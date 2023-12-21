@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 
 import Layout from '@/layout/index.vue';
+import { App } from 'vue';
 
 // 引入模块路由
 // import baseRouters from './modules/base';
@@ -58,32 +59,6 @@ export const commonRoutes: Array<RouteRecordRaw> = [
     path: '/:catchAll(.*)', // 自动匹配不识别的path 404
     redirect: '/404'
   }
-  // {
-  //   path: '/system',
-  //   name: 'SystemManage',
-  //   meta: {
-  //     title: '系统管理'
-  //   },
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'menuManage',
-  //       name: 'MenuManage',
-  //       meta: {
-  //         title: '菜单管理'
-  //       },
-  //       component: () => import('@/views/system/menuManage/index.vue')
-  //     },
-  //     {
-  //       path: 'userManage',
-  //       name: 'UserManage',
-  //       meta: {
-  //         title: '菜单管理'
-  //       },
-  //       component: () => import('@/views/system/userManage/index.vue')
-  //     }
-  //   ]
-  // }
 ];
 
 export const customRoutes: Array<RouteRecordRaw> = [
@@ -143,7 +118,7 @@ export const customRoutes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHistory(), // History 路由，无#号
   // history: createWebHashHistory(), // Hash 路由
-  routes: [...commonRoutes],
+  routes: commonRoutes,
   scrollBehavior() {
     return {
       el: '#app',
@@ -153,4 +128,6 @@ const router = createRouter({
   }
 });
 
-export default router;
+export const setupRouter = (app: App<Element>) => {
+  app.use(router);
+};

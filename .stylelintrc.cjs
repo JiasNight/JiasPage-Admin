@@ -14,23 +14,23 @@ module.exports = {
         'selector-pseudo-class-no-unknown': [
           true,
           {
-            ignorePseudoClasses: ['deep', 'global'],
-          },
+            ignorePseudoClasses: ['deep', 'global']
+          }
         ],
         // 禁止未知的伪元素选择器
         'selector-pseudo-element-no-unknown': [
           true,
           {
-            ignorePseudoElements: ['v-deep', 'v-global', 'v-slotted'],
-          },
-        ],
-      },
+            ignorePseudoElements: ['v-deep', 'v-global', 'v-slotted']
+          }
+        ]
+      }
     },
     {
       files: ['*.scss', '**/*.scss'],
       customSyntax: 'postcss-scss',
-      extends: ['stylelint-config-standard', 'stylelint-config-recommended-vue'],
-    },
+      extends: ['stylelint-config-standard', 'stylelint-config-recommended-vue']
+    }
   ],
   rules: {
     // 不允许未知函数
@@ -40,7 +40,13 @@ module.exports = {
     // 禁止空源码
     'no-empty-source': null,
     // 指定字符串使用单引号
-    'string-quotes': 'single',
+    'string-quotes': [
+      'double',
+      {
+        ignore: ['url'],
+        message: '请使用双引号引用其他字符串'
+      }
+    ],
     // 禁止未知的@规则
     'at-rule-no-unknown': [
       true,

@@ -1,40 +1,60 @@
 <template>
   <div class="main-container">
     <router-view v-slot="{ Component, route }">
-      <Suspense>
-        <template #default>
-          <Transition name="fade" mode="out-in">
-            <div v-if="!route.meta.cache">
-              <component v-if="!route.meta.cache" :is="Component" :key="route.fullPath" />
-            </div>
-            <KeepAlive v-else>
-              <div>
-                <component :is="Component" :key="route.fullPath" />
-              </div>
-            </KeepAlive>
-          </Transition>
-        </template>
-        <template #fallback> 正在加载... </template>
-      </Suspense>
+      <template v-if="Component">
+        <Suspense>
+          <template #default>
+            <Transition name="fade" mode="out-in">
+              <KeepAlive :include="cachedTags" :max="10">
+                <component :is="Component" :key="route.name" />
+              </KeepAlive>
+            </Transition>
+          </template>
+          <template #fallback>
+            <n-space vertical>
+              <n-spin>
+                <template #description> 稍等正在加载... </template>
+              </n-spin>
+            </n-space>
+          </template>
+        </Suspense>
+        <!-- <Transition name="fade" mode="out-in">
+          <KeepAlive :include="cachedTags" :max="10">
+            <component :is="Component" />
+          </KeepAlive>
+        </Transition> -->
+      </template>
     </router-view>
   </div>
 </template>
 
 <script lang="ts" setup>
-import router from '@/router';
 import useAppStore from '@/store/module/app';
-import { RouteLocationNormalizedLoaded } from 'vue-router';
+import useTagStore from '@/store/module/tag';
+import { useRouter, RouteLocationNormalizedLoaded } from 'vue-router';
 
 // let currentRoute: RouteLocationNormalizedLoaded | undefined = $ref<RouteLocationNormalizedLoaded>();
+const router = useRouter();
 const appStore = useAppStore();
+const tagStore = useTagStore();
 
 watch(
   () => router.currentRoute.value,
   (newRoute, oldRoute) => {
+    console.log(newRoute);
     appStore.setCurrentRoute(newRoute);
+    console.log(tagStore.getCachedTags);
   },
   { immediate: true }
 );
+
+const cachedTags = computed(() => {
+  return tagStore.getCachedTags;
+});
+
+onMounted(() => {
+  console.log(cachedTags);
+});
 </script>
 
 <style lang="scss" scoped>
@@ -55,7 +75,9 @@ watch(
 }
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.25s, transform 0.3s;
+  transition:
+    opacity 0.25s,
+    transform 0.3s;
 }
 .fade-enter-from {
   opacity: 0;

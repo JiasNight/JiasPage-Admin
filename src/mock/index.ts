@@ -83,7 +83,7 @@ const MENU_LIST = [
           icon: 'mdi:account-lock',
           show: true,
           disabled: false,
-          cache: false,
+          cache: true,
           menuType: 2,
           description: '角色管理'
         },

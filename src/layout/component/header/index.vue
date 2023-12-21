@@ -65,11 +65,12 @@
 </template>
 
 <script lang="ts" setup>
-import { renderIcon } from '@/utils/common';
+import { renderMenuIcon } from '@/utils/common';
 import useUserStore from '@/store/module/user';
-import router from '@/router';
-import { FormInst } from 'naive-ui';
+import { useRouter } from 'vue-router';
 import ConfigStyle from '@/layout/component/configStyle/index.vue';
+
+const router = useRouter();
 
 let userStore = useUserStore();
 
@@ -108,17 +109,17 @@ const dropdownOptions = [
   {
     label: '用户信息',
     key: 'userInfo',
-    icon: renderIcon('mdi:account-box')
+    icon: renderMenuIcon('mdi:account-box')
   },
   {
     label: '主题模式',
     key: 'theme',
-    icon: renderIcon('mdi:palette')
+    icon: renderMenuIcon('mdi:palette')
   },
   {
     label: '退出登录',
     key: 'logout',
-    icon: renderIcon('mdi:logout')
+    icon: renderMenuIcon('mdi:logout')
   }
 ];
 

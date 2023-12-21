@@ -10,7 +10,7 @@
         v-for="(item, index) in tagsList"
         :key="index"
         class="tag-item"
-        :class="tagStore.getActiveTagPath === item.path ? 'tag-active' : ''"
+        :class="tagStore.getActiveTag === item.path ? 'tag-active' : ''"
         @click="clickTagViewBtn(item)"
         @contextmenu.prevent="rightClickTagBtn(item, $event)"
       >
@@ -34,7 +34,7 @@
     </n-button>
     <!-- 右键菜单内容 -->
     <ContextMenu
-      :is-show="showRightMenuBox"
+      :show="showRightMenuBox"
       :left="rightMenuX"
       :top="rightMenuY"
       :current-path="currentContextClickPath"
@@ -47,9 +47,10 @@ import { $ref } from 'vue/macros';
 import type { MenuOption } from 'naive-ui';
 import ContextMenu from './contextmenu.vue';
 import useTagStore from '@/store/module/tag';
-import router from '@/router';
-import { AbcFilled } from '@vicons/material';
+import { useRouter } from 'vue-router';
 import { renderIcon } from '@/utils/common';
+
+const router = useRouter();
 
 // 扩展ITags的属性
 type ITags = MenuOption & {
@@ -59,12 +60,12 @@ type ITags = MenuOption & {
 const tagStore = useTagStore();
 
 // 标签列表
-let tagsList = $ref<Array<any>>(tagStore.getPageTagList);
+let tagsList = $ref<Array<any>>(tagStore.getVisitedTags);
 
 let tagScroll = $ref<HTMLElement>();
 
 // 当前活动路径
-// let currentActivePath = $ref<string>(tagStore.getActiveTagPath);
+// let currentActivePath = $ref<string>(tagStore.getActiveTag);
 
 // 加载之后
 onMounted(() => {

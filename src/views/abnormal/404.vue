@@ -8,7 +8,9 @@
 
 <script lang="ts" setup>
 import { Ref, ComputedRef } from 'vue';
-import router from '@/router';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const gotoPage = (url: string) => {
   router.push(url);

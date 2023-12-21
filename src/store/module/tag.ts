@@ -1,45 +1,60 @@
 import { defineStore } from 'pinia';
 import { useRouter, RouteLocationNormalizedLoaded, RouteRecordRaw } from 'vue-router';
-import router from '@/router';
+import useAppStore from './app';
 
-// const router = useRouter();
+const router = useRouter();
+
+// const appStore = useAppStore();
 
 type IStagState = {
-  activeTagPath: string;
-  pageTagList: Array<RouteLocationNormalizedLoaded>;
+  activeTag: string;
+  visitedTags: Array<RouteLocationNormalizedLoaded>;
+  cachedTags: Array<string>;
 };
 
 const useTagStore = defineStore({
   id: 'tag', // id必填，且需要唯一
   state: (): IStagState => ({
     // 当前活动的tag路径
-    activeTagPath: '',
+    activeTag: '',
     // 全部的tag数组
-    pageTagList: []
+    visitedTags: [],
+    cachedTags: []
   }),
   getters: {
     // 获取当前活动的路径
-    getActiveTagPath(state): string {
-      return state.activeTagPath;
+    getActiveTag(state): string {
+      return state.activeTag;
     },
-    // 获取当前路由信息
-    getPageTagList(state): [] | Array<any> {
-      return state.pageTagList;
+    // 获取当前访问过的路由信息
+    getVisitedTags(state): [] | Array<any> {
+      return state.visitedTags;
+    },
+    // 获取需要被缓存的页面
+    getCachedTags(state): [] | Array<string> {
+      return state.cachedTags;
     }
   },
   actions: {
-    // 设置当前tag
-    setActiveTagPath(route: RouteLocationNormalizedLoaded) {
-      this.makePageTags(route);
-      this.activeTagPath = route.path;
-    },
     // 标签页变动
-    makePageTags(route: RouteLocationNormalizedLoaded) {
-      if (this.pageTagList.length === 0) {
-        this.pageTagList.push(route);
-      } else if (route.path !== '/index' && !this.pageTagList.some((tag) => tag.path === route.path)) {
-        this.pageTagList.push(route);
-      }
+    addVisitedTag(route: RouteLocationNormalizedLoaded) {
+      if (this.visitedTags.some((v) => v.path === route.path)) return;
+      this.visitedTags.push(route);
+      // this.visitedTags.push(
+      //   Object.assign({}, route, {
+      //     title: view.meta.title || 'no-name'
+      //   })
+      // );
+    },
+    // 设置缓存的标签页
+    addCachedTag(route: RouteLocationNormalizedLoaded) {
+      if (this.cachedTags.includes(route.name)) return;
+      this.cachedTags.push(route.name);
+    },
+    // 设置当前tag
+    setActiveTag(route: RouteLocationNormalizedLoaded) {
+      this.addVisitedTag(route);
+      this.activeTag = route.path;
     }
   }
 });

@@ -51,8 +51,10 @@
 <script lang="ts" setup>
 import { renderIcon } from '@/utils/common';
 import useUserStore from '@/store/module/user';
-import router from '@/router';
 import { FormInst } from 'naive-ui';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 interface IThemeFormData {
   model?: boolean;

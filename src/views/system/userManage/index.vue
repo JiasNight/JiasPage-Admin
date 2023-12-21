@@ -87,7 +87,7 @@
         </n-form>
         <!-- 表格 -->
         <n-data-table
-          :columns="userTableHeader"
+          :columns="userTableHeaderColumns"
           :data="userTableData"
           :row-key="tableRowKey"
           :bordered="true"
@@ -95,7 +95,6 @@
           :loading="tableIsLoading"
           :pagination="tablePagination"
         >
-          <!-- <template #loading> 正在加载 </template> -->
         </n-data-table>
       </n-grid-item>
     </n-grid>
@@ -175,30 +174,50 @@ let roleOptions = $ref<Array<object>>([
 
 let tableIsLoading = $ref<boolean | null>(false);
 
-let userTableHeader = $ref<DataTableColumns>([
+let userTableHeaderColumns = $ref<DataTableColumns>([
   {
     title: '序号',
+    className: 'table-th-header',
     key: 'index',
     align: 'center',
+    titleAlign: 'center',
     width: '60',
     render(row, index) {
       return index + 1;
     }
   },
-  { title: '用户名', key: 'userName', align: 'center' },
-  { title: '登录账户', key: 'userAccount', align: 'center' },
+  { title: '用户名', className: 'table-th-header', key: 'userName', align: 'center' },
+  { title: '登录账户', className: 'table-th-header', key: 'userAccount', align: 'center' },
+  {
+    title: '头像',
+    className: 'table-th-header',
+    key: 'userRole',
+    align: 'center',
+    render(row) {
+      return h('n-space', [
+        h(NImage, {
+          src: 'https://picsum.photos/id/1/100/100',
+          width: 50,
+          lazy: true,
+          'show-toolbar-tooltip': true
+        })
+      ]);
+    }
+  },
   {
     title: '角色',
+    className: 'table-th-header',
     key: 'userRole',
     align: 'center',
     render(row, index) {
       if (row.userRole === '0') return '角色1';
-      if (row.userRole === '1') return '角色2';
+      else return '角色2';
     }
   },
-  { title: '创建时间', key: 'createTime', align: 'center' },
+  { title: '创建时间', className: 'table-th-header', key: 'createTime', align: 'center' },
   {
     title: '操作',
+    className: 'table-th-header',
     key: 'ops',
     align: 'center',
     render(row) {
@@ -264,11 +283,6 @@ let tablePagination = $ref<object>({
   }
 });
 
-// 加载之前
-onMounted(() => {
-  getDeptData();
-});
-
 // 刷新树
 const refreshTreeBtn = () => {
   deptTreeLoading = true;
@@ -325,6 +339,12 @@ const resetQueryFormBtn = () => {
 const queryTableDataBtn = () => {
   getUserTable();
 };
+
+// 加载之前
+onMounted(() => {
+  getDeptData();
+  getUserTable();
+});
 </script>
 
 <style lang="scss" scoped>

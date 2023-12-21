@@ -1,10 +1,13 @@
 import axios, { Axios, AxiosResponse, AxiosRequestConfig, AxiosInstance, AxiosError } from 'axios';
 import { createDiscreteApi } from 'naive-ui';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const { message } = createDiscreteApi(['message']);
 
 // 这个就是上面创建的router实例，用来跳转到login页面的
-import router from '../router';
+// import router from '../router';
 
 // 请求加密方法引入
 import { aesUtil, rsaUtil, publicKey } from './common/cryption';

@@ -1,6 +1,8 @@
 {
   "globals": {
     "EffectScope": true,
+    "NI": true,
+    "NImage": true,
     "acceptHMRUpdate": true,
     "computed": true,
     "createApp": true,
@@ -72,6 +74,18 @@
     "watch": true,
     "watchEffect": true,
     "watchPostEffect": true,
-    "watchSyncEffect": true
+    "watchSyncEffect": true,
+    "Component": true,
+    "ComponentPublicInstance": true,
+    "ComputedRef": true,
+    "ExtractDefaultPropTypes": true,
+    "ExtractPropTypes": true,
+    "ExtractPublicPropTypes": true,
+    "InjectionKey": true,
+    "PropType": true,
+    "Ref": true,
+    "VNode": true,
+    "WritableComputedRef": true,
+    "toValue": true
   }
 }

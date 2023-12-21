@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import { useRouter, RouteLocationNormalizedLoaded, RouteRecordRaw } from 'vue-router';
-import router from '@/router';
 import { getDynamicRoutes } from '@/api/app';
 import { getToken } from '@/utils/auth';
 import Layout from '@/layout/index.vue';
@@ -8,7 +7,7 @@ import useTagStore from './tag';
 
 const modules = import.meta.glob('../../views/**/*.vue');
 
-// const router = useRouter();
+const router = useRouter();
 
 type IAppState = {
   theme: boolean;

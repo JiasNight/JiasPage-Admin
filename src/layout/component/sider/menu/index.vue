@@ -12,9 +12,10 @@
 
 <script lang="ts" setup>
 import type { MenuOption } from 'naive-ui';
-import router from '@/router';
 import useAppStore from '@/store/module/app';
-import { RouteRecordRaw } from 'vue-router';
+import { useRouter, RouteRecordRaw } from 'vue-router';
+
+const router = useRouter();
 
 // 引入全局方法
 const renderMenuIcon: any = inject('renderMenuIcon');

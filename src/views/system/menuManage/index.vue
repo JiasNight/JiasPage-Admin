@@ -1,6 +1,13 @@
 <template>
   <div class="view-container">
-    <n-form ref="queryForm" :model="queryFormData" inline label-placement="left" label-width="auto">
+    <n-form
+      ref="queryForm"
+      class="container-form"
+      :model="queryFormData"
+      inline
+      label-placement="left"
+      label-width="auto"
+    >
       <n-grid cols="2 s:3 m:4 l:5 xl:6 2xl:7" :x-gap="20" responsive="screen">
         <n-form-item-gi span="0 m:1 l:2" label="用户名">
           <n-input v-model:value="queryFormData.userName" clearable placeholder="请输入用户名" />
@@ -24,24 +31,24 @@
           <n-date-picker v-model:value="queryFormData.dataRange" type="daterange" value-format="yyyy-MM-dd" clearable />
         </n-form-item-gi>
         <n-form-item-gi span="1">
-          <n-button attr-type="reset" @click="resetQueryFormBtn">
-            <template #icon>
-              <n-icon>
-                <icon-mdi:autorenew></icon-mdi:autorenew>
-              </n-icon>
-            </template>
-            重 置
-          </n-button>
-        </n-form-item-gi>
-        <n-form-item-gi span="1">
-          <n-button attr-type="submit" type="primary" @click="handleQueryTable">
-            <template #icon>
-              <n-icon>
-                <icon-mdi:magnify></icon-mdi:magnify>
-              </n-icon>
-            </template>
-            查 询
-          </n-button>
+          <n-space>
+            <n-button attr-type="reset" @click="resetQueryFormBtn">
+              <template #icon>
+                <n-icon>
+                  <icon-mdi:autorenew></icon-mdi:autorenew>
+                </n-icon>
+              </template>
+              重 置
+            </n-button>
+            <n-button attr-type="submit" type="primary" @click="handleQueryTable">
+              <template #icon>
+                <n-icon>
+                  <icon-mdi:magnify></icon-mdi:magnify>
+                </n-icon>
+              </template>
+              查 询
+            </n-button>
+          </n-space>
         </n-form-item-gi>
       </n-grid>
     </n-form>
@@ -58,7 +65,11 @@
     <n-modal v-model:show="showModal">
       <n-card :title="modelTitle" :bordered="false" style="width: 37.5rem">
         <template #header-extra>
-          <icon-mdi:close></icon-mdi:close>
+          <n-button text @click="showModal = false">
+            <n-icon>
+              <icon-mdi:close></icon-mdi:close>
+            </n-icon>
+          </n-button>
         </template>
         <n-form
           ref="formRef"
@@ -118,7 +129,7 @@
             </n-switch>
           </n-form-item>
         </n-form>
-        <n-space>
+        <n-space justify="end">
           <n-button type="primary" @click="handleConfirm">确 定</n-button>
           <n-button type="default" @click="showModal = false">取 消</n-button>
         </n-space>
@@ -183,7 +194,7 @@ let showModal = $ref<boolean>(false);
 
 let modelTitle = $ref<string>('');
 
-let menuFormData = $ref<IMenuForm>({
+let menuForm = {
   pid: '',
   id: '',
   path: '',
@@ -198,7 +209,9 @@ let menuFormData = $ref<IMenuForm>({
     description: ''
   },
   component: ''
-});
+};
+
+let menuFormData = $ref<IMenuForm>(menuForm);
 
 let tableRowKey = (rowData: IMenuTable, i: number) => {
   return i;
@@ -231,70 +244,77 @@ let menuTableHeader = $ref<DataTableColumns>([
     align: 'center',
     width: '200',
     render(rowData, rowIndex) {
-      return h('span', [
-        h(
-          NButton,
-          {
-            text: true,
-            size: 'small',
-            color: '#2376b7',
-            onClick: (e) => {
-              menuFormData = JSON.parse(JSON.stringify(rowData));
-              modelTitle = '新增';
-              showModal = true;
-            }
-          },
-          {
-            icon: () => h(NIcon, { size: 20, component: renderIcon('mdi:playlist-plus') }),
-            default: () => h('span', '新增')
-          }
-        ),
-        h(
-          NButton,
-          {
-            text: true,
-            size: 'small',
-            color: '#00cec9',
-            onClick: (e: any) => {
-              // console.log(e);
-              // console.log(row);
-            }
-          },
-          {
-            icon: () => h(NIcon, { size: 20, component: renderIcon('mdi:text-box-edit-outline') }),
-            default: () => h('span', '修改')
-          }
-        ),
-        h(
-          NButton,
-          {
-            text: true,
-            size: 'small',
-            color: 'red',
-            style: {
-              margin: '0 .3rem'
-            },
-            onClick: (e: any) => {
-              window.$dialog.warning({
-                title: '警告',
-                content: '你是否确定进行删除？',
-                positiveText: '确定',
-                negativeText: '不确定',
-                onPositiveClick: () => {
-                  window.$message.success('确定');
-                },
-                onNegativeClick: () => {
-                  window.$message.error('不确定');
+      return h(
+        NSpace,
+        { justify: 'center' },
+        {
+          default: () => [
+            h(
+              NButton,
+              {
+                text: true,
+                size: 'small',
+                color: '#2376b7',
+                onClick: (e) => {
+                  menuFormData = menuForm;
+                  modelTitle = '新增';
+                  showModal = true;
                 }
-              });
-            }
-          },
-          {
-            icon: () => h(NIcon, { size: 20, component: renderIcon('mdi:delete') }),
-            default: () => h('span', '删除')
-          }
-        )
-      ]);
+              },
+              {
+                icon: () => h(NIcon, { size: 20, component: renderIcon('mdi:playlist-plus') }),
+                default: () => h('span', '新增')
+              }
+            ),
+            h(
+              NButton,
+              {
+                text: true,
+                size: 'small',
+                color: '#00cec9',
+                onClick: (e: any) => {
+                  menuFormData = JSON.parse(JSON.stringify(rowData));
+                  modelTitle = '修改';
+                  showModal = true;
+                }
+              },
+              {
+                icon: () => h(NIcon, { size: 20, component: renderIcon('mdi:text-box-edit-outline') }),
+                default: () => h('span', '修改')
+              }
+            ),
+            h(
+              NButton,
+              {
+                text: true,
+                size: 'small',
+                color: 'red',
+                style: {
+                  margin: '0 .3rem'
+                },
+                onClick: (e: any) => {
+                  window.$dialog.warning({
+                    title: '警告',
+                    content: '你是否确定进行删除？',
+                    positiveText: '确定',
+                    negativeText: '不确定',
+                    onPositiveClick: () => {
+                      window.$message.success('确定');
+                    },
+                    onNegativeClick: () => {
+                      window.$message.error('不确定');
+                    }
+                  });
+                }
+              },
+              {
+                icon: () => h(NIcon, { size: 20, component: renderIcon('mdi:delete') }),
+                default: () => h('span', '删除')
+              }
+            )
+          ]
+        }
+      );
     }
   }
 ]);
@@ -321,9 +341,13 @@ const handleQueryTable = (): void => {
 };
 
 // 确定
-const handleConfirm = (): void => {
-
-}
+const handleConfirm = (): void => {};
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.view-container {
+  .container-form {
+    margin-top: 0.625rem;
+  }
+}
+</style>

@@ -8,6 +8,7 @@ declare global {
   const EffectScope: typeof import('vue')['EffectScope']
   const NI: typeof import('naive-ui')['NI']
   const NImage: typeof import('naive-ui')['NImage']
+  const NSpace: typeof import('naive-ui')['NSpace']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
   const computed: typeof import('vue')['computed']
   const createApp: typeof import('vue')['createApp']

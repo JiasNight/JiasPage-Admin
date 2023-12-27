@@ -1,10 +1,10 @@
 {
   "naiveThemeOverrides": {
     "common": {
-      "primaryColor": "#5B1EE9",
-      "primaryColorHover": "#4615C8",
-      "primaryColorPressed": "#330FA7",
-      "primaryColorSuppl": "#230987",
+      "primaryColor": "#5352ed",
+      "primaryColorHover": "#3C3BCB",
+      "primaryColorPressed": "#7D7CF4",
+      "primaryColorSuppl": "#9897F9",
 
       "infoColor": "#00DFEF",
       "infoColorHover": "#00AECD",

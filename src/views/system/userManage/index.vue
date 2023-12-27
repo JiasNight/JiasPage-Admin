@@ -221,53 +221,59 @@ let userTableHeaderColumns = $ref<DataTableColumns>([
     key: 'ops',
     align: 'center',
     render(row) {
-      return h('span', [
-        h(
-          NButton,
-          {
-            text: true,
-            size: 'small',
-            onClick: (e: any) => {
-              // console.log(e);
-              // console.log(row);
-            }
-          },
-          {
-            icon: () => h(NIcon, { size: 20, component: renderIcon('mdi:playlist-edit') }),
-            default: () => h('span', '详细')
-          }
-        ),
-        h(
-          NButton,
-          {
-            text: true,
-            size: 'small',
-            color: 'red',
-            style: {
-              margin: '0 .3rem'
-            },
-            onClick: (e: any) => {
-              window.$dialog.warning({
-                title: '警告',
-                content: '你是否确定进行删除？',
-                positiveText: '确定',
-                negativeText: '不确定',
-                onPositiveClick: () => {
-                  console.log(row);
-                  window.$message.success('确定');
-                },
-                onNegativeClick: () => {
-                  window.$message.error('不确定');
+      return h(
+        NSpace,
+        { justify: 'center' },
+        {
+          default: () => [
+            h(
+              NButton,
+              {
+                text: true,
+                size: 'small',
+                onClick: (e: any) => {
+                  // console.log(e);
+                  // console.log(row);
                 }
-              });
-            }
-          },
-          {
-            icon: () => h(NIcon, { size: 20, component: renderIcon('mdi:delete') }),
-            default: () => h('span', '删除')
-          }
-        )
-      ]);
+              },
+              {
+                icon: () => h(NIcon, { size: 20, component: renderIcon('mdi:playlist-edit') }),
+                default: () => h('span', '详细')
+              }
+            ),
+            h(
+              NButton,
+              {
+                text: true,
+                size: 'small',
+                color: 'red',
+                style: {
+                  margin: '0 .3rem'
+                },
+                onClick: (e: any) => {
+                  window.$dialog.warning({
+                    title: '警告',
+                    content: '你是否确定进行删除？',
+                    positiveText: '确定',
+                    negativeText: '不确定',
+                    onPositiveClick: () => {
+                      console.log(row);
+                      window.$message.success('确定');
+                    },
+                    onNegativeClick: () => {
+                      window.$message.error('不确定');
+                    }
+                  });
+                }
+              },
+              {
+                icon: () => h(NIcon, { size: 20, component: renderIcon('mdi:delete') }),
+                default: () => h('span', '删除')
+              }
+            )
+          ]
+        }
+      );
     }
   }
 ]);

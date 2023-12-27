@@ -4,6 +4,8 @@ import { IResponse } from '@/interface/common';
 
 const MENU_LIST = [
   {
+    pid: '0',
+    id: 'ab62e594a25d4c0dab54cda018b850ee',
     path: '/article',
     name: 'ArticleManage',
     meta: {
@@ -18,6 +20,8 @@ const MENU_LIST = [
     component: '',
     children: [
       {
+        pid: 'ab62e594a25d4c0dab54cda018b850ee',
+        id: 'b547c33203994ae3afa48c4807a25b8f',
         path: 'releaseArticle',
         name: 'ReleaseArticle',
         meta: {
@@ -34,6 +38,8 @@ const MENU_LIST = [
     ]
   },
   {
+    pid: '0',
+    id: '6fa28cf73c6c4c11bec106553d69c1b9',
     path: '/system',
     name: 'SystemManage',
     meta: {
@@ -48,6 +54,8 @@ const MENU_LIST = [
     component: '',
     children: [
       {
+        pid: '6fa28cf73c6c4c11bec106553d69c1b9',
+        id: '3bf0941cbcdc4f95b03e4096997ed18d',
         path: 'userManage',
         name: 'UserManage',
         meta: {
@@ -62,6 +70,8 @@ const MENU_LIST = [
         component: '/system/userManage/index'
       },
       {
+        pid: '6fa28cf73c6c4c11bec106553d69c1b9',
+        id: '0a1969567e1842a18cac009ef0d1f79f',
         path: 'menuManage',
         name: 'MenuManage',
         meta: {
@@ -76,6 +86,8 @@ const MENU_LIST = [
         component: '/system/menuManage/index'
       },
       {
+        pid: '6fa28cf73c6c4c11bec106553d69c1b9',
+        id: 'bbefb3e1c54e48b0a219ade0c916ca6a',
         path: 'roleManage',
         name: 'RoleManage',
         meta: {
@@ -90,6 +102,8 @@ const MENU_LIST = [
         component: '/system/roleManage/index'
       },
       {
+        pid: '6fa28cf73c6c4c11bec106553d69c1b9',
+        id: 'f6d3c8a3cb9e472fab9ce891e45040ef',
         path: 'dictManage',
         name: 'DictManage',
         meta: {
@@ -104,6 +118,8 @@ const MENU_LIST = [
         component: '/system/dictManage/index'
       },
       {
+        pid: '6fa28cf73c6c4c11bec106553d69c1b9',
+        id: '12b1b100248e47a2b9fe0833dafb5caf',
         path: 'sysMonitor',
         name: 'SysMonitor',
         meta: {
@@ -118,6 +134,8 @@ const MENU_LIST = [
         component: '/system/dictManage/index'
       },
       {
+        pid: '6fa28cf73c6c4c11bec106553d69c1b9',
+        id: 'fb5456d06aa041dd9f194846b7b73758',
         path: 'logManage',
         name: 'LogManage',
         meta: {
@@ -132,6 +150,8 @@ const MENU_LIST = [
         component: '',
         children: [
           {
+            pid: 'fb5456d06aa041dd9f194846b7b73758',
+            id: 'bca3ca6391a7484bb1aaac88b3b5a14b',
             path: 'loginLog',
             name: 'LoginLog',
             meta: {
@@ -146,6 +166,8 @@ const MENU_LIST = [
             component: '/system/logManage/index'
           },
           {
+            pid: 'fb5456d06aa041dd9f194846b7b73758',
+            id: 'd65d22de9f9f42ab96c0f3011c20a412',
             path: 'operLog',
             name: 'OperLog',
             meta: {

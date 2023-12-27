@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { createDiscreteApi } from 'naive-ui';
 import { RouteLocationNormalizedLoaded, RouteRecordRaw } from 'vue-router';
 import { getDynamicRoutes } from '@/api/app';
 import { getToken } from '@/utils/auth';
@@ -6,13 +7,14 @@ import Layout from '@/layout/index.vue';
 import useTagStore from './tag';
 import router from '@/router';
 
+const { loadingBar } = createDiscreteApi(['loadingBar']);
+
 const modules = import.meta.glob('../../views/**/*.vue');
 
 type IAppState = {
   theme: boolean;
   language: string;
-  pageLoading: boolean;
-  pageKeys: object;
+  reloadViews: boolean;
   routes: Array<RouteRecordRaw>;
   currentRoute: object;
 };
@@ -23,8 +25,7 @@ const useAppStore = defineStore({
     // theme: window.matchMedia('(prefers-color-scheme: dark)').matches,
     theme: false,
     language: (window.navigator.languages && window.navigator.languages[0]) || window.navigator.language,
-    pageLoading: false,
-    pageKeys: {},
+    reloadViews: false,
     // 路由表
     routes: [] as Array<RouteRecordRaw>,
     currentRoute: {}
@@ -32,6 +33,9 @@ const useAppStore = defineStore({
   getters: {
     getTheme: (state) => state.theme,
     getLanguage: (state) => state.language,
+    getReloadViews(state): boolean {
+      return state.reloadViews;
+    },
     // 获取所有路由信息
     getRoutes(state): [] | Array<RouteRecordRaw> {
       return state.routes;
@@ -43,15 +47,15 @@ const useAppStore = defineStore({
   },
   actions: {
     // 重新加载页面
-    async reloadPage() {
-      // $loadingBar.start();
-      this.pageLoading = false;
-      await nextTick();
-      this.pageLoading = true;
-
+    reloadPage() {
+      loadingBar.start();
+      this.reloadViews = true;
+      nextTick(() => {
+        this.reloadViews = false;
+        loadingBar.finish();
+      });
       setTimeout(() => {
         document.documentElement.scrollTo({ left: 0, top: 0 });
-        // $loadingBar.finish();
       }, 100);
     },
     // 模式切换
@@ -75,7 +79,6 @@ const useAppStore = defineStore({
         router.addRoute(item);
         this.routes.push(item);
       });
-      // console.log(router.getRoutes());
     },
     // 生成路由
     generateRoutes() {
@@ -106,6 +109,7 @@ function loadView(view: any) {
   return res;
 }
 
+// 递归循环从后端获取到的路由添加布局
 function recursionRouter(routeList: Array<any>) {
   routeList.forEach((item: any) => {
     if (item.component && item.component !== '') {

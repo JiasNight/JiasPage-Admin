@@ -6,7 +6,9 @@
           <template #default>
             <Transition name="fade" mode="out-in">
               <KeepAlive :include="cachedTags" :max="10">
-                <component :is="Component" :key="route.name" />
+                <div v-if="!isReload" :key="route.path">
+                  <component :is="Component" />
+                </div>
               </KeepAlive>
             </Transition>
           </template>
@@ -18,11 +20,6 @@
             </n-space>
           </template>
         </Suspense>
-        <!-- <Transition name="fade" mode="out-in">
-          <KeepAlive :include="cachedTags" :max="10">
-            <component :is="Component" />
-          </KeepAlive>
-        </Transition> -->
       </template>
     </router-view>
   </div>
@@ -41,9 +38,7 @@ const tagStore = useTagStore();
 watch(
   () => router.currentRoute.value,
   (newRoute, oldRoute) => {
-    console.log(newRoute);
     appStore.setCurrentRoute(newRoute);
-    console.log(tagStore.getCachedTags);
   },
   { immediate: true }
 );
@@ -52,8 +47,12 @@ const cachedTags = computed(() => {
   return tagStore.getCachedTags;
 });
 
+const isReload = computed(() => {
+  return appStore.getReloadViews;
+});
+
 onMounted(() => {
-  console.log(cachedTags);
+  // console.log(cachedTags);
 });
 </script>
 

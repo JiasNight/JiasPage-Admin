@@ -3,8 +3,6 @@ import { useRouter, RouteLocationNormalizedLoaded, RouteRecordRaw } from 'vue-ro
 import useAppStore from './app';
 import router from '@/router';
 
-// const appStore = useAppStore();
-
 type IStagState = {
   activeTag: string;
   visitedTags: Array<RouteLocationNormalizedLoaded>;
@@ -39,11 +37,6 @@ const useTagStore = defineStore({
     addVisitedTag(route: RouteLocationNormalizedLoaded) {
       if (this.visitedTags.some((v) => v.path === route.path)) return;
       this.visitedTags.push(route);
-      // this.visitedTags.push(
-      //   Object.assign({}, route, {
-      //     title: view.meta.title || 'no-name'
-      //   })
-      // );
     },
     // 设置缓存的标签页
     addCachedTag(route: RouteLocationNormalizedLoaded | any) {
@@ -54,6 +47,18 @@ const useTagStore = defineStore({
     setActiveTag(route: RouteLocationNormalizedLoaded) {
       this.addVisitedTag(route);
       this.activeTag = route.path;
+    },
+    // 标签页重新加载
+    setTagReload() {
+      useAppStore().reloadPage();
+    },
+    // 标签页行为
+    setTagActive(key: string) {
+      switch (key) {
+        case 'reload':
+          useAppStore().reloadPage();
+          break;
+      }
     }
   }
 });

@@ -1,11 +1,23 @@
 <template>
   <!-- 右键菜单内容 -->
-  <n-dropdown trigger="manual" :show="props.show" :options="contextMenuOption" :x="props.left" :y="props.top">
+  <n-dropdown
+    trigger="manual"
+    :show="props.show"
+    :options="contextMenuOption"
+    :x="props.left"
+    :y="props.top"
+    @select="handleSelect"
+  >
   </n-dropdown>
 </template>
 
 <script lang="ts" setup>
+import useAppStore from '@/store/module/app';
+import useTagStore from '@/store/module/tag';
 import { renderMenuIcon } from '@/utils/common/index';
+
+const appStore = useAppStore();
+const tagStore = useTagStore();
 
 const props = defineProps({
   show: {
@@ -59,4 +71,10 @@ const contextMenuOption = $ref([
     icon: renderMenuIcon('mdi:format-pilcrow-arrow-right')
   }
 ]);
+
+// 标签菜单功能
+const handleSelect = (key: string) => {
+  console.log(key);
+  tagStore.setTagActive(key);
+};
 </script>

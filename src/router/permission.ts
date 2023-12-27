@@ -1,52 +1,49 @@
 import useAppStore from '@/store/module/app';
 import useUserStore from '@/store/module/user';
 import { createDiscreteApi } from 'naive-ui';
+import { Router, RouteLocationNormalizedLoaded } from 'vue-router';
 import { getToken } from '../utils/auth';
 
 const { loadingBar } = createDiscreteApi(['loadingBar']);
 // 路由白名单
 const whiteList: Array<String> = ['/signIn'];
 
-export const setupPermission = (router: any) => {
-  let load = 0;
-  router.beforeEach(async (to: any, from: any) => {
+export const setupPermission = (router: Router) => {
+  router.beforeEach(async (to: RouteLocationNormalizedLoaded, from: RouteLocationNormalizedLoaded) => {
     loadingBar.start();
     const appStore = useAppStore();
     const userStore = useUserStore();
     const isLogin: boolean | string | null = getToken();
-    console.log(appStore.routes);
 
     // 判断是否登录
     if (isLogin) {
-      if (to.name === 'SignIn') {
+      if (to.path === '/signIn') {
         loadingBar.finish();
-        // return { path: '/' };
+        return { path: '/' };
       } else {
         // 如果没有路由信息，则通过当前用户获取路由表
-        if (appStore.routes.length === 0 || load === 0) {
+        if (appStore.routes.length === 0) {
           const getUser = userStore.getCurrentUserInfo();
           getUser
             .then(() => {
-              load++;
               appStore.generateRoutes().then(async () => {
-                return { to, replace: true };
+                return { ...to, replace: true };
               });
             })
             .catch(() => {
               return { path: '/signIn' };
             });
         } else {
-          return to;
+          return;
         }
       }
     } else {
-      console.log('走这里了');
       // 没有token的情况下，判断是否白名单页面
-      // if (whiteList.indexOf(to.path) !== -1) {
-      //   return to;
-      // } else {
-      //   return { path: '/signIn' };
-      // }
+      if (whiteList.indexOf(to.path) !== -1) {
+        return;
+      } else {
+        return { path: '/signIn' };
+      }
     }
   });
   router.afterEach(() => {

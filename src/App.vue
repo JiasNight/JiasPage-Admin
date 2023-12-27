@@ -9,9 +9,9 @@
       <RouterView></RouterView>
     </AppProvider>
   </NConfigProvider>
-  <transition v-if="isLock" name="slide-up">
+  <!-- <transition v-if="isLock" name="slide-up">
     <LockScreen />
-  </transition>
+  </transition> -->
 </template>
 
 <script lang="ts" setup>
@@ -34,7 +34,6 @@ let currentLanguage: ComputedRef<NLocale | null> = computed(() => (appStore.getL
 let currentDateLocale: ComputedRef<NDateLocale | null> = computed(() => dateZhCN);
 
 const isLock = computed(() => globalStore.getIsLock);
-
 </script>
 
 <style>

@@ -1,8 +1,7 @@
 import axios, { Axios, AxiosResponse, AxiosRequestConfig, AxiosInstance, AxiosError } from 'axios';
 import { createDiscreteApi } from 'naive-ui';
-import { useRouter } from 'vue-router';
-
-const router = useRouter();
+import router from '@/router';
+import { handleResCode } from './common/requestCodeEnum';
 
 const { message } = createDiscreteApi(['message']);
 
@@ -44,7 +43,7 @@ class AxiosTool {
     // const iv = aesUtil.genKey();
     const aesKey: string = window.sessionStorage.getItem('aesKey') || '';
     this.service.interceptors.request.use(
-      (config: AxiosRequestConfig) => {
+      (config: AxiosRequestConfig | any) => {
         // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token，不用每次请求都手动添加了
         const token = window.localStorage.getItem('token');
         if (isEncrypt) {
@@ -119,7 +118,7 @@ class AxiosTool {
         // 具体业务具体处理，加上注释只供参考
         const { response } = error;
         if (response) {
-          this.handleResCode(response.status);
+          handleResCode(response.status);
         }
         if (!window.navigator.onLine) {
           message.error('网络连接失败');
@@ -130,51 +129,6 @@ class AxiosTool {
         }
       }
     );
-  }
-
-  /**
-   *
-   * @param code 处理请求状态码
-   */
-  handleResCode(code: number) {
-    switch (code) {
-      case 400:
-        message.error('请求错误(400)');
-        break;
-      case 401:
-        message.error('未授权，请重新登录(401)');
-        break;
-      case 403:
-        message.error('拒绝访问(403)');
-        break;
-      case 404:
-        message.error('请求出错(404)');
-        break;
-      case 408:
-        message.error('请求超时(408)');
-        break;
-      case 500:
-        message.error('服务器错误(500)');
-        break;
-      case 501:
-        message.error('服务未实现(501)');
-        break;
-      case 502:
-        message.error('网络错误(502)');
-        break;
-      case 503:
-        message.error('服务不可用(503)');
-        break;
-      case 504:
-        message.error('网络超时(504)');
-        break;
-      case 505:
-        message.error('HTTP版本不受支持(505)');
-        break;
-      default:
-        message.error(`连接出错(${code})!`);
-        break;
-    }
   }
 
   // 常用方法封装

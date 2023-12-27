@@ -77,9 +77,7 @@ onMounted(() => {
 // 监听
 watch(
   () => tagsList,
-  (newRoute, oldRoute) => {
-    console.log(newRoute);
-  },
+  (newRoute, oldRoute) => {},
   { immediate: true }
 );
 

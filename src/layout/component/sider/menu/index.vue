@@ -28,7 +28,7 @@ const currentProps = defineProps({
 });
 
 // 响应式数据
-let menusList = $ref<MenuOption[]>([]);
+let menusList: Array<MenuOption> = [];
 
 // 创建之前
 onBeforeMount(() => {
@@ -42,6 +42,16 @@ onBeforeMount(() => {
 // 生成菜单
 const generateMenuByRoute = (routerList: Array<any>) => {
   menusList = [];
+  menusList.push({
+    pid: '1',
+    label: '首页',
+    disabled: false,
+    icon: renderMenuIcon('mdi:home'),
+    key: 'Index',
+    path: '/',
+    show: true,
+    description: '首页'
+  });
   const recursionTree = (tree: Array<any>) => {
     let newTree: Array<any> = [];
     tree.forEach((item: any) => {
@@ -64,7 +74,8 @@ const generateMenuByRoute = (routerList: Array<any>) => {
     });
     return newTree;
   };
-  menusList = recursionTree(routerList);
+  let rM = recursionTree(routerList);
+  menusList = menusList.concat(rM);
 };
 
 // 点击菜单

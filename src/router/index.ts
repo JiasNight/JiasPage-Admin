@@ -1,11 +1,9 @@
-import { createRouter, createWebHistory, createWebHashHistory, RouteRecordRaw } from 'vue-router';
+import { createRouter, createWebHistory, createWebHashHistory, RouteRecordRaw, Router } from 'vue-router';
 
 // 引入权限控制
 import { setupPermission } from '@/router/permission';
 
-// 引入模块路由
-// import baseRouters from './modules/base';
-
+// 布局
 const Layout = () => import('@/layout/index.vue');
 
 // 公共路由
@@ -63,7 +61,7 @@ export const commonRoutes: Array<RouteRecordRaw> = [
   }
 ];
 
-const router = createRouter({
+const router: Router = createRouter({
   history: createWebHistory(), // History 路由，无#号
   // history: createWebHashHistory(), // Hash 路由
   routes: commonRoutes,
@@ -76,6 +74,7 @@ const router = createRouter({
   }
 });
 
+// 路由权限设置
 setupPermission(router);
 
 export default router;

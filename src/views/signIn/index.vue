@@ -141,9 +141,11 @@ import { getValidateCode, getAesKey } from '@/api/login/index';
 import useUserStore from '@/store/module/user';
 import useAppStore from '@/store/module/app';
 import { useI18n } from 'vue-i18n';
-import router from '@/router/';
 import { IRes } from '@/interface/common';
 import 'animate.css';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const { locale } = useI18n();
 const userStore = useUserStore();

@@ -1,42 +1,39 @@
 module.exports = {
   root: true,
   defaultSeverity: 'error',
-  extends: ['stylelint-config-standard', 'stylelint-config-prettier'],
+  // extends: [
+  //   'stylelint-config-standard', // 配置stylelint拓展插件
+  //   'stylelint-config-html/vue', // 配置 vue 中 template 样式格式化
+  //   'stylelint-config-standard-scss', // 配置stylelint scss插件
+  //   'stylelint-config-recommended-vue/scss', // 配置 vue 中 scss 样式格式化
+  //   'stylelint-config-recess-order', // 配置stylelint css属性书写顺序插件,
+  //   'stylelint-config-prettier' // 配置stylelint和prettier兼容
+  // ],
+  extends: ['stylelint-config-standard', 'stylelint-config-prettier', 'stylelint-scss'],
   plugins: ['stylelint-order'],
   overrides: [
     {
-      files: ['*.vue', '**/*.vue', '*.html', '**/*.html'],
-      extends: ['stylelint-config-html'],
-      rules: {
-        // 指定关键帧名称的模式
-        'keyframes-name-pattern': null,
-        // 禁止未知的伪类选择器
-        'selector-pseudo-class-no-unknown': [
-          true,
-          {
-            ignorePseudoClasses: ['deep', 'global']
-          }
-        ],
-        // 禁止未知的伪元素选择器
-        'selector-pseudo-element-no-unknown': [
-          true,
-          {
-            ignorePseudoElements: ['v-deep', 'v-global', 'v-slotted']
-          }
-        ]
-      }
+      files: ['**/*.(scss|css|vue|html)'],
+      customSyntax: 'postcss-scss'
     },
     {
-      files: ['*.scss', '**/*.scss'],
-      customSyntax: 'postcss-scss',
-      extends: ['stylelint-config-standard', 'stylelint-config-recommended-vue']
+      files: ['**/*.(html|vue)'],
+      customSyntax: 'postcss-html'
     }
   ],
+  ignoreFiles: ['**/*.js', '**/*.jsx', '**/*.tsx', '**/*.ts', '**/*.json', '**/*.md', '**/*.yaml'],
+  // null  关闭该规则
+  // always 必须
   rules: {
     // 不允许未知函数
     'function-no-unknown': null,
-    // 指定类选择器的模式
-    'selector-class-pattern': null,
+    // 指定类选择器的命名规范
+    'selector-class-pattern': [
+      '^([a-z][a-z0-9]*)(-[a-z0-9]+)*$',
+      {
+        message: 'Expected class selector to be kebab-case'
+      }
+    ],
     // 禁止空源码
     'no-empty-source': null,
     // 指定字符串使用单引号
@@ -47,7 +44,7 @@ module.exports = {
         message: '请使用双引号引用其他字符串'
       }
     ],
-    // 禁止未知的@规则
+    // 禁止未知的规则
     'at-rule-no-unknown': [
       true,
       {
@@ -65,7 +62,9 @@ module.exports = {
         ]
       }
     ],
-    // 指定@规则名的大小写
+    // 小数不带0
+    'number-leading-zero': 'never',
+    // 指定规则名的大小写
     'at-rule-name-case': 'lower',
     // 指定缩进
     indentation: [
@@ -78,7 +77,7 @@ module.exports = {
     'selector-pseudo-class-no-unknown': [
       true,
       {
-        ignorePseudoClasses: ['global']
+        ignorePseudoClasses: ['global', 'v-deep', 'deep']
       }
     ],
     // 禁止未知的伪元素选择器

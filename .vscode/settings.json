@@ -127,5 +127,5 @@
   ],
   "vue3snippets.enable-compile-vue-file-on-did-save-code": false,
   "stylelint.validate": ["css", "less", "postcss", "scss", "vue", "sass"],
-  "vue.codeActions.enabled": false
+  "vue.codeActions.enabled": false,
 }

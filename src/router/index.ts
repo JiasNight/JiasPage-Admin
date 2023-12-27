@@ -1,10 +1,12 @@
 import { createRouter, createWebHistory, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 
-import Layout from '@/layout/index.vue';
-import { App } from 'vue';
+// 引入权限控制
+import { setupPermission } from '@/router/permission';
 
 // 引入模块路由
 // import baseRouters from './modules/base';
+
+const Layout = () => import('@/layout/index.vue');
 
 // 公共路由
 export const commonRoutes: Array<RouteRecordRaw> = [
@@ -61,60 +63,6 @@ export const commonRoutes: Array<RouteRecordRaw> = [
   }
 ];
 
-export const customRoutes: Array<RouteRecordRaw> = [
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/index',
-    children: [
-      {
-        path: '/index',
-        name: 'Index',
-        meta: {
-          title: '首页'
-        },
-        component: () => import('@/views/index.vue')
-      }
-    ]
-  },
-  {
-    path: '/article',
-    name: 'ArticleManage',
-    meta: {
-      title: '文章管理'
-    },
-    component: Layout,
-    children: [
-      {
-        path: 'releaseArticle',
-        name: 'ReleaseArticle',
-        meta: {
-          title: '发布文章'
-        },
-        component: () => import('@/views/article/index.vue')
-      }
-    ]
-  },
-  {
-    path: '/system',
-    name: 'SystemManage',
-    meta: {
-      title: '系统管理'
-    },
-    component: Layout,
-    children: [
-      {
-        path: 'userManage',
-        name: 'UserManage',
-        meta: {
-          title: '用户管理'
-        },
-        component: () => import('@/views/system/userManage/index.vue')
-      }
-    ]
-  }
-];
-
 const router = createRouter({
   history: createWebHistory(), // History 路由，无#号
   // history: createWebHashHistory(), // Hash 路由
@@ -128,6 +76,6 @@ const router = createRouter({
   }
 });
 
-export const setupRouter = (app: App<Element>) => {
-  app.use(router);
-};
+setupPermission(router);
+
+export default router;

@@ -1,8 +1,7 @@
 import { defineStore } from 'pinia';
 import { useRouter, RouteLocationNormalizedLoaded, RouteRecordRaw } from 'vue-router';
 import useAppStore from './app';
-
-const router = useRouter();
+import router from '@/router';
 
 // const appStore = useAppStore();
 
@@ -47,7 +46,7 @@ const useTagStore = defineStore({
       // );
     },
     // 设置缓存的标签页
-    addCachedTag(route: RouteLocationNormalizedLoaded) {
+    addCachedTag(route: RouteLocationNormalizedLoaded | any) {
       if (this.cachedTags.includes(route.name)) return;
       this.cachedTags.push(route.name);
     },

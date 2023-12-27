@@ -108,7 +108,9 @@ import { getValidateCode, getAesKey } from '@/api/login/index';
 import useUserStore from '@/store/module/user';
 import useAppStore from '@/store/module/app';
 import { useI18n } from 'vue-i18n';
-import router from '@/router/';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 const { locale } = useI18n();
 // 获取当前组件实例
 const instance = getCurrentInstance()?.appContext;

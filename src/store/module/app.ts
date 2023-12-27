@@ -1,13 +1,12 @@
 import { defineStore } from 'pinia';
-import { useRouter, RouteLocationNormalizedLoaded, RouteRecordRaw } from 'vue-router';
+import { RouteLocationNormalizedLoaded, RouteRecordRaw } from 'vue-router';
 import { getDynamicRoutes } from '@/api/app';
 import { getToken } from '@/utils/auth';
 import Layout from '@/layout/index.vue';
 import useTagStore from './tag';
+import router from '@/router';
 
 const modules = import.meta.glob('../../views/**/*.vue');
-
-const router = useRouter();
 
 type IAppState = {
   theme: boolean;
@@ -67,7 +66,7 @@ const useAppStore = defineStore({
     // 设置当前路由内容
     setCurrentRoute(route: RouteLocationNormalizedLoaded) {
       this.currentRoute = route;
-      useTagStore().setActiveTagPath(route);
+      useTagStore().setActiveTag(route);
     },
     // 添加动态路由，并同步到状态管理器中
     addRoutes(data: Array<RouteRecordRaw>) {

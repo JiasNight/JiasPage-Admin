@@ -81,7 +81,7 @@ let themeDrawerShow = $ref<boolean>(false);
 
 // 挂载
 onMounted(() => {
-  currentUserName = userStore.userInfo.userNickName;
+  // currentUserName = userStore.getUserInfo;
 });
 
 // const { iconRender } = useIconRender();

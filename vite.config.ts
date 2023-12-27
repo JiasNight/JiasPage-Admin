@@ -40,13 +40,14 @@ export default ({ command, mode }) => {
     define: {
       'process.env': env
     },
-    base: '/', // 开发或生产环境服务的公共基础路径：默认'/'   1、绝对URL路径名： /foo/；  2、完整的URL： https://foo.com/； 3、空字符串或 ./（用于开发环境）
+    // 开发或生产环境服务的公共基础路径：默认'/'   1、绝对URL路径名： /foo/；  2、完整的URL： https://foo.com/； 3、空字符串或 ./（用于开发环境）
+    base: '/',
     // 为服务器设置代理规则
     server: {
       host: '0.0.0.0', // 支持从IP启动访问
       port: 3000, // 设置服务启动端口号
       strictPort: true, // 若端口被占用,直接结束项目
-      https: false, // 是否开启https接口
+      // https: false, // 启用 TLS + HTTP/2
       cors: true, // 默认启用并允许任何源
       open: false, // 在服务器启动时自动在浏览器中打开
       hmr: {

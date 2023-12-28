@@ -8,34 +8,19 @@
       label-placement="left"
       label-width="auto"
     >
-      <n-grid cols="2 s:3 m:4 l:5 xl:6 2xl:7" :x-gap="20" responsive="screen">
-        <n-form-item-gi span="0 m:1 l:2" label="用户名">
+      <n-grid cols="1 s:2 m:3 l:4 xl:5 2xl:6" :x-gap="20" responsive="screen">
+        <n-form-item-gi span="s:1 m:1 l:1" label="菜单名称">
           <n-input v-model:value="queryFormData.userName" clearable placeholder="请输入用户名" />
         </n-form-item-gi>
-        <n-form-item-gi span="0 m:1 l:2" label="登录账户">
-          <n-input v-model:value="queryFormData.userAccount" clearable placeholder="请输入登录账户" />
-        </n-form-item-gi>
-        <n-form-item-gi span="0 m:1 l:2" label="手机">
-          <n-input v-model:value="queryFormData.userPhone" clearable placeholder="请输入手机" />
-        </n-form-item-gi>
-        <n-form-item-gi span="0 m:1 l:2" label="角色">
-          <n-select
-            v-model:value="queryFormData.userRole"
-            placeholder="请选择角色名称"
-            :options="roleOptions"
-            multiple
-            clearable
-          />
-        </n-form-item-gi>
-        <n-form-item-gi span="0 m:1 l:2" label="创建时间">
+        <n-form-item-gi span="1" label="创建时间">
           <n-date-picker v-model:value="queryFormData.dataRange" type="daterange" value-format="yyyy-MM-dd" clearable />
         </n-form-item-gi>
-        <n-form-item-gi span="1">
+        <n-form-item-gi span="2">
           <n-space>
             <n-button attr-type="reset" @click="resetQueryFormBtn">
               <template #icon>
                 <n-icon>
-                  <icon-mdi:autorenew></icon-mdi:autorenew>
+                  <icon-mdi:refresh></icon-mdi:refresh>
                 </n-icon>
               </template>
               重 置
@@ -52,6 +37,25 @@
         </n-form-item-gi>
       </n-grid>
     </n-form>
+
+    <n-space class="container-space" justify="end">
+      <n-button type="info" @click="handleAddMenu">
+        <template #icon>
+          <n-icon>
+            <icon-mdi:plus></icon-mdi:plus>
+          </n-icon>
+        </template>
+        新 增
+      </n-button>
+      <n-button type="warning" @click="handleDownload">
+        <template #icon>
+          <n-icon>
+            <icon-mdi:download></icon-mdi:download>
+          </n-icon>
+        </template>
+        导 出
+      </n-button>
+    </n-space>
     <!-- 表格 -->
     <n-data-table
       :data="menuTableData"
@@ -60,80 +64,130 @@
       :row-key="tableRowKey"
       :bordered="true"
       :single-line="false"
+      default-expand-all
+      :pagination="pagination"
     />
     <!-- 新增和编辑内容框 -->
-    <n-modal v-model:show="showModal">
-      <n-card :title="modelTitle" :bordered="false" style="width: 37.5rem">
-        <template #header-extra>
-          <n-button text @click="showModal = false">
-            <n-icon>
-              <icon-mdi:close></icon-mdi:close>
-            </n-icon>
-          </n-button>
-        </template>
-        <n-form
-          ref="formRef"
-          :model="menuFormData"
-          label-placement="left"
-          label-width="auto"
-          require-mark-placement="right-hanging"
-        >
-          <n-form-item label="父级栏目" path="pid">
-            <n-cascader
-              v-model:value="menuFormData.pid"
-              placeholder="请选择"
-              expand-trigger="click"
-              :options="menuTableData"
-              label-field="title"
-              value-field="id"
-              :show-path="false"
-            />
-          </n-form-item>
-          <n-form-item label="栏目名称" path="name">
-            <n-input v-model:value="menuFormData.name" maxlength="20" placeholder="请输入名称" />
-          </n-form-item>
-          <n-form-item label="栏目名称" path="name">
-            <n-input v-model:value="menuFormData.meta.title" maxlength="20" placeholder="请输入" />
-          </n-form-item>
-          <n-form-item label="栏目图标" path="name">
-            <n-select v-model:value="menuFormData.meta.icon" placeholder="请选择" :options="menuTableData" />
-          </n-form-item>
-          <n-form-item label="栏目类型" path="menuType">
-            <n-radio-group v-model:value="menuFormData.meta.menuType" name="menuType">
-              <n-radio :value="1"> 目录 </n-radio>
-              <n-radio :value="2"> 菜单 </n-radio>
-            </n-radio-group>
-          </n-form-item>
-          <n-form-item label="路由地址" path="path">
-            <n-input v-model:value="menuFormData.path" maxlength="20" placeholder="请输入" />
-          </n-form-item>
-          <n-form-item v-if="menuFormData.meta.menuType === 2" label="组件路径" path="component">
-            <n-input v-model:value="menuFormData.component" maxlength="20" placeholder="请输入" />
-          </n-form-item>
-          <n-form-item label="是否缓存" path="cache">
-            <n-switch v-model:value="menuFormData.meta.cache">
-              <template #checked> 是 </template>
-              <template #unchecked> 否 </template>
-            </n-switch>
-          </n-form-item>
-          <n-form-item label="是否禁用" path="disabled">
-            <n-switch v-model:value="menuFormData.meta.disabled">
-              <template #checked> 是 </template>
-              <template #unchecked> 否 </template>
-            </n-switch>
-          </n-form-item>
-          <n-form-item label="是否显示" path="show">
-            <n-switch v-model:value="menuFormData.meta.show">
-              <template #checked> 是 </template>
-              <template #unchecked> 否 </template>
-            </n-switch>
-          </n-form-item>
-        </n-form>
+    <n-modal
+      v-model:show="showModal"
+      class="container-card"
+      preset="card"
+      :title="modelTitle"
+      :auto-focus="false"
+      :style="{ width: '37.5rem' }"
+    >
+      <n-form
+        ref="menuFormRef"
+        :model="menuFormData"
+        :rules="menuFormRules"
+        label-placement="left"
+        label-width="auto"
+        require-mark-placement="left"
+      >
+        <n-form-item label="父级菜单" path="pid">
+          <n-cascader
+            v-model:value="menuFormData.pid"
+            placeholder="请选择父级菜单"
+            expand-trigger="click"
+            :options="menuTableData"
+            label-field="title"
+            value-field="id"
+            :show-path="false"
+          />
+        </n-form-item>
+        <n-form-item label="菜单名称" path="meta.title">
+          <n-input v-model:value="menuFormData.meta.title" maxlength="20" placeholder="请输入菜单名称" />
+        </n-form-item>
+        <n-form-item label="名称代码" path="name">
+          <n-input v-model:value="menuFormData.name" maxlength="20" placeholder="请输入名称代码" />
+        </n-form-item>
+        <n-form-item label="名称描述" path="meta.description">
+          <n-input
+            v-model:value="menuFormData.meta.description"
+            type="textarea"
+            :autosize="{
+              minRows: 2,
+              maxRows: 3
+            }"
+            show-count
+            maxlength="100"
+            placeholder="请输入名称描述"
+          />
+        </n-form-item>
+        <n-form-item label="菜单类型" path="">
+          <n-radio-group
+            v-model:value="menuFormData.meta.menuType"
+            name="menuType"
+            :on-update:value="handleChangeRadio"
+          >
+            <n-radio :value="0" label="目录"> </n-radio>
+            <n-radio :value="1" label="菜单"> </n-radio>
+            <n-radio :value="2" label="按钮"> </n-radio>
+            <n-radio :value="3" label="外链"> </n-radio>
+          </n-radio-group>
+        </n-form-item>
+        <n-form-item path="path">
+          <template #label>
+            路由地址
+            <n-tooltip placement="top-start" trigger="hover">
+              <template #trigger>
+                <n-icon>
+                  <icon-mdi:help-circle></icon-mdi:help-circle>
+                </n-icon>
+              </template>
+              访问地址
+            </n-tooltip>
+          </template>
+          <n-input v-model:value="menuFormData.path" maxlength="20" placeholder="请输入路由地址" />
+        </n-form-item>
+        <n-form-item :path="menuFormData.meta.menuType === 1 ? 'component' : ''">
+          <template #label>
+            组件路径
+            <n-tooltip placement="top-start" trigger="hover">
+              <template #trigger>
+                <n-icon>
+                  <icon-mdi:help-circle></icon-mdi:help-circle>
+                </n-icon>
+              </template>
+              组件的路径，默认都在views文件下，例：/article/index
+            </n-tooltip>
+          </template>
+          <n-input
+            v-model:value="menuFormData.component"
+            :disabled="menuFormData.meta.menuType !== 1"
+            maxlength="20"
+            placeholder="请输入组件路径"
+          />
+        </n-form-item>
+        <n-form-item label="菜单图标" path="meta.icon">
+          <n-input v-model:value="menuFormData.meta.icon" maxlength="20" placeholder="请输入图标" />
+          <!-- <n-select v-model:value="menuFormData.meta.icon" placeholder="请选择图标" :options="menuTableData" /> -->
+        </n-form-item>
+        <n-form-item label="是否缓存" path="meta.cache">
+          <n-switch v-model:value="menuFormData.meta.cache">
+            <template #checked> 是 </template>
+            <template #unchecked> 否 </template>
+          </n-switch>
+        </n-form-item>
+        <n-form-item label="是否禁用" path="meta.disabled">
+          <n-switch v-model:value="menuFormData.meta.disabled">
+            <template #checked> 是 </template>
+            <template #unchecked> 否 </template>
+          </n-switch>
+        </n-form-item>
+        <n-form-item label="是否显示" path="meta.show">
+          <n-switch v-model:value="menuFormData.meta.show">
+            <template #checked> 是 </template>
+            <template #unchecked> 否 </template>
+          </n-switch>
+        </n-form-item>
+      </n-form>
+      <template #footer>
         <n-space justify="end">
           <n-button type="primary" @click="handleConfirm">确 定</n-button>
           <n-button type="default" @click="showModal = false">取 消</n-button>
         </n-space>
-      </n-card>
+      </template>
     </n-modal>
   </div>
 </template>
@@ -188,8 +242,6 @@ let queryFormData = $ref<IUserForm>({
   dataRange: null
 });
 
-let menuTableData = $ref<IMenuTable[]>([]);
-
 let showModal = $ref<boolean>(false);
 
 let modelTitle = $ref<string>('');
@@ -211,21 +263,51 @@ let menuForm = {
   component: ''
 };
 
+const menuFormRef = ref<FormInst | null>(null);
+
 let menuFormData = $ref<IMenuForm>(menuForm);
 
-let tableRowKey = (rowData: IMenuTable, i: number) => {
-  return i;
-};
-
-// 重置查询内容
-const resetQueryFormBtn = () => {
-  if (queryForm) queryForm.restoreValidation();
-};
+let menuFormRules = $ref({
+  pid: {
+    required: true,
+    trigger: ['blur', 'change'],
+    message: '请选择父级菜单'
+  },
+  name: {
+    required: true,
+    trigger: ['input', 'blur'],
+    message: '请输入菜单名称'
+  },
+  path: {
+    required: true,
+    trigger: ['input', 'blur'],
+    message: '请输入路由地址'
+  },
+  component: {
+    required: true,
+    trigger: ['input', 'blur'],
+    message: '请输入组件路径'
+  },
+  meta: {
+    title: {
+      required: true,
+      trigger: ['input', 'blur'],
+      message: '请输入菜单名称'
+    },
+    menuType: {
+      required: true,
+      trigger: ['blur', 'change'],
+      message: '请选择菜单类型'
+    }
+  }
+});
 
 let roleOptions = $ref<Array<object>>([
   { label: '角1', value: 'role1' },
   { label: '角2', value: 'role3' }
 ]);
+
+let menuTableData = $ref<IMenuTable[]>([]);
 
 let menuTableHeader = $ref<DataTableColumns>([
   {
@@ -289,9 +371,6 @@ let menuTableHeader = $ref<DataTableColumns>([
                 text: true,
                 size: 'small',
                 color: 'red',
-                style: {
-                  margin: '0 .3rem'
-                },
                 onClick: (e: any) => {
                   window.$dialog.warning({
                     title: '警告',
@@ -319,13 +398,37 @@ let menuTableHeader = $ref<DataTableColumns>([
   }
 ]);
 
+let pageInfo = {
+  pageSize: 10,
+  pageNum: 1,
+  total: 0
+};
+
+let pagination = $ref<object>({
+  'show-size-picker': true,
+  'show-quick-jumper': true,
+  pageSizes: [10, 20, 30, 40],
+  pageSize: pageInfo.pageSize,
+  page: pageInfo.pageNum,
+  itemCount: pageInfo.total
+});
+
+let tableRowKey = (rowData: IMenuForm, i: number) => {
+  return rowData.id;
+};
+
 // 加载之前
 onMounted(() => {
   getMenuData();
 });
 
+// 重置查询内容
+const resetQueryFormBtn = () => {
+  if (queryForm) queryForm.restoreValidation();
+};
+
 // 获取菜单数据
-const getMenuData = () => {
+const getMenuData = (): void => {
   const data = {
     token: useUserStore().token
   };
@@ -336,18 +439,51 @@ const getMenuData = () => {
   });
 };
 
+// 查询
 const handleQueryTable = (): void => {
   getMenuData();
 };
 
+// 新增
+const handleAddMenu = (): void => {
+  menuFormData = menuForm;
+  modelTitle = '新增';
+  showModal = true;
+};
+
+// 导出
+const handleDownload = (): void => {
+  window.$message.warning('还未开发开功能！');
+};
+
+// 单选框选择
+const handleChangeRadio = (val: number) => {
+  menuFormData.meta.menuType = val;
+};
+
 // 确定
-const handleConfirm = (): void => {};
+const handleConfirm = (): void => {
+  menuFormRef.value?.validate((errors) => {
+    if (!errors) {
+      window.$message.success('Valid');
+    } else {
+      console.log(errors);
+      window.$message.error('Invalid');
+    }
+  });
+};
 </script>
 
 <style lang="scss" scoped>
 .view-container {
   .container-form {
     margin-top: 0.625rem;
+  }
+  .container-space {
+    margin-bottom: 0.625rem;
+  }
+  .container-card {
+    background-color: aquamarine;
   }
 }
 </style>

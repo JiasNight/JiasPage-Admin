@@ -1,6 +1,5 @@
 <template>
   <div ref="mapChart" style="width: 90%; height: 800px"></div>
-  <h1>首页</h1>
 </template>
 
 <script lang="ts" setup>

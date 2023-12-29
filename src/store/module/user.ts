@@ -24,9 +24,12 @@ const useUserStore = defineStore({
   },
   actions: {
     // 用户登录
-    async userLoginHandle(adminForm: object) {
+    async userLoginHandle(adminForm: any) {
       return await new Promise((resolve: any, reject: any) => {
-        userLogin(adminForm).then((res: IResponse) => {
+        const fd = new FormData();
+        fd.append('userName', adminForm.userName);
+        fd.append('password', adminForm.password);
+        userLogin(fd).then((res: IResponse) => {
           if (res && res.code === 200) {
             setToken(res.data.token);
             resolve();

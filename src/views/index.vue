@@ -51,11 +51,16 @@ const initMapChart = () => {
       }
     ]
   };
-  myChart.setOption(option);
+  myChart.clear();
+  myChart.resize();
+  myChart && myChart.setOption(option);
 };
 
 onMounted(() => {
   initMapChart();
+  window.addEventListener('resize', () => {
+    initMapChart();
+  });
 });
 </script>
 

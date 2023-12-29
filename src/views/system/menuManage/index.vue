@@ -89,10 +89,10 @@
             v-model:value="menuFormData.pid"
             placeholder="请选择父级菜单"
             expand-trigger="click"
-            :options="menuTableData"
-            label-field="title"
+            :options="menuTreeData"
+            label-field="menuName"
             value-field="id"
-            :show-path="false"
+            :show-path="true"
           />
         </n-form-item>
         <n-form-item label="菜单名称" path="meta.title">
@@ -203,13 +203,12 @@ import { getMenuList } from '@/api/system/menuManage';
 
 interface IUserForm {
   userName: string | null;
-  userAccount: string | null;
-  userPhone: string | null;
-  userRole: string | null;
   dataRange: Array<[string, string]> | null;
 }
 
-interface IMenuTable {
+interface IMenuForm {
+  id: string;
+  pid: string;
   path: string;
   name: string;
   meta: {
@@ -222,12 +221,7 @@ interface IMenuTable {
     description: string;
   };
   component: string;
-  children?: IMenuTable[];
-}
-
-interface IMenuForm extends IMenuTable {
-  pid: string;
-  id: string;
+  children?: IMenuForm[];
 }
 
 let tableIsLoading = $ref<boolean>(false);
@@ -236,9 +230,6 @@ let queryForm = $ref<FormInst | null>(null);
 
 let queryFormData = $ref<IUserForm>({
   userName: null,
-  userAccount: null,
-  userPhone: null,
-  userRole: null,
   dataRange: null
 });
 
@@ -246,7 +237,7 @@ let showModal = $ref<boolean>(false);
 
 let modelTitle = $ref<string>('');
 
-let menuForm = {
+let emptyMenuForm = {
   pid: '',
   id: '',
   path: '',
@@ -263,9 +254,11 @@ let menuForm = {
   component: ''
 };
 
-const menuFormRef = ref<FormInst | null>(null);
+const menuFormRef = $ref<FormInst | null>(null);
 
-let menuFormData = $ref<IMenuForm>(menuForm);
+let menuTreeData = $ref<Array<any>>([]);
+
+let menuFormData = $ref<IMenuForm>(emptyMenuForm);
 
 let menuFormRules = $ref({
   pid: {
@@ -307,7 +300,7 @@ let roleOptions = $ref<Array<object>>([
   { label: '角2', value: 'role3' }
 ]);
 
-let menuTableData = $ref<IMenuTable[]>([]);
+let menuTableData = $ref<IMenuForm[]>([]);
 
 let menuTableHeader = $ref<DataTableColumns>([
   {
@@ -319,7 +312,7 @@ let menuTableHeader = $ref<DataTableColumns>([
     }
   },
   { title: '创建者', key: 'createBy', align: 'center' },
-  { title: '创建时间', key: 'createTime', align: 'center' },
+  { title: '创建时间', key: 'createTime', align: 'center', width: '200' },
   {
     title: '操作',
     key: 'ops',
@@ -338,7 +331,7 @@ let menuTableHeader = $ref<DataTableColumns>([
                 size: 'small',
                 color: '#2376b7',
                 onClick: (e) => {
-                  menuFormData = menuForm;
+                  menuFormData = emptyMenuForm;
                   modelTitle = '新增';
                   showModal = true;
                 }
@@ -355,7 +348,9 @@ let menuTableHeader = $ref<DataTableColumns>([
                 size: 'small',
                 color: '#00cec9',
                 onClick: (e: any) => {
-                  menuFormData = JSON.parse(JSON.stringify(rowData));
+                  let copyRow = JSON.parse(JSON.stringify(rowData));
+                  delete copyRow.children;
+                  menuFormData = copyRow;
                   modelTitle = '修改';
                   showModal = true;
                 }
@@ -422,8 +417,42 @@ onMounted(() => {
   getMenuData();
 });
 
+// 菜单目录名称递归
+const getMenuTree = (menuList: Array<IMenuForm>) => {
+  let menuTree: Array<any> = [
+    {
+      menuName: '系统根目录',
+      id: '0',
+      pid: '0',
+      children: []
+    }
+  ];
+  const recursionMenu = (menuList: Array<IMenuForm>) => {
+    const clonedTree: any = [];
+    for (let node of menuList) {
+      const clonedNode: any = {
+        menuName: node.meta.title,
+        id: node.id,
+        pid: node.path
+      };
+      if (node.children && node.children.length > 0) {
+        clonedNode.children = recursionMenu(node.children);
+      }
+      clonedTree.push(clonedNode);
+    }
+    return clonedTree;
+  };
+  let result = recursionMenu(menuList);
+  menuTree[0].children = result;
+  return menuTree;
+};
+
 // 重置查询内容
 const resetQueryFormBtn = () => {
+  queryFormData = {
+    userName: null,
+    dataRange: null
+  };
   if (queryForm) queryForm.restoreValidation();
 };
 
@@ -432,11 +461,18 @@ const getMenuData = (): void => {
   const data = {
     token: useUserStore().token
   };
-  getMenuList(data).then((res: IRes) => {
-    if (res && res.code === 200) {
-      menuTableData = res.data;
-    }
-  });
+  tableIsLoading = true;
+  getMenuList(data)
+    .then((res: IRes) => {
+      if (res && res.code === 200) {
+        menuTableData = res.data;
+        menuTreeData = getMenuTree(menuTableData);
+        tableIsLoading = false;
+      }
+    })
+    .catch(() => {
+      tableIsLoading = false;
+    });
 };
 
 // 查询
@@ -446,14 +482,14 @@ const handleQueryTable = (): void => {
 
 // 新增
 const handleAddMenu = (): void => {
-  menuFormData = menuForm;
+  menuFormData = emptyMenuForm;
   modelTitle = '新增';
   showModal = true;
 };
 
 // 导出
 const handleDownload = (): void => {
-  window.$message.warning('还未开发开功能！');
+  window.$message.warning('还未开发该功能！');
 };
 
 // 单选框选择
@@ -463,8 +499,9 @@ const handleChangeRadio = (val: number) => {
 
 // 确定
 const handleConfirm = (): void => {
-  menuFormRef.value?.validate((errors) => {
+  menuFormRef?.validate((errors) => {
     if (!errors) {
+      console.log(menuFormData);
       window.$message.success('Valid');
     } else {
       console.log(errors);

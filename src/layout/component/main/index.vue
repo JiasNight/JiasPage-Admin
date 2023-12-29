@@ -80,10 +80,10 @@ onMounted(() => {
 }
 .fade-enter-from {
   opacity: 0;
-  transform: translateY(-10%);
+  transform: translateX(50%);
 }
 .fade-leave-to {
   opacity: 0;
-  transform: translateY(10%);
+  transform: translateX(-10%);
 }
 </style>

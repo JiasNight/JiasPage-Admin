@@ -189,7 +189,7 @@ const getCurrentVerifyCode = () => {
   getValidateCode()
     .then((res: IRes) => {
       if (res && res.code === 200) {
-        verifyCodeImg = res.data;
+        verifyCodeImg = res.data.base64;
         verifyImgLoading = false;
       } else {
         verifyImgLoading = false;
@@ -218,13 +218,12 @@ const clickCodeImgBtn = () => {
   getCurrentVerifyCode();
 };
 
-const adminFormData = reactive({
+const adminFormData = $ref({
   userName: '',
-  password: '',
-  verifyCode: ''
+  password: ''
 });
 
-const adminFormRules = reactive({
+const adminFormRules = $ref({
   userName: {
     required: true,
     trigger: ['blur', 'input'],

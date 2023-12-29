@@ -221,7 +221,7 @@ export default ({ command, mode }) => {
         // 监视文件夹中的文件更改
         watchFiles: true,
         // 开发打包开关
-        localEnabled: true,
+        localEnabled: false,
         // 生产打包开关
         prodEnabled: true,
         // 打开后，可以读取 ts 文件模块。 请注意，打开后将无法监视.js 文件

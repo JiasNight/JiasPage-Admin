@@ -9,3 +9,12 @@ export const getMenuList = (data: object) => {
   });
 };
 
+// 新增菜单列表
+export const addMenuList = (data: object) => {
+  return service.request({
+    url: '/api/system/menu/add',
+    method: 'post',
+    data: data
+  });
+};
+

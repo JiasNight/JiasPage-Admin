@@ -51,9 +51,9 @@
       </n-tooltip>
       <n-tooltip placement="top-start" trigger="hover">
         <template #trigger>
-          <span class="right-user"> {{ currentUserName }} </span>
+          <span class="right-user"> {{ currentUserInfo.userNick }} </span>
         </template>
-        <span> 欢迎您，{{ currentUserName }} </span>
+        <span> 欢迎您，{{ currentUserInfo.userNick }} </span>
       </n-tooltip>
       <n-dropdown trigger="click" :options="dropdownOptions" :show-arrow="true" @select="handleSelectDropdown">
         <img class="right-avatar" src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg" alt="用户头像" />
@@ -76,12 +76,15 @@ let userStore = useUserStore();
 
 // 定义响应式数据
 let todoNumVal = $ref<number>(10);
-let currentUserName = $ref<string>('');
+let currentUserInfo = {
+  userName: '',
+  userNick: ''
+};
 let themeDrawerShow = $ref<boolean>(false);
 
 // 挂载
 onMounted(() => {
-  // currentUserName = userStore.getUserInfo;
+  currentUserInfo = userStore.getUserInfo;
 });
 
 // const { iconRender } = useIconRender();

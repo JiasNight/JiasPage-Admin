@@ -26,7 +26,7 @@
       "@/*": ["src/*"],
       "components": ["src/components/*"]
     },
-    "types": ["vue/ref-macros"]
+    "types": ["vue/ref-macros", "@vue-macros/reactivity-transform/macros-global"]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "./auto-imports.d.ts"],
   "references": [{ "path": "./tsconfig.vite.json" }]

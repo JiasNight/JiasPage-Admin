@@ -218,12 +218,12 @@ const clickCodeImgBtn = () => {
   getCurrentVerifyCode();
 };
 
-const adminFormData = $ref({
+const adminFormData = reactive({
   userName: '',
   password: ''
 });
 
-const adminFormRules = $ref({
+const adminFormRules = reactive({
   userName: {
     required: true,
     trigger: ['blur', 'input'],

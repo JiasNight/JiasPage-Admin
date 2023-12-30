@@ -24,6 +24,8 @@ import { presetUno, presetAttributify, presetIcons } from 'unocss';
 import { viteMockServe } from 'vite-plugin-mock';
 
 import { Vuetify3Resolver, NaiveUiResolver } from 'unplugin-vue-components/resolvers';
+// 响应式语法糖独立
+import ReactivityTransform from '@vue-macros/reactivity-transform/vite';
 
 import * as path from 'path';
 
@@ -129,10 +131,9 @@ export default ({ command, mode }) => {
     },
     // 插件配置
     plugins: [
-      vuePlugin({
-        // 开启ref转换
-        reactivityTransform: true
-      }),
+      vuePlugin(),
+      // ref转换
+      ReactivityTransform(),
       // 配置css原子化
       unoCss({
         presets: [presetUno(), presetAttributify(), presetIcons()],
@@ -226,7 +227,8 @@ export default ({ command, mode }) => {
         prodEnabled: true,
         // 打开后，可以读取 ts 文件模块。 请注意，打开后将无法监视.js 文件
         supportTs: true,
-        logger: true // 是否在控制台显示请求日志
+        // 是否在控制台显示请求日志
+        logger: true
       })
     ],
     // 全局 css 注册

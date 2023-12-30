@@ -34,7 +34,6 @@ let menusList: Array<MenuOption> = [];
 onBeforeMount(() => {
   // 当前用户登录的所有路由
   const currentStoreRoutes: Array<RouteRecordRaw> = useAppStore().getRoutes;
-  // console.log(JSON.parse(JSON.stringify(currentStoreRoutes)));
   // 根据路由生成侧边栏菜单
   generateMenuByRoute(toRaw(currentStoreRoutes));
 });

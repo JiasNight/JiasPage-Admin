@@ -164,22 +164,25 @@
           <!-- <n-select v-model:value="menuFormData.meta.icon" placeholder="请选择图标" :options="menuTableData" /> -->
         </n-form-item>
         <n-form-item label="是否缓存" path="meta.cache">
-          <n-switch v-model:value="menuFormData.meta.cache">
+          <n-switch v-model:value="menuFormData.meta.cache" :checked-value="0" :unchecked-value="1">
             <template #checked> 是 </template>
             <template #unchecked> 否 </template>
           </n-switch>
         </n-form-item>
         <n-form-item label="是否禁用" path="meta.disabled">
-          <n-switch v-model:value="menuFormData.meta.disabled">
+          <n-switch v-model:value="menuFormData.meta.disabled" :checked-value="0" :unchecked-value="1">
             <template #checked> 是 </template>
             <template #unchecked> 否 </template>
           </n-switch>
         </n-form-item>
         <n-form-item label="是否显示" path="meta.show">
-          <n-switch v-model:value="menuFormData.meta.show">
+          <n-switch v-model:value="menuFormData.meta.show" :checked-value="0" :unchecked-value="1">
             <template #checked> 是 </template>
             <template #unchecked> 否 </template>
           </n-switch>
+        </n-form-item>
+        <n-form-item label="菜单排序" path="order">
+          <n-input-number v-model:value="menuFormData.order" placeholder="请输入序号" />
         </n-form-item>
       </n-form>
       <template #footer>
@@ -199,7 +202,7 @@ import { Icon } from '@iconify/vue';
 import { renderIcon, resetForm } from '@/utils/common';
 import { IRes } from '@/interface/common';
 import useUserStore from '@/store/module/user';
-import { getMenuList } from '@/api/system/menuManage';
+import { getMenuList, addMenuList } from '@/api/system/menuManage';
 
 interface IUserForm {
   userName: string | null;
@@ -214,13 +217,14 @@ interface IMenuForm {
   meta: {
     title: string;
     icon: string;
-    show: boolean;
-    disabled: boolean;
-    cache: boolean;
+    show: number;
+    disabled: number;
+    cache: number;
     menuType: number;
     description: string;
   };
   component: string;
+  order: number;
   children?: IMenuForm[];
 }
 
@@ -245,13 +249,14 @@ let emptyMenuForm = {
   meta: {
     title: '',
     icon: '',
-    show: false,
-    disabled: false,
-    cache: false,
+    show: 0,
+    disabled: 1,
+    cache: 1,
     menuType: 0,
     description: ''
   },
-  component: ''
+  component: '',
+  order: 0
 };
 
 const menuFormRef = $ref<FormInst | null>(null);
@@ -260,7 +265,7 @@ let menuTreeData = $ref<Array<any>>([]);
 
 let menuFormData = $ref<IMenuForm>(emptyMenuForm);
 
-let menuFormRules = $ref({
+let menuFormRules = reactive({
   pid: {
     required: true,
     trigger: ['blur', 'change'],
@@ -399,7 +404,7 @@ let pageInfo = {
   total: 0
 };
 
-let pagination = $ref<object>({
+let pagination = reactive<object>({
   'show-size-picker': true,
   'show-quick-jumper': true,
   pageSizes: [10, 20, 30, 40],
@@ -502,7 +507,13 @@ const handleConfirm = (): void => {
   menuFormRef?.validate((errors) => {
     if (!errors) {
       console.log(menuFormData);
-      window.$message.success('Valid');
+      addMenuList(menuFormData).then((res) => {
+        if (res && res.code === 200) {
+          window.$message.success('新增菜单成功');
+          showModal = false;
+          handleQueryTable();
+        }
+      });
     } else {
       console.log(errors);
       window.$message.error('Invalid');

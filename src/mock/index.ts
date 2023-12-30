@@ -11,9 +11,9 @@ const MENU_LIST = [
     meta: {
       title: '文章管理',
       icon: 'ic:outline-article',
-      show: true,
-      disabled: false,
-      cache: false,
+      show: 0,
+      disabled: 1,
+      cache: 1,
       menuType: 1,
       description: '文章管理'
     },
@@ -27,9 +27,9 @@ const MENU_LIST = [
         meta: {
           title: '发布文章',
           icon: 'ic:baseline-new-releases',
-          show: true,
-          disabled: false,
-          cache: false,
+          show: 0,
+          disabled: 1,
+          cache: 1,
           menuType: 2,
           description: '发布文章'
         },
@@ -45,9 +45,9 @@ const MENU_LIST = [
     meta: {
       title: '系统管理',
       icon: 'ic:baseline-settings',
-      show: true,
-      disabled: false,
-      cache: false,
+      show: 0,
+      disabled: 1,
+      cache: 1,
       menuType: 1,
       description: '系统管理'
     },
@@ -61,9 +61,9 @@ const MENU_LIST = [
         meta: {
           title: '用户管理',
           icon: 'mdi:account-details',
-          show: true,
-          disabled: false,
-          cache: false,
+          show: 0,
+          disabled: 1,
+          cache: 1,
           menuType: 2,
           description: '用户管理'
         },
@@ -77,9 +77,9 @@ const MENU_LIST = [
         meta: {
           title: '菜单管理',
           icon: 'mdi:menu',
-          show: true,
-          disabled: false,
-          cache: false,
+          show: 0,
+          disabled: 1,
+          cache: 1,
           menuType: 2,
           description: '菜单管理'
         },
@@ -93,9 +93,9 @@ const MENU_LIST = [
         meta: {
           title: '角色管理',
           icon: 'mdi:account-lock',
-          show: true,
-          disabled: false,
-          cache: true,
+          show: 0,
+          disabled: 1,
+          cache: 0,
           menuType: 2,
           description: '角色管理'
         },
@@ -109,9 +109,9 @@ const MENU_LIST = [
         meta: {
           title: '字典管理',
           icon: 'mdi:book-open',
-          show: true,
-          disabled: false,
-          cache: false,
+          show: 0,
+          disabled: 1,
+          cache: 1,
           menuType: 2,
           description: '字典管理'
         },
@@ -125,9 +125,9 @@ const MENU_LIST = [
         meta: {
           title: '系统监控',
           icon: 'mdi:monitor-dashboard',
-          show: true,
-          disabled: true,
-          cache: false,
+          show: 0,
+          disabled: 0,
+          cache: 1,
           menuType: 2,
           description: '系统监控'
         },
@@ -141,9 +141,9 @@ const MENU_LIST = [
         meta: {
           title: '日志管理',
           icon: 'mdi:book-open',
-          show: true,
-          disabled: true,
-          cache: false,
+          show: 0,
+          disabled: 0,
+          cache: 1,
           menuType: 2,
           description: '日志管理'
         },
@@ -157,9 +157,9 @@ const MENU_LIST = [
             meta: {
               title: '登录日志',
               icon: 'mdi:message-reply-text',
-              show: true,
-              disabled: false,
-              cache: false,
+              show: 0,
+              disabled: 1,
+              cache: 1,
               menuType: 2,
               description: '登录日志'
             },
@@ -173,9 +173,9 @@ const MENU_LIST = [
             meta: {
               title: '操作日志',
               icon: 'mdi:wrench-cog',
-              show: true,
-              disabled: false,
-              cache: false,
+              show: 0,
+              disabled: 1,
+              cache: 1,
               menuType: 2,
               description: '操作日志'
             },
@@ -226,8 +226,11 @@ const mock: Array<MockMethod> = [
         code: 200,
         message: '获取验证码成功！',
         timestamp: formatDate(),
-        // eslint-disable-next-line max-len
-        data: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF0AAAAgCAIAAAD/r+OLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAEXRFWHRTb2Z0d2FyZQBTbmlwYXN0ZV0Xzt0AAAMUSURBVGiB7VlRkqIwEA3U3sJwDsNcgwSuQc1cQy2PYdBrgDkHcg3T+9E12QxETTDqTpXvSxC7Oy/9ujuYAAB5Y4L01QH8p3jz4sabFzfevLjxa3jJsmyz2TzPH/ihaZq6rj0ffgRMwE3TPMOd53Naa0II5/yh0VwBIQRjCN3RefDVUZIkQgilFLxu3kmSBADatpVS4iVGVZZlfF9B68zzXCnV932WZdNv9/u9fUkpzfP83gC/gaQ47+MHKWVMgoKyCzNZSmnuNE1zyXJc0U1DHbk7n88R3f0JIjFJEillVVXDMHx+fmKsmNWIsiz3+31ZlpF379s4fsDErOsa8/H1OkJsNhsA+Pr6cltMkqIoDofDvIBOp5NSylzaa14sFkgEY+yS92iImHsAIIQghGitZ/zKid1up7VG/YaavQeReaGUBpWVrutw/dKCc/2zt7DrOuQ9KLBrzvq+x6C7rvM1FxI91uyiKKJbBoC+7+2esFwug35+zRkmsL80PIVpq4Zz7qmOIF6megzVoJezuq6dYeGBBV2iIuwWbkMIIYRgjNmq6fv+pmus8XCLFxQLpRTtY8CItm1vr3ACL15wzaPzEWbparWyL+0HMJPNaMc5988O2ybn3CmE0ehUFAXn3Gh/sVg4C4pnTQg7H41i2u12/wz9FJEtFtSjp6ORC8OLnYkjGRr4ePQswAGiZYxRSrXWKB+bFCMom45LneU6TPtAF0II5IUxZu4zxkYyNBl93al/YwqYd4/HY57naZqifKqqsr8ihKRpulwuV6vV7KHreDx+fHwURdG2bZZlSqlhGNC4UgqHgNEpzIBzvt1ut9stsQ5NBmY+pJQOwwAA02d+IGgzp/JBoKnz+Xzn6HVpwU6nU2it7UOJDTMfeo6IAbxM5QMApsXMK/sjyJ9AYWKXudTpZmDKixBidCfgfR2xug9ivV5jl4lCihOmpkS0iSzbNqeN0sufaQ0Rg/PEg3i5KUyvuiuEgNe9posOTJYbbyci7sMjsF6vXxLnnPcvTwZGeKOtxsYv4OUl+DX/qz0Zb17c+AskFXhq7Zvh0wAAAABJRU5ErkJggg=='
+        data: {
+          base64:
+            // eslint-disable-next-line max-len
+            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF0AAAAgCAIAAAD/r+OLAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAEXRFWHRTb2Z0d2FyZQBTbmlwYXN0ZV0Xzt0AAAMUSURBVGiB7VlRkqIwEA3U3sJwDsNcgwSuQc1cQy2PYdBrgDkHcg3T+9E12QxETTDqTpXvSxC7Oy/9ujuYAAB5Y4L01QH8p3jz4sabFzfevLjxa3jJsmyz2TzPH/ihaZq6rj0ffgRMwE3TPMOd53Naa0II5/yh0VwBIQRjCN3RefDVUZIkQgilFLxu3kmSBADatpVS4iVGVZZlfF9B68zzXCnV932WZdNv9/u9fUkpzfP83gC/gaQ47+MHKWVMgoKyCzNZSmnuNE1zyXJc0U1DHbk7n88R3f0JIjFJEillVVXDMHx+fmKsmNWIsiz3+31ZlpF379s4fsDErOsa8/H1OkJsNhsA+Pr6cltMkqIoDofDvIBOp5NSylzaa14sFkgEY+yS92iImHsAIIQghGitZ/zKid1up7VG/YaavQeReaGUBpWVrutw/dKCc/2zt7DrOuQ9KLBrzvq+x6C7rvM1FxI91uyiKKJbBoC+7+2esFwug35+zRkmsL80PIVpq4Zz7qmOIF6megzVoJezuq6dYeGBBV2iIuwWbkMIIYRgjNmq6fv+pmus8XCLFxQLpRTtY8CItm1vr3ACL15wzaPzEWbparWyL+0HMJPNaMc5988O2ybn3CmE0ehUFAXn3Gh/sVg4C4pnTQg7H41i2u12/wz9FJEtFtSjp6ORC8OLnYkjGRr4ePQswAGiZYxRSrXWKB+bFCMom45LneU6TPtAF0II5IUxZu4zxkYyNBl93al/YwqYd4/HY57naZqifKqqsr8ihKRpulwuV6vV7KHreDx+fHwURdG2bZZlSqlhGNC4UgqHgNEpzIBzvt1ut9stsQ5NBmY+pJQOwwAA02d+IGgzp/JBoKnz+Xzn6HVpwU6nU2it7UOJDTMfeo6IAbxM5QMApsXMK/sjyJ9AYWKXudTpZmDKixBidCfgfR2xug9ivV5jl4lCihOmpkS0iSzbNqeN0sufaQ0Rg/PEg3i5KUyvuiuEgNe9posOTJYbbyci7sMjsF6vXxLnnPcvTwZGeKOtxsYv4OUl+DX/qz0Zb17c+AskFXhq7Zvh0wAAAABJRU5ErkJggg=='
+        }
       };
     }
   },

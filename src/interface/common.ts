@@ -13,7 +13,7 @@ export type IRes = IResponse;
 export interface IUserInfo {
   userId: string;
   userName: string;
-  userNickName: string;
+  userNick: string;
   token: string;
   deptId: string;
   deptName: string;

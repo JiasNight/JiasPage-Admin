@@ -65,7 +65,8 @@
 </template>
 
 <script lang="ts" setup>
-import { renderMenuIcon } from '@/utils/common';
+import { ICON } from '@/enums/icon';
+import { renderIcon } from '@/utils/common';
 import useUserStore from '@/store/module/user';
 import { useRouter } from 'vue-router';
 import ConfigStyle from '@/layout/component/configStyle/index.vue';
@@ -112,17 +113,17 @@ const dropdownOptions = [
   {
     label: '用户信息',
     key: 'userInfo',
-    icon: renderMenuIcon('mdi:account-box')
+    icon: renderIcon(ICON.F, 'mdi:account-box')
   },
   {
     label: '主题模式',
     key: 'theme',
-    icon: renderMenuIcon('mdi:palette')
+    icon: renderIcon(ICON.F, 'mdi:palette')
   },
   {
     label: '退出登录',
     key: 'logout',
-    icon: renderMenuIcon('mdi:logout')
+    icon: renderIcon(ICON.F, 'mdi:logout')
   }
 ];
 

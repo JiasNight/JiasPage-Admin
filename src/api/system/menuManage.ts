@@ -18,3 +18,20 @@ export const addMenuList = (data: object) => {
   });
 };
 
+// 修改菜单
+export const updateMenu = (data: object) => {
+  return service.request({
+    url: '/api/system/menu/update',
+    method: 'post',
+    data: data
+  });
+};
+
+// 删除菜单
+export const deleteMenu = (mId: string) => {
+  return service.request({
+    url: '/api/system/menu/delete/' + mId,
+    method: 'get'
+  });
+};
+

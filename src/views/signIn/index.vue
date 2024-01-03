@@ -135,7 +135,6 @@
 </template>
 
 <script lang="ts" setup>
-import { $ref } from 'vue/macros';
 import { FormInst, useMessage } from 'naive-ui';
 import { getValidateCode, getAesKey } from '@/api/login/index';
 import useUserStore from '@/store/module/user';
@@ -220,7 +219,8 @@ const clickCodeImgBtn = () => {
 
 const adminFormData = reactive({
   userName: '',
-  password: ''
+  password: '',
+  verifyCode: ''
 });
 
 const adminFormRules = reactive({

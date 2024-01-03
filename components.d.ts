@@ -12,6 +12,7 @@ declare module 'vue' {
     'IconMdi:autorenew': typeof import('~icons/mdi/autorenew')['default']
     'IconMdi:chevronDoubleLeft': typeof import('~icons/mdi/chevron-double-left')['default']
     'IconMdi:chevronDoubleRight': typeof import('~icons/mdi/chevron-double-right')['default']
+    'IconMdi:cloudDownloadOutline': typeof import('~icons/mdi/cloud-download-outline')['default']
     'IconMdi:download': typeof import('~icons/mdi/download')['default']
     'IconMdi:formatListBulleted': typeof import('~icons/mdi/format-list-bulleted')['default']
     'IconMdi:github': typeof import('~icons/mdi/github')['default']

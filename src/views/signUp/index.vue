@@ -101,7 +101,6 @@
 </template>
 
 <script lang="ts" setup>
-import { $ref } from 'vue/macros';
 import { FormInst } from 'naive-ui';
 import { SignLanguageFilled, NightlightFilled, PersonOutlineRound, PasswordRound } from '@vicons/material';
 import { getValidateCode, getAesKey } from '@/api/login/index';

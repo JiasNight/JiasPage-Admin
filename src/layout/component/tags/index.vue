@@ -14,7 +14,7 @@
         @click="clickTagViewBtn(item)"
         @contextmenu.prevent="rightClickTagBtn(item, $event)"
       >
-        <n-icon size="18" color="#A163F7" :component="renderIcon(item.meta.icon)"> </n-icon>
+        <n-icon size="18" color="#A163F7" :component="renderIcon(ICON.O, item.meta.icon)"> </n-icon>
         <!-- <n-icon size="18" color="#A163F7" :component="AbcFilled"> </n-icon> -->
         <n-tooltip placement="top" trigger="hover">
           <template #trigger>
@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts" setup>
-import { $ref } from 'vue/macros';
+import { ICON } from '@/enums/icon';
 import type { MenuOption } from 'naive-ui';
 import ContextMenu from './contextmenu.vue';
 import useTagStore from '@/store/module/tag';

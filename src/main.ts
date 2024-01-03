@@ -18,7 +18,7 @@ import 'vfonts/Lato.css';
 import 'vfonts/FiraCode.css';
 import 'uno.css';
 // 引入工具函数
-import { formatDate, renderIcon, renderMenuIcon } from '@/utils/common';
+import { formatDate, renderIcon } from '@/utils/common';
 
 const setupApp = () => {};
 
@@ -30,7 +30,6 @@ app.use(store);
 
 // 挂载全局方法
 app.provide('renderIcon', renderIcon);
-app.provide('renderMenuIcon', renderMenuIcon);
 app.provide('formatDate', formatDate);
 
 // 全局挂载axios

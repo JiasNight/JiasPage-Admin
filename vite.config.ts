@@ -87,8 +87,6 @@ export default ({ command, mode }) => {
       outDir: 'page',
       // 指定静态资源存放路径
       assetsDir: 'static',
-      // 项目压缩 :boolean | 'terser' | 'esbuild'
-      minify: 'esbuild',
       // chunk 大小警告的限制（以 kbs 为单位）默认：500
       chunkSizeWarningLimit: 1000,
       // css代码拆分,false则所有样式保存在一个css里面
@@ -97,6 +95,8 @@ export default ({ command, mode }) => {
       sourcemap: !isProduction,
       //防止 vite 将 rgba() 颜色转化为 #RGBA 十六进制符号的形式
       cssTarget: 'chrome61',
+      // 项目压缩 :boolean | 'terser' | 'esbuild'
+      minify: 'terser',
       terserOptions: {
         // 生产环境移除console
         compress: {
@@ -222,9 +222,9 @@ export default ({ command, mode }) => {
         // 监视文件夹中的文件更改
         watchFiles: true,
         // 开发打包开关
-        localEnabled: false,
+        localEnabled: true,
         // 生产打包开关
-        prodEnabled: true,
+        prodEnabled: false,
         // 打开后，可以读取 ts 文件模块。 请注意，打开后将无法监视.js 文件
         supportTs: true,
         // 是否在控制台显示请求日志

@@ -85,6 +85,21 @@
             </n-form-item-gi>
           </n-grid>
         </n-form>
+        <!-- 新增 -->
+        <n-space class="right-space" justify="end">
+          <n-button type="info" @click="handleAddUser">
+            <template #icon>
+              <icon-mdi:plus></icon-mdi:plus>
+            </template>
+            新 增
+          </n-button>
+          <n-button type="info">
+            <template #icon>
+              <icon-mdi:cloud-download-outline></icon-mdi:cloud-download-outline>
+            </template>
+            导 出
+          </n-button>
+        </n-space>
         <!-- 表格 -->
         <n-data-table
           :columns="userTableHeaderColumns"
@@ -98,10 +113,89 @@
         </n-data-table>
       </n-grid-item>
     </n-grid>
+    <!-- 新增和修改用户信息弹框 -->
+    <n-modal
+      v-model:show="showUserModal"
+      class="container-card"
+      preset="card"
+      :title="userModelTitle"
+      :auto-focus="false"
+      :style="{ width: '37.5rem' }"
+    >
+      <n-form
+        ref="userFormRef"
+        :model="userFormData"
+        :rules="userFormRules"
+        label-placement="left"
+        label-width="auto"
+        require-mark-placement="left"
+      >
+        <n-form-item label="用户账号" path="userName">
+          <n-input v-model:value="userFormData.userName" maxlength="20" placeholder="请输入菜单名称" />
+        </n-form-item>
+        <n-form-item label="用户昵称" path="userNick">
+          <n-input v-model:value="userFormData.userNick" maxlength="20" placeholder="请输入名称代码" />
+        </n-form-item>
+        <n-form-item label="用户密码" path="userPassword">
+          <n-input
+            v-model:value="userFormData.userPassword"
+            type="password"
+            maxlength="20"
+            placeholder="请输入用户密码"
+          />
+        </n-form-item>
+        <n-form-item label="用户性别" path="userGender">
+          <n-radio-group v-model:value="userFormData.userGender" name="menuType">
+            <n-radio :value="0" label="女"> </n-radio>
+            <n-radio :value="1" label="男"> </n-radio>
+          </n-radio-group>
+        </n-form-item>
+        <n-form-item label="出身日期" path="userBirthday">
+          <n-date-picker
+            v-model:formatted-value="userFormData.userBirthday"
+            type="date"
+            format="yyyy年-MM月-dd日"
+            value-format="yyyy-MM-dd"
+          />
+        </n-form-item>
+        <n-form-item label="用户手机" path="userPhone">
+          <n-input v-model:value="userFormData.userPhone" maxlength="11" placeholder="请输入名称代码" />
+        </n-form-item>
+        <n-form-item label="电子邮箱" path="userEmail">
+          <n-input v-model:value="userFormData.userEmail" type="email" maxlength="50" placeholder="请输入电子邮箱" />
+        </n-form-item>
+        <n-form-item label="所在城市" path="userCity">
+          <n-input v-model:value="userFormData.userCity" maxlength="50" placeholder="请输入电子邮箱" />
+        </n-form-item>
+        <n-form-item label="用户头像" path="userAvatar">
+          <n-input v-model:value="userFormData.userAvatar" maxlength="50" placeholder="请输入电子邮箱" />
+        </n-form-item>
+        <n-form-item label="备注" path="userMarks">
+          <n-input
+            v-model:value="userFormData.userMarks"
+            type="textarea"
+            :autosize="{
+              minRows: 2,
+              maxRows: 3
+            }"
+            show-count
+            maxlength="100"
+            placeholder="请输入备注"
+          />
+        </n-form-item>
+      </n-form>
+      <template #footer>
+        <n-space justify="end">
+          <n-button type="primary" :loading="confirmLoading" @click="handleConfirm">确 定</n-button>
+          <n-button type="default" @click="showUserModal = false">取 消</n-button>
+        </n-space>
+      </template>
+    </n-modal>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { ICON } from '@/enums/icon';
 import { Ref, ComputedRef, h, Component } from 'vue';
 import { TreeOption, FormInst, DataTableColumns, NButton, NIcon, useDialog, useMessage } from 'naive-ui';
 import { SearchRound, AutorenewRound, Battery50Round, AcUnitRound } from '@vicons/material';
@@ -111,7 +205,7 @@ import useUserStore from '@/store/module/user';
 import { Icon } from '@iconify/vue';
 import { getDeptTree, getUserList } from '@/api/system/userManage';
 
-interface IUserForm {
+interface IQueryForm {
   userName: string | null;
   userAccount: string | null;
   userPhone: string | null;
@@ -125,6 +219,34 @@ type IUserTable = {
   userAccount: string;
   userRole: string;
   createTime: string;
+};
+
+interface IUserForms {
+  userId: string;
+  userName: string;
+  userPassword: string;
+  userNick: string;
+  userEmail: string;
+  userPhone: number;
+  userGender: number;
+  userBirthday: any | null;
+  userCity: string;
+  userAvatar: string;
+  userMarks: string;
+}
+
+let emptyUserForm = {
+  userId: '',
+  userName: '',
+  userPassword: '',
+  userNick: '',
+  userEmail: '',
+  userPhone: '',
+  userGender: '',
+  userBirthday: null,
+  userCity: '',
+  userAvatar: '',
+  userMarks: ''
 };
 
 // 引入全局方法
@@ -159,7 +281,7 @@ let tableRowKey = (rowData: IUserTable) => {
 
 let queryForm = $ref<FormInst | null>(null);
 
-let queryFormData = $ref<IUserForm>({
+let queryFormData = $ref<IQueryForm>({
   userName: null,
   userAccount: null,
   userPhone: null,
@@ -172,12 +294,30 @@ let roleOptions = $ref<Array<object>>([
   { label: '角2', value: 'role3' }
 ]);
 
+let showUserModal = $ref<boolean>(false);
+
+let userFormRef = $ref(null);
+
+let userModelTitle = $ref<string>('');
+
+let userFormData = $ref<IUserForms>(JSON.parse(JSON.stringify(emptyUserForm)));
+
+let userFormRules = {
+  userName: {
+    required: true,
+    trigger: 'blur',
+    message: '请选择父级菜单'
+  }
+};
+
+let confirmLoading = $ref<boolean>(false);
+
 let tableIsLoading = $ref<boolean | null>(false);
 
 let userTableHeaderColumns = $ref<DataTableColumns>([
   {
     title: '序号',
-    className: 'table-th-header',
+
     key: 'index',
     align: 'center',
     titleAlign: 'center',
@@ -186,11 +326,11 @@ let userTableHeaderColumns = $ref<DataTableColumns>([
       return index + 1;
     }
   },
-  { title: '用户名', className: 'table-th-header', key: 'userName', align: 'center' },
-  { title: '登录账户', className: 'table-th-header', key: 'userAccount', align: 'center' },
+  { title: '用户名', key: 'userName', align: 'center' },
+  { title: '登录账户', key: 'userAccount', align: 'center' },
   {
     title: '头像',
-    className: 'table-th-header',
+
     key: 'userRole',
     align: 'center',
     render(row) {
@@ -206,7 +346,7 @@ let userTableHeaderColumns = $ref<DataTableColumns>([
   },
   {
     title: '角色',
-    className: 'table-th-header',
+
     key: 'userRole',
     align: 'center',
     render(row, index) {
@@ -214,12 +354,13 @@ let userTableHeaderColumns = $ref<DataTableColumns>([
       else return '角色2';
     }
   },
-  { title: '创建时间', className: 'table-th-header', key: 'createTime', align: 'center' },
+  { title: '创建时间', key: 'createTime', align: 'center' },
   {
     title: '操作',
-    className: 'table-th-header',
+
     key: 'ops',
     align: 'center',
+    width: '200',
     render(row) {
       return h(
         NSpace,
@@ -237,7 +378,22 @@ let userTableHeaderColumns = $ref<DataTableColumns>([
                 }
               },
               {
-                icon: () => h(NIcon, { size: 20, component: renderIcon('mdi:playlist-edit') }),
+                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, 'mdi:playlist-edit') }),
+                default: () => h('span', '修改')
+              }
+            ),
+            h(
+              NButton,
+              {
+                text: true,
+                size: 'small',
+                onClick: (e: any) => {
+                  // console.log(e);
+                  // console.log(row);
+                }
+              },
+              {
+                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, 'mdi:chevron-triple-right') }),
                 default: () => h('span', '详细')
               }
             ),
@@ -267,7 +423,7 @@ let userTableHeaderColumns = $ref<DataTableColumns>([
                 }
               },
               {
-                icon: () => h(NIcon, { size: 20, component: renderIcon('mdi:delete') }),
+                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, 'mdi:delete') }),
                 default: () => h('span', '删除')
               }
             )
@@ -351,6 +507,24 @@ onMounted(() => {
   getDeptData();
   getUserTable();
 });
+
+// 新增用户
+const handleAddUser = (): void => {
+  userFormData = JSON.parse(JSON.stringify(emptyUserForm));
+  showUserModal = true;
+  userModelTitle = '新增用户';
+};
+
+// 确定新增和修改按钮
+const handleConfirm = (): void => {
+  userFormRef?.validate((errors) => {
+    if (!errors) {
+      console.log(userFormData);
+    } else {
+      window.$message.error('表单必填项请填写！');
+    }
+  });
+};
 </script>
 
 <style lang="scss" scoped>
@@ -361,6 +535,9 @@ onMounted(() => {
   .grid-right {
     padding: 0.625rem;
     min-width: 12.5rem;
+    .right-space {
+      margin-bottom: 0.625rem;
+    }
   }
 }
 </style>

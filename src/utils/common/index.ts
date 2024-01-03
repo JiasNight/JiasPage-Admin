@@ -1,21 +1,27 @@
 import { h, Component, defineComponent } from 'vue';
 import { NIcon, FormInst } from 'naive-ui';
 import { Icon } from '@iconify/vue';
+import { ICON } from '@/enums/icon';
 
 // 渲染菜单图标方法
-export function renderMenuIcon(icon = 'mdi:emoticon', props = { size: 16 }) {
-  return () => h(NIcon, props, { default: () => h(Icon as Component, { icon: icon }) });
-}
+// export function renderIcon(icon = 'mdi:emoticon', props = { size: 16 }) {
+//   return () => h(NIcon, props, { default: () => h(Icon as Component, { icon: icon }) });
+// }
 
 // 图标渲染
-export function renderIcon(icon = 'mdi:emoticon', props = { size: 16 }) {
-  const iconInfo = {
-    name: icon,
-    render: () => {
-      return h(NIcon, props, { default: () => h(Icon as Component, { icon: icon }) });
-    }
-  };
-  return iconInfo;
+export function renderIcon(type: ICON, icon = 'mdi:emoticon', props = { size: 16 }) {
+  // 判断是直接渲染还是返回图标对象进行渲染
+  if (type === 'O') {
+    const iconInfo = {
+      name: icon,
+      render: () => {
+        return h(NIcon, props, { default: () => h(Icon as Component, { icon: icon }) });
+      }
+    };
+    return iconInfo;
+  } else {
+    return () => h(NIcon, props, { default: () => h(Icon as Component, { icon: icon }) });
+  }
 }
 
 /**

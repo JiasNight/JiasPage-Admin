@@ -4,7 +4,7 @@
 
 <script lang="ts" setup>
 import * as echarts from 'echarts';
-import china from '../../public/map/china.json';
+import china from '../../../public/map/china.json';
 let mapChart: HTMLElement | undefined = $ref<HTMLElement>();
 const initMapChart = () => {
   echarts.registerMap('china', china as any);

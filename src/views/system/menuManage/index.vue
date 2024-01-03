@@ -187,7 +187,7 @@
       </n-form>
       <template #footer>
         <n-space justify="end">
-          <n-button type="primary" @click="handleConfirm">确 定</n-button>
+          <n-button type="primary" :loading="confirmLoading" @click="handleConfirm">确 定</n-button>
           <n-button type="default" @click="showModal = false">取 消</n-button>
         </n-space>
       </template>
@@ -196,13 +196,14 @@
 </template>
 
 <script lang="ts" setup>
+import { ICON } from '@/enums/icon';
 import { Ref, ComputedRef, h, Component } from 'vue';
 import { TreeOption, FormInst, DataTableColumns, NButton, NIcon } from 'naive-ui';
 import { Icon } from '@iconify/vue';
 import { renderIcon, resetForm } from '@/utils/common';
 import { IRes } from '@/interface/common';
 import useUserStore from '@/store/module/user';
-import { getMenuList, addMenuList } from '@/api/system/menuManage';
+import { getMenuList, addMenuList, updateMenu, deleteMenu } from '@/api/system/menuManage';
 
 interface IUserForm {
   userName: string | null;
@@ -263,9 +264,9 @@ const menuFormRef = $ref<FormInst | null>(null);
 
 let menuTreeData = $ref<Array<any>>([]);
 
-let menuFormData = $ref<IMenuForm>(emptyMenuForm);
+let menuFormData = $ref<IMenuForm>(JSON.parse(JSON.stringify(emptyMenuForm)));
 
-let menuFormRules = reactive({
+let menuFormRules = {
   pid: {
     required: true,
     trigger: ['blur', 'change'],
@@ -298,7 +299,7 @@ let menuFormRules = reactive({
       message: '请选择菜单类型'
     }
   }
-});
+};
 
 let roleOptions = $ref<Array<object>>([
   { label: '角1', value: 'role1' },
@@ -323,7 +324,7 @@ let menuTableHeader = $ref<DataTableColumns>([
     key: 'ops',
     align: 'center',
     width: '200',
-    render(rowData, rowIndex) {
+    render(rowData: any, rowIndex) {
       return h(
         NSpace,
         { justify: 'center' },
@@ -336,13 +337,14 @@ let menuTableHeader = $ref<DataTableColumns>([
                 size: 'small',
                 color: '#2376b7',
                 onClick: (e) => {
-                  menuFormData = emptyMenuForm;
+                  menuFormData = JSON.parse(JSON.stringify(emptyMenuForm));
+                  menuFormData.pid = rowData.id;
                   modelTitle = '新增';
                   showModal = true;
                 }
               },
               {
-                icon: () => h(NIcon, { size: 20, component: renderIcon('mdi:playlist-plus') }),
+                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, 'mdi:playlist-plus') }),
                 default: () => h('span', '新增')
               }
             ),
@@ -361,7 +363,7 @@ let menuTableHeader = $ref<DataTableColumns>([
                 }
               },
               {
-                icon: () => h(NIcon, { size: 20, component: renderIcon('mdi:text-box-edit-outline') }),
+                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, 'mdi:text-box-edit-outline') }),
                 default: () => h('span', '修改')
               }
             ),
@@ -379,6 +381,7 @@ let menuTableHeader = $ref<DataTableColumns>([
                     negativeText: '不确定',
                     onPositiveClick: () => {
                       window.$message.success('确定');
+                      handleDeleteMenu(rowData.id);
                     },
                     onNegativeClick: () => {
                       window.$message.error('不确定');
@@ -387,7 +390,7 @@ let menuTableHeader = $ref<DataTableColumns>([
                 }
               },
               {
-                icon: () => h(NIcon, { size: 20, component: renderIcon('mdi:delete') }),
+                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, 'mdi:delete') }),
                 default: () => h('span', '删除')
               }
             )
@@ -416,6 +419,9 @@ let pagination = reactive<object>({
 let tableRowKey = (rowData: IMenuForm, i: number) => {
   return rowData.id;
 };
+
+// 确定按钮是否loading
+let confirmLoading = $ref<boolean>(false);
 
 // 加载之前
 onMounted(() => {
@@ -487,7 +493,7 @@ const handleQueryTable = (): void => {
 
 // 新增
 const handleAddMenu = (): void => {
-  menuFormData = emptyMenuForm;
+  menuFormData = JSON.parse(JSON.stringify(emptyMenuForm));
   modelTitle = '新增';
   showModal = true;
 };
@@ -507,18 +513,52 @@ const handleConfirm = (): void => {
   menuFormRef?.validate((errors) => {
     if (!errors) {
       console.log(menuFormData);
-      addMenuList(menuFormData).then((res) => {
-        if (res && res.code === 200) {
-          window.$message.success('新增菜单成功');
-          showModal = false;
-          handleQueryTable();
-        }
-      });
+      confirmLoading = true;
+      if (modelTitle === '新增') {
+        addMenuList(menuFormData)
+          .then((res) => {
+            if (res && res.code === 200) {
+              window.$message.success('新增菜单成功');
+              confirmLoading = false;
+              showModal = false;
+              handleQueryTable();
+            }
+          })
+          .catch(() => {
+            confirmLoading = false;
+          });
+      } else {
+        updateMenu(menuFormData)
+          .then((res) => {
+            if (res && res.code === 200) {
+              window.$message.success('修改菜单成功');
+              confirmLoading = false;
+              showModal = false;
+              handleQueryTable();
+            }
+          })
+          .catch(() => {
+            confirmLoading = false;
+          });
+      }
     } else {
-      console.log(errors);
-      window.$message.error('Invalid');
+      window.$message.error('表单必填项请填写！');
     }
   });
+};
+
+// 删除
+const handleDeleteMenu = (mId: string): void => {
+  deleteMenu(mId)
+    .then((res: IRes) => {
+      if (res && res.code === 200) {
+        window.$message.success('已删除菜单！');
+        handleQueryTable();
+      }
+    })
+    .catch(() => {
+      window.$message.warning('删除菜单失败！');
+    });
 };
 </script>
 

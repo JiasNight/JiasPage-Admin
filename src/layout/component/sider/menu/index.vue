@@ -14,11 +14,12 @@
 import type { MenuOption } from 'naive-ui';
 import useAppStore from '@/store/module/app';
 import { useRouter, RouteRecordRaw } from 'vue-router';
+import { ICON } from '@/enums/icon';
 
 const router = useRouter();
 
 // 引入全局方法
-const renderMenuIcon: any = inject('renderMenuIcon');
+const renderIcon: any = inject('renderIcon');
 
 const currentProps = defineProps({
   collapsed: {
@@ -45,7 +46,7 @@ const generateMenuByRoute = (routerList: Array<any>) => {
     pid: '1',
     label: '首页',
     disabled: false,
-    icon: renderMenuIcon('mdi:home'),
+    icon: renderIcon(ICON.F, 'mdi:home'),
     key: 'Index',
     path: '/',
     show: true,
@@ -57,11 +58,12 @@ const generateMenuByRoute = (routerList: Array<any>) => {
       let menu: MenuOption = {
         pid: '1',
         label: item.meta.title,
-        disabled: item.meta.disabled,
-        icon: renderMenuIcon(item.meta.icon),
+        disabled: item.meta.disabled === 0 ? true : false,
+        icon: renderIcon(ICON.F, item.meta.icon),
         key: item.name,
         path: item.path,
-        show: item.meta.show,
+        show: item.meta.show === 0 ? true : false,
+        cache: item.meta.cache === 0 ? true : false,
         description: item.meta.description
       };
       if (item.children && item.children.length > 0) {

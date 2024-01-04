@@ -6,6 +6,7 @@
 export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
+  const NDropdown: typeof import('naive-ui')['NDropdown']
   const NI: typeof import('naive-ui')['NI']
   const NImage: typeof import('naive-ui')['NImage']
   const NSpace: typeof import('naive-ui')['NSpace']

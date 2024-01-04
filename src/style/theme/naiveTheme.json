@@ -1,15 +1,15 @@
 {
   "naiveThemeOverrides": {
     "common": {
-      "primaryColor": "#5352ed",
-      "primaryColorHover": "#3C3BCB",
-      "primaryColorPressed": "#7D7CF4",
-      "primaryColorSuppl": "#9897F9",
+      "primaryColor": "#00AECD",
+      "primaryColorHover": "#00a7c4",
+      "primaryColorPressed": "#0084AC",
+      "primaryColorSuppl": "#005E8A",
 
-      "infoColor": "#00AECD",
-      "infoColorHover": "#00a7c4",
-      "infoColorPressed": "#0084AC",
-      "infoColorSuppl": "#005E8A",
+      "infoColor": "#5352ed",
+      "infoColorHover": "#3C3BCB",
+      "infoColorPressed": "#7D7CF4",
+      "infoColorSuppl": "#9897F9",
 
       "successColor": "#2EDD4B",
       "successColorHover": "#21BE4A",

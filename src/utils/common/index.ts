@@ -9,7 +9,7 @@ import { ICON } from '@/enums/icon';
 // }
 
 // 图标渲染
-export function renderIcon(type: ICON, icon = 'mdi:emoticon', props = { size: 16 }) {
+export function renderIcon(type: ICON, icon = 'mdi:emoticon', props = { size: 14 }) {
   // 判断是直接渲染还是返回图标对象进行渲染
   if (type === 'O') {
     const iconInfo = {

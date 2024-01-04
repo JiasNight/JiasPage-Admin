@@ -130,59 +130,72 @@
         label-width="auto"
         require-mark-placement="left"
       >
-        <n-form-item label="用户账号" path="userName">
-          <n-input v-model:value="userFormData.userName" maxlength="20" placeholder="请输入菜单名称" />
-        </n-form-item>
-        <n-form-item label="用户昵称" path="userNick">
-          <n-input v-model:value="userFormData.userNick" maxlength="20" placeholder="请输入名称代码" />
-        </n-form-item>
-        <n-form-item label="用户密码" path="userPassword">
-          <n-input
-            v-model:value="userFormData.userPassword"
-            type="password"
-            maxlength="20"
-            placeholder="请输入用户密码"
-          />
-        </n-form-item>
-        <n-form-item label="用户性别" path="userGender">
-          <n-radio-group v-model:value="userFormData.userGender" name="menuType">
-            <n-radio :value="0" label="女"> </n-radio>
-            <n-radio :value="1" label="男"> </n-radio>
-          </n-radio-group>
-        </n-form-item>
-        <n-form-item label="出身日期" path="userBirthday">
-          <n-date-picker
-            v-model:formatted-value="userFormData.userBirthday"
-            type="date"
-            format="yyyy年-MM月-dd日"
-            value-format="yyyy-MM-dd"
-          />
-        </n-form-item>
-        <n-form-item label="用户手机" path="userPhone">
-          <n-input v-model:value="userFormData.userPhone" maxlength="11" placeholder="请输入名称代码" />
-        </n-form-item>
-        <n-form-item label="电子邮箱" path="userEmail">
-          <n-input v-model:value="userFormData.userEmail" type="email" maxlength="50" placeholder="请输入电子邮箱" />
-        </n-form-item>
-        <n-form-item label="所在城市" path="userCity">
-          <n-input v-model:value="userFormData.userCity" maxlength="50" placeholder="请输入电子邮箱" />
-        </n-form-item>
-        <n-form-item label="用户头像" path="userAvatar">
-          <n-input v-model:value="userFormData.userAvatar" maxlength="50" placeholder="请输入电子邮箱" />
-        </n-form-item>
-        <n-form-item label="备注" path="userMarks">
-          <n-input
-            v-model:value="userFormData.userMarks"
-            type="textarea"
-            :autosize="{
-              minRows: 2,
-              maxRows: 3
-            }"
-            show-count
-            maxlength="100"
-            placeholder="请输入备注"
-          />
-        </n-form-item>
+        <n-grid :cols="24" :x-gap="20">
+          <n-form-item-gi :span="12" label="用户账号" path="userName">
+            <n-input v-model:value="userFormData.userName" maxlength="20" placeholder="请输入菜单名称" />
+          </n-form-item-gi>
+          <n-form-item-gi :span="12" label="用户密码" path="userPassword">
+            <n-input
+              v-model:value="userFormData.userPassword"
+              type="password"
+              maxlength="20"
+              placeholder="请输入用户密码"
+            />
+          </n-form-item-gi>
+          <n-form-item-gi :span="12" label="用户昵称" path="userNick">
+            <n-input v-model:value="userFormData.userNick" maxlength="20" placeholder="请输入名称代码" />
+          </n-form-item-gi>
+          <n-form-item-gi :span="12" label="所属部门" path="userDept">
+            <n-cascader
+              v-model:value="userFormData.userDept"
+              placeholder="请选择部门"
+              :options="deptTreeData"
+              :show-path="true"
+            />
+          </n-form-item-gi>
+          <n-form-item-gi :span="12" label="用户性别" path="userGender">
+            <n-radio-group v-model:value="userFormData.userGender" name="menuType">
+              <n-radio :value="0" label="女"> </n-radio>
+              <n-radio :value="1" label="男"> </n-radio>
+            </n-radio-group>
+          </n-form-item-gi>
+          <n-form-item-gi :span="12" label="出身日期" path="userBirthday">
+            <n-date-picker
+              v-model:formatted-value="userFormData.userBirthday"
+              type="date"
+              format="yyyy年-MM月-dd日"
+              value-format="yyyy-MM-dd"
+            />
+          </n-form-item-gi>
+          <n-form-item-gi :span="12" label="用户手机" path="userPhone">
+            <n-input v-model:value="userFormData.userPhone" maxlength="11" placeholder="请输入名称代码" />
+          </n-form-item-gi>
+          <n-form-item-gi :span="12" label="电子邮箱" path="userEmail">
+            <n-input v-model:value="userFormData.userEmail" type="email" maxlength="50" placeholder="请输入电子邮箱" />
+          </n-form-item-gi>
+          <n-form-item-gi :span="12" label="所在城市" path="userCity">
+            <n-input v-model:value="userFormData.userCity" maxlength="50" placeholder="请输入电子邮箱" />
+          </n-form-item-gi>
+          <n-form-item-gi :span="12" label="状态" path="userStatus">
+            <n-switch v-model:value="userFormData.userStatus" :checked-value="0" :unchecked-value="1">
+              <template #checked> 启用 </template>
+              <template #unchecked> 关闭 </template>
+            </n-switch>
+          </n-form-item-gi>
+          <n-form-item-gi :span="12" label="备注" path="userMarks">
+            <n-input
+              v-model:value="userFormData.userMarks"
+              type="textarea"
+              :autosize="{
+                minRows: 2,
+                maxRows: 3
+              }"
+              show-count
+              maxlength="100"
+              placeholder="请输入备注"
+            />
+          </n-form-item-gi>
+        </n-grid>
       </n-form>
       <template #footer>
         <n-space justify="end">
@@ -191,6 +204,10 @@
         </n-space>
       </template>
     </n-modal>
+    <!-- 用户角色权限弹框 -->
+    <UserRoles :show="showUserRoleModal" @close="showUserRoleModal = false"></UserRoles>
+    <!-- 修改用户密码 -->
+    <ModifyPassword :show="showModifyPasswordModal" @close="showModifyPasswordModal = false"></ModifyPassword>
   </div>
 </template>
 
@@ -198,12 +215,12 @@
 import { ICON } from '@/enums/icon';
 import { Ref, ComputedRef, h, Component } from 'vue';
 import { TreeOption, FormInst, DataTableColumns, NButton, NIcon, useDialog, useMessage } from 'naive-ui';
-import { SearchRound, AutorenewRound, Battery50Round, AcUnitRound } from '@vicons/material';
 import { resetForm } from '@/utils/common';
 import { IRes } from '@/interface/common';
 import useUserStore from '@/store/module/user';
-import { Icon } from '@iconify/vue';
 import { getDeptTree, getUserList } from '@/api/system/userManage';
+import UserRoles from './components/UserRoles.vue';
+import ModifyPassword from './components/ModifyPassword.vue';
 
 interface IQueryForm {
   userName: string | null;
@@ -231,7 +248,9 @@ interface IUserForms {
   userGender: number;
   userBirthday: any | null;
   userCity: string;
+  userDept: string;
   userAvatar: string;
+  userStatus: number;
   userMarks: string;
 }
 
@@ -240,12 +259,14 @@ let emptyUserForm = {
   userName: '',
   userPassword: '',
   userNick: '',
+  userDept: '',
   userEmail: '',
   userPhone: '',
   userGender: '',
   userBirthday: null,
   userCity: '',
   userAvatar: '',
+  userStatus: 0,
   userMarks: ''
 };
 
@@ -306,13 +327,22 @@ let userFormRules = {
   userName: {
     required: true,
     trigger: 'blur',
-    message: '请选择父级菜单'
+    message: '请输入用户账户'
+  },
+  userPassword: {
+    required: true,
+    trigger: 'blur',
+    message: '请输入用户密码'
   }
 };
 
 let confirmLoading = $ref<boolean>(false);
 
 let tableIsLoading = $ref<boolean | null>(false);
+
+let showUserRoleModal = $ref<boolean>(false);
+
+let showModifyPasswordModal = $ref<boolean>(false);
 
 let userTableHeaderColumns = $ref<DataTableColumns>([
   {
@@ -364,7 +394,7 @@ let userTableHeaderColumns = $ref<DataTableColumns>([
     render(row) {
       return h(
         NSpace,
-        { justify: 'center' },
+        { justify: 'center', align: 'center' },
         {
           default: () => [
             h(
@@ -383,18 +413,42 @@ let userTableHeaderColumns = $ref<DataTableColumns>([
               }
             ),
             h(
-              NButton,
+              NDropdown,
               {
-                text: true,
-                size: 'small',
-                onClick: (e: any) => {
-                  // console.log(e);
-                  // console.log(row);
+                options: [
+                  {
+                    label: '角色权限',
+                    key: 'userRole',
+                    icon: renderIcon(ICON.F, 'mdi:account-multiple-check')
+                  },
+                  {
+                    label: '修改密码',
+                    key: 'modifyPassword',
+                    icon: renderIcon(ICON.F, 'mdi:account-key')
+                  }
+                ],
+                onSelect: (key: string): void => {
+                  console.log(key);
+                  if (key === 'userRole') {
+                    showUserRoleModal = true;
+                  } else if (key === 'modifyPassword') {
+                    showModifyPasswordModal = true;
+                  }
                 }
               },
               {
-                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, 'mdi:chevron-triple-right') }),
-                default: () => h('span', '详细')
+                default: () =>
+                  h(
+                    NButton,
+                    {
+                      text: true,
+                      size: 'small'
+                    },
+                    {
+                      icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, 'mdi:chevron-triple-right') }),
+                      default: () => h('span', '更多')
+                    }
+                  )
               }
             ),
             h(

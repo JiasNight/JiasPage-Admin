@@ -87,6 +87,7 @@
     "VNode": true,
     "WritableComputedRef": true,
     "toValue": true,
-    "NSpace": true
+    "NSpace": true,
+    "NDropdown": true
   }
 }

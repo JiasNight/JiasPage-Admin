@@ -30,6 +30,7 @@ declare module 'vue' {
     'IconMdi:themeLightDark': typeof import('~icons/mdi/theme-light-dark')['default']
     'IconMdi:translate': typeof import('~icons/mdi/translate')['default']
     'IconMdi:windowClose': typeof import('~icons/mdi/window-close')['default']
+    NAlert: typeof import('naive-ui')['NAlert']
     NBackTop: typeof import('naive-ui')['NBackTop']
     NBadge: typeof import('naive-ui')['NBadge']
     NBreadcrumb: typeof import('naive-ui')['NBreadcrumb']

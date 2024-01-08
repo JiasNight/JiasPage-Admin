@@ -334,8 +334,7 @@ let menuTableHeader = $ref<DataTableColumns>([
               NButton,
               {
                 text: true,
-                size: 'small',
-                color: '#2376b7',
+                type: 'primary',
                 onClick: (e) => {
                   menuFormData = JSON.parse(JSON.stringify(emptyMenuForm));
                   menuFormData.pid = rowData.id;
@@ -352,8 +351,7 @@ let menuTableHeader = $ref<DataTableColumns>([
               NButton,
               {
                 text: true,
-                size: 'small',
-                color: '#00cec9',
+                type: 'primary',
                 onClick: (e: any) => {
                   let copyRow = JSON.parse(JSON.stringify(rowData));
                   delete copyRow.children;
@@ -371,8 +369,7 @@ let menuTableHeader = $ref<DataTableColumns>([
               NButton,
               {
                 text: true,
-                size: 'small',
-                color: 'red',
+                type: 'error',
                 onClick: (e: any) => {
                   window.$dialog.warning({
                     title: '警告',
@@ -565,13 +562,9 @@ const handleDeleteMenu = (mId: string): void => {
 <style lang="scss" scoped>
 .view-container {
   .container-form {
-    margin-top: 0.625rem;
   }
   .container-space {
     margin-bottom: 0.625rem;
-  }
-  .container-card {
-    background-color: aquamarine;
   }
 }
 </style>

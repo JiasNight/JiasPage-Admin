@@ -368,7 +368,8 @@ const mock: Array<MockMethod> = [
             deptId: '',
             phoneNumber: 18564796520,
             userRole: '0',
-            isActice: true,
+            userAvatar: '',
+            status: 0,
             createTime: '2022-06-12 15:36:20'
           },
           {
@@ -379,7 +380,8 @@ const mock: Array<MockMethod> = [
             deptId: '',
             phoneNumber: 17774096498,
             userRole: '0',
-            isActice: false,
+            userAvatar: '',
+            status: 0,
             createTime: '2022-06-12 15:36:20'
           },
           {
@@ -390,7 +392,8 @@ const mock: Array<MockMethod> = [
             deptId: '',
             phoneNumber: 15599530093,
             userRole: '0',
-            isActice: true,
+            userAvatar: '',
+            status: 0,
             createTime: '2022-06-12 15:36:20'
           }
         ]

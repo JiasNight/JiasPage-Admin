@@ -1,6 +1,6 @@
 <template>
   <div class="view-container">
-    <n-grid cols="1 600:2 800:6 1000:8" :x-gap="15" :y-gap="15">
+    <n-grid cols="1 600:2 800:6 1000:8" :x-gap="10">
       <n-grid-item class="grid-left" span="1 600:1 800:2 1000:2">
         <n-card>
           <n-space justify="end" item-style="margin-bottom: 0.625rem">
@@ -87,13 +87,13 @@
         </n-form>
         <!-- 新增 -->
         <n-space class="right-space" justify="end">
-          <n-button type="info" @click="handleAddUser">
+          <n-button type="primary" @click="handleAddUser">
             <template #icon>
               <icon-mdi:plus></icon-mdi:plus>
             </template>
             新 增
           </n-button>
-          <n-button type="info">
+          <n-button type="primary">
             <template #icon>
               <icon-mdi:cloud-download-outline></icon-mdi:cloud-download-outline>
             </template>
@@ -105,6 +105,7 @@
           :columns="userTableHeaderColumns"
           :data="userTableData"
           :row-key="tableRowKey"
+          :row-class-name="rowClassName"
           :bordered="true"
           :single-line="false"
           :loading="tableIsLoading"
@@ -154,7 +155,7 @@
             />
           </n-form-item-gi>
           <n-form-item-gi :span="12" label="用户性别" path="userGender">
-            <n-radio-group v-model:value="userFormData.userGender" name="menuType">
+            <n-radio-group v-model:value="userFormData.userGender" name="genderType">
               <n-radio :value="0" label="女"> </n-radio>
               <n-radio :value="1" label="男"> </n-radio>
             </n-radio-group>
@@ -168,13 +169,13 @@
             />
           </n-form-item-gi>
           <n-form-item-gi :span="12" label="用户手机" path="userPhone">
-            <n-input v-model:value="userFormData.userPhone" maxlength="11" placeholder="请输入名称代码" />
+            <n-input v-model:value="userFormData.userPhone" maxlength="11" placeholder="请输入用户手机" />
           </n-form-item-gi>
           <n-form-item-gi :span="12" label="电子邮箱" path="userEmail">
             <n-input v-model:value="userFormData.userEmail" type="email" maxlength="50" placeholder="请输入电子邮箱" />
           </n-form-item-gi>
           <n-form-item-gi :span="12" label="所在城市" path="userCity">
-            <n-input v-model:value="userFormData.userCity" maxlength="50" placeholder="请输入电子邮箱" />
+            <n-input v-model:value="userFormData.userCity" maxlength="50" placeholder="请输入所在城市" />
           </n-form-item-gi>
           <n-form-item-gi :span="12" label="状态" path="userStatus">
             <n-switch v-model:value="userFormData.userStatus" :checked-value="0" :unchecked-value="1">
@@ -235,6 +236,7 @@ type IUserTable = {
   userName: string;
   userAccount: string;
   userRole: string;
+  userAvatar: string;
   createTime: string;
 };
 
@@ -347,7 +349,6 @@ let showModifyPasswordModal = $ref<boolean>(false);
 let userTableHeaderColumns = $ref<DataTableColumns>([
   {
     title: '序号',
-
     key: 'index',
     align: 'center',
     titleAlign: 'center',
@@ -356,12 +357,11 @@ let userTableHeaderColumns = $ref<DataTableColumns>([
       return index + 1;
     }
   },
-  { title: '用户名', key: 'userName', align: 'center' },
-  { title: '登录账户', key: 'userAccount', align: 'center' },
+  { title: '用户账号', key: 'userName', align: 'center' },
+  { title: '用户昵称', key: 'userNick', align: 'center' },
   {
     title: '头像',
-
-    key: 'userRole',
+    key: 'userAvatar',
     align: 'center',
     render(row) {
       return h('n-space', [
@@ -376,7 +376,6 @@ let userTableHeaderColumns = $ref<DataTableColumns>([
   },
   {
     title: '角色',
-
     key: 'userRole',
     align: 'center',
     render(row, index) {
@@ -387,7 +386,6 @@ let userTableHeaderColumns = $ref<DataTableColumns>([
   { title: '创建时间', key: 'createTime', align: 'center' },
   {
     title: '操作',
-
     key: 'ops',
     align: 'center',
     width: '200',
@@ -401,15 +399,16 @@ let userTableHeaderColumns = $ref<DataTableColumns>([
               NButton,
               {
                 text: true,
-                size: 'small',
+                type: 'primary',
                 onClick: (e: any) => {
-                  // console.log(e);
-                  // console.log(row);
+                  userFormData = JSON.parse(JSON.stringify(row));
+                  userModelTitle = '编辑用户';
+                  showUserModal = true;
                 }
               },
               {
                 icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, 'mdi:playlist-edit') }),
-                default: () => h('span', '修改')
+                default: () => h('span', '编辑')
               }
             ),
             h(
@@ -425,14 +424,20 @@ let userTableHeaderColumns = $ref<DataTableColumns>([
                     label: '修改密码',
                     key: 'modifyPassword',
                     icon: renderIcon(ICON.F, 'mdi:account-key')
+                  },
+                  {
+                    label: '重置密码',
+                    key: 'resetPassword',
+                    icon: renderIcon(ICON.F, 'mdi:lock-reset')
                   }
                 ],
                 onSelect: (key: string): void => {
-                  console.log(key);
                   if (key === 'userRole') {
                     showUserRoleModal = true;
                   } else if (key === 'modifyPassword') {
                     showModifyPasswordModal = true;
+                  } else if (key === 'resetPassword') {
+                    handleResetPassword();
                   }
                 }
               },
@@ -442,7 +447,7 @@ let userTableHeaderColumns = $ref<DataTableColumns>([
                     NButton,
                     {
                       text: true,
-                      size: 'small'
+                      type: 'primary'
                     },
                     {
                       icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, 'mdi:chevron-triple-right') }),
@@ -455,11 +460,7 @@ let userTableHeaderColumns = $ref<DataTableColumns>([
               NButton,
               {
                 text: true,
-                size: 'small',
-                color: 'red',
-                style: {
-                  margin: '0 .3rem'
-                },
+                type: 'error',
                 onClick: (e: any) => {
                   window.$dialog.warning({
                     title: '警告',
@@ -487,6 +488,12 @@ let userTableHeaderColumns = $ref<DataTableColumns>([
     }
   }
 ]);
+
+let rowClassName = (row: IUserTable) => {
+  if (row.userAvatar) {
+    return 'row-avatar';
+  }
+};
 
 let userTableData: Array<IUserTable[]> = [];
 
@@ -579,6 +586,30 @@ const handleConfirm = (): void => {
     }
   });
 };
+
+// 重置密码
+const handleResetPassword = () => {
+  const d = window.$dialog.warning({
+    title: '密码重置',
+    content: '您正在重置用户的密码，是否确认？',
+    negativeText: '取消',
+    positiveText: '确认',
+    onPositiveClick: () => {
+      d.loading = true;
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          window.$notification.success({
+            content: '密码重置成功！',
+            meta: 'ab*73223k',
+            duration: 2500,
+            keepAliveOnHover: true
+          });
+          resolve(true);
+        }, 2000);
+      });
+    }
+  });
+};
 </script>
 
 <style lang="scss" scoped>
@@ -587,7 +618,6 @@ const handleConfirm = (): void => {
     min-width: 12.5rem;
   }
   .grid-right {
-    padding: 0.625rem;
     min-width: 12.5rem;
     .right-space {
       margin-bottom: 0.625rem;

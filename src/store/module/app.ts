@@ -86,7 +86,6 @@ const useAppStore = defineStore({
         getDynamicRoutes({ token: getToken() })
           .then((res: any) => {
             if (res && res.code === 200) {
-              console.log(res.data);
               this.addRoutes(res.data);
               resolve();
             }

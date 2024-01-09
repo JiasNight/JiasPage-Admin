@@ -1,18 +1,29 @@
 <template>
-  <div ref="mapChart" style="width: 90%; height: 800px"></div>
+  <div ref="mapChart" style="width: 100%; height: calc(100vh - 100px)"></div>
 </template>
 
 <script lang="ts" setup>
 import * as echarts from 'echarts';
-import china from '../../../public/map/china.json';
+import { getJSON } from '@/api/app';
+
 let mapChart: HTMLElement | undefined = $ref<HTMLElement>();
-const initMapChart = () => {
-  echarts.registerMap('china', china as any);
+
+let chinaMap: any = null;
+
+// 获取地图数据
+const getMap = async () => {
+  await getJSON('/map/china.json').then((res) => {
+    chinaMap = res;
+  });
+};
+const initMapChart = async () => {
+  await getMap();
+  echarts.registerMap('china', chinaMap as any);
   let myChart = echarts.init(mapChart as HTMLElement);
   let option = {
     geo: {
       map: 'china',
-      roam: false,
+      roam: true,
       scaleLimit: {
         min: 1.2,
         max: 3

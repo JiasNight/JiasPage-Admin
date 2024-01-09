@@ -87,6 +87,22 @@ const MENU_LIST = [
       },
       {
         pid: '6fa28cf73c6c4c11bec106553d69c1b9',
+        id: '2fb5971c-d713-4f77-9d90-e6c6bc833083',
+        path: 'deptManage',
+        name: 'DeptManage',
+        meta: {
+          title: '部门管理',
+          icon: 'mdi:account-credit-card',
+          show: 0,
+          disabled: 1,
+          cache: 0,
+          menuType: 2,
+          description: '部门管理'
+        },
+        component: '/system/deptManage/index'
+      },
+      {
+        pid: '6fa28cf73c6c4c11bec106553d69c1b9',
         id: 'bbefb3e1c54e48b0a219ade0c916ca6a',
         path: 'roleManage',
         name: 'RoleManage',

@@ -44,6 +44,8 @@ export default ({ command, mode }) => {
     },
     // 开发或生产环境服务的公共基础路径：默认'/'   1、绝对URL路径名： /foo/；  2、完整的URL： https://foo.com/； 3、空字符串或 ./（用于开发环境）
     base: '/',
+    // 指定公共资源文件夹的路径，默认为 'public'。
+    publicDir: 'public',
     // 为服务器设置代理规则
     server: {
       host: '0.0.0.0', // 支持从IP启动访问

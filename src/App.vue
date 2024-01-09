@@ -43,5 +43,6 @@ const isLock = computed(() => globalStore.getIsLock);
   -moz-osx-font-smoothing: grayscale;
   width: 100%;
   height: 100vh;
+  background-color: aliceblue;
 }
 </style>

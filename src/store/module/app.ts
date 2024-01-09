@@ -4,7 +4,8 @@ import { RouteLocationNormalizedLoaded, RouteRecordRaw } from 'vue-router';
 import { getDynamicRoutes } from '@/api/app';
 import { getToken } from '@/utils/auth';
 import Layout from '@/layout/index.vue';
-import useTagStore from './tag';
+import useTagStore from '@/store/module/tag';
+import useUserStore from '@/store/module/user';
 import router from '@/router';
 
 const { loadingBar } = createDiscreteApi(['loadingBar']);
@@ -72,28 +73,46 @@ const useAppStore = defineStore({
       this.currentRoute = route;
       useTagStore().setActiveTag(route);
     },
+    // 设置路由
+    setRouters(routes: Array<any>) {
+      // const rList = JSON.parse(localStorage.getItem('routerList'));
+      if (routes && routes.length > 0) {
+        routes.forEach((route) => {
+          const rName = route.name;
+          if (!router.hasRoute(rName)) {
+            this.routes.push(route);
+            router.addRoute(route);
+          }
+        });
+      }
+    },
     // 添加动态路由，并同步到状态管理器中
     addRoutes(data: Array<RouteRecordRaw>) {
-      recursionRouter(data);
-      data.forEach((item) => {
-        router.addRoute(item);
-        this.routes.push(item);
-      });
+      const routerArray: any = recursionRouter(data);
+      console.log(routerArray);
+      this.setRouters(routerArray);
+      console.log('5.生成路由之后');
+      // console.log('5.1.生成路由之后' + JSON.stringify(router.getRoutes()));
     },
     // 生成路由
-    generateRoutes() {
-      return new Promise((resolve: any, reject: any) => {
-        getDynamicRoutes({ token: getToken() })
-          .then((res: any) => {
-            if (res && res.code === 200) {
-              this.addRoutes(res.data);
-              resolve();
-            }
-          })
-          .catch(() => {
-            reject();
-          });
-      });
+    async generateRoutes() {
+      // 获取当前用户信息
+      const userInfo = await useUserStore().getCurrentUserInfo();
+      console.log('3.获取到当前用户信息');
+      // 通过当前用户的角色获取到菜单列表并且生成菜单路由
+      await getDynamicRoutes({ token: getToken() })
+        .then((res: any) => {
+          if (res && res.code === 200) {
+            const rList = res.data;
+            console.log(rList);
+            console.log('4.获取到路由');
+            // 存储路由信息
+            localStorage.setItem('routerList', JSON.stringify(rList));
+            // 添加到路由里面
+            this.addRoutes(rList);
+          }
+        })
+        .catch(() => {});
     }
   }
 });
@@ -111,16 +130,20 @@ function loadView(view: any) {
 
 // 递归循环从后端获取到的路由添加布局
 function recursionRouter(routeList: Array<any>) {
+  const newRouter = null;
   routeList.forEach((item: any) => {
+    const routes = JSON.parse(JSON.stringify(item));
     if (item.component && item.component !== '') {
       item.component = loadView(item.component);
     } else {
       item.component = Layout;
     }
     if (item.children && item.children.length > 0) {
-      recursionRouter(item.children);
+      routes.children = recursionRouter(item.children);
     }
+    return routes;
   });
+  return newRouter;
 }
 
 export default useAppStore;

@@ -141,7 +141,7 @@ h1 {
 }
 
 .view-container {
-  height: 100vh;
+  height: calc(100vh - 130px);
   background: #fff;
   padding: 0.625rem;
 }

@@ -21,18 +21,15 @@ export const setupPermission = (router: Router) => {
         loadingBar.finish();
         return { path: '/' };
       } else {
+        console.log('路由长度：' + appStore.getRoutes.length);
         // 如果没有路由信息，则通过当前用户获取路由表
-        if (appStore.routes.length === 0) {
-          const getUser = userStore.getCurrentUserInfo();
-          getUser
-            .then(() => {
-              appStore.generateRoutes().then(async () => {
-                return { ...to, replace: true };
-              });
-            })
-            .catch(() => {
-              return { path: '/signIn' };
-            });
+        if (appStore.getRoutes.length === 0) {
+          console.log('1.要去的路由：' + to.name);
+          console.log('2.生成路由之前');
+          appStore.generateRoutes().then((res) => {
+            console.log('6.路由跳转');
+            return { ...to, replace: true };
+          });
         } else {
           return;
         }

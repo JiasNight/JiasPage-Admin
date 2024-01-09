@@ -5,7 +5,6 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref, ComputedRef } from 'vue';
 import { TreeOption, FormInst, DataTableColumns } from 'naive-ui';
 import { MdEditor } from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';

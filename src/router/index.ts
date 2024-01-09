@@ -1,8 +1,5 @@
 import { createRouter, createWebHistory, createWebHashHistory, RouteRecordRaw, Router } from 'vue-router';
 
-// 引入权限控制
-import { setupPermission } from '@/router/permission';
-
 // 布局
 const Layout = () => import('@/layout/index.vue');
 
@@ -56,6 +53,14 @@ export const commonRoutes: Array<RouteRecordRaw> = [
     component: () => import('@/views/abnormal/404.vue')
   },
   {
+    path: '/500',
+    name: '500',
+    meta: {
+      title: '500'
+    },
+    component: () => import('@/views/abnormal/500.vue')
+  },
+  {
     path: '/:catchAll(.*)', // 自动匹配不识别的path 404
     redirect: '/404'
   }
@@ -75,6 +80,6 @@ const router: Router = createRouter({
 });
 
 // 路由权限设置
-setupPermission(router);
+// setupPermission(router);
 
 export default router;

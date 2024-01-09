@@ -24,8 +24,8 @@ const useUserStore = defineStore({
   },
   actions: {
     // 用户登录
-    async userLoginHandle(adminForm: any) {
-      return await new Promise((resolve: any, reject: any) => {
+    userLoginHandle(adminForm: any) {
+      return new Promise((resolve: any, reject: any) => {
         const fd = new FormData();
         fd.append('userName', adminForm.userName);
         fd.append('password', adminForm.password);
@@ -40,12 +40,9 @@ const useUserStore = defineStore({
         });
       });
     },
-    updateName(token: string) {
-      this.token = token;
-    },
     // 获取当前用户信息
-    async getCurrentUserInfo() {
-      return await new Promise((resolve: any, reject: any) => {
+    getCurrentUserInfo() {
+      return new Promise((resolve: any, reject: any) => {
         getUserInfo().then((res: any) => {
           if (res && res.code === 200) {
             this.userInfo = res.data;

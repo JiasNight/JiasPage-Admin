@@ -17,16 +17,22 @@ import 'vfonts/Lato.css';
 // 等宽字体
 import 'vfonts/FiraCode.css';
 import 'uno.css';
+// 引入权限控制
+import { setupPermission } from '@/router/permission';
 // 引入工具函数
 import { formatDate, renderIcon } from '@/utils/common';
+import useAppStore from '@/store/module/app';
 
-const setupApp = () => {};
+setupPermission(router);
 
 // 创建app实例
 const app = createApp(App);
-app.use(router);
-app.use(i18n);
+
 app.use(store);
+// const appStore = useAppStore();
+// appStore.generateRoutes();
+app.use(i18n);
+app.use(router);
 
 // 挂载全局方法
 app.provide('renderIcon', renderIcon);

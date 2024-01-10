@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { userLogin, getUserInfo } from '@/api/login/index';
+import { userSignIn, getUserInfo } from '@/api/signIn/index';
 import { setToken, removeToken } from '@/utils/auth';
 import { IResponse, IUserInfo } from '@/interface/common';
 import router from '@/router';
@@ -24,12 +24,12 @@ const useUserStore = defineStore({
   },
   actions: {
     // 用户登录
-    userLoginHandle(adminForm: any) {
+    userSignInHandle(adminForm: any) {
       return new Promise((resolve: any, reject: any) => {
         const fd = new FormData();
         fd.append('userName', adminForm.userName);
         fd.append('password', adminForm.password);
-        userLogin(fd).then((res: IResponse) => {
+        userSignIn(fd).then((res: IResponse) => {
           if (res && res.code === 200) {
             setToken(res.data.token);
             resolve();
@@ -58,6 +58,7 @@ const useUserStore = defineStore({
     logoutSystem() {
       removeToken();
       this.userInfo = undefined;
+      localStorage.clear();
       router.push('/signIn');
     }
   }

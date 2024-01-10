@@ -5,7 +5,7 @@ import { handleResCode } from './common/requestCodeEnum';
 
 const { message } = createDiscreteApi(['message']);
 
-// 这个就是上面创建的router实例，用来跳转到login页面的
+// 这个就是上面创建的router实例，用来跳转到signIn页面的
 // import router from '../router';
 
 // 请求加密方法引入

@@ -1,32 +1,32 @@
 <template>
-  <div class="login-container">
+  <div class="signIn-container">
     <div class="content-box">
       <div class="box-right">
-        <div class="right-login">
-          <p class="login-title">{{ $t('login.title') }}</p>
+        <div class="right-signIn">
+          <p class="signIn-title">{{ $t('signIn.title') }}</p>
           <n-tooltip trigger="hover">
             <template #trigger>
-              <n-button tertiary circle class="login-theme" @click="changeCurrentThemeBtn">
+              <n-button tertiary circle class="signIn-theme" @click="changeCurrentThemeBtn">
                 <n-icon>
                   <NightlightFilled></NightlightFilled>
                 </n-icon>
               </n-button>
             </template>
-            <span>{{ $t('login.theme') }}</span>
+            <span>{{ $t('signIn.theme') }}</span>
           </n-tooltip>
           <n-tooltip trigger="hover">
             <template #trigger>
-              <n-button tertiary circle class="login-language" @click="changeCurrentLanguageBtn">
+              <n-button tertiary circle class="signIn-language" @click="changeCurrentLanguageBtn">
                 <n-icon>
                   <SignLanguageFilled></SignLanguageFilled>
                 </n-icon>
               </n-button>
             </template>
-            <span>{{ $t('login.language') }}</span>
+            <span>{{ $t('signIn.language') }}</span>
           </n-tooltip>
-          <div class="login-form">
+          <div class="signIn-form">
             <n-form
-              ref="loginForm"
+              ref="signInForm"
               :model="adminFormData"
               :rules="adminFormRules"
               label-placement="left"
@@ -40,7 +40,7 @@
                   size="large"
                   round
                   clearable
-                  :placeholder="$t('login.inputUserNamePlaceholder')"
+                  :placeholder="$t('signIn.inputUserNamePlaceholder')"
                 >
                   <template #prefix>
                     <n-icon size="25" :component="PersonOutlineRound" />
@@ -55,7 +55,7 @@
                   clearable
                   round
                   show-password-on="mousedown"
-                  :placeholder="$t('login.inputPasswordPlaceholder')"
+                  :placeholder="$t('signIn.inputPasswordPlaceholder')"
                 >
                   <template #prefix>
                     <n-icon size="25" :component="PasswordRound" />
@@ -71,7 +71,7 @@
                       clearable
                       round
                       maxlength="4"
-                      :placeholder="$t('login.inputVerifyCodePlaceholder')"
+                      :placeholder="$t('signIn.inputVerifyCodePlaceholder')"
                     >
                       <template #prefix>
                         <n-icon size="25" :component="PasswordRound" />
@@ -85,12 +85,12 @@
               </div>
               <n-divider></n-divider>
               <div class="form-tool">
-                <n-checkbox class="tool-remember-password" :label="$t('login.rememberPassword')" value="success">
+                <n-checkbox class="tool-remember-password" :label="$t('signIn.rememberPassword')" value="success">
                 </n-checkbox>
-                <a class="tool-forget-password" href="#">{{ $t('login.forgetPassword') }}</a>
+                <a class="tool-forget-password" href="#">{{ $t('signIn.forgetPassword') }}</a>
               </div>
-              <n-button class="form-submit" :loading="submitBtnIsLoading" type="primary" round @click="submitLoginBtn">
-                {{ $t('login.signInBtn') }}
+              <n-button class="form-submit" :loading="submitBtnIsLoading" type="primary" round @click="submitSignInBtn">
+                {{ $t('signIn.signInBtn') }}
               </n-button>
             </n-form>
           </div>
@@ -103,7 +103,7 @@
 <script lang="ts" setup>
 import { FormInst } from 'naive-ui';
 import { SignLanguageFilled, NightlightFilled, PersonOutlineRound, PasswordRound } from '@vicons/material';
-import { getValidateCode, getAesKey } from '@/api/login/index';
+import { getValidateCode, getAesKey } from '@/api/signIn/index';
 import useUserStore from '@/store/module/user';
 import useAppStore from '@/store/module/app';
 import { useI18n } from 'vue-i18n';
@@ -197,31 +197,31 @@ const adminFormRules = reactive({
   userName: {
     required: true,
     trigger: ['blur', 'input'],
-    message: globalProxy?.$t('login.inputUserNamePlaceholder')
+    message: globalProxy?.$t('signIn.inputUserNamePlaceholder')
   },
   password: {
     required: true,
     trigger: ['blur', 'input'],
-    message: globalProxy?.$t('login.inputPasswordPlaceholder')
+    message: globalProxy?.$t('signIn.inputPasswordPlaceholder')
   },
   verifyCode: {
     required: true,
     trigger: ['blur', 'input'],
-    message: globalProxy?.$t('login.inputVerifyCodePlaceholder')
+    message: globalProxy?.$t('signIn.inputVerifyCodePlaceholder')
   }
 });
 
-const loginForm: any = $ref<FormInst | null>(null);
+const signInForm: any = $ref<FormInst | null>(null);
 
 let submitBtnIsLoading = $ref<boolean>(false);
 
-const submitLoginBtn = (e: MouseEvent) => {
+const submitSignInBtn = (e: MouseEvent) => {
   e.preventDefault();
-  loginForm.validate((valid: any) => {
+  signInForm.validate((valid: any) => {
     if (!valid) {
       submitBtnIsLoading = true;
       useUserStore()
-        .userLoginHandle(adminFormData)
+        .userSignInHandle(adminFormData)
         .then(() => {
           router.push('/');
           submitBtnIsLoading = false;
@@ -232,16 +232,16 @@ const submitLoginBtn = (e: MouseEvent) => {
   });
   setTimeout(() => {
     submitBtnIsLoading = false;
-    // loginForm.resetValidation();
+    // signInForm.resetValidation();
   }, 1000);
 };
 </script>
 
 <style lang="scss" scoped>
-.login-container {
+.signIn-container {
   width: 100vw;
   height: 100vh;
-  background-image: url('/src/assets/images/login/login-background-1.jpg');
+  background-image: url('/src/assets/images/signIn/signIn-background-1.jpg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -263,24 +263,24 @@ const submitLoginBtn = (e: MouseEvent) => {
     flex-direction: row;
     .box-right {
       width: 100%;
-      .right-login {
-        .login-title {
+      .right-signIn {
+        .signIn-title {
           padding: 30px;
           font-size: 30px;
           font-weight: 600;
           text-align: center;
         }
-        .login-theme {
+        .signIn-theme {
           position: absolute;
           top: 0;
           right: 0;
         }
-        .login-language {
+        .signIn-language {
           position: absolute;
           top: 30px;
           right: 0;
         }
-        .login-form {
+        .signIn-form {
           margin: 0 auto;
           width: 80%;
           .form-verify-code {

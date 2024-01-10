@@ -30,7 +30,7 @@ const MENU_LIST = [
           show: 0,
           disabled: 1,
           cache: 1,
-          menuType: 2,
+          menuType: 1,
           description: '发布文章'
         },
         component: '/article/index'
@@ -64,7 +64,7 @@ const MENU_LIST = [
           show: 0,
           disabled: 1,
           cache: 1,
-          menuType: 2,
+          menuType: 1,
           description: '用户管理'
         },
         component: '/system/userManage/index'
@@ -80,7 +80,7 @@ const MENU_LIST = [
           show: 0,
           disabled: 1,
           cache: 1,
-          menuType: 2,
+          menuType: 1,
           description: '菜单管理'
         },
         component: '/system/menuManage/index'
@@ -96,7 +96,7 @@ const MENU_LIST = [
           show: 0,
           disabled: 1,
           cache: 0,
-          menuType: 2,
+          menuType: 1,
           description: '部门管理'
         },
         component: '/system/deptManage/index'
@@ -112,7 +112,7 @@ const MENU_LIST = [
           show: 0,
           disabled: 1,
           cache: 0,
-          menuType: 2,
+          menuType: 1,
           description: '角色管理'
         },
         component: '/system/roleManage/index'
@@ -128,10 +128,26 @@ const MENU_LIST = [
           show: 0,
           disabled: 1,
           cache: 1,
-          menuType: 2,
-          description: '字典管理'
+          menuType: 1,
+          description: ''
         },
         component: '/system/dictManage/index'
+      },
+      {
+        pid: '6fa28cf73c6c4c11bec106553d69c1b9',
+        id: '2fb5971c-d713-4f77-9d90-e6c6bc833083',
+        path: 'http://www.baidu.com',
+        name: 'baidu',
+        meta: {
+          title: '跳转百度',
+          icon: 'mdi:link-plus',
+          show: 0,
+          disabled: 1,
+          cache: 1,
+          menuType: 3,
+          description: '跳转百度'
+        },
+        component: ''
       },
       {
         pid: '6fa28cf73c6c4c11bec106553d69c1b9',
@@ -144,7 +160,7 @@ const MENU_LIST = [
           show: 0,
           disabled: 0,
           cache: 1,
-          menuType: 2,
+          menuType: 1,
           description: '系统监控'
         },
         component: '/system/dictManage/index'
@@ -160,7 +176,7 @@ const MENU_LIST = [
           show: 0,
           disabled: 0,
           cache: 1,
-          menuType: 2,
+          menuType: 1,
           description: '日志管理'
         },
         component: '',
@@ -168,15 +184,15 @@ const MENU_LIST = [
           {
             pid: 'fb5456d06aa041dd9f194846b7b73758',
             id: 'bca3ca6391a7484bb1aaac88b3b5a14b',
-            path: 'loginLog',
-            name: 'LoginLog',
+            path: 'signInLog',
+            name: 'SignInLog',
             meta: {
               title: '登录日志',
               icon: 'mdi:message-reply-text',
               show: 0,
               disabled: 1,
               cache: 1,
-              menuType: 2,
+              menuType: 1,
               description: '登录日志'
             },
             component: '/system/logManage/index'
@@ -192,7 +208,7 @@ const MENU_LIST = [
               show: 0,
               disabled: 1,
               cache: 1,
-              menuType: 2,
+              menuType: 1,
               description: '操作日志'
             },
             component: '/system/logManage/index'
@@ -251,7 +267,7 @@ const mock: Array<MockMethod> = [
     }
   },
   {
-    url: '/api/user/login',
+    url: '/api/user/signIn',
     method: 'post',
     response: (): IResponse => {
       return {

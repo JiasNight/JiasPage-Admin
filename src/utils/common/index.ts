@@ -20,7 +20,7 @@ export function renderIcon(type: ICON, icon = 'mdi:emoticon', props = { size: 14
     };
     return iconInfo;
   } else {
-    return () => h(NIcon, props, { default: () => h(Icon as Component, { icon: icon }) });
+    return (): VNode => h(NIcon, props, { default: () => h(Icon as Component, { icon: icon }) });
   }
 }
 

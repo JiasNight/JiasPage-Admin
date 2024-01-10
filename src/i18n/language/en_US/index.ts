@@ -1,5 +1,5 @@
 const en_US = {
-  login: {
+  signIn: {
     title: 'PAGE MANAGE SYSTEM',
     theme: 'change theme',
     language: 'change language',

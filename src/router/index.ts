@@ -3,7 +3,7 @@ import { createRouter, createWebHistory, createWebHashHistory, RouteRecordRaw, R
 // 布局
 const Layout = () => import('@/layout/index.vue');
 
-// 公共路由
+// 静态路由
 export const commonRoutes: Array<RouteRecordRaw> = [
   {
     path: '/',

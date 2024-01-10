@@ -23,16 +23,11 @@ import { setupPermission } from '@/router/permission';
 import { formatDate, renderIcon } from '@/utils/common';
 import useAppStore from '@/store/module/app';
 
+// 权限设置
 setupPermission(router);
 
 // 创建app实例
 const app = createApp(App);
-
-app.use(store);
-// const appStore = useAppStore();
-// appStore.generateRoutes();
-app.use(i18n);
-app.use(router);
 
 // 挂载全局方法
 app.provide('renderIcon', renderIcon);
@@ -46,6 +41,11 @@ app.config.globalProperties.$t = i18n.global.t;
 // Object.keys(directives).forEach((key) => {
 //   app.directive(key, (directives as { [key: string]: Directive })[key]);
 // });
+
+app.use(store);
+useAppStore().addRoutes();
+app.use(i18n);
+app.use(router);
 
 // 挂载
 app.mount('#app');

@@ -75,7 +75,6 @@ const useAppStore = defineStore({
     },
     // 设置路由
     setRouters(routes: Array<any>) {
-      // const rList = JSON.parse(localStorage.getItem('routerList'));
       if (routes && routes.length > 0) {
         routes.forEach((route) => {
           const rName = route.name;
@@ -86,30 +85,27 @@ const useAppStore = defineStore({
         });
       }
     },
-    // 添加动态路由，并同步到状态管理器中
-    addRoutes(data: Array<RouteRecordRaw>) {
-      const routerArray: any = recursionRouter(data);
-      console.log(routerArray);
-      this.setRouters(routerArray);
-      console.log('5.生成路由之后');
-      // console.log('5.1.生成路由之后' + JSON.stringify(router.getRoutes()));
+    // 添加动态路由，并同步到状态管理器中data: Array<RouteRecordRaw>
+    addRoutes() {
+      const rList: any = JSON.parse(localStorage.getItem('routerList') as any);
+      if (rList) {
+        recursionRouter(rList);
+        this.setRouters(rList);
+      }
     },
     // 生成路由
     async generateRoutes() {
       // 获取当前用户信息
       const userInfo = await useUserStore().getCurrentUserInfo();
-      console.log('3.获取到当前用户信息');
       // 通过当前用户的角色获取到菜单列表并且生成菜单路由
       await getDynamicRoutes({ token: getToken() })
         .then((res: any) => {
           if (res && res.code === 200) {
             const rList = res.data;
-            console.log(rList);
-            console.log('4.获取到路由');
             // 存储路由信息
             localStorage.setItem('routerList', JSON.stringify(rList));
             // 添加到路由里面
-            this.addRoutes(rList);
+            this.addRoutes();
           }
         })
         .catch(() => {});

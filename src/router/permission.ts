@@ -13,21 +13,17 @@ export const setupPermission = (router: Router) => {
     loadingBar.start();
     const appStore = useAppStore();
     const userStore = useUserStore();
-    const isLogin: boolean | string | null = getToken();
+    const isSignIn: boolean | string | null = getToken();
 
     // 判断是否登录
-    if (isLogin) {
+    if (isSignIn) {
       if (to.path === '/signIn') {
         loadingBar.finish();
         return { path: '/' };
       } else {
-        console.log('路由长度：' + appStore.getRoutes.length);
         // 如果没有路由信息，则通过当前用户获取路由表
         if (appStore.getRoutes.length === 0) {
-          console.log('1.要去的路由：' + to.name);
-          console.log('2.生成路由之前');
           appStore.generateRoutes().then((res) => {
-            console.log('6.路由跳转');
             return { ...to, replace: true };
           });
         } else {

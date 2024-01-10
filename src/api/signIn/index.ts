@@ -17,11 +17,11 @@ export const getValidateCode = () => {
 };
 
 // 用户登录
-export const userLogin = async (userLoginForm: object) => {
+export const userSignIn = async (userSignInForm: object) => {
   return await service.request({
-    url: '/api/user/login',
+    url: '/api/user/signIn',
     method: 'post',
-    data: userLoginForm
+    data: userSignInForm
   });
 };
 

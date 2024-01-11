@@ -39,6 +39,7 @@ export const setupPermission = (router: Router) => {
       }
     }
   });
+
   router.afterEach(() => {
     loadingBar.finish();
   });

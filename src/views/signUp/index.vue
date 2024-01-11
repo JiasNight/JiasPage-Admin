@@ -104,7 +104,6 @@
 import { FormInst } from 'naive-ui';
 import { SignLanguageFilled, NightlightFilled, PersonOutlineRound, PasswordRound } from '@vicons/material';
 import { getValidateCode } from '@/api/signIn/index';
-import { getAesKey } from '@/api/app/index';
 import useUserStore from '@/store/module/user';
 import useAppStore from '@/store/module/app';
 import { useI18n } from 'vue-i18n';
@@ -131,7 +130,6 @@ let verifyCodeImg = $ref<string>('');
 let verifyImgLoading = $ref<boolean>(false);
 
 onMounted(() => {
-  getCurrentAesKey();
   getCurrentVerifyCode();
   isLoading = true;
   setTimeout(() => {
@@ -139,19 +137,6 @@ onMounted(() => {
   }, 2000);
 });
 
-// 获取加密密钥
-const getCurrentAesKey = () => {
-  const sessionAesKey = window.sessionStorage.getItem('aesKey');
-  if (!sessionAesKey) {
-    getAesKey().then((res: Ires) => {
-      if (res && res.code === 200) {
-        window.sessionStorage.setItem('aesKey', res.data);
-      } else {
-        window.sessionStorage.setItem('aesKey', '');
-      }
-    });
-  }
-};
 
 // 获取验证码
 const getCurrentVerifyCode = () => {

@@ -103,13 +103,38 @@ const generateMenuByRoute = (routerList: Array<any>) => {
   menusList = menusList.concat(rM);
 };
 
+// 检测路由对应的组件有无
+const getComponent = (sRouter: any, rName: string) => {
+  let isComponent = false;
+  let matchedList = sRouter.matched;
+  const loopMatched = (mList: Array<any>) => {
+    mList.forEach((item: any) => {
+      if (item.name === rName) {
+        if (item.components) {
+          isComponent = true;
+        }
+      }
+      if (item.children && item.children.length > 0) {
+        loopMatched(item.children);
+      }
+    });
+  };
+  loopMatched(matchedList);
+  return isComponent;
+};
+
 // 点击菜单
 const handleClickMenu = (key: string, item: MenuOption | any) => {
-  console.log(item);
   // 菜单类型，0目录，1菜单，2按钮，3外链
   if (item.type === 1) {
     openMenu = key;
-    router.push({ name: key });
+    let standRouter = router.resolve({ name: key });
+    let isHaveComponent = getComponent(standRouter, key);
+    if (isHaveComponent) {
+      router.push({ name: key });
+    } else {
+      router.push({ path: '/notFound' });
+    }
   } else if (item.type === 2) {
     // pass
   } else if (item.type === 3) {

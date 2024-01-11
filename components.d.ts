@@ -14,6 +14,7 @@ declare module 'vue' {
     'IconMdi:chevronDoubleRight': typeof import('~icons/mdi/chevron-double-right')['default']
     'IconMdi:cloudDownloadOutline': typeof import('~icons/mdi/cloud-download-outline')['default']
     'IconMdi:download': typeof import('~icons/mdi/download')['default']
+    'IconMdi:emoticonSick': typeof import('~icons/mdi/emoticon-sick')['default']
     'IconMdi:formatListBulleted': typeof import('~icons/mdi/format-list-bulleted')['default']
     'IconMdi:github': typeof import('~icons/mdi/github')['default']
     'IconMdi:helpCircle': typeof import('~icons/mdi/help-circle')['default']

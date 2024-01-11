@@ -17,6 +17,14 @@ export const commonRoutes: Array<RouteRecordRaw> = [
           title: '首页'
         },
         component: () => import('@/views/dashboard/index.vue')
+      },
+      {
+        path: '/notFound',
+        name: 'NotFound',
+        meta: {
+          title: 'notFound'
+        },
+        component: () => import('@/views/abnormal/notFound.vue')
       }
     ]
   },

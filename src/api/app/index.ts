@@ -8,6 +8,14 @@ export const getJSON = (path: string) => {
   });
 };
 
+// 获取后端形成的加密公钥
+export const getPublicKey = () => {
+  return service.request({
+    url: '/api/security/pKey',
+    method: 'get'
+  });
+};
+
 // 动态获取路由表
 export const getDynamicRoutes = (user?: object) => {
   return service.request({

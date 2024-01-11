@@ -4,9 +4,10 @@ const { cookies } = useCookies();
 
 const tokenKey = 'page-token';
 
+// cookie存储时间
 const expireTimes = '1d';
 
-const sessionId = 'xxl_sso_sessionid';
+const sessionId = 'sso-sessionid';
 
 export function getToken() {
   return cookies.get(tokenKey);

@@ -103,7 +103,8 @@
 <script lang="ts" setup>
 import { FormInst } from 'naive-ui';
 import { SignLanguageFilled, NightlightFilled, PersonOutlineRound, PasswordRound } from '@vicons/material';
-import { getValidateCode, getAesKey } from '@/api/signIn/index';
+import { getValidateCode } from '@/api/signIn/index';
+import { getAesKey } from '@/api/app/index';
 import useUserStore from '@/store/module/user';
 import useAppStore from '@/store/module/app';
 import { useI18n } from 'vue-i18n';

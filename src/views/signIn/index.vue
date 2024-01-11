@@ -1,8 +1,8 @@
 <template>
   <div class="signIn-container">
-    <div class="content-box animate__animated animate__bounceInLeft">
-      <div class="box-right">
-        <div class="right-signIn">
+    <div class="content-wrapper animate__animated animate__bounceInLeft">
+      <n-spin :show="pageIsLoading">
+        <div class="wrapper-signIn">
           <p class="signIn-title">{{ $t('signIn.title') }}</p>
           <n-tooltip trigger="hover">
             <template #trigger>
@@ -127,7 +127,8 @@
             </div>
           </div>
         </div>
-      </div>
+        <template #description> 系统资源请求中，请稍后 </template>
+      </n-spin>
     </div>
     <!-- 版权信息 -->
     <div class="copyright">Copyright &copy; 2023 Powered by <a href="#">JIAS</a>&trade;</div>
@@ -136,7 +137,8 @@
 
 <script lang="ts" setup>
 import { FormInst, useMessage } from 'naive-ui';
-import { getValidateCode, getAesKey } from '@/api/signIn/index';
+import { getValidateCode } from '@/api/signIn/index';
+import { getPublicKey } from '@/api/app/index';
 import useUserStore from '@/store/module/user';
 import useAppStore from '@/store/module/app';
 import { useI18n } from 'vue-i18n';
@@ -155,28 +157,22 @@ const instance = getCurrentInstance()?.appContext;
 let globalProxy = instance?.config.globalProperties;
 
 // 响应式变量
-let isLoading = $ref<boolean>(false);
+let pageIsLoading = $ref<boolean>(false);
 let verifyCodeImg = $ref<string>('');
 let verifyImgLoading = $ref<boolean>(false);
 
-onMounted(() => {
-  getCurrentAesKey();
-  getCurrentVerifyCode();
-  isLoading = true;
-  setTimeout(() => {
-    isLoading = false;
-  }, 2000);
-});
-
-// 获取加密密钥
-const getCurrentAesKey = () => {
-  const sessionAesKey = window.sessionStorage.getItem('aesKey');
-  if (!sessionAesKey) {
-    getAesKey().then((res: IRes) => {
+// 获取加密公钥
+const getCurrentPublicKey = () => {
+  const sessionPKey = sessionStorage.getItem('pKey');
+  if (!sessionPKey) {
+    pageIsLoading = true;
+    getPublicKey().then((res: IRes) => {
       if (res && res.code === 200) {
-        window.sessionStorage.setItem('aesKey', res.data);
-      } else {
-        window.sessionStorage.setItem('aesKey', '');
+        let pKey = res.data.pKey;
+        let safe = res.data.safe;
+        sessionStorage.setItem('pKey', pKey);
+        sessionStorage.setItem('safe', safe);
+        pageIsLoading = false;
       }
     });
   }
@@ -263,6 +259,15 @@ const submitSignInBtn = (e: MouseEvent) => {
     // signInForm.resetValidation();
   }, 1000);
 };
+
+// 挂载之前
+onBeforeMount(() => {
+  getCurrentPublicKey();
+});
+
+onMounted(() => {
+  getCurrentVerifyCode();
+});
 </script>
 
 <style lang="scss" scoped>
@@ -274,7 +279,7 @@ const submitSignInBtn = (e: MouseEvent) => {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  .content-box {
+  .content-wrapper {
     position: absolute;
     top: 20%;
     right: 0;
@@ -293,81 +298,79 @@ const submitSignInBtn = (e: MouseEvent) => {
     box-shadow: 0 0 10px rgba(142, 131, 238, 0.5);
     backdrop-filter: blur(5px);
     flex-direction: row;
-    .box-right {
-      width: 100%;
-      .right-signIn {
-        .signIn-title {
-          padding: 30px;
-          font-size: 30px;
-          font-weight: 600;
-          text-align: center;
-        }
-        .signIn-theme {
-          position: absolute;
-          top: 0;
-          right: 0;
-        }
-        .signIn-language {
-          position: absolute;
-          top: 30px;
-          right: 0;
-        }
-        .signIn-form {
-          margin: 0 auto;
-          width: 80%;
-          .form-verify-code {
-            display: flex;
-            justify-content: space-between;
-            flex-direction: row;
-            align-items: flex-start;
-            .code-input {
-              width: 62%;
-            }
-            .n-spin-container {
-              width: 35%;
-              height: 40px;
-              .code-img {
-                width: 90%;
-                height: 90%;
-                cursor: pointer;
-              }
-            }
-          }
-          .form-tool {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
 
-            .tool-remember-password :deep(.n-checkbox__label) {
-              color: #000 !important;
-            }
-            .tool-remember-password :deep(.n-checkbox__label):hover {
-              color: #5b1ee9 !important;
-            }
-            .tool-forget-password {
-              color: #000;
-            }
-            .tool-forget-password:hover {
-              color: #5b1ee9;
-            }
+    .wrapper-signIn {
+      .signIn-title {
+        padding: 30px;
+        font-size: 30px;
+        font-weight: 600;
+        text-align: center;
+      }
+      .signIn-theme {
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+      .signIn-language {
+        position: absolute;
+        top: 30px;
+        right: 0;
+      }
+      .signIn-form {
+        margin: 0 auto;
+        width: 80%;
+        .form-verify-code {
+          display: flex;
+          justify-content: space-between;
+          flex-direction: row;
+          align-items: flex-start;
+          .code-input {
+            width: 62%;
           }
-          .form-submit {
-            margin-top: 20px;
-            width: 100%;
+          .n-spin-container {
+            width: 35%;
+            height: 40px;
+            .code-img {
+              width: 90%;
+              height: 90%;
+              cursor: pointer;
+            }
           }
         }
-        .other-signIn {
+        .form-tool {
           display: flex;
           flex-direction: row;
           justify-content: space-between;
           align-items: center;
-          margin: 0 auto;
-          margin-top: 1.25rem;
-          width: 80%;
-          svg {
-            cursor: pointer;
+
+          .tool-remember-password :deep(.n-checkbox__label) {
+            color: #000 !important;
           }
+          .tool-remember-password :deep(.n-checkbox__label):hover {
+            color: #5b1ee9 !important;
+          }
+          .tool-forget-password {
+            color: #000;
+          }
+          .tool-forget-password:hover {
+            color: #5b1ee9;
+          }
+        }
+        .form-submit {
+          margin-top: 20px;
+          width: 100%;
+        }
+      }
+      .other-signIn {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0 auto;
+        margin-top: 1.25rem;
+        width: 80%;
+        svg {
+          cursor: pointer;
         }
       }
     }

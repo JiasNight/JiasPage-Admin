@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { userSignIn, getUserInfo } from '@/api/signIn/index';
 import { setToken, removeToken } from '@/utils/auth';
 import { IResponse, IUserInfo } from '@/interface/common';
+import { aesUtil, rsaUtil } from '@/utils/common/security';
 import router from '@/router';
 
 interface IUserState {
@@ -27,8 +28,10 @@ const useUserStore = defineStore({
     userSignInHandle(adminForm: any) {
       return new Promise((resolve: any, reject: any) => {
         const fd = new FormData();
+        const key = sessionStorage.getItem('pKey');
+        const enPassword = rsaUtil.encrypt(adminForm.password, key);
         fd.append('userName', adminForm.userName);
-        fd.append('password', adminForm.password);
+        fd.append('password', enPassword);
         userSignIn(fd).then((res: IResponse) => {
           if (res && res.code === 200) {
             setToken(res.data.token);

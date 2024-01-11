@@ -1,3 +1,4 @@
+import { publicKey } from './../utils/common/cryption';
 import { MockMethod } from 'vite-plugin-mock';
 import { formatDate } from '@/utils/common';
 import { IResponse } from '@/interface/common';
@@ -237,7 +238,7 @@ const mock: Array<MockMethod> = [
     }
   },
   {
-    url: '/api/system/aesKey',
+    url: '/api/security/pKey',
     method: 'get',
     response: (): IResponse => {
       return {
@@ -245,7 +246,12 @@ const mock: Array<MockMethod> = [
         code: 200,
         message: 'success',
         timestamp: formatDate(),
-        data: 158680186259587
+        data: {
+          // eslint-disable-next-line max-len
+          pKey: `-----BEGIN PUBLIC KEY-----MIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgGV1/6aM0Ko2erbkSjHUDYnxnTBigu8RqN8sR7xW+NZ62/Roy//AN52VDFjqvS7lXFDMc7T+wBfE5ScK4qvYnsmRG/n+TD2wPFFGxhmdugF86EWDxVpmo7fRV0smmPGjBvXMzHlovzJah+gzeIxkODhskLyOaj53HGpqYJ0uC807AgMBAAE=-----END PUBLIC KEY-----
+          `,
+          safe: true
+        }
       };
     }
   },

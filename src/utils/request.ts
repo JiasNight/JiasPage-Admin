@@ -9,7 +9,7 @@ const { message } = createDiscreteApi(['message']);
 // import router from '../router';
 
 // 请求加密方法引入
-import { aesUtil, rsaUtil, publicKey } from './common/cryption';
+import { aesUtil, rsaUtil, publicKey } from './common/security';
 import { IResponse } from '@/interface/common';
 
 const config = {
@@ -37,24 +37,25 @@ class AxiosTool {
 
   private init() {
     // 判断是否需要对请求和响应加解密
-    const isEncrypt: boolean | string | null = window.sessionStorage.getItem('safe');
+    const isEncrypt: boolean | null = sessionStorage.getItem('safe') === 'true';
     // 请求拦截
-    // const aesKey = aesUtil.genKey();
-    // const iv = aesUtil.genKey();
-    const aesKey: string = window.sessionStorage.getItem('aesKey') || '';
     this.service.interceptors.request.use(
       (config: AxiosRequestConfig | any) => {
         // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token，不用每次请求都手动添加了
-        const token = window.localStorage.getItem('token');
+        const token = localStorage.getItem('token');
+        const headers: any = {
+          authorization: token
+        };
         if (isEncrypt) {
+          const publicKey: string = sessionStorage.getItem('pKey') as string;
+          const aesKey: string = aesUtil.genKey();
+          const aKey = rsaUtil.encrypt(aesKey, publicKey);
           // 请求方法类型
           const requestMethod = config.method;
           if (config.params && config.params !== undefined) {
             const requestParams = config.params;
             const objParams: any = {
-              data: aesUtil.encrypt(requestParams, aesKey),
-              aesKey: rsaUtil.encrypt(aesKey, window.sessionStorage.getItem('javaPublicKey')),
-              publicKey: publicKey
+              data: aesUtil.encrypt(requestParams, aesKey)
             };
             config.params = objParams;
           }
@@ -67,9 +68,7 @@ class AxiosTool {
                 jsonData[key] = requestData.get(key);
               }
               const objData: any = {
-                data: aesUtil.encrypt(jsonData, aesKey),
-                aesKey: rsaUtil.encrypt(aesKey, window.sessionStorage.getItem('javaPublicKey')),
-                publicKey: publicKey
+                data: aesUtil.encrypt(jsonData, aesKey)
               };
               // const fd: FormData = new FormData();
               // for (const key in objData) {
@@ -78,19 +77,16 @@ class AxiosTool {
               config.data = objData;
             } else {
               const objData: any = {
-                data: aesUtil.encrypt(requestData, aesKey),
-                aesKey: rsaUtil.encrypt(aesKey, window.sessionStorage.getItem('javaPublicKey')),
-                publicKey: publicKey
+                data: aesUtil.encrypt(requestData, aesKey)
               };
               config.data = objData;
             }
           }
+          headers.authKey = aKey;
         }
         return {
           ...config,
-          headers: {
-            Authorization: token
-          }
+          headers
         };
       },
       (error: AxiosError) => {
@@ -120,7 +116,7 @@ class AxiosTool {
         if (response) {
           handleResCode(response.status);
         }
-        if (!window.navigator.onLine) {
+        if (!navigator.onLine) {
           message.error('网络连接失败');
           // 可以跳转到错误页面，也可以不做操作
           // return router.replace({

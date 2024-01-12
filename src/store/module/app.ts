@@ -110,6 +110,16 @@ const useAppStore = defineStore({
         })
         .catch(() => {});
     }
+  },
+  // 所有数据持久化
+  // persist: true
+  persist: {
+    // 存储storage的键名称，默认用当前store的id
+    key: 'activeRouter',
+    // 修改存储，默认为localStorage，可修改为sessionStorage
+    storage: localStorage,
+    // 指定 state 中哪些数据需要被持久化,[] 表示不持久化任何状态，undefined 或 null 表示持久化整个 state。
+    paths: ['currentRoute']
   }
 });
 

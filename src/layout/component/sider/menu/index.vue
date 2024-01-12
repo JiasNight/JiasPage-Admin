@@ -19,12 +19,14 @@ import { useRouter, RouteRecordRaw } from 'vue-router';
 import { ICON } from '@/enums/icon';
 // import { renderIcon } from '@/utils/common';
 
+// 使用store
 const router = useRouter();
 const appStore = useAppStore();
 
 // 引入全局方法
 const renderIcon = inject<any>('renderIcon');
 
+// 定义props
 const currentProps = defineProps({
   collapsed: {
     type: Boolean,
@@ -32,14 +34,24 @@ const currentProps = defineProps({
   }
 });
 
-let menuRef = ref<MenuInst | null>(null);
-
-let currentMenu = localStorage.getItem('activeTag');
+// 菜单ref
+let menuRef = $ref<MenuInst | null>(null);
 
 // 展开的菜单key
-let openMenu = $ref<string | null>(currentMenu);
+let openMenu = $ref<string>('Index');
 
-// 响应式数据
+let activeRouter: any = computed(() => {
+  return appStore.getCurrentRoute;
+});
+
+watch(activeRouter, (nVal, oVal) => {
+  openMenu = nVal.name;
+  nextTick(() => {
+    menuRef?.showOption(nVal.name);
+  });
+});
+
+// 响应式菜单列表数据
 let menusList: Array<MenuOption | MenuGroupOption> = [];
 
 // 生成菜单

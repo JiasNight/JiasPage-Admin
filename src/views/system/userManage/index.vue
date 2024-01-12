@@ -219,7 +219,8 @@ import { TreeOption, FormInst, DataTableColumns, NButton, NIcon, useDialog, useM
 import { resetForm } from '@/utils/common';
 import { IRes } from '@/interface/common';
 import useUserStore from '@/store/module/user';
-import { getDeptTree, getUserList } from '@/api/system/userManage';
+import { getUserList } from '@/api/system/userManage';
+import { getDeptList } from '@/api/system/deptManage';
 import UserRoles from './components/UserRoles.vue';
 import ModifyPassword from './components/ModifyPassword.vue';
 
@@ -519,7 +520,7 @@ const getDeptData = () => {
   const data = {
     token: useUserStore().token
   };
-  getDeptTree(data).then((res: IRes) => {
+  getDeptList(data).then((res: IRes) => {
     if (res && res.code === 200) {
       deptTreeData = res.data;
     }

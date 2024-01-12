@@ -19,7 +19,10 @@ const getMap = async () => {
 const initMapChart = async () => {
   await getMap();
   echarts.registerMap('china', chinaMap as any);
-  let myChart = echarts.init(mapChart as HTMLElement);
+  let myChart = echarts.getInstanceByDom(mapChart as HTMLElement);
+  if (!myChart) {
+    myChart = echarts.init(mapChart as HTMLElement);
+  }
   let option = {
     geo: {
       map: 'china',

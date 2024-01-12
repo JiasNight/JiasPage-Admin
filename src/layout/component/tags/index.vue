@@ -89,7 +89,7 @@ const closeTagBtn = (tag: ITags) => {
 
 // 点击标签
 const clickTagViewBtn = (tag: ITags) => {
-  // currentActivePath = tag.path;
+  localStorage.setItem('activeTag', tag.name as string);
   router.push(tag.path);
 };
 

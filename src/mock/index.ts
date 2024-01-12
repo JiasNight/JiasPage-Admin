@@ -1,8 +1,8 @@
-import { publicKey } from './../utils/common/cryption';
 import { MockMethod } from 'vite-plugin-mock';
 import { formatDate } from '@/utils/common';
 import { IResponse } from '@/interface/common';
 
+// 菜单数据
 const MENU_LIST = [
   {
     pid: '0',
@@ -34,9 +34,13 @@ const MENU_LIST = [
           menuType: 1,
           description: '发布文章'
         },
-        component: '/article/index'
+        component: '/article/index',
+        createBy: 'admin',
+        createTime: '2024-01-10 12:21:33'
       }
-    ]
+    ],
+    createBy: 'admin',
+    createTime: '2024-01-10 12:21:33'
   },
   {
     pid: '0',
@@ -68,7 +72,9 @@ const MENU_LIST = [
           menuType: 1,
           description: '用户管理'
         },
-        component: '/system/userManage/index'
+        component: '/system/userManage/index',
+        createBy: 'admin',
+        createTime: '2024-01-10 12:21:33'
       },
       {
         pid: '6fa28cf73c6c4c11bec106553d69c1b9',
@@ -84,7 +90,9 @@ const MENU_LIST = [
           menuType: 1,
           description: '菜单管理'
         },
-        component: '/system/menuManage/index'
+        component: '/system/menuManage/index',
+        createBy: 'admin',
+        createTime: '2024-01-10 12:21:33'
       },
       {
         pid: '6fa28cf73c6c4c11bec106553d69c1b9',
@@ -100,7 +108,9 @@ const MENU_LIST = [
           menuType: 1,
           description: '部门管理'
         },
-        component: '/system/deptManage/index'
+        component: '/system/deptManage/index',
+        createBy: 'admin',
+        createTime: '2024-01-10 12:21:33'
       },
       {
         pid: '6fa28cf73c6c4c11bec106553d69c1b9',
@@ -116,7 +126,9 @@ const MENU_LIST = [
           menuType: 1,
           description: '角色管理'
         },
-        component: '/system/roleManage/index'
+        component: '/system/roleManage/index',
+        createBy: 'admin',
+        createTime: '2024-01-10 12:21:33'
       },
       {
         pid: '6fa28cf73c6c4c11bec106553d69c1b9',
@@ -132,7 +144,9 @@ const MENU_LIST = [
           menuType: 1,
           description: ''
         },
-        component: '/system/dictManage/index'
+        component: '/system/dictManage/index',
+        createBy: 'admin',
+        createTime: '2024-01-10 12:21:33'
       },
       {
         pid: '6fa28cf73c6c4c11bec106553d69c1b9',
@@ -148,7 +162,9 @@ const MENU_LIST = [
           menuType: 3,
           description: '跳转百度'
         },
-        component: ''
+        component: '',
+        createBy: 'admin',
+        createTime: '2024-01-10 12:21:33'
       },
       {
         pid: '6fa28cf73c6c4c11bec106553d69c1b9',
@@ -164,7 +180,9 @@ const MENU_LIST = [
           menuType: 1,
           description: '系统监控'
         },
-        component: '/system/dictManage/index'
+        component: '/system/dictManage/index',
+        createBy: 'admin',
+        createTime: '2024-01-10 12:21:33'
       },
       {
         pid: '6fa28cf73c6c4c11bec106553d69c1b9',
@@ -196,7 +214,9 @@ const MENU_LIST = [
               menuType: 1,
               description: '登录日志'
             },
-            component: '/system/logManage/index'
+            component: '/system/logManage/index',
+            createBy: 'admin',
+            createTime: '2024-01-10 12:21:33'
           },
           {
             pid: 'fb5456d06aa041dd9f194846b7b73758',
@@ -212,9 +232,65 @@ const MENU_LIST = [
               menuType: 1,
               description: '操作日志'
             },
-            component: '/system/logManage/index'
+            component: '/system/logManage/index',
+            createBy: 'admin',
+            createTime: '2024-01-10 12:21:33'
           }
-        ]
+        ],
+        createBy: 'admin',
+        createTime: '2024-01-10 12:21:33'
+      }
+    ],
+    createBy: 'admin',
+    createTime: '2024-01-10 12:21:33'
+  }
+];
+
+// 部门数据
+const DEPT_LIST = [
+  {
+    id: '2fb5971cd7134f779d90e6c6bc833083',
+    pid: '0',
+    name: 'xxx公司',
+    code: 'aaa',
+    description: '',
+    status: 0,
+    order: 1,
+    createBy: 'admin',
+    createTime: '2024-01-10 12:21:33',
+    children: [
+      {
+        id: '5c65635132b04b1d9ef456dacf5dfdbc',
+        pid: '2fb5971cd7134f779d90e6c6bc833083',
+        name: '部门1',
+        code: 'a',
+        description: '',
+        status: 0,
+        order: 1,
+        createBy: 'admin',
+        createTime: '2024-01-10 12:21:33'
+      },
+      {
+        id: '3f0e6e9885e9431ca8a984ad4439f4b1',
+        pid: '2fb5971cd7134f779d90e6c6bc833083',
+        name: '部门2',
+        code: 'b',
+        description: '',
+        status: 0,
+        order: 2,
+        createBy: 'admin',
+        createTime: '2024-01-10 12:21:33'
+      },
+      {
+        id: 'cf1a2728c9ca4a0f9a90319ce564d1a3',
+        pid: '2fb5971cd7134f779d90e6c6bc833083',
+        name: '部门3',
+        code: 'c',
+        description: '',
+        status: 0,
+        order: 3,
+        createBy: 'admin',
+        createTime: '2024-01-10 12:21:33'
       }
     ]
   }
@@ -435,6 +511,58 @@ const mock: Array<MockMethod> = [
             createTime: '2022-06-12 15:36:20'
           }
         ]
+      };
+    }
+  },
+  {
+    url: '/api/system/dept/list',
+    method: 'post',
+    response: (): IResponse => {
+      return {
+        success: true,
+        code: 200,
+        message: '获取部门数据成功！',
+        timestamp: formatDate(),
+        data: DEPT_LIST
+      };
+    }
+  },
+  {
+    url: '/api/system/dept/add',
+    method: 'post',
+    response: (): IResponse => {
+      return {
+        success: true,
+        code: 200,
+        message: '添加部门数据成功！',
+        timestamp: formatDate(),
+        data: null
+      };
+    }
+  },
+  {
+    url: '/api/system/dept/update',
+    method: 'post',
+    response: (): IResponse => {
+      return {
+        success: true,
+        code: 200,
+        message: '修改部门数据成功！',
+        timestamp: formatDate(),
+        data: null
+      };
+    }
+  },
+  {
+    url: '/api/system/dept/delete',
+    method: 'post',
+    response: (): IResponse => {
+      return {
+        success: true,
+        code: 200,
+        message: '删除部门数据成功！',
+        timestamp: formatDate(),
+        data: null
       };
     }
   }

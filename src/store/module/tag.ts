@@ -47,7 +47,6 @@ const useTagStore = defineStore({
     setActiveTag(route: RouteLocationNormalizedLoaded) {
       this.addVisitedTag(route);
       this.activeTag = route.path;
-      localStorage.setItem('activeTag', route.name as string);
     },
     // 标签页重新加载
     setTagReload() {

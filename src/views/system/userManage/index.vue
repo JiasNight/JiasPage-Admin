@@ -28,7 +28,10 @@
               :pattern="deptTreePattern"
               :data="deptTreeData"
               key-field="id"
+              label-field="name"
+              children-field="children"
               block-line
+              default-expand-all
               @update:selected-keys="handleClickTree"
             />
           </template>

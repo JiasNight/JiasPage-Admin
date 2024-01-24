@@ -44,25 +44,12 @@ const useAppStore = appStore();
 
 const useGlobalStore = globalStore();
 
-// const loading: Ref<boolean> = computed({
-//   get: () => useGlobalStore.loading,
-//   set: (v: any) => {
-//     useGlobalStore.setLoading(v);
-//     return true;
-//   }
-// });
-
 let siderCollapsed = $ref<boolean>(false);
-
-// const changeSiderCollapsed = (collapsed: boolean): void => {
-//   console.log(collapsed);
-// };
-const progress: ComputedRef<number | null> = computed(() => useGlobalStore.progress);
-const snackbarText: ComputedRef<string | null> = computed(() => useGlobalStore.message);
 
 const openMenu = $ref<boolean>(true);
 let drawerWidth = $ref<number>(230);
 
+// 面包屑
 const breadcrumbList = [
   {
     text: 'Dashboard',
@@ -80,6 +67,16 @@ const breadcrumbList = [
     href: 'breadcrumbs_link_2'
   }
 ];
+
+// 计算属性
+const progress: ComputedRef<number | null> = computed(() => useGlobalStore.progress);
+const snackbarText: ComputedRef<string | null> = computed(() => useGlobalStore.message);
+const collapsedValue: ComputedRef<boolean> = computed(() => useAppStore.getCollapsedSider);
+
+// 监听
+watch(collapsedValue, (nVal, oVal) => {
+  siderCollapsed = nVal;
+});
 
 // 切换当前主题
 const changeCurrentThemeBtn = (): void => {

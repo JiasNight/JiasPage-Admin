@@ -1,20 +1,13 @@
 <template>
   <div class="content-header">
     <div class="header-left">
-      <n-button text style="font-size: 24px">
-        <n-icon>
+      <n-button text @click="handleToggleSider">
+        <n-icon size="20">
           <icon-mdi:format-list-bulleted></icon-mdi:format-list-bulleted>
         </n-icon>
       </n-button>
       <!-- 面包屑 -->
-      <n-breadcrumb>
-        <n-breadcrumb-item>
-          <n-icon size="20">
-            <icon-mdi:home></icon-mdi:home>
-          </n-icon>
-          首页
-        </n-breadcrumb-item>
-      </n-breadcrumb>
+      <Breadcrumbs></Breadcrumbs>
     </div>
     <div class="header-right">
       <!-- 搜索框 -->
@@ -51,9 +44,9 @@
       </n-tooltip>
       <n-tooltip placement="top-start" trigger="hover">
         <template #trigger>
-          <span class="right-user"> {{ currentUserInfo.userNick }} </span>
+          <span class="right-user"> {{ appUserInfo && appUserInfo.userNickName }} </span>
         </template>
-        <span> 欢迎您，{{ currentUserInfo.userNick }} </span>
+        <span> 欢迎您，{{ appUserInfo && appUserInfo.userNickName }} </span>
       </n-tooltip>
       <n-dropdown trigger="click" :options="dropdownOptions" :show-arrow="true" @select="handleSelectDropdown">
         <img class="right-avatar" src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg" alt="用户头像" />
@@ -67,46 +60,24 @@
 <script lang="ts" setup>
 import { ICON } from '@/enums/icon';
 import { renderIcon } from '@/utils/common';
+import { IUserInfo } from '@/interface/common';
 import useUserStore from '@/store/module/user';
+import useAppStore from '@/store/module/app';
 import { useRouter } from 'vue-router';
+import Breadcrumbs from '@/layout/component/header/breadcrumbs.vue';
 import ConfigStyle from '@/layout/component/configStyle/index.vue';
 
 const router = useRouter();
 
 let userStore = useUserStore();
+let appStore = useAppStore();
 
 // 定义响应式数据
 let todoNumVal = $ref<number>(10);
-let currentUserInfo = {
-  userName: '',
-  userNick: ''
-};
+
 let themeDrawerShow = $ref<boolean>(false);
 
-// 挂载
-onMounted(() => {
-  currentUserInfo = userStore.getUserInfo;
-});
-
-// const { iconRender } = useIconRender();
-
-const breadcrumbList = [
-  {
-    text: 'Dashboard',
-    disabled: false,
-    href: 'breadcrumbs_dashboard'
-  },
-  {
-    text: 'Link 1',
-    disabled: false,
-    href: 'breadcrumbs_link_1'
-  },
-  {
-    text: 'Link 2',
-    disabled: true,
-    href: 'breadcrumbs_link_2'
-  }
-];
+let appUserInfo = computed(() => userStore.getUserInfo);
 
 // 用户下拉菜单选项
 const dropdownOptions = [
@@ -136,6 +107,12 @@ const handleSelectDropdown = (key: string) => {
   } else if (key === 'logout') {
     userStore.logoutSystem();
   }
+};
+
+// 切换菜单栏是否折叠
+const handleToggleSider = (): void => {
+  let isCollapsed = appStore.getCollapsedSider;
+  appStore.setCollapsedSider(!isCollapsed);
 };
 </script>
 

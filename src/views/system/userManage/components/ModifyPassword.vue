@@ -40,8 +40,8 @@
     </n-grid>
     <template #footer>
       <n-space justify="end">
-        <n-button type="primary" :loading="confirmLoading" @click="handleConfirm">确 定</n-button>
         <n-button type="default" @click="handleCancel">取 消</n-button>
+        <n-button type="primary" :loading="confirmLoading" @click="handleConfirm">确 定</n-button>
       </n-space>
     </template>
   </n-modal>

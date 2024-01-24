@@ -7,7 +7,7 @@ import router from '@/router';
 
 interface IUserState {
   token: string;
-  userInfo: IUserInfo | any;
+  userInfo: IUserInfo | null;
 }
 
 const useUserStore = defineStore({
@@ -15,11 +15,11 @@ const useUserStore = defineStore({
   state: (): IUserState => {
     return {
       token: '',
-      userInfo: undefined
+      userInfo: null
     };
   },
   getters: {
-    getUserInfo(state): IUserInfo {
+    getUserInfo(state): IUserInfo | null {
       return state.userInfo;
     }
   },
@@ -46,12 +46,12 @@ const useUserStore = defineStore({
     // 获取当前用户信息
     getCurrentUserInfo() {
       return new Promise((resolve: any, reject: any) => {
-        getUserInfo().then((res: any) => {
+        getUserInfo().then((res: IResponse) => {
           if (res && res.code === 200) {
             this.userInfo = res.data;
             resolve(this.userInfo);
           } else {
-            this.userInfo = {};
+            this.userInfo = null;
             reject(this.userInfo);
           }
         });
@@ -60,10 +60,20 @@ const useUserStore = defineStore({
     // 退出系统
     logoutSystem() {
       removeToken();
-      this.userInfo = undefined;
+      this.userInfo = null;
       localStorage.clear();
       router.push('/signIn');
     }
+  },
+  // 所有数据持久化
+  // persist: true
+  persist: {
+    // 存储storage的键名称，默认用当前store的id
+    key: 'userInfo',
+    // 修改存储，默认为localStorage，可修改为sessionStorage
+    storage: sessionStorage,
+    // 指定 state 中哪些数据需要被持久化,[] 表示不持久化任何状态，undefined 或 null 表示持久化整个 state。
+    paths: ['userInfo']
   }
 });
 

@@ -296,6 +296,28 @@ const DEPT_LIST = [
   }
 ];
 
+// 角色数据
+const ROLE_LIST = [
+  {
+    name: '管理员',
+    code: 'admin',
+    createBy: 'admin',
+    createTime: '2024-01-01 14:21:32'
+  },
+  {
+    name: '老板',
+    code: 'boss',
+    createBy: 'admin',
+    createTime: '2024-01-01 14:21:32'
+  },
+  {
+    name: '经理',
+    code: 'manager',
+    createBy: 'admin',
+    createTime: '2024-01-01 14:21:32'
+  }
+];
+
 const mock: Array<MockMethod> = [
   {
     // 接口路径
@@ -561,6 +583,58 @@ const mock: Array<MockMethod> = [
         success: true,
         code: 200,
         message: '删除部门数据成功！',
+        timestamp: formatDate(),
+        data: null
+      };
+    }
+  },
+  {
+    url: '/api/system/role/list',
+    method: 'post',
+    response: (): IResponse => {
+      return {
+        success: true,
+        code: 200,
+        message: '获取角色数据成功！',
+        timestamp: formatDate(),
+        data: ROLE_LIST
+      };
+    }
+  },
+  {
+    url: '/api/system/role/add',
+    method: 'post',
+    response: (): IResponse => {
+      return {
+        success: true,
+        code: 200,
+        message: '添加角色数据成功！',
+        timestamp: formatDate(),
+        data: null
+      };
+    }
+  },
+  {
+    url: '/api/system/role/update',
+    method: 'post',
+    response: (): IResponse => {
+      return {
+        success: true,
+        code: 200,
+        message: '修改角色数据成功！',
+        timestamp: formatDate(),
+        data: null
+      };
+    }
+  },
+  {
+    url: '/api/system/role/delete',
+    method: 'post',
+    response: (): IResponse => {
+      return {
+        success: true,
+        code: 200,
+        message: '删除角色数据成功！',
         timestamp: formatDate(),
         data: null
       };

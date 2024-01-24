@@ -2,15 +2,16 @@
   <div class="main-container">
     <router-view v-slot="{ Component, route }">
       <template v-if="Component">
-        <Suspense>
+        <Transition name="fade" mode="out-in">
+          <KeepAlive :include="cachedTags" :max="10">
+            <div v-if="!isReload" :key="route.path">
+              <component :is="Component" />
+            </div>
+          </KeepAlive>
+        </Transition>
+        <!-- <Suspense>
           <template #default>
-            <Transition name="fade" mode="out-in">
-              <KeepAlive :include="cachedTags" :max="10">
-                <div v-if="!isReload" :key="route.path">
-                  <component :is="Component" />
-                </div>
-              </KeepAlive>
-            </Transition>
+            
           </template>
           <template #fallback>
             <n-space vertical>
@@ -19,7 +20,7 @@
               </n-spin>
             </n-space>
           </template>
-        </Suspense>
+        </Suspense> -->
       </template>
     </router-view>
   </div>
@@ -28,9 +29,8 @@
 <script lang="ts" setup>
 import useAppStore from '@/store/module/app';
 import useTagStore from '@/store/module/tag';
-import { useRouter, RouteLocationNormalizedLoaded } from 'vue-router';
+import { useRouter } from 'vue-router';
 
-// let currentRoute: RouteLocationNormalizedLoaded | undefined = $ref<RouteLocationNormalizedLoaded>();
 const router = useRouter();
 const appStore = useAppStore();
 const tagStore = useTagStore();
@@ -49,10 +49,6 @@ const cachedTags = computed(() => {
 
 const isReload = computed(() => {
   return appStore.getReloadViews;
-});
-
-onMounted(() => {
-  // console.log(cachedTags);
 });
 </script>
 

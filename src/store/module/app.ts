@@ -15,9 +15,11 @@ const modules = import.meta.glob('../../views/**/*.vue');
 type IAppState = {
   theme: boolean;
   language: string;
+  collapsedSider: boolean;
   reloadViews: boolean;
   routes: Array<RouteRecordRaw>;
   currentRoute: object;
+  breadcrumbs: Array<RouteRecordRaw>;
 };
 
 const useAppStore = defineStore({
@@ -26,14 +28,20 @@ const useAppStore = defineStore({
     // theme: window.matchMedia('(prefers-color-scheme: dark)').matches,
     theme: false,
     language: (window.navigator.languages && window.navigator.languages[0]) || window.navigator.language,
+    // 菜单栏是否折叠
+    collapsedSider: false,
     reloadViews: false,
     // 路由表
     routes: [] as Array<RouteRecordRaw>,
-    currentRoute: {}
+    // 当前页面的路由
+    currentRoute: {},
+    // 面包屑数据
+    breadcrumbs: [] as Array<RouteRecordRaw>
   }),
   getters: {
     getTheme: (state) => state.theme,
     getLanguage: (state) => state.language,
+    getCollapsedSider: (state) => state.collapsedSider,
     getReloadViews(state): boolean {
       return state.reloadViews;
     },
@@ -44,6 +52,10 @@ const useAppStore = defineStore({
     // 获取当前路由信息
     getCurrentRoute(state): object | undefined {
       return state.currentRoute;
+    },
+    // 获取面包屑数据
+    getBreadcrumbs(state): [] | Array<RouteRecordRaw> {
+      return state.breadcrumbs;
     }
   },
   actions: {
@@ -68,15 +80,19 @@ const useAppStore = defineStore({
       this.language = language;
       localStorage.setItem('language', language);
     },
+    // 设置菜单栏折叠
+    setCollapsedSider(collapsed: boolean) {
+      this.collapsedSider = collapsed;
+    },
     // 设置当前路由内容
     setCurrentRoute(route: RouteLocationNormalizedLoaded) {
       this.currentRoute = route;
       useTagStore().setActiveTag(route);
     },
     // 设置路由
-    setRouters(routes: Array<any>) {
-      if (routes && routes.length > 0) {
-        routes.forEach((route) => {
+    setRoutes(routeList: Array<any>) {
+      if (routeList && routeList.length > 0) {
+        routeList.forEach((route) => {
           const rName = route.name;
           if (!router.hasRoute(rName)) {
             this.routes.push(route);
@@ -87,10 +103,10 @@ const useAppStore = defineStore({
     },
     // 添加动态路由，并同步到状态管理器中data: Array<RouteRecordRaw>
     addRoutes() {
-      const rList: any = JSON.parse(localStorage.getItem('routerList') as any);
+      const rList: any = JSON.parse(localStorage.getItem('routeList') as any);
       if (rList) {
         recursionRouter(rList);
-        this.setRouters(rList);
+        this.setRoutes(rList);
       }
     },
     // 生成路由
@@ -103,7 +119,7 @@ const useAppStore = defineStore({
           if (res && res.code === 200) {
             const rList = res.data;
             // 存储路由信息
-            localStorage.setItem('routerList', JSON.stringify(rList));
+            localStorage.setItem('routeList', JSON.stringify(rList));
             // 添加到路由里面
             this.addRoutes();
           }

@@ -313,7 +313,7 @@ let menuTableHeader = $ref<DataTableColumns>([
     title: '菜单名称',
     key: 'meta',
     align: 'center',
-    render(row: any) {
+    render: (row: any) => {
       return row.meta.title;
     }
   },
@@ -324,7 +324,7 @@ let menuTableHeader = $ref<DataTableColumns>([
     key: 'ops',
     align: 'center',
     width: '200',
-    render(rowData: any, rowIndex) {
+    render: (rowData: any, rowIndex) => {
       return h(
         NSpace,
         { justify: 'center' },

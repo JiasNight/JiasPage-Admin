@@ -64,8 +64,8 @@
       :row-key="tableRowKey"
       :bordered="true"
       :single-line="false"
-      :default-expand-all="true"
       :pagination="pagination"
+      default-expand-all
     />
     <!-- 新增和编辑内容框 -->
     <n-modal
@@ -222,7 +222,7 @@ let deptTableHeader = $ref<DataTableColumns>([
     key: 'ops',
     align: 'center',
     width: '200',
-    render(rowData: any, rowIndex) {
+    render: (rowData: any, rowIndex) => {
       return h(
         NSpace,
         { justify: 'center' },
@@ -391,11 +391,6 @@ const handleAddDept = (): void => {
 // 导出
 const handleDownload = (): void => {
   window.$message.warning('还未开发该功能！');
-};
-
-// 单选框选择
-const handleChangeRadio = (val: number) => {
-  deptFormData.meta.deptType = val;
 };
 
 // 确定

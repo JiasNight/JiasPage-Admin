@@ -323,7 +323,7 @@ let roleOptions = $ref<Array<object>>([
 
 let showUserModal = $ref<boolean>(false);
 
-let userFormRef = $ref(null);
+let userFormRef = $ref<FormInst | null>(null);
 
 let userModelTitle = $ref<string>('');
 
@@ -357,7 +357,7 @@ let userTableHeaderColumns = $ref<DataTableColumns>([
     align: 'center',
     titleAlign: 'center',
     width: '60',
-    render(row, index) {
+    render: (row, index) => {
       return index + 1;
     }
   },
@@ -367,7 +367,7 @@ let userTableHeaderColumns = $ref<DataTableColumns>([
     title: '头像',
     key: 'userAvatar',
     align: 'center',
-    render(row) {
+    render: (row) => {
       return h('n-space', [
         h(NImage, {
           src: 'https://picsum.photos/id/1/100/100',
@@ -382,7 +382,7 @@ let userTableHeaderColumns = $ref<DataTableColumns>([
     title: '角色',
     key: 'userRole',
     align: 'center',
-    render(row, index) {
+    render: (row, index) => {
       if (row.userRole === '0') return '角色1';
       else return '角色2';
     }
@@ -393,7 +393,7 @@ let userTableHeaderColumns = $ref<DataTableColumns>([
     key: 'ops',
     align: 'center',
     width: '200',
-    render(row) {
+    render: (row) => {
       return h(
         NSpace,
         { justify: 'center', align: 'center' },

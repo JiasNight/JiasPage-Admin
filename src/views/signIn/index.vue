@@ -166,15 +166,19 @@ const getCurrentPublicKey = () => {
   const sessionPKey = sessionStorage.getItem('pKey');
   if (!sessionPKey) {
     pageIsLoading = true;
-    getPublicKey().then((res: IRes) => {
-      if (res && res.code === 200) {
-        let pKey = res.data.pKey;
-        let safe = res.data.safe;
-        sessionStorage.setItem('pKey', pKey);
-        sessionStorage.setItem('safe', safe);
+    getPublicKey()
+      .then((res: IRes) => {
+        if (res && res.code === 200) {
+          let pKey = res.data.pKey;
+          let safe = res.data.safe;
+          sessionStorage.setItem('pKey', pKey);
+          sessionStorage.setItem('safe', safe);
+        }
         pageIsLoading = false;
-      }
-    });
+      })
+      .catch(() => {
+        pageIsLoading = false;
+      });
   }
 };
 

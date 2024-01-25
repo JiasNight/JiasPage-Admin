@@ -75,7 +75,7 @@ export const commonRoutes: Array<RouteRecordRaw> = [
 ];
 
 const router: Router = createRouter({
-  history: createWebHistory(), // History 路由，无#号
+  history: createWebHistory('/'), // History 路由，无#号
   // history: createWebHashHistory(), // Hash 路由
   routes: commonRoutes,
   scrollBehavior() {

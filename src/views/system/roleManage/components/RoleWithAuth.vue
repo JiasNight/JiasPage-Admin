@@ -30,7 +30,27 @@
 </template>
 
 <script lang="ts" setup>
+import { IRes } from '@/interface/common';
 import { getMenuList, addMenuList, updateMenu, deleteMenu } from '@/api/system/menuManage';
+
+interface IMenuForm {
+  id: string;
+  pid: string;
+  path: string;
+  name: string;
+  meta: {
+    title: string;
+    icon: string;
+    show: number;
+    disabled: number;
+    cache: number;
+    menuType: number;
+    description: string;
+  };
+  component: string;
+  order: number;
+  children?: IMenuForm[];
+}
 
 let props = defineProps({
   show: {
@@ -47,7 +67,7 @@ let showRoleWithAuthModal = computed(() => {
 
 let dialogLoading = $ref<boolean>(false);
 let confirmLoading = $ref<boolean>(false);
-let appMenuTreeData = reactive([]);
+let appMenuTreeData: any = reactive([]);
 
 const handleConfirm = (): void => {
   confirmLoading = true;

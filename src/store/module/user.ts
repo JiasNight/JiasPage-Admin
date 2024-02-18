@@ -44,7 +44,7 @@ const useUserStore = defineStore({
       });
     },
     // 获取当前用户信息
-    getCurrentUserInfo() {
+    async getCurrentUserInfo() {
       return new Promise((resolve: any, reject: any) => {
         getUserInfo().then((res: IResponse) => {
           if (res && res.code === 200) {
@@ -71,7 +71,7 @@ const useUserStore = defineStore({
     // 存储storage的键名称，默认用当前store的id
     key: 'userInfo',
     // 修改存储，默认为localStorage，可修改为sessionStorage
-    storage: sessionStorage,
+    storage: localStorage,
     // 指定 state 中哪些数据需要被持久化,[] 表示不持久化任何状态，undefined 或 null 表示持久化整个 state。
     paths: ['userInfo']
   }

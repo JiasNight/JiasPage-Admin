@@ -3,6 +3,8 @@ import { createDiscreteApi } from 'naive-ui';
 import { RouteLocationNormalizedLoaded, RouteRecordRaw } from 'vue-router';
 import { getDynamicRoutes } from '@/api/app';
 import { getToken } from '@/utils/auth';
+import { getPublicKey } from '@/api/app/index';
+import { IRes } from '@/interface/common';
 import Layout from '@/layout/index.vue';
 import useTagStore from '@/store/module/tag';
 import useUserStore from '@/store/module/user';
@@ -46,7 +48,7 @@ const useAppStore = defineStore({
       return state.reloadViews;
     },
     // 获取所有路由信息
-    getRoutes(state): [] | Array<RouteRecordRaw> {
+    getRoutes(state): Array<RouteRecordRaw> {
       return state.routes;
     },
     // 获取当前路由信息
@@ -54,7 +56,7 @@ const useAppStore = defineStore({
       return state.currentRoute;
     },
     // 获取面包屑数据
-    getBreadcrumbs(state): [] | Array<RouteRecordRaw> {
+    getBreadcrumbs(state): Array<RouteRecordRaw> {
       return state.breadcrumbs;
     }
   },
@@ -112,10 +114,10 @@ const useAppStore = defineStore({
     // 生成路由
     async generateRoutes() {
       // 获取当前用户信息
-      const userInfo = await useUserStore().getCurrentUserInfo();
+      await useUserStore().getCurrentUserInfo();
       // 通过当前用户的角色获取到菜单列表并且生成菜单路由
       await getDynamicRoutes({ token: getToken() })
-        .then((res: any) => {
+        .then((res: IRes) => {
           if (res && res.code === 200) {
             const rList = res.data;
             // 存储路由信息
@@ -125,6 +127,22 @@ const useAppStore = defineStore({
           }
         })
         .catch(() => {});
+    },
+    // 获取加密公钥
+    getCurrentPublicKey() {
+      const sessionPKey = sessionStorage.getItem('pKey');
+      if (!sessionPKey) {
+        getPublicKey()
+          .then((res: IRes) => {
+            if (res && res.code === 200) {
+              const pKey = res.data.pKey;
+              const safe = res.data.safe;
+              sessionStorage.setItem('pKey', pKey);
+              sessionStorage.setItem('safe', safe);
+            }
+          })
+          .catch(() => {});
+      }
     }
   },
   // 所有数据持久化

@@ -7,34 +7,52 @@ const MENU_LIST = [
   {
     pid: '0',
     id: 'ab62e594a25d4c0dab54cda018b850ee',
-    path: '/article',
-    name: 'ArticleManage',
+    path: '/note',
+    name: 'NoteManage',
     meta: {
-      title: '文章管理',
-      icon: 'ic:outline-article',
+      title: '笔记管理',
+      icon: 'mdi:microsoft-onenote',
       show: 0,
       disabled: 1,
       cache: 1,
       menuType: 1,
-      description: '文章管理'
+      description: '笔记管理'
     },
     component: '',
     children: [
       {
         pid: 'ab62e594a25d4c0dab54cda018b850ee',
-        id: 'b547c33203994ae3afa48c4807a25b8f',
-        path: 'releaseArticle',
-        name: 'ReleaseArticle',
+        id: '594911e6ec0f4df99498675eb303be3d',
+        path: 'note-overview',
+        name: 'NoteOverview',
         meta: {
-          title: '发布文章',
-          icon: 'ic:baseline-new-releases',
+          title: '笔记概览',
+          icon: 'mdi:event-note-outline',
           show: 0,
           disabled: 1,
           cache: 1,
           menuType: 1,
-          description: '发布文章'
+          description: '笔记概览'
         },
-        component: '/article/index',
+        component: '/noteManage/noteOverview',
+        createBy: 'admin',
+        createTime: '2024-01-10 12:21:33'
+      },
+      {
+        pid: 'ab62e594a25d4c0dab54cda018b850ee',
+        id: 'b547c33203994ae3afa48c4807a25b8f',
+        path: 'my-note',
+        name: 'MyNote',
+        meta: {
+          title: '我的笔记',
+          icon: 'mdi:notebook-edit',
+          show: 0,
+          disabled: 1,
+          cache: 1,
+          menuType: 1,
+          description: '我的笔记'
+        },
+        component: '/noteManage/myNote',
         createBy: 'admin',
         createTime: '2024-01-10 12:21:33'
       }
@@ -312,6 +330,28 @@ const ROLE_LIST = [
   },
   {
     name: '经理',
+    code: 'manager',
+    createBy: 'admin',
+    createTime: '2024-01-01 14:21:32'
+  }
+];
+
+// 笔记数据
+const NOTE_LIST = [
+  {
+    name: '人生何处不相逢',
+    code: 'admin',
+    createBy: 'admin',
+    createTime: '2024-01-01 14:21:32'
+  },
+  {
+    name: '处处闻啼鸟',
+    code: 'boss',
+    createBy: 'admin',
+    createTime: '2024-01-01 14:21:32'
+  },
+  {
+    name: '初始Linux',
     code: 'manager',
     createBy: 'admin',
     createTime: '2024-01-01 14:21:32'
@@ -635,6 +675,58 @@ const mock: Array<MockMethod> = [
         success: true,
         code: 200,
         message: '删除角色数据成功！',
+        timestamp: formatDate(),
+        data: null
+      };
+    }
+  },
+  {
+    url: '/api/note/list',
+    method: 'post',
+    response: (): IResponse => {
+      return {
+        success: true,
+        code: 200,
+        message: '获取笔记数据成功！',
+        timestamp: formatDate(),
+        data: NOTE_LIST
+      };
+    }
+  },
+  {
+    url: '/api/note/add',
+    method: 'post',
+    response: (): IResponse => {
+      return {
+        success: true,
+        code: 200,
+        message: '添加笔记数据成功！',
+        timestamp: formatDate(),
+        data: null
+      };
+    }
+  },
+  {
+    url: '/api/note/update',
+    method: 'post',
+    response: (): IResponse => {
+      return {
+        success: true,
+        code: 200,
+        message: '修改笔记数据成功！',
+        timestamp: formatDate(),
+        data: null
+      };
+    }
+  },
+  {
+    url: '/api/note/delete',
+    method: 'post',
+    response: (): IResponse => {
+      return {
+        success: true,
+        code: 200,
+        message: '删除笔记数据成功！',
         timestamp: formatDate(),
         data: null
       };

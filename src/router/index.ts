@@ -19,6 +19,14 @@ export const commonRoutes: Array<RouteRecordRaw> = [
         component: () => import('@/views/dashboard/index.vue')
       },
       {
+        path: '/personalCenter',
+        name: 'PersonalCenter',
+        meta: {
+          title: '个人中心'
+        },
+        component: () => import('@/views/personalCenter/index.vue')
+      },
+      {
         path: '/notFound',
         name: 'NotFound',
         meta: {
@@ -45,14 +53,6 @@ export const commonRoutes: Array<RouteRecordRaw> = [
     component: () => import('@/views/signUp/index.vue')
   },
   {
-    path: '/personalCenter',
-    name: 'PersonalCenter',
-    meta: {
-      title: '个人中心'
-    },
-    component: () => import('@/views/personalCenter/index.vue')
-  },
-  {
     path: '/404',
     name: '404',
     meta: {
@@ -75,8 +75,10 @@ export const commonRoutes: Array<RouteRecordRaw> = [
 ];
 
 const router: Router = createRouter({
-  history: createWebHistory('/'), // History 路由，无#号
-  // history: createWebHashHistory(), // Hash 路由
+  // History 路由，无#号
+  history: createWebHistory('/'),
+  // Hash 路由
+  // history: createWebHashHistory(),
   routes: commonRoutes,
   scrollBehavior() {
     return {
@@ -86,8 +88,5 @@ const router: Router = createRouter({
     };
   }
 });
-
-// 路由权限设置
-// setupPermission(router);
 
 export default router;

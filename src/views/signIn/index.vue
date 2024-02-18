@@ -138,7 +138,6 @@
 <script lang="ts" setup>
 import { FormInst, useMessage } from 'naive-ui';
 import { getValidateCode } from '@/api/signIn/index';
-import { getPublicKey } from '@/api/app/index';
 import useUserStore from '@/store/module/user';
 import useAppStore from '@/store/module/app';
 import { useI18n } from 'vue-i18n';
@@ -160,27 +159,6 @@ let globalProxy = instance?.config.globalProperties;
 let pageIsLoading = $ref<boolean>(false);
 let verifyCodeImg = $ref<string>('');
 let verifyImgLoading = $ref<boolean>(false);
-
-// 获取加密公钥
-const getCurrentPublicKey = () => {
-  const sessionPKey = sessionStorage.getItem('pKey');
-  if (!sessionPKey) {
-    pageIsLoading = true;
-    getPublicKey()
-      .then((res: IRes) => {
-        if (res && res.code === 200) {
-          let pKey = res.data.pKey;
-          let safe = res.data.safe;
-          sessionStorage.setItem('pKey', pKey);
-          sessionStorage.setItem('safe', safe);
-        }
-        pageIsLoading = false;
-      })
-      .catch(() => {
-        pageIsLoading = false;
-      });
-  }
-};
 
 // 获取验证码
 const getCurrentVerifyCode = () => {
@@ -265,9 +243,7 @@ const submitSignInBtn = (e: MouseEvent) => {
 };
 
 // 挂载之前
-onBeforeMount(() => {
-  getCurrentPublicKey();
-});
+onBeforeMount(() => {});
 
 onMounted(() => {
   getCurrentVerifyCode();

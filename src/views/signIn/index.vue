@@ -131,7 +131,7 @@
       </n-spin>
     </div>
     <!-- 版权信息 -->
-    <div class="copyright">Copyright &copy; 2023 Powered by <a href="#">JIAS</a>&trade;</div>
+    <div class="copyright">Copyright &copy; 2024 Powered by <a href="#">JIAS</a>&trade;</div>
   </div>
 </template>
 
@@ -285,6 +285,7 @@ onMounted(() => {
         font-size: 30px;
         font-weight: 600;
         text-align: center;
+        color: #fff;
       }
       .signIn-theme {
         position: absolute;
@@ -339,6 +340,11 @@ onMounted(() => {
         .form-submit {
           margin-top: 20px;
           width: 100%;
+          background-color: #5b1ee9;
+          border-color: #5b1ee9 !important;
+          &:hover {
+            background-color: #4a1bb5;
+          }
         }
       }
       .other-signIn {

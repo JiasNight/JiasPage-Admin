@@ -12,6 +12,22 @@
         <n-form-item-gi span="s:1 m:1 l:1" label="笔记名称">
           <n-input v-model:value="queryFormData.noteName" clearable placeholder="请输入笔记名称" />
         </n-form-item-gi>
+        <n-form-item-gi span="s:1 m:1 l:1" label="分类">
+          <n-select
+            v-model:value="queryFormData.type"
+            :options="noteTypeOptions"
+            clearable
+            placeholder="请选择分类"
+          ></n-select>
+        </n-form-item-gi>
+        <n-form-item-gi span="s:1 m:1 l:1" label="标签">
+          <n-select
+            v-model:value="queryFormData.tags"
+            :options="noteTagOptions"
+            clearable
+            placeholder="请选择标签"
+          ></n-select>
+        </n-form-item-gi>
         <n-form-item-gi span="1" label="创建时间">
           <n-date-picker v-model:value="queryFormData.dataRange" type="daterange" value-format="yyyy-MM-dd" clearable />
         </n-form-item-gi>
@@ -69,12 +85,12 @@
     />
     <!-- 新增和编辑内容框 -->
     <n-modal
-      v-model:show="showModal"
+      v-model:show="showEditNoteModal"
       class="container-card"
       preset="card"
       :title="modelTitle"
       :auto-focus="false"
-      :style="{ width: '37.5rem' }"
+      :style="{ width: '60%' }"
     >
       <n-form
         ref="noteFormRef"
@@ -84,13 +100,37 @@
         label-width="auto"
         require-mark-placement="left"
       >
-        <n-form-item label="笔记名称" path="name">
+        <n-form-item label="名称" path="name">
           <n-input v-model:value="noteFormData.name" maxlength="20" placeholder="请输入笔记名称" />
         </n-form-item>
-        <n-form-item label="笔记代码" path="code">
+        <!-- <n-form-item label="代码" path="code">
           <n-input v-model:value="noteFormData.code" maxlength="20" placeholder="请输入笔记代码" />
+        </n-form-item> -->
+        <n-form-item label="模块" path="module">
+          <n-select
+            v-model:value="queryFormData.module"
+            :options="noteModuleOptions"
+            clearable
+            placeholder="请选择分类"
+          ></n-select>
         </n-form-item>
-        <n-form-item label="笔记描述" path="description">
+        <n-form-item label="分类" path="type">
+          <n-select
+            v-model:value="queryFormData.type"
+            :options="noteTypeOptions"
+            clearable
+            placeholder="请选择分类"
+          ></n-select>
+        </n-form-item>
+        <n-form-item label="标签" path="tags">
+          <n-select
+            v-model:value="queryFormData.tags"
+            :options="noteTagOptions"
+            clearable
+            placeholder="请选择标签"
+          ></n-select>
+        </n-form-item>
+        <n-form-item label="描述" path="description">
           <n-input
             v-model:value="noteFormData.description"
             type="textarea"
@@ -103,20 +143,34 @@
             placeholder="请输入笔记描述"
           />
         </n-form-item>
-        <n-form-item label="排序" path="order">
-          <n-input-number v-model:value="noteFormData.order" placeholder="请输入序号" />
+        <n-form-item label="封面图片" path="cover">
+          <n-upload
+            ref="uploadRef"
+            action="#"
+            :default-file-list="previewFileList"
+            :default-upload="true"
+            accept=".jpg,.png"
+            list-type="image-card"
+            :max="1"
+            :custom-request="handleCustomUpload"
+            @before-upload="handleBeforeUpload"
+            @change="handleChangeUpload"
+          />
         </n-form-item>
-        <n-form-item label="是否启用" path="status">
+        <n-form-item label="启用" path="status">
           <n-switch v-model:value="noteFormData.status" :checked-value="0" :unchecked-value="1">
             <template #checked> 是 </template>
             <template #unchecked> 否 </template>
           </n-switch>
         </n-form-item>
+        <n-form-item path="status">
+          <MdEditor v-model="noteFormData.mdContent" @on-save="saveMdTextBtn"></MdEditor>
+        </n-form-item>
       </n-form>
       <template #footer>
         <n-space justify="end">
           <n-button type="primary" :loading="confirmLoading" @click="handleConfirm">确 定</n-button>
-          <n-button type="default" @click="showModal = false">取 消</n-button>
+          <n-button type="default" @click="showEditNoteModal = false">取 消</n-button>
         </n-space>
       </template>
     </n-modal>
@@ -126,41 +180,73 @@
 <script lang="ts" setup>
 import { ICON } from '@/enums/icon';
 import { Ref, ComputedRef, h, Component } from 'vue';
-import { TreeOption, FormInst, DataTableColumns, NButton, NIcon } from 'naive-ui';
-import { Icon } from '@iconify/vue';
-import { renderIcon, resetForm } from '@/utils/common';
+import {
+  TreeOption,
+  FormInst,
+  DataTableColumns,
+  NButton,
+  NIcon,
+  NTag,
+  UploadInst,
+  UploadFileInfo,
+  UploadCustomRequestOptions
+} from 'naive-ui';
+import { MdEditor } from 'md-editor-v3';
+import 'md-editor-v3/lib/style.css';
+import { renderIcon, resetForm, getRandomColor } from '@/utils/common';
 import { IRes } from '@/interface/common';
 import useUserStore from '@/store/module/user';
 import { getNoteList, addNoteList, updateNote, deleteNote } from '@/api/noteManage/myNote';
 
 interface IQueryForm {
-  noteName: string | null;
+  name: string | null;
+  module: string | null;
+  type: string | null;
+  tags: string | null;
   dataRange: Array<[string, string]> | null;
 }
 
 interface INoteForm {
   id: string;
-  pid: string;
   name: string;
-  code: string;
+  type: string | undefined;
+  tags: Array<string>;
+  module: string | undefined;
   description: string;
   status: number;
-  order: number;
-  children?: INoteForm[];
+  mdContent: string;
 }
+
+let uploadRef = $ref<UploadInst | null>(null);
+
+let previewFileList = $ref<UploadFileInfo[]>([
+  {
+    id: 'vue',
+    name: '我是vue.png',
+    status: 'finished',
+    url: 'https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg'
+  }
+]);
 
 let tableIsLoading = $ref<boolean>(false);
 
 let queryForm = $ref<FormInst | null>(null);
 
 let queryFormData = $ref<IQueryForm>({
-  noteName: null,
+  name: null,
+  module: null,
+  type: null,
+  tags: null,
   dataRange: null
 });
 
-let showModal = $ref<boolean>(false);
+let showEditNoteModal = $ref<boolean>(false);
 
-let showNoteWithAuthModal = $ref<boolean>(false);
+let noteModuleOptions = $ref<Array<object>>([]);
+
+let noteTypeOptions = $ref<Array<object>>([]);
+
+let noteTagOptions = $ref<Array<object>>([]);
 
 let modelTitle = $ref<string>('');
 
@@ -171,7 +257,10 @@ let emptyNoteForm = {
   code: '',
   description: '',
   status: '',
-  order: 0
+  type: null,
+  tags: [],
+  module: null,
+  mdContent: ''
 };
 
 const noteFormRef = $ref<FormInst | null>(null);
@@ -184,10 +273,20 @@ let noteFormRules = {
     trigger: ['input', 'blur'],
     message: '请输入笔记名称'
   },
-  code: {
+  module: {
+    required: true,
+    trigger: ['change', 'blur'],
+    message: '请选择所属模块'
+  },
+  type: {
+    required: true,
+    trigger: ['change', 'blur'],
+    message: '请选择分类'
+  },
+  mdContent: {
     required: true,
     trigger: ['input', 'blur'],
-    message: '请输入笔记代码'
+    message: '请输入内容'
   }
 };
 
@@ -213,6 +312,29 @@ let noteTableHeader = $ref<DataTableColumns>([
     key: 'code',
     align: 'center'
   },
+  { title: '分类', key: 'type', align: 'center' },
+  {
+    title: '标签',
+    key: 'tags',
+    align: 'center',
+    render: (rowData: any, rowIndex: number) => {
+      return h(
+        NTag,
+        {
+          size: 'small',
+          bordered: false,
+          round: true,
+          color: {
+            color: getRandomColor(),
+            textColor: '#fff'
+          }
+        },
+        {
+          default: () => h('span', '标签')
+        }
+      );
+    }
+  },
   { title: '创建者', key: 'createBy', align: 'center' },
   { title: '创建时间', key: 'createTime', align: 'center', width: '200' },
   {
@@ -220,7 +342,7 @@ let noteTableHeader = $ref<DataTableColumns>([
     key: 'ops',
     align: 'center',
     width: '200',
-    render: (rowData: any, rowIndex) => {
+    render: (rowData: any, rowIndex: number) => {
       return h(
         NSpace,
         { justify: 'center' },
@@ -233,7 +355,6 @@ let noteTableHeader = $ref<DataTableColumns>([
                 type: 'primary',
                 onClick: (e) => {
                   noteFormData = JSON.parse(JSON.stringify(emptyNoteForm));
-                  showNoteWithAuthModal = true;
                 }
               },
               {
@@ -250,7 +371,7 @@ let noteTableHeader = $ref<DataTableColumns>([
                   let copyRow = JSON.parse(JSON.stringify(rowData));
                   noteFormData = copyRow;
                   modelTitle = '编辑';
-                  showModal = true;
+                  showEditNoteModal = true;
                 }
               },
               {
@@ -317,6 +438,8 @@ let confirmLoading = $ref<boolean>(false);
 const resetQueryFormBtn = () => {
   queryFormData = {
     noteName: null,
+    type: null,
+    tags: null,
     dataRange: null
   };
   if (queryForm) queryForm.restoreValidation();
@@ -349,7 +472,7 @@ const handleQueryTable = (): void => {
 const handleAddNote = (): void => {
   noteFormData = JSON.parse(JSON.stringify(emptyNoteForm));
   modelTitle = '新增';
-  showModal = true;
+  showEditNoteModal = true;
 };
 
 // 导出
@@ -369,7 +492,7 @@ const handleConfirm = (): void => {
             if (res && res.code === 200) {
               window.$message.success('新增笔记成功');
               confirmLoading = false;
-              showModal = false;
+              showEditNoteModal = false;
               handleQueryTable();
             }
           })
@@ -382,7 +505,7 @@ const handleConfirm = (): void => {
             if (res && res.code === 200) {
               window.$message.success('修改笔记成功');
               confirmLoading = false;
-              showModal = false;
+              showEditNoteModal = false;
               handleQueryTable();
             }
           })
@@ -408,6 +531,50 @@ const handleDeleteNote = (mId: string): void => {
     .catch(() => {
       window.$message.warning('删除笔记失败！');
     });
+};
+
+// 限制上传的图片
+const handleBeforeUpload = (data: { file: UploadFileInfo; fileList: UploadFileInfo[] }) => {
+  let uFile = data.file.file;
+  const fileName = uFile!.name as string;
+  // 允许上传的文件格式列表
+  let acceptList = ['jpg', 'png'];
+  // 根据文件名获取文件的后缀名
+  let fileType = fileName.split('.').pop()?.toLowerCase() as string;
+  // 判断文件格式是否符合要求
+  if (acceptList.indexOf(fileType) === -1) {
+    window.$message.error('只能上传 jpg/png 格式的文件 !');
+    return false;
+  }
+  // 判断文件大小是否符合要求
+  if (uFile!.size / 1024 / 1024 > 1) {
+    window.$message.error('上传文件大小不能超过 1M !');
+    return false;
+  }
+};
+
+// 图片改变
+const handleChangeUpload = (options: { file: UploadFileInfo; fileList: Array<UploadFileInfo>; event?: Event }) => {
+  // let uFile = options.file.file;
+  // console.log(uFile?.size);
+};
+
+// 封面图片自定义上传
+const handleCustomUpload = (options: UploadCustomRequestOptions) => {
+  const { file, data, headers, withCredentials, action, onFinish, onError, onProgress } = options;
+  const formData = new FormData();
+  if (data) {
+    Object.keys(data).forEach((key) => {
+      formData.append(key, data[key as keyof UploadCustomRequestOptions['data']]);
+    });
+  }
+  formData.append('file', file.file as File);
+  console.log(formData);
+};
+
+// 笔记内容
+const saveMdTextBtn = (e: string) => {
+  console.log(e);
 };
 
 // 加载之前

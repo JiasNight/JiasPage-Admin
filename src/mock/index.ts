@@ -55,6 +55,24 @@ const MENU_LIST = [
         component: '/noteManage/myNote',
         createBy: 'admin',
         createTime: '2024-01-10 12:21:33'
+      },
+      {
+        pid: 'ab62e594a25d4c0dab54cda018b850ee',
+        id: '1092792329fb40658c362c159a0557e0',
+        path: 'module',
+        name: 'ModuleType',
+        meta: {
+          title: '模块分类',
+          icon: 'mdi:list-box',
+          show: 0,
+          disabled: 1,
+          cache: 1,
+          menuType: 1,
+          description: '模块分类'
+        },
+        component: '/noteManage/moduleType',
+        createBy: 'admin',
+        createTime: '2024-01-10 12:21:33'
       }
     ],
     createBy: 'admin',

@@ -91,7 +91,7 @@
                 </n-spin>
               </div>
               <n-divider></n-divider>
-              <div class="form-tool">
+              <div class="form-tools">
                 <n-checkbox class="tool-remember-password" :label="$t('signIn.rememberPassword')" value="success">
                 </n-checkbox>
                 <a class="tool-forget-password" href="#">{{ $t('signIn.forgetPassword') }}</a>
@@ -318,12 +318,11 @@ onMounted(() => {
             }
           }
         }
-        .form-tool {
+        .form-tools {
           display: flex;
           flex-direction: row;
           justify-content: space-between;
           align-items: center;
-
           .tool-remember-password :deep(.n-checkbox__label) {
             color: #000 !important;
           }

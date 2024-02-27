@@ -8,7 +8,7 @@
             <template #trigger>
               <n-button tertiary circle class="signIn-theme" @click="changeCurrentThemeBtn">
                 <n-icon>
-                  <NightlightFilled></NightlightFilled>
+                  <icon-mdi:theme-light-dark></icon-mdi:theme-light-dark>
                 </n-icon>
               </n-button>
             </template>
@@ -18,7 +18,7 @@
             <template #trigger>
               <n-button tertiary circle class="signIn-language" @click="changeCurrentLanguageBtn">
                 <n-icon>
-                  <SignLanguageFilled></SignLanguageFilled>
+                  <icon-mdi:language></icon-mdi:language>
                 </n-icon>
               </n-button>
             </template>
@@ -43,7 +43,9 @@
                   :placeholder="$t('signIn.inputUserNamePlaceholder')"
                 >
                   <template #prefix>
-                    <n-icon size="25" :component="PersonOutlineRound" />
+                    <n-icon>
+                      <icon-mdi:user-circle></icon-mdi:user-circle>
+                    </n-icon>
                   </template>
                 </n-input>
               </n-form-item>
@@ -58,7 +60,9 @@
                   :placeholder="$t('signIn.inputPasswordPlaceholder')"
                 >
                   <template #prefix>
-                    <n-icon size="25" :component="PasswordRound" />
+                    <n-icon>
+                      <icon-mdi:password></icon-mdi:password>
+                    </n-icon>
                   </template>
                 </n-input>
               </n-form-item>
@@ -74,7 +78,9 @@
                       :placeholder="$t('signIn.inputVerifyCodePlaceholder')"
                     >
                       <template #prefix>
-                        <n-icon size="25" :component="PasswordRound" />
+                        <n-icon>
+                          <icon-mdi:123></icon-mdi:123>
+                        </n-icon>
                       </template>
                     </n-input>
                   </n-form-item>
@@ -102,7 +108,6 @@
 
 <script lang="ts" setup>
 import { FormInst } from 'naive-ui';
-import { SignLanguageFilled, NightlightFilled, PersonOutlineRound, PasswordRound } from '@vicons/material';
 import { getValidateCode } from '@/api/signIn/index';
 import useUserStore from '@/store/module/user';
 import useAppStore from '@/store/module/app';
@@ -136,7 +141,6 @@ onMounted(() => {
     isLoading = false;
   }, 2000);
 });
-
 
 // 获取验证码
 const getCurrentVerifyCode = () => {

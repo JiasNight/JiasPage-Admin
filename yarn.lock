@@ -1351,11 +1351,6 @@
   resolved "https://registry.yarnpkg.com/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.9.2.tgz#830f3a3fba67f6216a5884368431918029045afe"
   integrity sha512-SYRedJi+mweatroB+6TTnJYLts0L0bosg531xnQWtklOI6dezEagx4Q0qDyvRdK+qgdA3YZpjjGuPFtxBmddBA==
 
-"@sicons/material@^0.12.0":
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/@sicons/material/-/material-0.12.0.tgz#64cb3e84efe8b70b48fccfa5e30be74b48f89669"
-  integrity sha512-6KJiVna9aW3oKc/Fe2yX/bqM/Svu70nLWl3QRsSY4gMdBDnacxh7F1QS64wERjcl+6aux81Pr2JkWTfp8L0tmw==
-
 "@types/crypto-js@^4.2.2":
   version "4.2.2"
   resolved "https://registry.npmmirror.com/@types/crypto-js/-/crypto-js-4.2.2.tgz#771c4a768d94eb5922cc202a3009558204df0cea"
@@ -1743,11 +1738,6 @@
   version "1.4.1"
   resolved "https://registry.npmmirror.com/@vavt/util/-/util-1.4.1.tgz#41569e172a8821b5a3fb89074f0fae60961827d0"
   integrity sha512-EhYyvt5w+GE6IO1JzDFZLmJOXQmWHnx3OBvA3YY/ZB1kWqHlhJTpL4x7TuANTzK7q1Y6G/okk4eFpLVWxvEBVA==
-
-"@vicons/material@^0.12.0":
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/@vicons/material/-/material-0.12.0.tgz#068e72fa40bd7f780af5fc68011fb69010c8e0b5"
-  integrity sha512-chv1CYAl8P32P3Ycwgd5+vw/OFNc2mtkKdb1Rw4T5IJmKy6GVDsoUKV3N2l208HATn7CCQphZtuPDdsm7K2kmA==
 
 "@vitejs/plugin-vue-jsx@^3.1.0":
   version "3.1.0"
@@ -4847,11 +4837,6 @@ vdirs@^0.1.4, vdirs@^0.1.8:
   integrity sha512-H9V1zGRLQZg9b+GdMk8MXDN2Lva0zx72MPahDKc30v+DtwKjfyOSXWRIX4t2mhDubM1H09gPhWeth/BJWPHGUw==
   dependencies:
     evtd "^0.2.2"
-
-vfonts@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/vfonts/-/vfonts-0.0.3.tgz#999d66fecea18efee3f2b966c81101ae8ce01a29"
-  integrity sha512-nguyw8L6Un8eelg1vQ31vIU2ESxqid7EYmy8V+MDeMaHBqaRSkg3dTBToC1PR00D89UzS/SLkfYPnx0Wf23IQQ==
 
 vite-plugin-compression@^0.5.1:
   version "0.5.1"

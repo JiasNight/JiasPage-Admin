@@ -12,12 +12,7 @@ import store from '@/store';
 import axios from 'axios';
 // 引入i18n
 import i18n from '@/i18n';
-// 引入Naive-Ui组件
-// import naive from 'naive-ui';
-// 通用字体
-import 'vfonts/Lato.css';
-// 等宽字体
-import 'vfonts/FiraCode.css';
+// 引入uno.css
 import 'uno.css';
 // 引入权限控制
 import { setupPermission } from '@/router/permission';

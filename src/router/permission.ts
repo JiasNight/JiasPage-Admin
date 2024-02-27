@@ -6,7 +6,7 @@ import { getToken } from '../utils/auth';
 
 const { loadingBar } = createDiscreteApi(['loadingBar']);
 // 路由白名单
-const whiteList: Array<String> = ['/signIn'];
+const whiteList: Array<String> = ['/signIn', '/signUp'];
 
 export const setupPermission = (router: Router) => {
   router.beforeEach(async (to: RouteLocationNormalizedLoaded, from: RouteLocationNormalizedLoaded) => {

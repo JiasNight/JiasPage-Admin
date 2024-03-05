@@ -25,11 +25,11 @@ const useUserStore = defineStore({
   },
   actions: {
     // 用户登录
-    userSignInHandle(adminForm: any) {
+    userSignInHandler(adminForm: any) {
       return new Promise((resolve: any, reject: any) => {
         const fd = new FormData();
-        const key = sessionStorage.getItem('pKey');
-        const enPassword = rsaUtil.encrypt(adminForm.password, key);
+        // const enPassword = rsaUtil.encrypt(adminForm.password, key);
+        const enPassword = aesUtil.encrypt(adminForm.password);
         fd.append('userName', adminForm.userName);
         fd.append('password', enPassword);
         userSignIn(fd).then((res: IResponse) => {

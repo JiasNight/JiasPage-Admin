@@ -60,7 +60,7 @@ const generateMenuByRoute = (routerList: Array<any>) => {
   menusList.push({
     label: '首页',
     disabled: false,
-    icon: renderIcon(ICON.F, 'mdi:home'),
+    icon: renderIcon(ICON.F, 'mdi:home', { size: 16 }),
     key: 'Index',
     type: 0,
     path: '/',
@@ -94,7 +94,7 @@ const generateMenuByRoute = (routerList: Array<any>) => {
             }
           ),
         disabled: item.meta.disabled === 0 ? true : false,
-        icon: renderIcon(ICON.F, item.meta.icon),
+        icon: renderIcon(ICON.F, item.meta.icon, { size: 16 }),
         key: item.name,
         type: item.meta.menuType,
         path: item.path,

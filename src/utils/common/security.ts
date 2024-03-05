@@ -1,6 +1,8 @@
 import CryptoJS from 'crypto-js';
 import { JSEncrypt } from 'jsencrypt';
 
+const DEFAULT_KEY = 'def009A1bcO538JK';
+
 /**
  * aes加密
  */
@@ -16,12 +18,13 @@ export const aesUtil = {
   },
 
   // 加密
-  encrypt: (textStr: any, key: string) => {
+  encrypt: (textStr: any, key: string = DEFAULT_KEY) => {
     if (textStr instanceof Object) {
       // JSON.stringify
       textStr = JSON.stringify(textStr);
     }
     const encrypted = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(textStr), CryptoJS.enc.Utf8.parse(key), {
+      // ECB不需要iv
       // iv:  CryptoJS.enc.Utf8.parse(iv),
       mode: CryptoJS.mode.ECB,
       padding: CryptoJS.pad.Pkcs7
@@ -30,7 +33,7 @@ export const aesUtil = {
   },
 
   // 解密
-  decrypt: (textStr: any, key: string) => {
+  decrypt: (textStr: any, key: string = DEFAULT_KEY) => {
     const base64 = CryptoJS.enc.Base64.parse(textStr);
     const src = CryptoJS.enc.Base64.stringify(base64);
     const decrypt = CryptoJS.AES.decrypt(src, CryptoJS.enc.Utf8.parse(key), {

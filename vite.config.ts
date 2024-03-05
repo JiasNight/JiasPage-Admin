@@ -38,6 +38,8 @@ export default ({ command, mode }) => {
   console.log(command);
   console.log(mode);
   console.log(env);
+  // 是否开启本地mock服务
+  const isEnableMockServe = false;
   return defineConfig({
     define: {
       'process.env': env
@@ -220,15 +222,12 @@ export default ({ command, mode }) => {
         ext: '.gz'
       }),
       viteMockServe({
+        // 设置模拟.ts 文件的存储文件夹
         mockPath: './src/mock/',
-        // 监视文件夹中的文件更改
+        // 是否监视mockPath对应的文件夹内文件中的更改
         watchFiles: true,
-        // 开发打包开关
-        localEnabled: true,
-        // 生产打包开关
-        prodEnabled: true,
-        // 打开后，可以读取 ts 文件模块。 请注意，打开后将无法监视.js 文件
-        supportTs: true,
+        // 是否启用 mock 功能
+        enable: isEnableMockServe,
         // 是否在控制台显示请求日志
         logger: true
       })

@@ -224,7 +224,7 @@ const submitSignInBtn = (e: MouseEvent) => {
   signInForm.validate((valid: any) => {
     if (!valid) {
       submitBtnIsLoading = true;
-      userStore.userSignInHandle(adminFormData).then(() => {
+      userStore.userSignInHandler(adminFormData).then(() => {
         router.push('/');
         submitBtnIsLoading = false;
       });

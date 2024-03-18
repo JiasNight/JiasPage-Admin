@@ -4,7 +4,7 @@
     v-model:value="openMenu"
     class="side-menu"
     :indent="18"
-    :collapsed="currentProps.collapsed"
+    :collapsed="collapsedValue"
     :collapsed-width="50"
     :options="menusList"
     :collapsed-icon-size="20"
@@ -17,12 +17,12 @@ import type { MenuOption, MenuGroupOption, MenuInst } from 'naive-ui';
 import useAppStore from '@/store/module/app';
 import { useRouter, RouteRecordRaw } from 'vue-router';
 import { ICON } from '@/enums/icon';
-// import { renderIcon } from '@/utils/common';
 
 // 使用store
 const router = useRouter();
 const appStore = useAppStore();
 
+const collapsedValue: ComputedRef<boolean> = computed(() => appStore.getCollapsedSider);
 // 引入全局方法
 const renderIcon = inject<any>('renderIcon');
 

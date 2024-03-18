@@ -1,7 +1,7 @@
 <template>
   <div class="header-container">
     <!-- logo -->
-    <Logo class="container-logo" :collapsed="false"></Logo>
+    <Logo class="container-logo"></Logo>
 
     <div class="container-wrap">
       <div class="wrap-breadcrumb">
@@ -136,7 +136,7 @@ const handleToggleSider = (): void => {
   color: $topHeaderTextColor;
   box-shadow: 0 0.2125rem 0.1125rem #d6d9da;
   .container-logo {
-    width: $siderBarWidth;
+    max-width: $siderBarWidth;
     height: 100%;
   }
   .container-wrap {

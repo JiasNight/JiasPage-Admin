@@ -1,18 +1,17 @@
 <template>
   <div class="logo-wrap" @click="$router.push('/index')">
     <img class="logo-img" src="@/assets/images/logo.png" alt="logo" />
-    <span v-show="!props.collapsed" class="logo-text">PAGE</span>
+    <!-- <span v-if="!collapsedValue" class="logo-text">PAGE</span> -->
+    <span class="logo-text">PAGE</span>
   </div>
 </template>
 
 <script lang="ts" setup>
-const props = defineProps({
-  collapsed: {
-    // 侧边栏菜单是否收起
-    type: Boolean,
-    default: true
-  }
-});
+import useAppStore from '@/store/module/app';
+
+const appStore = useAppStore();
+
+const collapsedValue: ComputedRef<boolean> = computed(() => appStore.getCollapsedSider);
 </script>
 
 <style lang="scss" scoped>

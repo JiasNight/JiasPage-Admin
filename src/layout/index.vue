@@ -28,7 +28,7 @@
   </n-layout> -->
   <n-layout class="screen-layout" position="absolute">
     <n-layout-header class="layout-header" bordered>
-      <Header></Header>
+      <Header :collapsed="siderCollapsed"></Header>
     </n-layout-header>
     <n-layout class="layout-body" has-sider position="absolute">
       <n-layout-sider

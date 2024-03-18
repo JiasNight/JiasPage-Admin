@@ -336,11 +336,11 @@ onMounted(() => {
         .form-submit {
           margin-top: 20px;
           width: 100%;
-          background-color: #5b1ee9;
-          border-color: #5b1ee9 !important;
-          &:hover {
-            background-color: #4a1bb5;
-          }
+          // background-color: #5b1ee9;
+          // border-color: #5b1ee9 !important;
+          // &:hover {
+          //   background-color: #4a1bb5;
+          // }
         }
       }
       .other-signIn {

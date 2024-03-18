@@ -1,36 +1,39 @@
 {
   "naiveThemeOverrides": {
     "common": {
-      "primaryColor": "#00AECD",
-      "primaryColorHover": "#00a7c4",
-      "primaryColorPressed": "#0084AC",
-      "primaryColorSuppl": "#005E8A",
+      "fontFamily": "HarmonyOS-Sans,Inter-UI",
+      "fontFamilyMono": "HarmonyOS-Sans,Inter-UI",
 
-      "infoColor": "#5352ed",
-      "infoColorHover": "#3C3BCB",
-      "infoColorPressed": "#7D7CF4",
-      "infoColorSuppl": "#9897F9",
+      "primaryColor": "#635bec",
+      "primaryColorHover": "#635bec",
+      "primaryColorPressed": "#4942CA",
+      "primaryColorSuppl": "#8A83F3",
+
+      "infoColor": "#1E90FF",
+      "infoColorHover": "#1E90FF",
+      "infoColorPressed": "#156FDB",
+      "infoColorSuppl": "#56B4FF",
 
       "successColor": "#2EDD4B",
-      "successColorHover": "#21BE4A",
-      "successColorPressed": "#179F47",
-      "successColorSuppl": "#0E8041",
+      "successColorHover": "#2EDD4B",
+      "successColorPressed": "#21BE4A",
+      "successColorSuppl": "#5FEA69",
 
       "warningColor": "#FC9607",
-      "warningColorHover": "#FFB243",
-      "warningColorPressed": "#FDB844",
-      "warningColorSuppl": "#B55C03",
+      "warningColorHover": "#FC9607",
+      "warningColorPressed": "#D87705",
+      "warningColorSuppl": "#FDB844",
 
-      "errorColor": "#F73C36",
-      "errorColorHover": "#DB2820",
-      "errorColorPressed": "#B7161D",
-      "errorColorSuppl": "#930E1E"
+      "errorColor": "#FF7142",
+      "errorColorHover": "#FF7142",
+      "errorColorPressed": "#DB4E30",
+      "errorColorSuppl": "#FF9E71"
     },
     "LoadingBar": {
-      "colorLoading": "#5B1EE9ff"
+      "colorLoading": "#635bec"
     },
     "Breadcrumb": {
-      "itemTextColor": "#5B1EE9ff",
+      "itemTextColor": "#ceced3",
       "itemTextColorHover": "",
       "itemTextColorPressed": "",
       "itemTextColorActive": "#fff",

@@ -1,5 +1,5 @@
 <template>
-  <div ref="mapChart" style="width: 100%; height: calc(100vh - 100px)"></div>
+  <div ref="mapChart" style="width: 100%; height: calc(100vh - 110px)"></div>
 </template>
 
 <script lang="ts" setup>

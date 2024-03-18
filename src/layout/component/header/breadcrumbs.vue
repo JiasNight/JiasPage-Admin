@@ -1,6 +1,6 @@
 <template>
   <!-- 面包屑 -->
-  <n-breadcrumb>
+  <n-breadcrumb class="header-breadcrumb">
     <n-breadcrumb-item>
       <n-icon size="20">
         <icon-mdi:home></icon-mdi:home>
@@ -59,4 +59,8 @@ const getRoutePath = (cRoute: any, routes: Array<any>) => {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.header-breadcrumb {
+  color: $topHeaderTextColor !important;
+}
+</style>

@@ -1,14 +1,11 @@
 <template>
   <div>
-    <!-- logo -->
-    <Logo :collapsed="props.collapsed"></Logo>
     <!-- 菜单 -->
     <Menus :collapsed="props.collapsed"></Menus>
   </div>
 </template>
 
 <script lang="ts" setup>
-import Logo from './logo/index.vue';
 import Menus from './menu/index.vue';
 const props = defineProps({
   collapsed: {

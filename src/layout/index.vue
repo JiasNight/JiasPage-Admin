@@ -1,5 +1,9 @@
 <template>
-  <n-layout class="screen-layout" has-sider>
+  <!-- <n-layout class="screen-layout" has-sider position="absolute" sider-placement="left">
+    <n-layout-header bordered>
+      <Header></Header>
+    </n-layout-header>
+
     <n-layout-sider
       class="layout-sider"
       collapse-mode="width"
@@ -15,18 +19,37 @@
       <Sider :collapsed="siderCollapsed"></Sider>
     </n-layout-sider>
     <n-layout>
-      <n-layout-header bordered>
-        <Header></Header>
-      </n-layout-header>
-
       <n-layout-content class="layout-content">
-        <!-- 标签页 -->
         <PageTags></PageTags>
         <ViewMain></ViewMain>
-        <!-- <div class="content-main">
-        </div> -->
       </n-layout-content>
       <n-back-top :right="100" />
+    </n-layout>
+  </n-layout> -->
+  <n-layout class="screen-layout" position="absolute">
+    <n-layout-header class="layout-header" bordered>
+      <Header></Header>
+    </n-layout-header>
+    <n-layout class="layout-body" has-sider position="absolute">
+      <n-layout-sider
+        class="body-sider"
+        collapse-mode="width"
+        :collapsed="siderCollapsed"
+        :collapsed-width="50"
+        :width="220"
+        show-trigger="bar"
+        bordered
+        :native-scrollbar="false"
+        @collapse="siderCollapsed = true"
+        @expand="siderCollapsed = false"
+      >
+        <Sider :collapsed="siderCollapsed"></Sider>
+      </n-layout-sider>
+      <n-layout-content class="body-content">
+        <PageTags></PageTags>
+        <ViewMain></ViewMain>
+        <n-back-top :right="100" />
+      </n-layout-content>
     </n-layout>
   </n-layout>
 </template>
@@ -91,16 +114,18 @@ const signOutBtn = (): void => {
 
 <style lang="scss" scoped>
 .screen-layout {
-  display: flex;
-  flex-direction: row;
-  .layout-sider {
-    position: relative;
-    min-height: 100vh;
-    background: $siderBarBgColor;
-    box-shadow: 2px 0 8px 0 rgb(29 35 41 / 5%);
-    transition: all 0.2s ease-in-out;
+  .layout-header {
+    height: $topHeaderHeight;
   }
-  .layout-content {
+  .layout-body {
+    top: $topHeaderHeight;
+    .body-sider {
+      background: $siderBarBgColor;
+      box-shadow: 2px 0 8px 0 rgb(29 35 41 / 5%);
+      transition: all 0.2s ease-in-out;
+    }
+    .body-content {
+    }
   }
 }
 </style>

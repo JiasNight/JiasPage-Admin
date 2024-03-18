@@ -28,6 +28,15 @@
     },
     "LoadingBar": {
       "colorLoading": "#5B1EE9ff"
+    },
+    "Breadcrumb": {
+      "itemTextColor": "#5B1EE9ff",
+      "itemTextColorHover": "",
+      "itemTextColorPressed": "",
+      "itemTextColorActive": "#fff",
+      "itemColorHover": "",
+      "itemColorPressed": "",
+      "separatorColor": ""
     }
   }
 }

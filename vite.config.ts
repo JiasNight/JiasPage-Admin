@@ -39,7 +39,7 @@ export default ({ command, mode }) => {
   console.log(mode);
   console.log(env);
   // 是否开启本地mock服务
-  const isEnableMockServe = false;
+  const isEnableMockServe = true;
   return defineConfig({
     define: {
       'process.env': env

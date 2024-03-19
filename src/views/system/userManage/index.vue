@@ -392,7 +392,7 @@ let userTableHeaderColumns = $ref<DataTableColumns>([
     title: '操作',
     key: 'ops',
     align: 'center',
-    width: '200',
+    width: '250',
     render: (row) => {
       return h(
         NSpace,

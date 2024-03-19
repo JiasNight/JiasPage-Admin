@@ -24,10 +24,10 @@
       "warningColorPressed": "#D87705",
       "warningColorSuppl": "#FDB844",
 
-      "errorColor": "#FF7142",
-      "errorColorHover": "#FF7142",
-      "errorColorPressed": "#DB4E30",
-      "errorColorSuppl": "#FF9E71"
+      "errorColor": "#FF463F",
+      "errorColorHover": "#FF463F",
+      "errorColorPressed": "#DB2E36",
+      "errorColorSuppl": "#FF806F"
     },
     "LoadingBar": {
       "colorLoading": "#635bec"

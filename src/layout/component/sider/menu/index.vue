@@ -8,21 +8,23 @@
     :collapsed-width="50"
     :options="menusList"
     :collapsed-icon-size="20"
+    default-expand-all
+    :default-expanded-keys="defaultExpandedKeys"
     :on-update:value="handleClickMenu"
   ></n-menu>
 </template>
 
 <script lang="ts" setup>
 import type { MenuOption, MenuGroupOption, MenuInst } from 'naive-ui';
-import useAppStore from '@/store/module/app';
+import appStore from '@/store/module/app';
 import { useRouter, RouteRecordRaw } from 'vue-router';
 import { ICON } from '@/enums/icon';
 
 // 使用store
 const router = useRouter();
-const appStore = useAppStore();
+const useAppStore = appStore();
 
-const collapsedValue: ComputedRef<boolean> = computed(() => appStore.getCollapsedSider);
+const collapsedValue: ComputedRef<boolean> = computed(() => useAppStore.getCollapsedSider);
 // 引入全局方法
 const renderIcon = inject<any>('renderIcon');
 
@@ -37,11 +39,13 @@ const currentProps = defineProps({
 // 菜单ref
 let menuRef = $ref<MenuInst | null>(null);
 
+let defaultExpandedKeys = $ref<string[]>();
+
 // 展开的菜单key
-let openMenu = $ref<string>('Index');
+let openMenu = $ref<string | null>(null);
 
 let activeRouter: any = computed(() => {
-  return appStore.getCurrentRoute;
+  return useAppStore.getCurrentRoute;
 });
 
 watch(activeRouter, (nVal, oVal) => {

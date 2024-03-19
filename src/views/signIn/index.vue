@@ -268,11 +268,11 @@ onMounted(() => {
     min-width: 25rem;
     max-width: 28.125rem;
     height: 500px;
-    border-top: 2px solid rgba(142, 131, 238, 0.5);
-    border-left: 2px solid rgba(142, 131, 238, 0.5);
+    border-top: 2px solid rgba(99, 91, 236, 0.5);
+    border-left: 2px solid rgba(99, 91, 236, 0.5);
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 10px rgba(142, 131, 238, 0.5);
+    box-shadow: 0 0 10px rgba(99, 91, 236, 0.5);
     backdrop-filter: blur(5px);
 
     .wrapper-signIn {

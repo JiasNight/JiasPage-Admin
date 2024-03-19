@@ -58,14 +58,14 @@ let menusList: Array<MenuOption | MenuGroupOption> = [];
 const generateMenuByRoute = (routerList: Array<any>) => {
   menusList = [];
   menusList.push({
-    label: '首页',
+    label: '仪表盘',
     disabled: false,
     icon: renderIcon(ICON.F, 'mdi:home', { size: 16 }),
     key: 'Index',
     type: 0,
     path: '/',
     show: true,
-    description: '首页'
+    description: '仪表盘'
   });
   const recursionTree = (tree: Array<any>) => {
     let newTree: Array<any> = [];

@@ -18,8 +18,6 @@ import viteCompression from 'vite-plugin-compression';
 import eslintPlugin from 'vite-plugin-eslint';
 // 引入unocss
 import unoCss from 'unocss/vite';
-// 安装unocss和三个预设，第一个是工具类预设，第二个是属性化模式支持，第三个是icon支持
-import { presetUno, presetAttributify, presetIcons } from 'unocss';
 // 引入mock
 import { viteMockServe } from 'vite-plugin-mock';
 
@@ -28,6 +26,26 @@ import { Vuetify3Resolver, NaiveUiResolver } from 'unplugin-vue-components/resol
 import ReactivityTransform from '@vue-macros/reactivity-transform/vite';
 
 import * as path from 'path';
+
+// 动态处理请求api的代理前缀
+function getProxy(nodeEnvs: object) {
+  const resultProxy = {};
+  for (const key in nodeEnvs) {
+    if (key.includes('VITE_APP_') && key.includes('API')) {
+      const item = nodeEnvs[key];
+      const regex = new RegExp('[^/]+(?!.*/)');
+      const proxySuffix = regex.exec(item)[0];
+      const proxyApi = '/' + proxySuffix + 'Api';
+      resultProxy[proxyApi] = {
+        target: item,
+        ws: true, // websocket支持
+        changeOrigin: true,
+        rewrite: (path) => path.replace(new RegExp(`^${proxyApi}`), '')
+      };
+    }
+  }
+  return resultProxy;
+}
 
 // https://vitejs.dev/config/
 export default ({ command, mode }) => {
@@ -39,7 +57,7 @@ export default ({ command, mode }) => {
   console.log(mode);
   console.log(env);
   // 是否开启本地mock服务
-  const isEnableMockServe = true;
+  const isEnableMockServe = false;
   return defineConfig({
     define: {
       'process.env': env
@@ -60,14 +78,21 @@ export default ({ command, mode }) => {
         overlay: false // 禁用或配置 HMR 连接 设置 server.hmr.overlay 为 false 可以禁用服务器错误遮罩层
       },
       // 反向代理配置，注意rewrite写法
-      proxy: {
-        '/api': {
-          target: env.VITE_APP_BASE_API,
-          ws: true, // websocket支持
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, '')
-        }
-      }
+      proxy: getProxy(env)
+      // {
+      //   '/api': {
+      //     target: env.VITE_APP_ADMIN_API,
+      //     ws: true, // websocket支持
+      //     changeOrigin: true,
+      //     rewrite: (path) => path.replace(/^\/api/, '')
+      //   },
+      //   '/api2': {
+      //     target: env.VITE_APP_AUTH_API,
+      //     ws: true, // websocket支持
+      //     changeOrigin: true,
+      //     rewrite: (path) => path.replace(/^\/api/, '')
+      //   }
+      // }
     },
     resolve: {
       // 取相对路径别名, @表示当前的src目录路径
@@ -140,28 +165,7 @@ export default ({ command, mode }) => {
       ReactivityTransform(),
       // 配置css原子化
       unoCss({
-        presets: [presetUno(), presetAttributify(), presetIcons()],
-        rules: [
-          // 在这个可以增加预设规则, 也可以使用正则表达式
-          ['flex', { display: 'flex' }],
-          ['c-p', { cursor: 'pointer' }],
-          ['p-r', { position: 'relative' }],
-          // 使用时只需要写 p-c 即可应用该组样式
-          [
-            'p-c',
-            {
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)'
-            }
-          ],
-          [/^m-(\d+)$/, ([, d]) => ({ margin: `${Number(d) * 10}px` })]
-        ],
-        // 组合样式 自定义
-        shortcuts: {
-          fuck: ['green', 'font28']
-        }
+        configFile: './uno.config.js'
       }),
       eslintPlugin({
         // 禁用 eslint 缓存

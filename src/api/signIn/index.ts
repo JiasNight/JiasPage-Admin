@@ -1,9 +1,10 @@
 import service from '@/utils/request';
+import getEnvApi from '@/utils/envApi';
 
 // 获取验证码
 export const getValidateCode = () => {
   return service.request({
-    url: '/api/user/validateCode',
+    url: getEnvApi('auth') + '/user/validateCode',
     method: 'get'
   });
 };
@@ -11,7 +12,7 @@ export const getValidateCode = () => {
 // 用户登录
 export const userSignIn = async (userSignInForm: object) => {
   return await service.request({
-    url: '/api/user/signIn',
+    url: getEnvApi('auth') + '/user/signIn',
     method: 'post',
     data: userSignInForm
   });
@@ -20,7 +21,7 @@ export const userSignIn = async (userSignInForm: object) => {
 // 获取用户信息
 export const getUserInfo = () => {
   return service.request({
-    url: '/api/user/info',
+    url: getEnvApi('auth') + '/user/info',
     method: 'get'
   });
 };

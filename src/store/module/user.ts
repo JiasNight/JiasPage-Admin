@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { userSignIn, getUserInfo } from '@/api/signIn/index';
 import { setToken, removeToken } from '@/utils/auth';
-import { IResponse, IUserInfo } from '@/interface/common';
+import { IRes, IUserInfo } from '@/interface/common';
 import { aesUtil, rsaUtil } from '@/utils/common/security';
 import router from '@/router';
 
@@ -28,11 +28,10 @@ const useUserStore = defineStore({
     userSignInHandler(adminForm: any) {
       return new Promise((resolve: any, reject: any) => {
         const fd = new FormData();
-        // const enPassword = rsaUtil.encrypt(adminForm.password, key);
         const enPassword = aesUtil.encrypt(adminForm.password);
         fd.append('userName', adminForm.userName);
         fd.append('password', enPassword);
-        userSignIn(fd).then((res: IResponse) => {
+        userSignIn(fd).then((res: IRes) => {
           if (res && res.code === 200) {
             setToken(res.data.token);
             resolve();
@@ -46,7 +45,7 @@ const useUserStore = defineStore({
     // 获取当前用户信息
     async getCurrentUserInfo() {
       return new Promise((resolve: any, reject: any) => {
-        getUserInfo().then((res: IResponse) => {
+        getUserInfo().then((res: IRes) => {
           if (res && res.code === 200) {
             this.userInfo = res.data;
             resolve(this.userInfo);

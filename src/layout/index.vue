@@ -28,22 +28,22 @@
   </n-layout> -->
   <n-layout class="screen-layout" position="absolute">
     <n-layout-header class="layout-header" bordered>
-      <Header :collapsed="siderCollapsed"></Header>
+      <Header :collapsed="collapsedValue"></Header>
     </n-layout-header>
     <n-layout class="layout-body" has-sider position="absolute">
       <n-layout-sider
         class="body-sider"
         collapse-mode="width"
-        :collapsed="siderCollapsed"
+        :collapsed="collapsedValue"
         :collapsed-width="50"
         :width="220"
         show-trigger="bar"
         bordered
         :native-scrollbar="false"
-        @collapse="siderCollapsed = true"
-        @expand="siderCollapsed = false"
+        @collapse="appStore.setCollapsedSider(true)"
+        @expand="appStore.setCollapsedSider(false)"
       >
-        <Sider :collapsed="siderCollapsed"></Sider>
+        <Sider :collapsed="collapsedValue"></Sider>
       </n-layout-sider>
       <n-layout-content class="body-content">
         <PageTags></PageTags>
@@ -60,12 +60,12 @@ import Sider from './component/sider/index.vue';
 import Header from './component/header/index.vue';
 import PageTags from './component/tags/index.vue';
 import ViewMain from './component/main/index.vue';
-import globalStore from '@/store/module/global';
-import appStore from '@/store/module/app';
+import useGlobalStore from '@/store/module/global';
+import useAppStore from '@/store/module/app';
 
-const useAppStore = appStore();
+const appStore = useAppStore();
 
-const useGlobalStore = globalStore();
+const globalStore = useGlobalStore();
 
 let siderCollapsed = $ref<boolean>(false);
 
@@ -92,9 +92,9 @@ const breadcrumbList = [
 ];
 
 // 计算属性
-const progress: ComputedRef<number | null> = computed(() => useGlobalStore.progress);
-const snackbarText: ComputedRef<string | null> = computed(() => useGlobalStore.message);
-const collapsedValue: ComputedRef<boolean> = computed(() => useAppStore.getCollapsedSider);
+const progress: ComputedRef<number | null> = computed(() => globalStore.progress);
+const snackbarText: ComputedRef<string | null> = computed(() => globalStore.message);
+const collapsedValue: ComputedRef<boolean> = computed(() => appStore.getCollapsedSider);
 
 // 监听
 watch(collapsedValue, (nVal, oVal) => {
@@ -103,7 +103,7 @@ watch(collapsedValue, (nVal, oVal) => {
 
 // 切换当前主题
 const changeCurrentThemeBtn = (): void => {
-  useAppStore.setTheme();
+  appStore.setTheme();
 };
 
 // 退出登录

@@ -323,7 +323,7 @@ let menuTableHeader = $ref<DataTableColumns>([
     title: '操作',
     key: 'ops',
     align: 'center',
-    width: '200',
+    width: '250',
     render: (rowData: any, rowIndex) => {
       return h(
         NSpace,

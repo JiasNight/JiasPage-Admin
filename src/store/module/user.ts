@@ -4,6 +4,7 @@ import { setToken, removeToken } from '@/utils/auth';
 import { IRes, IUserInfo } from '@/interface/common';
 import { aesUtil, rsaUtil } from '@/utils/common/security';
 import router from '@/router';
+import { getToken } from '@/utils/auth';
 
 interface IUserState {
   token: string;
@@ -27,11 +28,9 @@ const useUserStore = defineStore({
     // 用户登录
     userSignInHandler(adminForm: any) {
       return new Promise((resolve: any, reject: any) => {
-        const fd = new FormData();
-        const enPassword = aesUtil.encrypt(adminForm.password);
-        fd.append('userName', adminForm.userName);
-        fd.append('password', enPassword);
-        userSignIn(fd).then((res: IRes) => {
+        const copyAdminForm = JSON.parse(JSON.stringify(adminForm));
+        copyAdminForm.password = aesUtil.encrypt(copyAdminForm.password);
+        userSignIn(copyAdminForm).then((res: IRes) => {
           if (res && res.code === 200) {
             setToken(res.data.token);
             resolve();
@@ -45,7 +44,8 @@ const useUserStore = defineStore({
     // 获取当前用户信息
     async getCurrentUserInfo() {
       return new Promise((resolve: any, reject: any) => {
-        getUserInfo().then((res: IRes) => {
+        const token = getToken();
+        getUserInfo(token).then((res: IRes) => {
           if (res && res.code === 200) {
             this.userInfo = res.data;
             resolve(this.userInfo);

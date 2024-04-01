@@ -4,24 +4,25 @@ import getEnvApi from '@/utils/envApi';
 // 获取验证码
 export const getValidateCode = () => {
   return service.request({
-    url: getEnvApi('auth') + '/user/validateCode',
+    url: 'authApi/user/validateCode',
     method: 'get'
   });
 };
 
 // 用户登录
-export const userSignIn = async (userSignInForm: object) => {
-  return await service.request({
-    url: getEnvApi('auth') + '/user/signIn',
+export const userSignIn = (userSignInForm: object) => {
+  return service.request({
+    url: 'authApi/user/signIn',
     method: 'post',
     data: userSignInForm
   });
 };
 
 // 获取用户信息
-export const getUserInfo = () => {
+export const getUserInfo = (token: string) => {
   return service.request({
-    url: getEnvApi('auth') + '/user/info',
-    method: 'get'
+    url: 'authApi/user/getInfo',
+    method: 'get',
+    params: { token: token }
   });
 };

@@ -14,7 +14,12 @@ export const setupPermission = (router: Router) => {
     const appStore = useAppStore();
     const isSignIn: boolean | string | null = getToken();
 
-    // 安全认证校验获取
+    // 判断是否需要对请求和响应加解密
+    const isEncrypt: boolean | null = localStorage.getItem('safe') === 'true';
+
+    if (isEncrypt) {
+      // 安全认证校验获取
+    }
     appStore.getCurrentPublicKey();
 
     // 判断是否登录

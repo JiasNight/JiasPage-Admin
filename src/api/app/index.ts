@@ -1,4 +1,5 @@
 import service from '@/utils/request';
+import getEnvApi from '@/utils/envApi';
 
 // 获取public下的JSON文件数据
 export const getJSON = (path: string) => {
@@ -11,7 +12,7 @@ export const getJSON = (path: string) => {
 // 获取后端形成的加密公钥
 export const getPublicKey = () => {
   return service.request({
-    url: '/api/security/pKey',
+    url: '/authApi/security/pKey',
     method: 'get'
   });
 };
@@ -19,9 +20,8 @@ export const getPublicKey = () => {
 // 动态获取路由表
 export const getDynamicRoutes = (user?: object) => {
   return service.request({
-    url: '/api/system/routes',
+    url: '/adminApi/system/routes',
     method: 'post',
     data: user
   });
 };
-

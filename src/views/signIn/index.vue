@@ -33,9 +33,9 @@
             size="large"
             require-mark-placement="left"
           >
-            <n-form-item path="userName">
+            <n-form-item path="username">
               <n-input
-                v-model:value="adminFormData.userName"
+                v-model:value="adminFormData.username"
                 size="large"
                 round
                 clearable
@@ -53,7 +53,6 @@
                 v-model:value="adminFormData.password"
                 type="password"
                 size="large"
-                clearable
                 round
                 show-password-on="mousedown"
                 :placeholder="$t('signIn.inputPasswordPlaceholder')"
@@ -163,6 +162,8 @@ const getCurrentVerifyCode = () => {
     .then((res: IRes) => {
       if (res && res.code === 200) {
         verifyCodeImg = res.data.base64;
+        const safe = res.data.safe;
+        localStorage.setItem('safe', safe);
         verifyImgLoading = false;
       } else {
         verifyImgLoading = false;
@@ -192,13 +193,13 @@ const clickCodeImgBtn = () => {
 };
 
 const adminFormData = reactive({
-  userName: '',
+  username: '',
   password: '',
   verifyCode: ''
 });
 
 const adminFormRules = reactive({
-  userName: {
+  username: {
     required: true,
     trigger: ['blur', 'input'],
     message: globalProxy?.$t('signIn.inputUserNamePlaceholder')

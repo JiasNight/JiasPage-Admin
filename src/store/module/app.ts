@@ -130,15 +130,13 @@ const useAppStore = defineStore({
     },
     // 获取加密公钥
     getCurrentPublicKey() {
-      const sessionPKey = sessionStorage.getItem('pKey');
+      const sessionPKey = localStorage.getItem('pKey');
       if (!sessionPKey) {
         getPublicKey()
           .then((res: IRes) => {
             if (res && res.code === 200) {
               const pKey = res.data.pKey;
-              const safe = res.data.safe;
-              sessionStorage.setItem('pKey', pKey);
-              sessionStorage.setItem('safe', safe);
+              localStorage.setItem('pKey', pKey);
             }
           })
           .catch(() => {});

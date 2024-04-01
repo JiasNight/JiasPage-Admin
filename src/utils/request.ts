@@ -37,7 +37,7 @@ class AxiosTool {
 
   private init() {
     // 判断是否需要对请求和响应加解密
-    const isEncrypt: boolean | null = sessionStorage.getItem('safe') === 'true';
+    const isEncrypt: boolean | null = localStorage.getItem('safe') === 'true';
     // 请求拦截
     this.service.interceptors.request.use(
       (config: AxiosRequestConfig | any) => {
@@ -47,7 +47,7 @@ class AxiosTool {
           authorization: token
         };
         if (isEncrypt) {
-          const publicKey: string = sessionStorage.getItem('pKey') as string;
+          const publicKey: string = localStorage.getItem('pKey') as string;
           const aesKey: string = aesUtil.genKey();
           const aKey = rsaUtil.encrypt(aesKey, publicKey);
           // 请求方法类型
@@ -99,16 +99,20 @@ class AxiosTool {
     this.service.interceptors.response.use(
       (response: AxiosResponse) => {
         const { data, config } = response;
+        const res = data;
+        console.log(res);
+        // return Promise.reject(res); reject只有catch才能捕获到
         // 登录信息失效，跳转登录界面并清空token
-        if (data.code === 600) {
+        if (res.code === 600) {
           localStorage.removeItem('token');
           router.push('/signIn');
-          return Promise.reject(data);
+          return Promise.reject(res);
         }
-        if (data.code && data.code !== 200) {
-          return Promise.reject(data);
+        if (res.code && res.code !== 200) {
+          handleResCode(res.code);
+          return Promise.reject(res);
         }
-        return data;
+        return res;
       },
       (error: AxiosError) => {
         // 具体业务具体处理，加上注释只供参考

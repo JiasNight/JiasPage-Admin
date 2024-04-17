@@ -161,7 +161,7 @@ const handleClickMenu = (key: string, item: MenuOption | any) => {
 // 创建之前
 onBeforeMount(() => {
   // 当前用户登录的所有路由
-  const currentStoreRoutes: Array<RouteRecordRaw> = appStore.getRoutes;
+  const currentStoreRoutes: Array<RouteRecordRaw> = useAppStore.getRoutes;
   // 根据路由生成侧边栏菜单
   generateMenuByRoute(toRaw(currentStoreRoutes));
 });

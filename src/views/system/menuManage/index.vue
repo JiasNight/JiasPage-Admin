@@ -138,7 +138,7 @@
               访问地址
             </n-tooltip>
           </template>
-          <n-input v-model:value="menuFormData.path" maxlength="20" placeholder="请输入路由地址" />
+          <n-input v-model:value="menuFormData.path" maxlength="50" placeholder="请输入路由地址" />
         </n-form-item>
         <n-form-item :path="menuFormData.meta.menuType === 1 ? 'component' : ''">
           <template #label>
@@ -155,7 +155,7 @@
           <n-input
             v-model:value="menuFormData.component"
             :disabled="menuFormData.meta.menuType !== 1"
-            maxlength="20"
+            maxlength="100"
             placeholder="请输入组件路径"
           />
         </n-form-item>
@@ -336,6 +336,8 @@ let menuTableHeader = $ref<DataTableColumns>([
                 text: true,
                 type: 'primary',
                 onClick: (e) => {
+                  console.log(e);
+                  console.log(rowData);
                   menuFormData = JSON.parse(JSON.stringify(emptyMenuForm));
                   menuFormData.pid = rowData.id;
                   modelTitle = '新增';
@@ -375,13 +377,12 @@ let menuTableHeader = $ref<DataTableColumns>([
                     title: '警告',
                     content: '你是否确定进行删除？',
                     positiveText: '确定',
-                    negativeText: '不确定',
+                    negativeText: '取消',
                     onPositiveClick: () => {
-                      window.$message.success('确定');
                       handleDeleteMenu(rowData.id);
                     },
                     onNegativeClick: () => {
-                      window.$message.error('不确定');
+                      // window.$message.error('不确定');
                     }
                   });
                 }

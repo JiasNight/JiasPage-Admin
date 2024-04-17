@@ -116,7 +116,7 @@ const useAppStore = defineStore({
       // 获取当前用户信息
       await useUserStore().getCurrentUserInfo();
       // 通过当前用户的角色获取到菜单列表并且生成菜单路由
-      await getDynamicRoutes({ token: getToken() })
+      await getDynamicRoutes()
         .then((res: IRes) => {
           if (res && res.code === 200) {
             const rList = res.data;

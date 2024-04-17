@@ -1,5 +1,4 @@
 import service from '@/utils/request';
-import getEnvApi from '@/utils/envApi';
 
 // 获取public下的JSON文件数据
 export const getJSON = (path: string) => {
@@ -18,10 +17,9 @@ export const getPublicKey = () => {
 };
 
 // 动态获取路由表
-export const getDynamicRoutes = (user?: object) => {
+export const getDynamicRoutes = () => {
   return service.request({
     url: '/adminApi/system/routes',
-    method: 'post',
-    data: user
+    method: 'get'
   });
 };

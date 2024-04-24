@@ -336,8 +336,6 @@ let menuTableHeader = $ref<DataTableColumns>([
                 text: true,
                 type: 'primary',
                 onClick: (e) => {
-                  console.log(e);
-                  console.log(rowData);
                   menuFormData = JSON.parse(JSON.stringify(emptyMenuForm));
                   menuFormData.pid = rowData.id;
                   modelTitle = '新增';

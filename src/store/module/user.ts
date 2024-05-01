@@ -44,8 +44,7 @@ const useUserStore = defineStore({
     // 获取当前用户信息
     async getCurrentUserInfo() {
       return new Promise((resolve: any, reject: any) => {
-        const token = getToken();
-        getUserInfo(token).then((res: IRes) => {
+        getUserInfo().then((res: IRes) => {
           if (res && res.code === 200) {
             this.userInfo = res.data;
             resolve(this.userInfo);

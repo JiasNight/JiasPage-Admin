@@ -11,6 +11,7 @@ const { message } = createDiscreteApi(['message']);
 // 请求加密方法引入
 import { aesUtil, rsaUtil, publicKey } from './common/security';
 import { IResponse } from '@/interface/common';
+import { getToken } from './auth';
 
 const config = {
   // 默认地址
@@ -42,10 +43,11 @@ class AxiosTool {
     this.service.interceptors.request.use(
       (config: AxiosRequestConfig | any) => {
         // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token，不用每次请求都手动添加了
-        const token = localStorage.getItem('token');
-        const headers: any = {
-          authorization: token
-        };
+        // 是否需要设置 token
+        const isToken = (config.headers || {}).isToken === false;
+        if (getToken() && !isToken) {
+          config.headers['Authorization'] = 'Bearer ' + getToken();
+        }
         if (isEncrypt) {
           const publicKey: string = localStorage.getItem('pKey') as string;
           const aesKey: string = aesUtil.genKey();
@@ -82,11 +84,9 @@ class AxiosTool {
               config.data = objData;
             }
           }
-          headers.authKey = aKey;
         }
         return {
-          ...config,
-          headers
+          ...config
         };
       },
       (error: AxiosError) => {

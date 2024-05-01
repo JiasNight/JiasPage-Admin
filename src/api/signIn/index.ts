@@ -19,10 +19,9 @@ export const userSignIn = (userSignInForm: object) => {
 };
 
 // 获取用户信息
-export const getUserInfo = (token: string) => {
+export const getUserInfo = () => {
   return service.request({
-    url: 'authApi/user/getInfo',
-    method: 'get',
-    params: { token: token }
+    url: 'authApi/user/getUserInfo',
+    method: 'get'
   });
 };

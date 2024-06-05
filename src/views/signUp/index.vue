@@ -1,46 +1,46 @@
 <template>
-  <div class="signIn-container">
+  <div class="signUp-container">
     <div class="content-box">
       <div class="box-right">
-        <div class="right-signIn">
-          <p class="signIn-title">{{ $t('signIn.title') }}</p>
+        <div class="right-signUp">
+          <p class="signUp-title">{{ $t('signUp.title') }}</p>
           <n-tooltip trigger="hover">
             <template #trigger>
-              <n-button tertiary circle class="signIn-theme" @click="changeCurrentThemeBtn">
+              <n-button tertiary circle class="signUp-theme" @click="changeCurrentThemeBtn">
                 <n-icon>
                   <icon-mdi:theme-light-dark></icon-mdi:theme-light-dark>
                 </n-icon>
               </n-button>
             </template>
-            <span>{{ $t('signIn.theme') }}</span>
+            <span>{{ $t('signUp.theme') }}</span>
           </n-tooltip>
           <n-tooltip trigger="hover">
             <template #trigger>
-              <n-button tertiary circle class="signIn-language" @click="changeCurrentLanguageBtn">
+              <n-button tertiary circle class="signUp-language" @click="changeCurrentLanguageBtn">
                 <n-icon>
                   <icon-mdi:language></icon-mdi:language>
                 </n-icon>
               </n-button>
             </template>
-            <span>{{ $t('signIn.language') }}</span>
+            <span>{{ $t('signUp.language') }}</span>
           </n-tooltip>
-          <div class="signIn-form">
+          <div class="signUp-form">
             <n-form
-              ref="signInForm"
-              :model="adminFormData"
-              :rules="adminFormRules"
+              ref="signUpForm"
+              :model="signUpFormData"
+              :rules="signUpFormRules"
               label-placement="left"
               label-width="auto"
               size="large"
               require-mark-placement="left"
             >
-              <n-form-item path="userName">
+              <n-form-item path="username">
                 <n-input
-                  v-model:value="adminFormData.userName"
+                  v-model:value="signUpFormData.username"
                   size="large"
                   round
                   clearable
-                  :placeholder="$t('signIn.inputUserNamePlaceholder')"
+                  :placeholder="$t('signUp.inputUsernamePlaceholder')"
                 >
                   <template #prefix>
                     <n-icon>
@@ -51,13 +51,13 @@
               </n-form-item>
               <n-form-item path="password">
                 <n-input
-                  v-model:value="adminFormData.password"
+                  v-model:value="signUpFormData.password"
                   type="password"
                   size="large"
                   clearable
                   round
                   show-password-on="mousedown"
-                  :placeholder="$t('signIn.inputPasswordPlaceholder')"
+                  :placeholder="$t('signUp.inputPasswordPlaceholder')"
                 >
                   <template #prefix>
                     <n-icon>
@@ -66,37 +66,14 @@
                   </template>
                 </n-input>
               </n-form-item>
-              <div class="form-verify-code">
-                <div class="code-input">
-                  <n-form-item path="verifyCode">
-                    <n-input
-                      v-model:value="adminFormData.verifyCode"
-                      size="large"
-                      clearable
-                      round
-                      maxlength="4"
-                      :placeholder="$t('signIn.inputVerifyCodePlaceholder')"
-                    >
-                      <template #prefix>
-                        <n-icon>
-                          <icon-mdi:123></icon-mdi:123>
-                        </n-icon>
-                      </template>
-                    </n-input>
-                  </n-form-item>
-                </div>
-                <n-spin :show="verifyImgLoading">
-                  <img class="code-img" :src="verifyCodeImg" alt="verifyCode" @click="clickCodeImgBtn" />
-                </n-spin>
-              </div>
               <n-divider></n-divider>
               <div class="form-tool">
-                <n-checkbox class="tool-remember-password" :label="$t('signIn.rememberPassword')" value="success">
+                <n-checkbox class="tool-remember-password" :label="$t('signUp.rememberPassword')" value="success">
                 </n-checkbox>
-                <a class="tool-forget-password" href="#">{{ $t('signIn.forgetPassword') }}</a>
+                <a class="tool-forget-password" href="#">{{ $t('signUp.forgetPassword') }}</a>
               </div>
-              <n-button class="form-submit" :loading="submitBtnIsLoading" type="primary" round @click="submitSignInBtn">
-                {{ $t('signIn.signInBtn') }}
+              <n-button class="form-submit" :loading="submitBtnIsLoading" type="primary" round @click="submitSignUpBtn">
+                {{ $t('signUp.signUpBtn') }}
               </n-button>
             </n-form>
           </div>
@@ -108,11 +85,13 @@
 
 <script lang="ts" setup>
 import { FormInst } from 'naive-ui';
-import { getValidateCode } from '@/api/signIn/index';
+import { userSignUp } from '@/api/signIn/index';
 import useUserStore from '@/store/module/user';
 import useAppStore from '@/store/module/app';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
+import { Md5 } from 'ts-md5';
+import { aesUtil } from '@/utils/common/security';
 
 const router = useRouter();
 const { locale } = useI18n();
@@ -135,29 +114,11 @@ let verifyCodeImg = $ref<string>('');
 let verifyImgLoading = $ref<boolean>(false);
 
 onMounted(() => {
-  getCurrentVerifyCode();
   isLoading = true;
   setTimeout(() => {
     isLoading = false;
   }, 2000);
 });
-
-// 获取验证码
-const getCurrentVerifyCode = () => {
-  verifyImgLoading = true;
-  getValidateCode()
-    .then((res: Ires) => {
-      if (res && res.code === 200) {
-        verifyCodeImg = res.data;
-        verifyImgLoading = false;
-      } else {
-        verifyImgLoading = false;
-      }
-    })
-    .catch(() => {
-      verifyImgLoading = false;
-    });
-};
 
 // 切换当前主题
 const changeCurrentThemeBtn = (): void => {
@@ -173,62 +134,60 @@ const changeCurrentLanguageBtn = (): void => {
   useAppStore().setLanguage(currentLanguage);
 };
 
-const clickCodeImgBtn = () => {
-  getCurrentVerifyCode();
-};
+const clickCodeImgBtn = () => {};
 
-const adminFormData = reactive({
-  userName: '',
-  password: '',
-  verifyCode: ''
+const signUpFormData = reactive({
+  username: '',
+  password: ''
 });
 
-const adminFormRules = reactive({
-  userName: {
+const signUpFormRules = reactive({
+  username: {
     required: true,
     trigger: ['blur', 'input'],
-    message: globalProxy?.$t('signIn.inputUserNamePlaceholder')
+    message: globalProxy?.$t('signUp.inputUsernamePlaceholder')
   },
   password: {
     required: true,
     trigger: ['blur', 'input'],
-    message: globalProxy?.$t('signIn.inputPasswordPlaceholder')
-  },
-  verifyCode: {
-    required: true,
-    trigger: ['blur', 'input'],
-    message: globalProxy?.$t('signIn.inputVerifyCodePlaceholder')
+    message: globalProxy?.$t('signUp.inputPasswordPlaceholder')
   }
 });
 
-const signInForm: any = $ref<FormInst | null>(null);
+const signUpForm: any = $ref<FormInst | null>(null);
 
 let submitBtnIsLoading = $ref<boolean>(false);
 
-const submitSignInBtn = (e: MouseEvent) => {
+const submitSignUpBtn = (e: MouseEvent) => {
   e.preventDefault();
-  signInForm.validate((valid: any) => {
+  signUpForm.validate((valid: any) => {
     if (!valid) {
+      const signUpForm = JSON.parse(JSON.stringify(signUpFormData));
+      // 定义MD5对象
+      const md5: any = new Md5();
+      md5.appendAsciiStr(signUpForm.password);
+      const md5Password = md5.end();
+      const aesPassword = aesUtil.encrypt(md5Password);
+      signUpForm.password = aesPassword;
       submitBtnIsLoading = true;
-      useUserStore()
-        .userSignInHandle(adminFormData)
-        .then(() => {
-          router.push('/');
+      userSignUp(signUpForm).then((res: Ires) => {
+        if (res && res.code === 200) {
           submitBtnIsLoading = false;
-        });
+        }
+      });
     } else {
       // console.log('验证失败');
     }
   });
   setTimeout(() => {
     submitBtnIsLoading = false;
-    // signInForm.resetValidation();
+    // signUpForm.resetValidation();
   }, 1000);
 };
 </script>
 
 <style lang="scss" scoped>
-.signIn-container {
+.signUp-container {
   width: 100vw;
   height: 100vh;
   background-image: url('/src/assets/images/signIn/signIn-background-1.jpg');
@@ -253,24 +212,24 @@ const submitSignInBtn = (e: MouseEvent) => {
     flex-direction: row;
     .box-right {
       width: 100%;
-      .right-signIn {
-        .signIn-title {
+      .right-signUp {
+        .signUp-title {
           padding: 30px;
           font-size: 30px;
           font-weight: 600;
           text-align: center;
         }
-        .signIn-theme {
+        .signUp-theme {
           position: absolute;
           top: 0;
           right: 0;
         }
-        .signIn-language {
+        .signUp-language {
           position: absolute;
           top: 30px;
           right: 0;
         }
-        .signIn-form {
+        .signUp-form {
           margin: 0 auto;
           width: 80%;
           .form-verify-code {

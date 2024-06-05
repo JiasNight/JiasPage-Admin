@@ -39,7 +39,7 @@
                 size="large"
                 round
                 clearable
-                :placeholder="$t('signIn.inputUserNamePlaceholder')"
+                :placeholder="$t('signIn.inputUsernamePlaceholder')"
               >
                 <template #prefix>
                   <n-icon :size="25">
@@ -202,7 +202,7 @@ const adminFormRules = reactive({
   username: {
     required: true,
     trigger: ['blur', 'input'],
-    message: globalProxy?.$t('signIn.inputUserNamePlaceholder')
+    message: globalProxy?.$t('signIn.inputUsernamePlaceholder')
   },
   password: {
     required: true,

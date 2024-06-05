@@ -18,6 +18,15 @@ export const userSignIn = (userSignInForm: object) => {
   });
 };
 
+// 用户注册
+export const userSignUp = (userSignInForm: object) => {
+  return service.request({
+    url: 'adminApi/system/user/signUp',
+    method: 'post',
+    data: userSignInForm
+  });
+};
+
 // 获取用户信息
 export const getUserInfo = () => {
   return service.request({

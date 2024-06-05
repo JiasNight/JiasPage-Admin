@@ -5,6 +5,7 @@ import { IRes, IUserInfo } from '@/interface/common';
 import { aesUtil, rsaUtil } from '@/utils/common/security';
 import router from '@/router';
 import { getToken } from '@/utils/auth';
+import { Md5 } from 'ts-md5';
 
 interface IUserState {
   token: string;
@@ -29,7 +30,12 @@ const useUserStore = defineStore({
     userSignInHandler(adminForm: any) {
       return new Promise((resolve: any, reject: any) => {
         const copyAdminForm = JSON.parse(JSON.stringify(adminForm));
-        copyAdminForm.password = aesUtil.encrypt(copyAdminForm.password);
+        // 定义MD5对象
+        const md5: any = new Md5();
+        md5.appendAsciiStr(copyAdminForm.password);
+        const md5Password = md5.end();
+        const aesPassword = aesUtil.encrypt(md5Password);
+        copyAdminForm.password = aesPassword;
         userSignIn(copyAdminForm).then((res: IRes) => {
           if (res && res.code === 200) {
             setToken(res.data.token);

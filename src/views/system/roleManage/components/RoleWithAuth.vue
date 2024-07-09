@@ -44,7 +44,7 @@ interface IMenuForm {
     show: number;
     disabled: number;
     cache: number;
-    menuType: number;
+    type: number;
     description: string;
   };
   component: string;

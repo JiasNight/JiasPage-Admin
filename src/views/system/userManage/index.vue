@@ -218,7 +218,17 @@
 <script lang="ts" setup>
 import { ICON } from '@/enums/icon';
 import { Ref, ComputedRef, h, Component } from 'vue';
-import { TreeOption, FormInst, DataTableColumns, NButton, NIcon, useDialog, useMessage } from 'naive-ui';
+import {
+  TreeOption,
+  FormInst,
+  DataTableColumns,
+  NButton,
+  NIcon,
+  useDialog,
+  useMessage,
+  PaginationProps,
+  PaginationInfo
+} from 'naive-ui';
 import { resetForm } from '@/utils/common';
 import { IRes } from '@/interface/common';
 import useUserStore from '@/store/module/user';
@@ -361,7 +371,7 @@ let userTableHeaderColumns = $ref<DataTableColumns>([
       return index + 1;
     }
   },
-  { title: '用户账号', key: 'userName', align: 'center' },
+  { title: '用户账号', key: 'username', align: 'center' },
   { title: '用户昵称', key: 'userNick', align: 'center' },
   {
     title: '头像',
@@ -371,7 +381,7 @@ let userTableHeaderColumns = $ref<DataTableColumns>([
       return h('n-space', [
         h(NImage, {
           src: 'https://picsum.photos/id/1/100/100',
-          width: 50,
+          width: 20,
           lazy: true,
           'show-toolbar-tooltip': true
         })
@@ -501,12 +511,15 @@ let rowClassName = (row: IUserTable) => {
 
 let userTableData: Array<IUserTable[]> = [];
 
-let tablePagination = $ref<object>({
+let tablePagination = $ref<PaginationProps>({
   page: 1,
-  pageCount: 1,
   pageSize: 10,
-  prefix({ itemCount }: any) {
-    return `Total is ${itemCount}.`;
+  itemCount: 0,
+  pageSizes: [10, 20, 30, 40, 50],
+  showQuickJumper: true,
+  showSizePicker: true,
+  prefix({ itemCount }: PaginationInfo) {
+    return `共 ${itemCount} 条`;
   }
 });
 
@@ -520,10 +533,7 @@ const refreshTreeBtn = () => {
 
 // 获取部门树
 const getDeptData = () => {
-  const data = {
-    token: useUserStore().token
-  };
-  getDeptList(data).then((res: IRes) => {
+  getDeptList().then((res: IRes) => {
     if (res && res.code === 200) {
       deptTreeData = res.data;
     }
@@ -541,14 +551,16 @@ const getUserTable = () => {
   const data = {
     ...queryFormData,
     deptId: currentSelectedTreeKey,
-    ...tablePagination
+    pageSize: tablePagination.pageSize,
+    pageNum: tablePagination.page
   };
   tableIsLoading = true;
   getUserList(data)
     .then((res: IRes) => {
       if (res && res.code === 200) {
         let reData = res.data;
-        userTableData = reData;
+        userTableData = reData.records;
+        tablePagination.itemCount = reData.total;
       }
       tableIsLoading = false;
     })

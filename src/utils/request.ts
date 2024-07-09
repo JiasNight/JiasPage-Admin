@@ -1,9 +1,11 @@
 import axios, { Axios, AxiosResponse, AxiosRequestConfig, AxiosInstance, AxiosError } from 'axios';
-import { createDiscreteApi } from 'naive-ui';
+import { NotificationOptions, createDiscreteApi } from 'naive-ui';
 import router from '@/router';
 import { handleResCode } from './common/requestCodeEnum';
 
-const { message } = createDiscreteApi(['message']);
+const { message, notification } = createDiscreteApi(['message', 'notification']);
+
+let currentNotification = null;
 
 // 这个就是上面创建的router实例，用来跳转到signIn页面的
 // import router from '../router';
@@ -47,6 +49,10 @@ class AxiosTool {
         const isToken = (config.headers || {}).isToken === false;
         if (getToken() && !isToken) {
           config.headers['Authorization'] = 'Bearer ' + getToken();
+        }
+        //  针对FormData类型的请求
+        if (config.data instanceof FormData) {
+          config.headers['Content-Type'] = 'multipart/form-data';
         }
         if (isEncrypt) {
           const publicKey: string = localStorage.getItem('pKey') as string;
@@ -100,13 +106,36 @@ class AxiosTool {
       (response: AxiosResponse) => {
         const { data, config } = response;
         const res = data;
-        console.log(res);
         // return Promise.reject(res); reject只有catch才能捕获到
         // 登录信息失效，跳转登录界面并清空token
-        if (res.code === 600) {
-          localStorage.removeItem('token');
-          router.push('/signIn');
-          return Promise.reject(res);
+        if (res.code === 401) {
+          console.log(res);
+          // notification.error({
+          //   title: '系统提示',
+          //   content: '登录信息失效，请重新登录!'
+          // });
+          let count = 5;
+          currentNotification = notification.create({
+            title: '系统提示',
+            type: 'error',
+            content: `登录信息失效，请重新登录!\n系统将于 ${count} 秒后自动跳转登录界面`,
+            duration: 5000,
+            closable: false,
+            onAfterEnter: () => {
+              const minusCount = () => {
+                count--;
+                currentNotification!.content = `登录信息失效，请重新登录!\n系统将于 ${count} 秒后自动跳转登录界面`;
+                if (count > 0) {
+                  window.setTimeout(minusCount, 1000);
+                } else {
+                  console.log('路由跳转');
+                  localStorage.clear();
+                  router.push('/signIn');
+                }
+              };
+              window.setTimeout(minusCount, 1000);
+            }
+          });
         }
         if (res.code && res.code !== 200) {
           handleResCode(res.code);
@@ -123,9 +152,9 @@ class AxiosTool {
         if (!navigator.onLine) {
           message.error('网络连接失败');
           // 可以跳转到错误页面，也可以不做操作
-          // return router.replace({
-          //   path: '/404'
-          // });
+          return router.replace({
+            path: '/404'
+          });
         }
       }
     );

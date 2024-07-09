@@ -15,7 +15,7 @@ const MENU_LIST = [
       show: 0,
       disabled: 1,
       cache: 1,
-      menuType: 1,
+      type: 1,
       description: '笔记管理'
     },
     component: '',
@@ -31,7 +31,7 @@ const MENU_LIST = [
           show: 0,
           disabled: 1,
           cache: 1,
-          menuType: 1,
+          type: 1,
           description: '笔记概览'
         },
         component: '/noteManage/noteOverview',
@@ -49,7 +49,7 @@ const MENU_LIST = [
           show: 0,
           disabled: 1,
           cache: 1,
-          menuType: 1,
+          type: 1,
           description: '我的笔记'
         },
         component: '/noteManage/myNote',
@@ -67,7 +67,7 @@ const MENU_LIST = [
           show: 0,
           disabled: 1,
           cache: 1,
-          menuType: 1,
+          type: 1,
           description: '模块分类'
         },
         component: '/noteManage/moduleType',
@@ -89,7 +89,7 @@ const MENU_LIST = [
       show: 0,
       disabled: 1,
       cache: 1,
-      menuType: 1,
+      type: 1,
       description: '系统管理'
     },
     component: '',
@@ -105,7 +105,7 @@ const MENU_LIST = [
           show: 0,
           disabled: 1,
           cache: 1,
-          menuType: 1,
+          type: 1,
           description: '用户管理'
         },
         component: '/system/userManage/index',
@@ -123,7 +123,7 @@ const MENU_LIST = [
           show: 0,
           disabled: 1,
           cache: 1,
-          menuType: 1,
+          type: 1,
           description: '菜单管理'
         },
         component: '/system/menuManage/index',
@@ -141,7 +141,7 @@ const MENU_LIST = [
           show: 0,
           disabled: 1,
           cache: 0,
-          menuType: 1,
+          type: 1,
           description: '部门管理'
         },
         component: '/system/deptManage/index',
@@ -159,7 +159,7 @@ const MENU_LIST = [
           show: 0,
           disabled: 1,
           cache: 0,
-          menuType: 1,
+          type: 1,
           description: '角色管理'
         },
         component: '/system/roleManage/index',
@@ -177,7 +177,7 @@ const MENU_LIST = [
           show: 0,
           disabled: 1,
           cache: 1,
-          menuType: 1,
+          type: 1,
           description: ''
         },
         component: '/system/dictManage/index',
@@ -195,7 +195,7 @@ const MENU_LIST = [
           show: 0,
           disabled: 1,
           cache: 1,
-          menuType: 3,
+          type: 3,
           description: '跳转百度'
         },
         component: '',
@@ -213,7 +213,7 @@ const MENU_LIST = [
           show: 0,
           disabled: 0,
           cache: 1,
-          menuType: 1,
+          type: 1,
           description: '系统监控'
         },
         component: '/system/dictManage/index',
@@ -231,7 +231,7 @@ const MENU_LIST = [
           show: 0,
           disabled: 0,
           cache: 1,
-          menuType: 1,
+          type: 1,
           description: '日志管理'
         },
         component: '',
@@ -247,7 +247,7 @@ const MENU_LIST = [
               show: 0,
               disabled: 1,
               cache: 1,
-              menuType: 1,
+              type: 1,
               description: '登录日志'
             },
             component: '/system/logManage/index',
@@ -265,7 +265,7 @@ const MENU_LIST = [
               show: 0,
               disabled: 1,
               cache: 1,
-              menuType: 1,
+              type: 1,
               description: '操作日志'
             },
             component: '/system/logManage/index',

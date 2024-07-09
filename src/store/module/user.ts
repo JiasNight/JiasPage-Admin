@@ -36,9 +36,13 @@ const useUserStore = defineStore({
         const md5Password = md5.end();
         const aesPassword = aesUtil.encrypt(md5Password);
         copyAdminForm.password = aesPassword;
-        userSignIn(copyAdminForm).then((res: IRes) => {
+        const fd = new FormData();
+        fd.append('username', copyAdminForm.username);
+        fd.append('password', copyAdminForm.password);
+        fd.append('verifyCode', copyAdminForm.verifyCode);
+        userSignIn(fd).then((res: IRes) => {
           if (res && res.code === 200) {
-            setToken(res.data.token);
+            setToken(res.data);
             resolve();
           } else {
             removeToken();

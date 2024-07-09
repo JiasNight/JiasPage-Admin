@@ -115,11 +115,7 @@
           />
         </n-form-item>
         <n-form-item label="菜单类型" path="">
-          <n-radio-group
-            v-model:value="menuFormData.meta.menuType"
-            name="menuType"
-            :on-update:value="handleChangeRadio"
-          >
+          <n-radio-group v-model:value="menuFormData.meta.type" name="type" :on-update:value="handleChangeRadio">
             <n-radio :value="0" label="目录"> </n-radio>
             <n-radio :value="1" label="菜单"> </n-radio>
             <n-radio :value="2" label="按钮"> </n-radio>
@@ -140,7 +136,7 @@
           </template>
           <n-input v-model:value="menuFormData.path" maxlength="50" placeholder="请输入路由地址" />
         </n-form-item>
-        <n-form-item :path="menuFormData.meta.menuType === 1 ? 'component' : ''">
+        <n-form-item :path="menuFormData.meta.type === 1 ? 'component' : ''">
           <template #label>
             组件路径
             <n-tooltip placement="top-start" trigger="hover">
@@ -154,7 +150,7 @@
           </template>
           <n-input
             v-model:value="menuFormData.component"
-            :disabled="menuFormData.meta.menuType !== 1"
+            :disabled="menuFormData.meta.type !== 1"
             maxlength="100"
             placeholder="请输入组件路径"
           />
@@ -221,7 +217,7 @@ interface IMenuForm {
     show: number;
     disabled: number;
     cache: number;
-    menuType: number;
+    type: number;
     description: string;
   };
   component: string;
@@ -253,7 +249,7 @@ let emptyMenuForm = {
     show: 0,
     disabled: 1,
     cache: 1,
-    menuType: 0,
+    type: 0,
     description: ''
   },
   component: '',
@@ -293,7 +289,7 @@ let menuFormRules = {
       trigger: ['input', 'blur'],
       message: '请输入菜单名称'
     },
-    menuType: {
+    type: {
       required: true,
       trigger: ['blur', 'change'],
       message: '请选择菜单类型'
@@ -501,7 +497,7 @@ const handleDownload = (): void => {
 
 // 单选框选择
 const handleChangeRadio = (val: number) => {
-  menuFormData.meta.menuType = val;
+  menuFormData.meta.type = val;
 };
 
 // 确定

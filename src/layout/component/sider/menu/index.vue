@@ -100,7 +100,7 @@ const generateMenuByRoute = (routerList: Array<any>) => {
         disabled: item.meta.disabled === 0 ? true : false,
         icon: renderIcon(ICON.F, item.meta.icon, { size: 16 }),
         key: item.name,
-        type: item.meta.menuType,
+        type: item.meta.type,
         path: item.path,
         show: item.meta.show === 0 ? true : false,
         cache: item.meta.cache === 0 ? true : false,
@@ -162,6 +162,8 @@ const handleClickMenu = (key: string, item: MenuOption | any) => {
 onBeforeMount(() => {
   // 当前用户登录的所有路由
   const currentStoreRoutes: Array<RouteRecordRaw> = useAppStore.getRoutes;
+  // console.log('当前用户登录的所有路由');
+  // console.log(currentStoreRoutes);
   // 根据路由生成侧边栏菜单
   generateMenuByRoute(toRaw(currentStoreRoutes));
 });

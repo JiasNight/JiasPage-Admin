@@ -3,8 +3,8 @@ import service from '@/utils/request';
 // 获取角色列表
 export const getRoleList = (data: object) => {
   return service.request({
-    url: '/api/system/role/list',
-    method: 'post',
+    url: '/adminApi/system/role/list',
+    method: 'get',
     data: data
   });
 };
@@ -12,7 +12,7 @@ export const getRoleList = (data: object) => {
 // 新增角色列表
 export const addRoleList = (data: object) => {
   return service.request({
-    url: '/api/system/role/add',
+    url: '/adminApi/system/role/add',
     method: 'post',
     data: data
   });
@@ -21,7 +21,7 @@ export const addRoleList = (data: object) => {
 // 修改角色
 export const updateRole = (data: object) => {
   return service.request({
-    url: '/api/system/role/update',
+    url: '/adminApi/system/role/update',
     method: 'post',
     data: data
   });
@@ -30,7 +30,7 @@ export const updateRole = (data: object) => {
 // 删除角色
 export const deleteRole = (mId: string) => {
   return service.request({
-    url: '/api/system/role/delete/' + mId,
+    url: '/adminApi/system/role/delete/' + mId,
     method: 'get'
   });
 };

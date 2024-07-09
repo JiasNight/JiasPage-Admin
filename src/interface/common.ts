@@ -12,8 +12,8 @@ export type IRes = IResponse;
 // 用户信息
 export interface IUserInfo {
   userId: string;
-  userName: string;
-  userNickName: string;
+  username: string;
+  nickName: string;
   token: string;
   deptId: string;
   deptName: string;

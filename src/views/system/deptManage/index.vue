@@ -359,11 +359,8 @@ const resetQueryFormBtn = () => {
 
 // 获取部门数据
 const getDeptData = (): void => {
-  const data = {
-    token: useUserStore().token
-  };
   tableIsLoading = true;
-  getDeptList(data)
+  getDeptList()
     .then((res: IRes) => {
       if (res && res.code === 200) {
         deptTableData = res.data;

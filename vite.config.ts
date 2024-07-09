@@ -44,6 +44,7 @@ function getProxy(nodeEnvs: object) {
       };
     }
   }
+  console.log(resultProxy);
   return resultProxy;
 }
 

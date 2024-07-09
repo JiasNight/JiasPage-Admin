@@ -199,8 +199,6 @@ const clickScrollRightBtn = (e: Event) => {
       .tag-item-span {
         display: inline-block;
         overflow: hidden;
-        margin-top: 2px;
-        margin-left: 5px;
         text-overflow: ellipsis;
         white-space: nowrap;
       }

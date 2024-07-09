@@ -4,7 +4,7 @@ import getEnvApi from '@/utils/envApi';
 // 获取验证码
 export const getValidateCode = () => {
   return service.request({
-    url: 'authApi/user/validateCode',
+    url: 'authApi/security/validateCode',
     method: 'get'
   });
 };

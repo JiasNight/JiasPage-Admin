@@ -48,9 +48,9 @@
         </n-tooltip>
         <n-tooltip placement="top-start" trigger="hover">
           <template #trigger>
-            <span class="right-user"> {{ appUserInfo?.userNickName }} </span>
+            <span class="right-user"> {{ appUserInfo?.nickName }} </span>
           </template>
-          <span> 欢迎您，{{ appUserInfo?.userNickName }} </span>
+          <span> 欢迎您，{{ appUserInfo?.nickName }} </span>
         </n-tooltip>
         <n-dropdown trigger="click" :options="dropdownOptions" :show-arrow="true" @select="handleSelectDropdown">
           <img class="right-avatar" src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg" alt="用户头像" />

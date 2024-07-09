@@ -1,18 +1,17 @@
 import service from '@/utils/request';
 
-// 获取部门列表
-export const getDeptList = (data: object) => {
+// 获取机构树
+export const getDeptList = () => {
   return service.request({
-    url: '/api/system/dept/list',
-    method: 'post',
-    data: data
+    url: '/adminApi/system/dept/list',
+    method: 'get'
   });
 };
 
 // 新增部门列表
 export const addDeptList = (data: object) => {
   return service.request({
-    url: '/api/system/dept/add',
+    url: '/adminApi/system/dept/add',
     method: 'post',
     data: data
   });
@@ -21,16 +20,16 @@ export const addDeptList = (data: object) => {
 // 修改部门
 export const updateDept = (data: object) => {
   return service.request({
-    url: '/api/system/dept/update',
+    url: '/adminApi/system/dept/update',
     method: 'post',
     data: data
   });
 };
 
 // 删除部门
-export const deleteDept = (mId: string) => {
+export const deleteDept = (dId: string) => {
   return service.request({
-    url: '/api/system/dept/delete/' + mId,
+    url: '/adminApi/system/dept/delete/' + dId,
     method: 'get'
   });
 };

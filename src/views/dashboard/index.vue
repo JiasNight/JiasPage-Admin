@@ -13,7 +13,7 @@ let chinaMap: any = null;
 // 获取地图数据
 const getMap = async () => {
   await getJSON('/map/china.json').then((res) => {
-    chinaMap = res;
+    chinaMap = res.data;
   });
 };
 const initMapChart = async () => {

@@ -64,7 +64,7 @@
       :row-key="tableRowKey"
       :bordered="true"
       :single-line="false"
-      default-expand-all
+      :default-expand-all="true"
       :pagination="pagination"
     />
     <!-- 新增和编辑内容框 -->
@@ -408,7 +408,7 @@ let pagination = reactive<object>({
   itemCount: pageInfo.total
 });
 
-let tableRowKey = (rowData: IMenuForm, i: number) => {
+let tableRowKey = (rowData: IMenuForm) => {
   return rowData.id;
 };
 
@@ -470,6 +470,8 @@ const getMenuData = (): void => {
       if (res && res.code === 200) {
         menuTableData = res.data;
         menuTreeData = getMenuTree(menuTableData);
+        // menuTableData = menuTreeData;
+        console.log(menuTableData);
         tableIsLoading = false;
       }
     })

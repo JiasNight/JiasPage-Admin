@@ -19,20 +19,19 @@ export const setupPermission = (router: Router) => {
 
     if (isEncrypt) {
       // 安全认证校验获取
+      appStore.getCurrentPublicKey();
     }
-    appStore.getCurrentPublicKey();
-
     // 判断是否登录
     if (isSignIn) {
       if (to.path === '/signIn') {
         loadingBar.finish();
         return { path: '/' };
       } else {
-        const currentRoutes: Array<RouteRecordRaw> = appStore.getRoutes;
+        const currentRoutes: Array<RouteRecordRaw> = await appStore.getRoutes;
         const routesLength = toRaw(currentRoutes);
         // 如果没有路由信息，则通过当前用户获取路由表
         if (routesLength.length === 0) {
-          appStore.generateRoutes().then(() => {
+          await appStore.generateRoutes().then(() => {
             return { ...to, replace: true };
           });
         } else {

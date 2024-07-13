@@ -66,7 +66,7 @@ const generateMenuByRoute = (routerList: Array<any>) => {
     disabled: false,
     icon: renderIcon(ICON.F, 'mdi:home', { size: 16 }),
     key: 'Index',
-    type: 0,
+    type: 1,
     path: '/',
     show: true,
     description: '仪表盘'

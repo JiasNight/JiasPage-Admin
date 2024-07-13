@@ -1,14 +1,14 @@
 <template>
   <!-- 样式设置 -->
-  <n-drawer :show="props.drawerShow" :width="300" :default-width="300" placement="right">
+  <n-drawer :show="props.drawerShow" placement="right" :width="300" :default-width="300" block-scroll mask-closable>
     <n-drawer-content>
       <template #header>
-        <n-icon>
+        <n-icon color="#8957e5">
           <icon-mdi:palette></icon-mdi:palette>
         </n-icon>
-        主题画盘
+        主题样式
       </template>
-      <n-form ref="themeForm" label-placement="left" label-width="auto" :model="themeFormData">
+      <n-form ref="themeForm" label-placement="top" label-width="auto" :model="themeFormData">
         <n-form-item label="主题">
           <n-switch :rail-style="themeFormData.model">
             <template #checked>
@@ -21,7 +21,7 @@
             </template>
           </n-switch>
         </n-form-item>
-        <n-form-item label="颜色">
+        <n-form-item label="按钮颜色">
           <n-color-picker
             v-model:value="themeFormData.color"
             :show-alpha="true"
@@ -29,13 +29,13 @@
             :actions="['confirm', 'clear']"
           />
         </n-form-item>
-        <n-form-item label="颜色">
-          <n-color-picker
-            v-model:value="themeFormData.color"
-            :show-alpha="true"
-            show-preview
-            :actions="['confirm', 'clear']"
-          />
+        <n-form-item label="按钮大小">
+          <n-button-group>
+            <n-button type="primary" size="tiny"> tiny </n-button>
+            <n-button type="primary" size="small"> small </n-button>
+            <n-button type="primary" size="medium"> medium </n-button>
+            <n-button type="primary" size="large"> large </n-button>
+          </n-button-group>
         </n-form-item>
       </n-form>
       <template #footer>

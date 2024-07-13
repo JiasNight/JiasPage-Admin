@@ -6,6 +6,7 @@ import { aesUtil, rsaUtil } from '@/utils/common/security';
 import router from '@/router';
 import { getToken } from '@/utils/auth';
 import { Md5 } from 'ts-md5';
+import useAppStore from '@/store/module/app';
 
 interface IUserState {
   token: string;
@@ -69,6 +70,7 @@ const useUserStore = defineStore({
     logoutSystem() {
       removeToken();
       this.userInfo = null;
+      useAppStore().routes = [];
       localStorage.clear();
       router.push('/signIn');
     }

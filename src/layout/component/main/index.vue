@@ -54,6 +54,7 @@ const isReload = computed(() => {
 
 <style lang="scss" scoped>
 .main-container {
+  min-height: calc(100vh - 6.875rem);
   padding: 0.625rem;
   background-color: #f0fbff;
 }

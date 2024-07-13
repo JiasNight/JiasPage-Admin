@@ -1,19 +1,19 @@
 import axios, { Axios, AxiosResponse, AxiosRequestConfig, AxiosInstance, AxiosError } from 'axios';
 import { NotificationOptions, createDiscreteApi } from 'naive-ui';
 import router from '@/router';
+import useUserStore from '@/store/module/user';
 import { handleResCode } from './common/requestCodeEnum';
-
-const { message, notification } = createDiscreteApi(['message', 'notification']);
-
-let currentNotification = null;
-
-// 这个就是上面创建的router实例，用来跳转到signIn页面的
-// import router from '../router';
-
 // 请求加密方法引入
 import { aesUtil, rsaUtil, publicKey } from './common/security';
 import { IResponse } from '@/interface/common';
 import { getToken } from './auth';
+
+const { message, dialog, notification } = createDiscreteApi(['message', 'dialog', 'notification']);
+
+const currentNotification = null;
+
+// 这个就是上面创建的router实例，用来跳转到signIn页面的
+// import router from '../router';
 
 const config = {
   // 默认地址
@@ -46,7 +46,7 @@ class AxiosTool {
       (config: AxiosRequestConfig | any) => {
         // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token，不用每次请求都手动添加了
         // 是否需要设置 token
-        const isToken = (config.headers || {}).isToken === false;
+        const isToken = (config.headers || {}).hasToken === false;
         if (getToken() && !isToken) {
           config.headers['Authorization'] = 'Bearer ' + getToken();
         }
@@ -109,45 +109,43 @@ class AxiosTool {
         // return Promise.reject(res); reject只有catch才能捕获到
         // 登录信息失效，跳转登录界面并清空token
         if (res.code === 401) {
-          console.log(res);
           // notification.error({
           //   title: '系统提示',
           //   content: '登录信息失效，请重新登录!'
           // });
-          let count = 5;
-          currentNotification = notification.create({
+          const d = dialog.warning({
             title: '系统提示',
-            type: 'error',
-            content: `登录信息失效，请重新登录!\n系统将于 ${count} 秒后自动跳转登录界面`,
-            duration: 5000,
-            closable: false,
-            onAfterEnter: () => {
-              const minusCount = () => {
-                count--;
-                currentNotification!.content = `登录信息失效，请重新登录!\n系统将于 ${count} 秒后自动跳转登录界面`;
-                if (count > 0) {
-                  window.setTimeout(minusCount, 1000);
-                } else {
-                  console.log('路由跳转');
-                  localStorage.clear();
-                  router.push('/signIn');
-                }
-              };
-              window.setTimeout(minusCount, 1000);
+            content: '登录信息失效，请重新登录!',
+            positiveText: '确 定',
+            negativeText: '取 消',
+            onPositiveClick: () => {
+              useUserStore().logoutSystem();
+            },
+            onNegativeClick: () => {
+              // message.error('不确定');
             }
           });
-        }
-        if (res.code && res.code !== 200) {
-          handleResCode(res.code);
           return Promise.reject(res);
+        } else if (res.code === 200) {
+          return Promise.resolve(res);
+        } else {
+          notification.error({
+            title: '请求错误',
+            content: res.data,
+            description: res.data,
+            duration: 2000
+          });
+          return Promise.resolve(res);
         }
-        return res;
+        // if (res.code && res.code !== 200) {
+        //   handleResCode(res.code);
+        // }
       },
       (error: AxiosError) => {
-        // 具体业务具体处理，加上注释只供参考
         const { response } = error;
         if (response) {
           handleResCode(response.status);
+          return;
         }
         if (!navigator.onLine) {
           message.error('网络连接失败');

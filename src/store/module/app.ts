@@ -93,11 +93,13 @@ const useAppStore = defineStore({
     },
     // 设置路由
     setRoutes(routeList: Array<any>) {
+      this.routes = [];
       if (routeList && routeList.length > 0) {
         routeList.forEach((route) => {
+          this.routes.push(route);
+          router.addRoute(route);
           const rName = route.name;
           if (!router.hasRoute(rName)) {
-            this.routes.push(route);
             router.addRoute(route);
           }
         });
@@ -117,13 +119,13 @@ const useAppStore = defineStore({
       await useUserStore().getCurrentUserInfo();
       // 通过当前用户的角色获取到菜单列表并且生成菜单路由
       await getDynamicRoutes()
-        .then((res: IRes) => {
+        .then(async (res: IRes) => {
           if (res && res.code === 200) {
             const rList = res.data;
             // 存储路由信息
             localStorage.setItem('routeList', JSON.stringify(rList));
             // 添加到路由里面
-            this.addRoutes();
+            await this.addRoutes();
           }
         })
         .catch(() => {});

@@ -83,6 +83,7 @@ const router: Router = createRouter({
   scrollBehavior() {
     return {
       el: '#app',
+      left: 0,
       top: 0,
       behavior: 'smooth'
     };

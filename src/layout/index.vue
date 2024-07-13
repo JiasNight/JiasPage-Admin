@@ -1,31 +1,4 @@
 <template>
-  <!-- <n-layout class="screen-layout" has-sider position="absolute" sider-placement="left">
-    <n-layout-header bordered>
-      <Header></Header>
-    </n-layout-header>
-
-    <n-layout-sider
-      class="layout-sider"
-      collapse-mode="width"
-      :collapsed="siderCollapsed"
-      :collapsed-width="50"
-      :width="220"
-      show-trigger="bar"
-      bordered
-      :native-scrollbar="false"
-      @collapse="siderCollapsed = true"
-      @expand="siderCollapsed = false"
-    >
-      <Sider :collapsed="siderCollapsed"></Sider>
-    </n-layout-sider>
-    <n-layout>
-      <n-layout-content class="layout-content">
-        <PageTags></PageTags>
-        <ViewMain></ViewMain>
-      </n-layout-content>
-      <n-back-top :right="100" />
-    </n-layout>
-  </n-layout> -->
   <n-layout class="screen-layout" position="absolute">
     <n-layout-header class="layout-header" bordered>
       <Header :collapsed="collapsedValue"></Header>

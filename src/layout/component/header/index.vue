@@ -57,8 +57,8 @@
         </n-dropdown>
       </div>
     </div>
-    <!-- 样式设置 -->
-    <ConfigStyle :drawer-show="themeDrawerShow" @close="themeDrawerShow = false"></ConfigStyle>
+    <!-- 主题配置 -->
+    <ThemeStyle :drawer-show="themeDrawerShow" @close="themeDrawerShow = false"></ThemeStyle>
   </div>
 </template>
 
@@ -71,7 +71,7 @@ import useAppStore from '@/store/module/app';
 import { useRouter } from 'vue-router';
 import Logo from '@/layout/component/logo/index.vue';
 import Breadcrumbs from '@/layout/component/header/breadcrumbs.vue';
-import ConfigStyle from '@/layout/component/configStyle/index.vue';
+import ThemeStyle from '@/layout/component/themeStyle/index.vue';
 
 const router = useRouter();
 

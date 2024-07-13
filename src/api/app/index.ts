@@ -12,7 +12,10 @@ export const getJSON = (path: string) => {
 export const getPublicKey = () => {
   return service.request({
     url: '/authApi/security/pKey',
-    method: 'get'
+    method: 'get',
+    headers: {
+      hasToken: false
+    }
   });
 };
 

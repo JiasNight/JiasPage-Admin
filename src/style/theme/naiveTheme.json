@@ -4,10 +4,10 @@
       "fontFamily": "HarmonyOS-Sans,Inter-UI",
       "fontFamilyMono": "HarmonyOS-Sans,Inter-UI",
 
-      "primaryColor": "#635bec",
-      "primaryColorHover": "#635bec",
-      "primaryColorPressed": "#4942CA",
-      "primaryColorSuppl": "#8A83F3",
+      "primaryColor": "#6e40c9",
+      "primaryColorHover": "#2EDD4B",
+      "primaryColorPressed": "#693FC4",
+      "primaryColorSuppl": "#4D2BA4",
 
       "infoColor": "#1E90FF",
       "infoColorHover": "#1E90FF",
@@ -27,7 +27,9 @@
       "errorColor": "#FF463F",
       "errorColorHover": "#FF463F",
       "errorColorPressed": "#DB2E36",
-      "errorColorSuppl": "#FF806F"
+      "errorColorSuppl": "#FF806F",
+
+      "borderRadius": "5px"
     },
     "LoadingBar": {
       "colorLoading": "#635bec"

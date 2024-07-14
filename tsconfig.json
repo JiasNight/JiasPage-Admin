@@ -1,5 +1,4 @@
 {
-  "extends": "@quasar/app-vite/tsconfig-preset",
   "compilerOptions": {
     // 必须定义 baseUrl
     "baseUrl": ".",
@@ -30,13 +29,5 @@
     "types": ["@vue-macros/reactivity-transform/macros-global"]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "./auto-imports.d.ts"],
-  "exclude": [
-    "./dist",
-    "./.quasar",
-    "./node_modules",
-    "./src-capacitor",
-    "./src-cordova",
-    "./quasar.config.*.temporary.compiled*"
-  ],
   "references": [{ "path": "./tsconfig.vite.json" }]
 }

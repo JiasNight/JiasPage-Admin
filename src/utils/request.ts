@@ -1,5 +1,6 @@
 import axios, { Axios, AxiosResponse, AxiosRequestConfig, AxiosInstance, AxiosError } from 'axios';
 import { NotificationOptions, createDiscreteApi } from 'naive-ui';
+import { Notify } from 'quasar';
 import router from '@/router';
 import useUserStore from '@/store/module/user';
 import { handleResCode } from './common/requestCodeEnum';
@@ -129,11 +130,17 @@ class AxiosTool {
         } else if (res.code === 200) {
           return Promise.resolve(res);
         } else {
-          notification.error({
-            title: '请求错误',
-            content: res.data,
-            description: res.data,
-            duration: 2000
+          console.log(res);
+          // notification.error({
+          //   title: '请求错误',
+          //   content: res.message || '请求异常',
+          //   description: res.data,
+          //   duration: 2000
+          // });
+          Notify.create({
+            type: 'negative',
+            position: 'top-right',
+            message: res.message || '请求异常'
           });
           return Promise.resolve(res);
         }

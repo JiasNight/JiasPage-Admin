@@ -12,6 +12,17 @@ import store from '@/store';
 import axios from 'axios';
 // 引入i18n
 import i18n from '@/i18n';
+// 引入quasar
+import { Quasar, Notify } from 'quasar';
+// quasar语言包
+import quasarLang from 'quasar/lang/zh-CN';
+// quasar图标库
+import quasarIconSet from 'quasar/icon-set/svg-mdi-v6';
+// 引入图标库
+import '@quasar/extras/roboto-font/roboto-font.css';
+import '@quasar/extras/mdi-v6/mdi-v6.css';
+// 引入Quasar css
+import 'quasar/src/css/index.sass';
 // 引入uno.css
 import 'uno.css';
 // 引入权限控制
@@ -24,25 +35,32 @@ import useAppStore from '@/store/module/app';
 setupPermission(router);
 
 // 创建app实例
-const app = createApp(App);
+const myApp = createApp(App);
 
 // 挂载全局方法
-app.provide('renderIcon', renderIcon);
-app.provide('formatDate', formatDate);
+myApp.provide('renderIcon', renderIcon);
+myApp.provide('formatDate', formatDate);
 
 // 全局挂载axios
-app.config.globalProperties.$axios = axios;
-app.config.globalProperties.$t = i18n.global.t;
+myApp.config.globalProperties.$axios = axios;
+myApp.config.globalProperties.$t = i18n.global.t;
 
 // 全局指令
 // Object.keys(directives).forEach((key) => {
 //   app.directive(key, (directives as { [key: string]: Directive })[key]);
 // });
 
-app.use(store);
+myApp.use(store);
 useAppStore().addRoutes();
-app.use(i18n);
-app.use(router);
+myApp.use(i18n);
+myApp.use(router);
+myApp.use(Quasar, {
+  plugins: {
+    Notify
+  }, // import Quasar plugins and add here
+  lang: quasarLang,
+  iconSet: quasarIconSet
+});
 
 // 挂载
-app.mount('#app');
+myApp.mount('#app');

@@ -13,6 +13,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@quasar/extras": "^1.16.12",
     "@vavt/md-editor-extension": "^3.0.0",
     "animate.css": "^4.1.1",
     "axios": "^1.6.7",
@@ -25,6 +26,7 @@
     "mockjs": "^1.1.0",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
+    "quasar": "^2.16.6",
     "ts-md5": "^1.3.1",
     "vue": "^3.4.20",
     "vue-i18n": "^9.9.1",
@@ -36,6 +38,7 @@
     "@iconify/json": "^2.2.187",
     "@iconify/vue": "^4.1.1",
     "@mdi/font": "^7.3.67",
+    "@quasar/vite-plugin": "^1.7.0",
     "@types/crypto-js": "^4.2.2",
     "@types/node": "^20.11.20",
     "@typescript-eslint/eslint-plugin": "^7.1.0",

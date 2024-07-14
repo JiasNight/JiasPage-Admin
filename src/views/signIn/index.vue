@@ -3,125 +3,105 @@
     <div class="content-wrapper animate__animated animate__bounceInLeft">
       <div class="wrapper-signIn">
         <p class="signIn-title">{{ $t('signIn.title') }}</p>
-        <n-tooltip trigger="hover">
-          <template #trigger>
-            <n-button tertiary circle class="signIn-theme" @click="changeCurrentThemeBtn">
-              <n-icon>
-                <icon-mdi:theme-light-dark></icon-mdi:theme-light-dark>
-              </n-icon>
-            </n-button>
-          </template>
-          <span>{{ $t('signIn.theme') }}</span>
-        </n-tooltip>
-        <n-tooltip trigger="hover">
-          <template #trigger>
-            <n-button tertiary circle class="signIn-language" @click="changeCurrentLanguageBtn">
-              <n-icon>
-                <icon-mdi:translate></icon-mdi:translate>
-              </n-icon>
-            </n-button>
-          </template>
-          <span>{{ $t('signIn.language') }}</span>
-        </n-tooltip>
+        <q-btn
+          class="signIn-theme"
+          color="ghost"
+          round
+          size="xs"
+          :icon="mdiThemeLightDark"
+          @click="changeCurrentThemeBtn"
+        >
+          <q-tooltip> {{ $t('signIn.theme') }} </q-tooltip>
+        </q-btn>
+        <q-btn
+          class="signIn-language"
+          color="ghost"
+          round
+          size="xs"
+          :icon="mdiTranslate"
+          @click="changeCurrentLanguageBtn"
+        >
+          <q-tooltip> {{ $t('signIn.language') }} </q-tooltip>
+        </q-btn>
         <div class="signIn-form">
-          <n-form
-            ref="signInForm"
-            :model="adminFormData"
-            :rules="adminFormRules"
-            label-placement="left"
-            label-width="auto"
-            size="large"
-            require-mark-placement="left"
-          >
-            <n-form-item path="username">
-              <n-input
-                v-model:value="adminFormData.username"
-                size="large"
-                round
-                clearable
-                :placeholder="$t('signIn.inputUsernamePlaceholder')"
-              >
-                <template #prefix>
-                  <n-icon :size="25">
-                    <icon-mdi:account></icon-mdi:account>
-                  </n-icon>
-                </template>
-              </n-input>
-            </n-form-item>
-            <n-form-item path="password">
-              <n-input
-                v-model:value="adminFormData.password"
-                type="password"
-                size="large"
-                round
-                show-password-on="mousedown"
-                :placeholder="$t('signIn.inputPasswordPlaceholder')"
-              >
-                <template #prefix>
-                  <n-icon :size="25">
-                    <icon-mdi:lock></icon-mdi:lock>
-                  </n-icon>
-                </template>
-              </n-input>
-            </n-form-item>
+          <q-form ref="signInForm" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false">
+            <q-input
+              v-model="adminFormData.username"
+              class="form-item"
+              :label="$t('signIn.userName')"
+              :placeholder="$t('signIn.inputUsernamePlaceholder')"
+              filled
+              lazy-rules
+              :rules="[(val) => (val && val.length > 0) || $t('signIn.inputUsernamePlaceholder')]"
+            >
+              <template #prepend>
+                <q-icon :name="mdiAccount" />
+              </template>
+            </q-input>
+            <q-input
+              v-model="adminFormData.password"
+              class="form-item"
+              :type="isPwd ? 'password' : 'text'"
+              :label="$t('signIn.password')"
+              :placeholder="$t('signIn.inputPasswordPlaceholder')"
+              filled
+              lazy-rules
+              :rules="[(val) => (val && val.length > 0) || $t('signIn.inputPasswordPlaceholder')]"
+            >
+              <template #prepend>
+                <q-icon :name="mdiAccountKey" />
+              </template>
+              <template #append>
+                <q-icon class="c-p" :name="isPwd ? mdiEye : mdiEyeOff" @click="isPwd = !isPwd" />
+              </template>
+            </q-input>
             <div class="form-verify-code">
               <div class="code-input">
-                <n-form-item path="verifyCode">
-                  <n-input
-                    v-model:value="adminFormData.verifyCode"
-                    size="large"
-                    clearable
-                    round
-                    maxlength="4"
-                    :placeholder="$t('signIn.inputVerifyCodePlaceholder')"
-                    @keydown.enter="submitSignInBtn"
-                  >
-                    <template #prefix>
-                      <n-icon :size="25">
-                        <icon-mdi:alphabetical-variant></icon-mdi:alphabetical-variant>
-                      </n-icon>
-                    </template>
-                  </n-input>
-                </n-form-item>
+                <q-input
+                  v-model="adminFormData.verifyCode"
+                  :label="$t('signIn.verifyCode')"
+                  :placeholder="$t('signIn.inputVerifyCodePlaceholder')"
+                  filled
+                  lazy-rules
+                  :rules="[(val) => (val && val.length > 0) || $t('signIn.inputVerifyCodePlaceholder')]"
+                >
+                  <template #prepend>
+                    <q-icon :name="mdiAlphabeticalVariant" />
+                  </template>
+                </q-input>
               </div>
-              <n-spin :show="verifyImgLoading">
-                <img class="code-img" :src="verifyCodeImg" alt="verifyCode" @click="clickCodeImgBtn" />
-              </n-spin>
+              <div class="code-img">
+                <img :src="verifyCodeImg" alt="verifyCode" @click="clickCodeImgBtn" />
+                <!-- <q-inner-loading :showing="verifyImgLoading">
+                  <q-spinner-bars color="primary" size="2em" />
+                </q-inner-loading> -->
+              </div>
             </div>
-            <n-divider></n-divider>
+            <p class="form-driver"></p>
             <div class="form-tools">
-              <n-checkbox class="tool-remember-password" :label="$t('signIn.rememberPassword')" value="success">
-              </n-checkbox>
+              <q-checkbox
+                v-model="isRememberPassword"
+                class="tool-remember-password"
+                :label="$t('signIn.rememberPassword')"
+              />
               <a class="tool-forget-password" href="#">{{ $t('signIn.forgetPassword') }}</a>
             </div>
-            <n-button
+            <q-btn
               class="form-submit"
+              :label="$t('signIn.signInBtn')"
+              color="primary"
               :loading="submitBtnIsLoading"
-              type="primary"
-              round
-              keyboard
+              rounded
               @click="submitSignInBtn"
-            >
-              {{ $t('signIn.signInBtn') }}
-            </n-button>
-          </n-form>
+            ></q-btn>
+          </q-form>
           <div class="other-signIn">
-            <n-tooltip trigger="hover">
-              <template #trigger>
-                <n-icon :size="30">
-                  <icon-mdi:qrcode></icon-mdi:qrcode>
-                </n-icon>
-              </template>
-              <span>{{ $t('signIn.QRSignIn') }}</span>
-            </n-tooltip>
-            <n-tooltip trigger="hover">
-              <template #trigger>
-                <n-icon :size="30">
-                  <icon-mdi:github></icon-mdi:github>
-                </n-icon>
-              </template>
-              <span>{{ $t('signIn.githubSignIn') }}</span>
-            </n-tooltip>
+            <q-icon color="ghost" round size="md" :name="mdiQrcode">
+              <q-tooltip> {{ $t('signIn.QRSignIn') }} </q-tooltip>
+            </q-icon>
+            <q-icon color="ghost" round size="md" :name="mdiGithub">
+              <q-tooltip> {{ $t('signIn.githubSignIn') }} </q-tooltip>
+            </q-icon>
           </div>
         </div>
       </div>
@@ -133,6 +113,17 @@
 
 <script lang="ts" setup>
 import { FormInst, useMessage } from 'naive-ui';
+import {
+  mdiAccount,
+  mdiAccountKey,
+  mdiAlphabeticalVariant,
+  mdiEye,
+  mdiEyeOff,
+  mdiThemeLightDark,
+  mdiTranslate,
+  mdiQrcode,
+  mdiGithub
+} from '@quasar/extras/mdi-v6';
 import { getValidateCode } from '@/api/signIn/index';
 import useUserStore from '@/store/module/user';
 import useAppStore from '@/store/module/app';
@@ -216,21 +207,27 @@ const adminFormRules = reactive({
   }
 });
 
-const signInForm: any = $ref<FormInst | null>(null);
+const signInForm: any = $ref<null>(null);
+
+let isPwd: boolean = $ref(true);
 
 let submitBtnIsLoading = $ref<boolean>(false);
 
-const submitSignInBtn = (e: MouseEvent) => {
+let isRememberPassword: Boolean = $ref(false);
+
+const submitSignInBtn = (e: Event) => {
   e.preventDefault();
-  signInForm.validate((valid: any) => {
-    if (!valid) {
+  signInForm.validate().then((valid: any) => {
+    if (valid) {
+      // 是的，模型是正确的
       submitBtnIsLoading = true;
       userStore.userSignInHandler(adminFormData).then(() => {
         router.push('/');
         submitBtnIsLoading = false;
       });
     } else {
-      // console.log('验证失败');
+      // 哦，不，用户至少
+      // 填写了一个无效值
     }
   });
   setTimeout(() => {
@@ -268,7 +265,7 @@ onMounted(() => {
     width: 30%;
     min-width: 25rem;
     max-width: 28.125rem;
-    height: 500px;
+    height: 34.375rem;
     border-top: 2px solid rgba(99, 91, 236, 0.5);
     border-left: 2px solid rgba(99, 91, 236, 0.5);
     border-radius: 10px;
@@ -298,23 +295,35 @@ onMounted(() => {
       }
       .signIn-form {
         padding: 0 3.125rem;
+        .form-item {
+          margin-bottom: 0.625rem;
+        }
         .form-verify-code {
+          width: 100%;
+          height: 100%;
           display: flex;
-          justify-content: space-between;
           flex-direction: row;
+          justify-content: space-between;
           align-items: flex-start;
           .code-input {
-            width: 60%;
+            width: calc(100% - 6.25rem - 10px);
           }
-          .n-spin-container {
-            width: 35%;
-            height: 2.5rem;
-            .code-img {
-              width: 95%;
-              height: 90%;
-              cursor: pointer;
+          .code-img {
+            width: 6.25rem;
+            height: 3.5rem;
+            cursor: pointer;
+            img {
+              width: 100%;
+              height: 100%;
+              border-radius: 0.125rem;
             }
           }
+        }
+        .form-driver {
+          width: 90%;
+          margin: 10px auto;
+          height: 1px;
+          border: 1px solid #f5f6fa0f;
         }
         .form-tools {
           display: flex;

@@ -1,5 +1,6 @@
 import { defineConfig, loadEnv } from 'vite';
 import vuePlugin from '@vitejs/plugin-vue';
+import { quasar, transformAssetUrls } from '@quasar/vite-plugin';
 // 组件样式按需加载
 // import usePluginImport from 'vite-plugin-importer';
 // 自动引入vue函数
@@ -161,7 +162,12 @@ export default ({ command, mode }) => {
     },
     // 插件配置
     plugins: [
-      vuePlugin(),
+      vuePlugin({
+        template: { transformAssetUrls }
+      }),
+      quasar({
+        sassVariables: 'src/style/quasar-variables.scss'
+      }),
       // ref转换
       ReactivityTransform(),
       // 配置css原子化

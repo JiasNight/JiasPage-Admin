@@ -10,16 +10,47 @@
         </q-avatar>
         Title
       </q-toolbar-title>
-    </q-toolbar>
-    <q-toolbar inset>
-      <!-- 面包屑 -->
-      <Breadcrumbs></Breadcrumbs>
+      <q-input v-model="searchValue" flat dark borderless rounded outlined>
+        <template #append>
+          <q-icon :name="mdiMagnify"></q-icon>
+        </template>
+      </q-input>
+      <q-btn flat dense color="purple" round :icon="mdiEmail">
+        <q-badge color="red" floating>4</q-badge>
+      </q-btn>
+      <q-avatar flat>
+        <img src="https://cdn.quasar.dev/logo-v2/svg/logo.svg" />
+        <q-menu>
+          <q-list width="150px">
+            <q-item v-close-popup clickable>
+              <q-item-section>
+                <q-icon :name="mdiAccount"></q-icon>
+                个人信息
+              </q-item-section>
+            </q-item>
+            <q-item v-close-popup clickable>
+              <q-item-section>
+                <q-icon :name="mdiSettingsHelper"></q-icon>
+                主题模式
+              </q-item-section>
+            </q-item>
+            <q-separator />
+            <q-item v-close-popup clickable>
+              <q-item-section>
+                <q-icon :name="mdiLogout"></q-icon>
+                退出系统
+              </q-item-section>
+            </q-item>
+            <q-separator />
+          </q-list>
+        </q-menu>
+      </q-avatar>
     </q-toolbar>
   </q-header>
 </template>
 
 <script lang="ts" setup>
-import { mdiMenu } from '@quasar/extras/mdi-v6';
+import { mdiMenu, mdiAccount, mdiSettingsHelper, mdiLogout, mdiEmail, mdiMagnify } from '@quasar/extras/mdi-v6';
 import { ICON } from '@/enums/icon';
 import { renderIcon } from '@/utils/common';
 import { IUserInfo } from '@/interface/common';
@@ -39,6 +70,8 @@ let appStore = useAppStore();
 let todoNumVal = $ref<number>(10);
 
 let themeDrawerShow = $ref<boolean>(false);
+
+let searchValue = $ref<string>('');
 
 let appUserInfo = computed(() => userStore.getUserInfo);
 

@@ -22,7 +22,7 @@ import unoCss from 'unocss/vite';
 // 引入mock
 import { viteMockServe } from 'vite-plugin-mock';
 
-import { Vuetify3Resolver, NaiveUiResolver } from 'unplugin-vue-components/resolvers';
+import { Vuetify3Resolver, NaiveUiResolver, QuasarResolver } from 'unplugin-vue-components/resolvers';
 // 响应式语法糖独立
 import ReactivityTransform from '@vue-macros/reactivity-transform/vite';
 
@@ -180,7 +180,7 @@ export default ({ command, mode }) => {
       }),
       // 配置自动导入
       AutoImport({
-        resolvers: [Vuetify3Resolver(), NaiveUiResolver()],
+        resolvers: [QuasarResolver(), NaiveUiResolver()],
         // 自定引入 Vue VueRouter API,如果还需要其他的可以自行引入
         imports: [
           'vue',
@@ -205,7 +205,7 @@ export default ({ command, mode }) => {
       UnpluginVueComponents({
         dts: true,
         dirs: '/components.d.ts',
-        resolvers: [Vuetify3Resolver(), NaiveUiResolver(), IconsResolver({ componentPrefix: 'icon' })]
+        resolvers: [QuasarResolver(), NaiveUiResolver(), IconsResolver({ componentPrefix: 'icon' })]
       }),
       // 配置自动导入图标
       Icons({

@@ -89,6 +89,10 @@
     "toValue": true,
     "NSpace": true,
     "NDropdown": true,
-    "NTooltip": true
+    "NTooltip": true,
+    "extras/mdi-v6": true,
+    "mdi-v6": true,
+    ")": true,
+    "*": true
   }
 }

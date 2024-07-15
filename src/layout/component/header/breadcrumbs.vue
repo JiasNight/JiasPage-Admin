@@ -15,13 +15,14 @@
     </n-breadcrumb-item>
   </n-breadcrumb> -->
   <q-breadcrumbs>
-    <q-breadcrumbs-el label="首页" icon="mdi:home" />
+    <q-breadcrumbs-el label="首页" :icon="mdiHome" />
     <q-breadcrumbs-el v-for="(item, i) in breadcrumbList" :key="i" :label="item.meta.title" :icon="item.meta.icon">
     </q-breadcrumbs-el>
   </q-breadcrumbs>
 </template>
 
 <script lang="ts" setup>
+import { mdiHome } from '@quasar/extras/mdi-v6';
 import { ICON } from '@/enums/icon';
 import { renderIcon } from '@/utils/common';
 import useAppStore from '@/store/module/app';

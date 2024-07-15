@@ -54,25 +54,6 @@ let siderCollapsed = $ref<boolean>(false);
 const openMenu = $ref<boolean>(true);
 let drawerWidth = $ref<number>(230);
 
-// 面包屑
-const breadcrumbList = [
-  {
-    text: 'Dashboard',
-    disabled: false,
-    href: 'breadcrumbs_dashboard'
-  },
-  {
-    text: 'Link 1',
-    disabled: false,
-    href: 'breadcrumbs_link_1'
-  },
-  {
-    text: 'Link 2',
-    disabled: true,
-    href: 'breadcrumbs_link_2'
-  }
-];
-
 // 计算属性
 const progress: ComputedRef<number | null> = computed(() => globalStore.progress);
 const snackbarText: ComputedRef<string | null> = computed(() => globalStore.message);

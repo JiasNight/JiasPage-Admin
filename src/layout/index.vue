@@ -1,5 +1,5 @@
 <template>
-  <n-layout class="screen-layout" position="absolute">
+  <!-- <n-layout class="screen-layout" position="absolute">
     <n-layout-header class="layout-header" bordered>
       <Header :collapsed="collapsedValue"></Header>
     </n-layout-header>
@@ -24,7 +24,16 @@
         <n-back-top :right="100" />
       </n-layout-content>
     </n-layout>
-  </n-layout>
+  </n-layout> -->
+  <q-layout view="hHh lpR fFf">
+    <Header :collapsed="collapsedValue"></Header>
+
+    <Sider></Sider>
+
+    <q-page-container>
+      <ViewMain></ViewMain>
+    </q-page-container>
+  </q-layout>
 </template>
 
 <script lang="ts" setup>

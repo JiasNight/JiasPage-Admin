@@ -1,25 +1,68 @@
 <template>
-  <q-header bordered class="bg-primary text-white">
-    <q-toolbar>
-      <Logo class="container-logo"></Logo>
-      <q-btn dense flat round :icon="mdiMenu" @click="handleToggleSider" />
+  <div class="header-container">
+    <!-- logo -->
+    <Logo class="container-logo"></Logo>
 
-      <q-toolbar-title>
-        <q-avatar>
-          <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
-        </q-avatar>
-        Title
-      </q-toolbar-title>
-    </q-toolbar>
-    <q-toolbar inset>
-      <!-- 面包屑 -->
-      <Breadcrumbs></Breadcrumbs>
-    </q-toolbar>
-  </q-header>
+    <div class="container-wrap">
+      <div class="wrap-breadcrumb">
+        <n-button text @click="handleToggleSider">
+          <n-icon size="20">
+            <icon-mdi:format-list-bulleted></icon-mdi:format-list-bulleted>
+          </n-icon>
+        </n-button>
+        <!-- 面包屑 -->
+        <Breadcrumbs></Breadcrumbs>
+      </div>
+      <div class="header-right">
+        <!-- 搜索框 -->
+        <n-input class="right-search" placeholder="输入搜索">
+          <template #prefix>
+            <icon-mdi:magnify></icon-mdi:magnify>
+          </template>
+        </n-input>
+        <!-- <n-button circle :bordered="false">
+        <template #icon>
+          <n-icon size="30">
+            <icon-mdi:magnify></icon-mdi:magnify>
+          </n-icon>
+        </template>
+      </n-button> -->
+        <n-tooltip placement="bottom" trigger="hover">
+          <template #trigger>
+            <n-badge class="right-todo" :value="todoNumVal">
+              <n-icon size="30">
+                <icon-mdi:list-box-outline></icon-mdi:list-box-outline>
+              </n-icon>
+            </n-badge>
+          </template>
+          <span> 你有{{ todoNumVal }}条消息待处理！</span>
+        </n-tooltip>
+        <!-- 锁屏 -->
+        <n-tooltip placement="top-start" trigger="hover">
+          <template #trigger>
+            <n-icon class="right-todo" size="30">
+              <icon-mdi:lock></icon-mdi:lock>
+            </n-icon>
+          </template>
+          <span>锁屏</span>
+        </n-tooltip>
+        <n-tooltip placement="top-start" trigger="hover">
+          <template #trigger>
+            <span class="right-user"> {{ appUserInfo?.nickName }} </span>
+          </template>
+          <span> 欢迎您，{{ appUserInfo?.nickName }} </span>
+        </n-tooltip>
+        <n-dropdown trigger="click" :options="dropdownOptions" :show-arrow="true" @select="handleSelectDropdown">
+          <img class="right-avatar" src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg" alt="用户头像" />
+        </n-dropdown>
+      </div>
+    </div>
+    <!-- 主题配置 -->
+    <ThemeStyle :drawer-show="themeDrawerShow" @close="themeDrawerShow = false"></ThemeStyle>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { mdiMenu } from '@quasar/extras/mdi-v6';
 import { ICON } from '@/enums/icon';
 import { renderIcon } from '@/utils/common';
 import { IUserInfo } from '@/interface/common';

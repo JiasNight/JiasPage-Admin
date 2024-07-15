@@ -71,10 +71,8 @@
                 </q-input>
               </div>
               <div class="code-img">
-                <img :src="verifyCodeImg" alt="verifyCode" @click="clickCodeImgBtn" />
-                <!-- <q-inner-loading :showing="verifyImgLoading">
-                  <q-spinner-bars color="primary" size="2em" />
-                </q-inner-loading> -->
+                <q-spinner-ios v-if="verifyImgLoading" color="primary" size="3em" />
+                <img v-else :src="verifyCodeImg" alt="verifyCode" @click="clickCodeImgBtn" />
               </div>
             </div>
             <p class="form-driver"></p>
@@ -312,6 +310,10 @@ onMounted(() => {
             width: 6.25rem;
             height: 3.5rem;
             cursor: pointer;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
             img {
               width: 100%;
               height: 100%;

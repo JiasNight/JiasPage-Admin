@@ -1,6 +1,6 @@
 <template>
   <!-- 面包屑 -->
-  <n-breadcrumb class="header-breadcrumb">
+  <!-- <n-breadcrumb class="header-breadcrumb">
     <n-breadcrumb-item>
       <n-icon size="20">
         <icon-mdi:home></icon-mdi:home>
@@ -13,7 +13,12 @@
         {{ item.meta.title }}
       </n-space>
     </n-breadcrumb-item>
-  </n-breadcrumb>
+  </n-breadcrumb> -->
+  <q-breadcrumbs>
+    <q-breadcrumbs-el label="首页" icon="mdi:home" />
+    <q-breadcrumbs-el v-for="(item, i) in breadcrumbList" :key="i" :label="item.meta.title" :icon="item.meta.icon">
+    </q-breadcrumbs-el>
+  </q-breadcrumbs>
 </template>
 
 <script lang="ts" setup>

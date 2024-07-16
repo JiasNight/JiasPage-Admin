@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-drawer v-model="siderCollapsed" show-if-above side="left" bordered>
+    <q-drawer v-model="siderCollapsed" :width="230" elevated show-if-above side="left" bordered>
       <!-- 菜单 -->
       <Menus></Menus>
     </q-drawer>

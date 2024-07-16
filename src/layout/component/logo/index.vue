@@ -16,6 +16,7 @@ const collapsedValue: ComputedRef<boolean> = computed(() => appStore.getCollapse
 
 <style lang="scss" scoped>
 .logo-wrap {
+  width: $siderBarWidth;
   display: flex;
   align-items: center;
   .logo-img {

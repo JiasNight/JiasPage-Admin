@@ -249,7 +249,7 @@ export default ({ command, mode }) => {
         // 导入variables.scss, 这样就可以在vue全局中使用variables.scss中定义的变量了
         scss: {
           javascriptEnabled: true,
-          additionalData: '@import "./src/style/variables.scss";'
+          additionalData: '@import "./src/style/app-variables.scss";'
         }
       }
     }

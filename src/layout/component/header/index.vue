@@ -3,13 +3,8 @@
     <q-toolbar>
       <Logo class="container-logo"></Logo>
       <q-btn dense flat round :icon="mdiMenu" @click="handleToggleSider" />
-
-      <q-toolbar-title>
-        <q-avatar>
-          <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
-        </q-avatar>
-        Title
-      </q-toolbar-title>
+      <Breadcrumbs></Breadcrumbs>
+      <q-space />
       <q-input v-model="searchValue" flat dark borderless rounded outlined>
         <template #append>
           <q-icon :name="mdiMagnify"></q-icon>
@@ -20,8 +15,8 @@
       </q-btn>
       <q-avatar flat>
         <img src="https://cdn.quasar.dev/logo-v2/svg/logo.svg" />
-        <q-menu>
-          <q-list width="150px">
+        <q-menu auto-close>
+          <q-list>
             <q-item v-close-popup clickable>
               <q-item-section>
                 <q-icon :name="mdiAccount"></q-icon>

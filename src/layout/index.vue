@@ -31,8 +31,24 @@
     <Sider></Sider>
 
     <q-page-container>
+      <!-- 主要内容 -->
       <ViewMain></ViewMain>
+      <!-- 主题配置按钮 -->
+      <q-page-sticky position="top-right" :offset="themeBtnOffset">
+        <q-btn
+          ref="themeBtnRef"
+          unelevated
+          padding="10px"
+          :icon="mdiCog"
+          color="info"
+          square
+          @show="1"
+          @click="triggerRightDrawer"
+        />
+      </q-page-sticky>
     </q-page-container>
+
+    <ThemeStyle :open="themeDrawerOpen"></ThemeStyle>
   </q-layout>
 </template>
 
@@ -42,8 +58,11 @@ import Sider from './component/sider/index.vue';
 import Header from './component/header/index.vue';
 import PageTags from './component/tags/index.vue';
 import ViewMain from './component/main/index.vue';
+import ThemeStyle from '@/layout/component/themeStyle/index.vue';
 import useGlobalStore from '@/store/module/global';
 import useAppStore from '@/store/module/app';
+import { mdiCog } from '@quasar/extras/mdi-v6';
+import { morph } from 'quasar';
 
 const appStore = useAppStore();
 
@@ -54,6 +73,12 @@ let siderCollapsed = $ref<boolean>(false);
 const openMenu = $ref<boolean>(true);
 let drawerWidth = $ref<number>(230);
 
+let themeDrawerOpen = $ref<boolean>(false);
+
+let themeBtnRef = $ref<Element>();
+
+let themeBtnOffset = $ref<Array<number>>([0, 0]);
+
 // 计算属性
 const progress: ComputedRef<number | null> = computed(() => globalStore.progress);
 const snackbarText: ComputedRef<string | null> = computed(() => globalStore.message);
@@ -63,6 +88,26 @@ const collapsedValue: ComputedRef<boolean> = computed(() => appStore.getCollapse
 watch(collapsedValue, (nVal, oVal) => {
   siderCollapsed = nVal;
 });
+
+// 触发主题配置抽屉
+const triggerRightDrawer = (): void => {
+  console.log('触发主题配置抽屉');
+  themeDrawerOpen = !themeDrawerOpen;
+  if (!themeDrawerOpen) {
+    themeBtnOffset = [0, 100];
+  } else {
+    themeBtnOffset = [255, 100];
+  }
+  console.log(themeBtnRef);
+  let dom = themeBtnRef as any;
+  morph({
+    from: dom.$el,
+    duration: 30,
+    tween: true,
+    tweenFromOpacity: 0.8,
+    tweenToOpacity: 0.4
+  });
+};
 
 // 切换当前主题
 const changeCurrentThemeBtn = (): void => {

@@ -35,16 +35,7 @@
       <ViewMain></ViewMain>
       <!-- 主题配置按钮 -->
       <q-page-sticky position="top-right" :offset="themeBtnOffset">
-        <q-btn
-          ref="themeBtnRef"
-          unelevated
-          padding="10px"
-          :icon="mdiCog"
-          color="info"
-          square
-          @show="1"
-          @click="triggerRightDrawer"
-        />
+        <q-btn ref="themeBtnRef" round :icon="mdiCog" color="accent" @click="triggerRightDrawer" />
       </q-page-sticky>
     </q-page-container>
 
@@ -77,7 +68,7 @@ let themeDrawerOpen = $ref<boolean>(false);
 
 let themeBtnRef = $ref<Element>();
 
-let themeBtnOffset = $ref<Array<number>>([0, 0]);
+let themeBtnOffset = $ref<Array<number>>([2, 200]);
 
 // 计算属性
 const progress: ComputedRef<number | null> = computed(() => globalStore.progress);
@@ -94,9 +85,9 @@ const triggerRightDrawer = (): void => {
   console.log('触发主题配置抽屉');
   themeDrawerOpen = !themeDrawerOpen;
   if (!themeDrawerOpen) {
-    themeBtnOffset = [0, 100];
+    themeBtnOffset = [0, 200];
   } else {
-    themeBtnOffset = [255, 100];
+    themeBtnOffset = [252, 200];
   }
   console.log(themeBtnRef);
   let dom = themeBtnRef as any;

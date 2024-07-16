@@ -38,7 +38,7 @@
             </q-item>
             <q-separator />
           </q-list>
-        </q-menu>
+        </q-menu> 
       </q-avatar>
     </q-toolbar>
   </q-header>

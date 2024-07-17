@@ -5,47 +5,43 @@
       <q-btn dense flat round :icon="mdiMenu" @click="handleToggleSider" />
       <Breadcrumbs></Breadcrumbs>
       <q-space />
-      <q-input v-model="searchValue" flat dark borderless rounded outlined>
+      <!-- <q-input v-model="searchValue" flat dark borderless rounded outlined>
         <template #append>
           <q-icon :name="mdiMagnify"></q-icon>
         </template>
-      </q-input>
+      </q-input> -->
       <q-btn flat dense color="purple" round :icon="mdiEmail">
         <q-badge color="red" floating>4</q-badge>
+        <q-tooltip anchor="top middle" self="center middle"> 你有4条消息待处理！ </q-tooltip>
       </q-btn>
-      <q-avatar flat>
-        <img src="https://cdn.quasar.dev/logo-v2/svg/logo.svg" />
-        <q-menu auto-close>
-          <q-list>
-            <q-item v-close-popup clickable>
-              <q-item-section>
-                <q-icon :name="mdiAccount"></q-icon>
-                个人信息
+      <span> 欢迎您，{{ appUserInfo?.nickName }}</span>
+      <q-btn-dropdown flat color="info" ripple push no-caps>
+        <template #label>
+          <q-avatar flat>
+            <img src="https://cdn.quasar.dev/logo-v2/svg/logo.svg" />
+          </q-avatar>
+        </template>
+
+        <q-list class="q-pa-xs" bordered dense>
+          <template v-for="(item, i) in dropdownOptions" :key="i">
+            <q-item v-close-popup v-ripple clickable @click="handleSelectDropdown(item.key)">
+              <q-item-section avatar>
+                <q-icon :name="item.icon" :color="item.color"></q-icon>
+              </q-item-section>
+              <q-item-section no-wrap>
+                <q-item-label> {{ item.label }} </q-item-label>
               </q-item-section>
             </q-item>
-            <q-item v-close-popup clickable>
-              <q-item-section>
-                <q-icon :name="mdiSettingsHelper"></q-icon>
-                主题模式
-              </q-item-section>
-            </q-item>
-            <q-separator />
-            <q-item v-close-popup clickable>
-              <q-item-section>
-                <q-icon :name="mdiLogout"></q-icon>
-                退出系统
-              </q-item-section>
-            </q-item>
-            <q-separator />
-          </q-list>
-        </q-menu> 
-      </q-avatar>
+            <q-separator v-if="i === dropdownOptions.length - 2" />
+          </template>
+        </q-list>
+      </q-btn-dropdown>
     </q-toolbar>
   </q-header>
 </template>
 
 <script lang="ts" setup>
-import { mdiMenu, mdiAccount, mdiSettingsHelper, mdiLogout, mdiEmail, mdiMagnify } from '@quasar/extras/mdi-v6';
+import { mdiMenu, mdiAccount, mdiDraw, mdiLogout, mdiEmail, mdiMagnify } from '@quasar/extras/mdi-v6';
 import { ICON } from '@/enums/icon';
 import { renderIcon } from '@/utils/common';
 import { IUserInfo } from '@/interface/common';
@@ -55,11 +51,14 @@ import { useRouter } from 'vue-router';
 import Logo from '@/layout/component/logo/index.vue';
 import Breadcrumbs from '@/layout/component/header/breadcrumbs.vue';
 import ThemeStyle from '@/layout/component/themeStyle/index.vue';
+import { useQuasar } from 'quasar';
 
 const router = useRouter();
 
 let userStore = useUserStore();
 let appStore = useAppStore();
+
+const $q = useQuasar();
 
 // 定义响应式数据
 let todoNumVal = $ref<number>(10);
@@ -75,17 +74,20 @@ const dropdownOptions = [
   {
     label: '用户信息',
     key: 'userInfo',
-    icon: renderIcon(ICON.F, 'mdi:account-box')
+    icon: mdiAccount,
+    color: 'primary'
   },
   {
     label: '主题模式',
     key: 'theme',
-    icon: renderIcon(ICON.F, 'mdi:palette')
+    icon: mdiDraw,
+    color: 'primary'
   },
   {
     label: '退出登录',
     key: 'logout',
-    icon: renderIcon(ICON.F, 'mdi:logout')
+    icon: mdiLogout,
+    color: 'negative'
   }
 ];
 
@@ -96,7 +98,16 @@ const handleSelectDropdown = (key: string) => {
   } else if (key === 'theme') {
     themeDrawerShow = true;
   } else if (key === 'logout') {
-    userStore.logoutSystem();
+    console.log($q);
+    $q.dialog({
+      title: '系统提示',
+      message: '是否确认退出登录？',
+      cancel: true,
+      persistent: true,
+      color: 'negative'
+    }).onOk(() => {
+      userStore.logoutSystem();
+    });
   }
 };
 

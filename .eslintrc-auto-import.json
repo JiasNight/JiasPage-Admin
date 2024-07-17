@@ -93,6 +93,8 @@
     "extras/mdi-v6": true,
     "mdi-v6": true,
     ")": true,
-    "*": true
+    "*": true,
+    "Loading": true,
+    "BottomSheet": true
   }
 }

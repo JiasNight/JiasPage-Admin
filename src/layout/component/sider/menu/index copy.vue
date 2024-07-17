@@ -1,5 +1,5 @@
 <template>
-  <!-- <n-menu
+  <n-menu
     ref="menuRef"
     v-model:value="openMenu"
     class="side-menu"
@@ -11,10 +11,7 @@
     default-expand-all
     :default-expanded-keys="defaultExpandedKeys"
     :on-update:value="handleClickMenu"
-  ></n-menu> -->
-  <q-list bordered class="rounded-borders">
-    <MenuTree :data="menusList"></MenuTree>
-  </q-list>
+  ></n-menu>
 </template>
 
 <script lang="ts" setup>
@@ -22,27 +19,10 @@ import type { MenuOption, MenuGroupOption, MenuInst } from 'naive-ui';
 import appStore from '@/store/module/app';
 import { useRouter, RouteRecordRaw } from 'vue-router';
 import { ICON } from '@/enums/icon';
-import { mdiMenu } from '@quasar/extras/mdi-v6';
-import MenuTree from './MenuTree.vue';
 
 // 使用store
 const router = useRouter();
 const useAppStore = appStore();
-
-interface IMenu {
-  label: string;
-  key: string;
-  icon: string;
-  color?: string;
-  type: number;
-  path: string;
-  show: boolean;
-  disabled: boolean;
-  cache: boolean;
-  description?: string;
-  level: number;
-  children?: IMenu[];
-}
 
 const collapsedValue: ComputedRef<boolean> = computed(() => useAppStore.getCollapsedSider);
 // 引入全局方法
@@ -76,10 +56,10 @@ watch(activeRouter, (nVal, oVal) => {
 });
 
 // 响应式菜单列表数据
-let menusList: Array<any> = [];
+let menusList: Array<MenuOption | MenuGroupOption> = [];
 
 // 生成菜单
-const generateMenuByRoute = (routerList: Array<IMenu>) => {
+const generateMenuByRoute = (routerList: Array<any>) => {
   menusList = [];
   menusList.push({
     label: '仪表盘',
@@ -89,26 +69,45 @@ const generateMenuByRoute = (routerList: Array<IMenu>) => {
     type: 1,
     path: '/',
     show: true,
-    level: 0,
     description: '仪表盘'
   });
-  const recursionTree = (tree: Array<any>, level: number) => {
+  const recursionTree = (tree: Array<any>) => {
     let newTree: Array<any> = [];
     tree.forEach((item: any) => {
-      let menu: IMenu = {
-        label: item.meta.title,
+      let menu: MenuOption | MenuGroupOption = {
+        label: () =>
+          h(
+            NTooltip,
+            {
+              trigger: 'hover',
+              delay: 1000,
+              placement: 'right'
+            },
+            {
+              trigger: () => item.meta.title,
+              default: () =>
+                h(
+                  'span',
+                  {
+                    style: {
+                      fontSize: '12px'
+                    }
+                  },
+                  item.meta.description === '' ? item.meta.title : item.meta.description
+                )
+            }
+          ),
         disabled: item.meta.disabled === 0 ? true : false,
-        icon: mdiMenu,
+        icon: renderIcon(ICON.F, item.meta.icon, { size: 16 }),
         key: item.name,
         type: item.meta.type,
         path: item.path,
         show: item.meta.show === 0 ? true : false,
         cache: item.meta.cache === 0 ? true : false,
-        level: level,
         description: item.meta.description
       };
       if (item.children && item.children.length > 0) {
-        menu.children = recursionTree(item.children, level + 1);
+        menu.children = recursionTree(item.children);
         newTree.push(menu);
       } else {
         newTree.push(menu);
@@ -116,7 +115,7 @@ const generateMenuByRoute = (routerList: Array<IMenu>) => {
     });
     return newTree;
   };
-  let rM = recursionTree(routerList, 0);
+  let rM = recursionTree(routerList);
   menusList = menusList.concat(rM);
 };
 

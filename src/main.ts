@@ -13,7 +13,7 @@ import axios from 'axios';
 // 引入i18n
 import i18n from '@/i18n';
 // 引入quasar
-import { Quasar, Notify } from 'quasar';
+import { Quasar, Notify, Dialog, Loading, LoadingBar, BottomSheet, AppFullscreen, AddressbarColor } from 'quasar';
 // quasar语言包
 import quasarLang from 'quasar/lang/zh-CN';
 // quasar图标库
@@ -56,7 +56,13 @@ myApp.use(i18n);
 myApp.use(router);
 myApp.use(Quasar, {
   plugins: {
-    Notify
+    Notify,
+    Dialog,
+    Loading,
+    LoadingBar,
+    BottomSheet,
+    AppFullscreen,
+    AddressbarColor
   }, // import Quasar plugins and add here
   lang: quasarLang,
   iconSet: quasarIconSet

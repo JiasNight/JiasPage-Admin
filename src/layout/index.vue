@@ -82,7 +82,6 @@ watch(collapsedValue, (nVal, oVal) => {
 
 // 触发主题配置抽屉
 const triggerRightDrawer = (): void => {
-  console.log('触发主题配置抽屉');
   themeDrawerOpen = !themeDrawerOpen;
   if (!themeDrawerOpen) {
     themeBtnOffset = [0, 200];

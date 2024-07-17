@@ -1,5 +1,13 @@
 <template>
-  <q-drawer v-model="siderCollapsed" class="sider-drawer" :width="230" elevated show-if-above side="left" bordered>
+  <q-drawer
+    v-model="siderCollapsed"
+    class="bg-primary text-white"
+    :width="230"
+    elevated
+    show-if-above
+    side="left"
+    bordered
+  >
     <!-- 菜单 -->
     <Menus></Menus>
   </q-drawer>
@@ -22,8 +30,8 @@ watch(collapsedValue, (nVal, oVal) => {
 </script>
 
 <style lang="scss" scoped>
-:deep(.sider-drawer) {
-  background-color: $siderBarBgColor !important;
-  color: $siderBarColor;
-}
+// :deep(.sider-drawer) {
+//   background-color: $primary;
+//   color: $siderBarColor;
+// }
 </style>

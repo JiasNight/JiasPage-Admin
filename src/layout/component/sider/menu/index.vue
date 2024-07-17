@@ -1,18 +1,5 @@
 <template>
-  <!-- <n-menu
-    ref="menuRef"
-    v-model:value="openMenu"
-    class="side-menu"
-    :indent="18"
-    :collapsed="collapsedValue"
-    :collapsed-width="50"
-    :options="menusList"
-    :collapsed-icon-size="20"
-    default-expand-all
-    :default-expanded-keys="defaultExpandedKeys"
-    :on-update:value="handleClickMenu"
-  ></n-menu> -->
-  <q-list bordered class="rounded-borders">
+  <q-list>
     <MenuTree :data="menusList"></MenuTree>
   </q-list>
 </template>
@@ -41,6 +28,7 @@ interface IMenu {
   cache: boolean;
   description?: string;
   level: number;
+  expand: boolean;
   children?: IMenu[];
 }
 
@@ -90,6 +78,7 @@ const generateMenuByRoute = (routerList: Array<IMenu>) => {
     path: '/',
     show: true,
     level: 0,
+    expand: true,
     description: '仪表盘'
   });
   const recursionTree = (tree: Array<any>, level: number) => {
@@ -105,6 +94,7 @@ const generateMenuByRoute = (routerList: Array<IMenu>) => {
         show: item.meta.show === 0 ? true : false,
         cache: item.meta.cache === 0 ? true : false,
         level: level,
+        expand: true,
         description: item.meta.description
       };
       if (item.children && item.children.length > 0) {

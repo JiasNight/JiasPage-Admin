@@ -31,6 +31,7 @@
     <Sider></Sider>
 
     <q-page-container>
+      <PageTags></PageTags>
       <!-- 主要内容 -->
       <ViewMain></ViewMain>
       <!-- 主题配置按钮 -->

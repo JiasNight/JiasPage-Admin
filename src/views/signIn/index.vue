@@ -31,6 +31,7 @@
               :label="$t('signIn.userName')"
               :placeholder="$t('signIn.inputUsernamePlaceholder')"
               filled
+              clearable
               lazy-rules
               :rules="[(val) => (val && val.length > 0) || $t('signIn.inputUsernamePlaceholder')]"
             >
@@ -45,6 +46,7 @@
               :label="$t('signIn.password')"
               :placeholder="$t('signIn.inputPasswordPlaceholder')"
               filled
+              clearable
               lazy-rules
               :rules="[(val) => (val && val.length > 0) || $t('signIn.inputPasswordPlaceholder')]"
             >
@@ -62,6 +64,7 @@
                   :label="$t('signIn.verifyCode')"
                   :placeholder="$t('signIn.inputVerifyCodePlaceholder')"
                   filled
+                  clearable
                   lazy-rules
                   :rules="[(val) => (val && val.length > 0) || $t('signIn.inputVerifyCodePlaceholder')]"
                 >

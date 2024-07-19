@@ -1,16 +1,13 @@
 <template>
-  <q-list>
-    <MenuTree :data="menusList"></MenuTree>
-  </q-list>
+  <MyMenu :data="menusList"></MyMenu>
 </template>
 
 <script lang="ts" setup>
 import type { MenuOption, MenuGroupOption, MenuInst } from 'naive-ui';
 import appStore from '@/store/module/app';
 import { useRouter, RouteRecordRaw } from 'vue-router';
-import { ICON } from '@/enums/icon';
-import { mdiMenu } from '@quasar/extras/mdi-v6';
-import MenuTree from './MenuTree.vue';
+import { mdiMenu, mdiViewDashboard } from '@quasar/extras/mdi-v6';
+import MyMenu from './component/MyMenu.vue';
 
 // 使用store
 const router = useRouter();
@@ -27,8 +24,6 @@ interface IMenu {
   disabled: boolean;
   cache: boolean;
   description?: string;
-  level: number;
-  expand: boolean;
   children?: IMenu[];
 }
 
@@ -67,22 +62,20 @@ watch(activeRouter, (nVal, oVal) => {
 let menusList: Array<any> = [];
 
 // 生成菜单
-const generateMenuByRoute = (routerList: Array<IMenu>) => {
+const generateMenuByRoute = (routerList: Array<RouteRecordRaw>) => {
   menusList = [];
   menusList.push({
     label: '仪表盘',
     disabled: false,
-    icon: renderIcon(ICON.F, 'mdi:home', { size: 16 }),
+    icon: mdiViewDashboard,
     key: 'Index',
     type: 1,
     path: '/',
     show: true,
-    level: 0,
-    expand: true,
     description: '仪表盘'
   });
-  const recursionTree = (tree: Array<any>, level: number) => {
-    let newTree: Array<any> = [];
+  const recursionTree = (tree: Array<RouteRecordRaw>) => {
+    let newTree: Array<IMenu> = [];
     tree.forEach((item: any) => {
       let menu: IMenu = {
         label: item.meta.title,
@@ -93,12 +86,10 @@ const generateMenuByRoute = (routerList: Array<IMenu>) => {
         path: item.path,
         show: item.meta.show === 0 ? true : false,
         cache: item.meta.cache === 0 ? true : false,
-        level: level,
-        expand: true,
         description: item.meta.description
       };
       if (item.children && item.children.length > 0) {
-        menu.children = recursionTree(item.children, level + 1);
+        menu.children = recursionTree(item.children);
         newTree.push(menu);
       } else {
         newTree.push(menu);
@@ -106,7 +97,7 @@ const generateMenuByRoute = (routerList: Array<IMenu>) => {
     });
     return newTree;
   };
-  let rM = recursionTree(routerList, 0);
+  let rM = recursionTree(routerList);
   menusList = menusList.concat(rM);
 };
 

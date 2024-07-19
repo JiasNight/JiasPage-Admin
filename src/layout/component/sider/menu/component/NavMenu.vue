@@ -1,53 +1,27 @@
 <template>
-  <template v-for="(item, i) in menuList" :key="i">
-    <!-- <q-expansion-item
-      v-if="item.show"
-      default-opened
-      :group="item.key"
-      :header-inset-level="item.level"
-      :content-inset-level="item.level === 0 ? 0 : item.level - 1"
-      :icon="mdiMenu"
-      :hide-expand-icon="item.type !== 0"
-      :disable="item.disabled"
-      :label-lines="1"
-      expand-icon-class="text-white"
+  <div v-for="(item, i) in menuData" :key="i" class="list-expansion">
+    <div
+      class="expansion-item"
+      :class="{ 'expansion-active': currentActiveMenu.name === item.key }"
+      @click.stop="handleClick(item)"
     >
-      <template #header>
-        <div class="item-section">
-          <q-icon class="q-mr-xs" :name="mdiMenu" :color="item.color" size="sm" />
-          <span class="section-label">{{ item.label }}</span>
-        </div>
-      </template>
-      <template #default>
-        <MenuTree v-if="item.children" :data="item.children"></MenuTree>
-      </template>
-    </q-expansion-item> -->
-    <div class="list-expansion">
-      <div
-        class="expansion-item"
-        :class="{ 'expansion-active': currentActiveMenu.name === item.key }"
-        @click="handleClick(item)"
-      >
-        <div class="item-section" :style="{ marginLeft: item.level * 1.5 + 'rem' }">
-          <q-icon class="q-mr-xs" :name="mdiMenu" :color="item.color" size="sm" />
-          <span class="section-label">{{ item.label }}</span>
-        </div>
-        <q-icon
-          v-if="item.type === 0"
-          class="q-mr-xs"
-          :name="item.expand ? mdiMenuDown : mdiMenuUp"
-          :color="item.color"
-          size="sm"
-        />
+      <div class="item-section" :style="{ marginLeft: item.level * 1.5 + 'rem' }">
+        <q-icon class="q-mr-xs" :name="mdiMenu" :color="item.color" size="sm" />
+        <span class="section-label">{{ item.label }}{{ item.level }}</span>
       </div>
-      <slot name="default">
-        <MenuTree v-if="item.expand" :data="item.children"></MenuTree>
-      </slot>
+      <q-icon
+        v-if="item.type === 0"
+        class="q-mr-xs"
+        :name="item.expand ? mdiMenuDown : mdiMenuUp"
+        :color="item.color"
+        size="sm"
+      />
     </div>
-  </template>
+    <NavMenu v-if="item.children && item.children.length" :data="item.children"></NavMenu>
+  </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="NavMenu">
 import 'animate.css';
 import { mdiMenu, mdiMenuDown, mdiMenuUp } from '@quasar/extras/mdi-v6';
 import useAppStore from '@/store/module/app';
@@ -55,15 +29,15 @@ import useAppStore from '@/store/module/app';
 interface IMenu {
   label: string;
   key: string;
-  icon: string;
-  color: string;
-  type: number;
-  path: string;
-  show: boolean;
-  disabled: boolean;
-  cache: boolean;
-  level: number;
-  expand: boolean;
+  icon?: string;
+  color?: string;
+  type?: number;
+  path?: string;
+  show?: boolean;
+  disabled?: boolean;
+  cache?: boolean;
+  level?: number;
+  expand?: boolean;
   description?: string;
   children?: IMenu[];
 }
@@ -79,23 +53,9 @@ const props = defineProps({
   }
 });
 
-let menuList: any = $ref<any[]>([]);
-
-let menuData: any = computed(() => props.data);
+let menuData = computed(() => props.data);
 
 let currentActiveMenu: any = computed(() => appStore.getCurrentRoute);
-
-// 监听
-watch(
-  () => menuData,
-  (nVal, oVal) => {
-    menuList = toRaw(nVal.value);
-  },
-  {
-    immediate: true,
-    deep: true // 开启深度监听
-  }
-);
 
 // 检测路由对应的组件有无
 const getComponent = (sRouter: any, rName: string) => {
@@ -129,10 +89,11 @@ const getExpandMenu = (key: string) => {
       }
     });
   };
-  findExpand(menuList);
+  findExpand(menuData.value);
 };
 
-const handleClick = (item: IMenu) => {
+const handleClick = (item: any) => {
+  // currentActiveMenu = item;
   let key = item.key;
   // 菜单类型，0目录，1菜单，2按钮，3外链
   if (item.type === 0) {
@@ -151,6 +112,11 @@ const handleClick = (item: IMenu) => {
   } else if (item.type === 3) {
     window.open(item.path, '_blank');
   }
+};
+
+const getActiveMenu = (val: any) => {
+  console.log(val);
+  console.log('当前激活的菜单');
 };
 </script>
 

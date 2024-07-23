@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  defaultSeverity: 'error',
+  defaultSeverity: 'warning',
   // extends: [
   //   'stylelint-config-standard', // 配置stylelint拓展插件
   //   'stylelint-config-html/vue', // 配置 vue 中 template 样式格式化

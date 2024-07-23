@@ -1,10 +1,6 @@
 <template>
   <div class="content-tags">
-    <n-button class="tags-arrow" text @click="clickScrollLeftBtn">
-      <n-icon size="25">
-        <icon-mdi:chevron-double-left></icon-mdi:chevron-double-left>
-      </n-icon>
-    </n-button>
+    <q-btn class="tags-arrow" flat color="primary" :icon="mdiChevronDoubleLeft" @click="clickScrollLeftBtn" />
     <div ref="tagScroll" class="tags-wrap">
       <div
         v-for="(item, index) in tagsList"
@@ -14,24 +10,23 @@
         @click="clickTagViewBtn(item)"
         @contextmenu.prevent="rightClickTagBtn(item, $event)"
       >
-        <n-icon size="18" color="#A163F7" :component="renderIcon(ICON.O, item.meta.icon)"> </n-icon>
-        <!-- <n-icon size="18" color="#A163F7" :component="AbcFilled"> </n-icon> -->
-        <n-tooltip placement="top" trigger="hover">
-          <template #trigger>
-            <span class="tag-item-span"> {{ item.meta.title }}</span>
-          </template>
-          <span> {{ item.meta.title }} </span>
-        </n-tooltip>
-        <n-icon class="tag-item-end-icon" size="18" @click.prevent.stop="closeTagBtn(item)">
-          <icon-mdi:window-close></icon-mdi:window-close>
-        </n-icon>
+        <q-icon size="xs" class="q-ml-xs">
+          <MdiIcon color="primary" :icon="item.meta.icon"></MdiIcon>
+        </q-icon>
+        <span class="tag-item-span">
+          {{ item.meta.title }}
+          <q-tooltip anchor="top middle" self="center middle"> {{ item.meta.title }} </q-tooltip>
+        </span>
+        <q-icon
+          class="tag-item-end-icon"
+          :name="mdiWindowClose"
+          color="primary"
+          size="xs"
+          @click.prevent.stop="closeTagBtn(item)"
+        />
       </div>
     </div>
-    <n-button class="tags-arrow" text @click="clickScrollRightBtn">
-      <n-icon size="25">
-        <icon-mdi:chevron-double-right></icon-mdi:chevron-double-right>
-      </n-icon>
-    </n-button>
+    <q-btn class="tags-arrow" flat color="primary" :icon="mdiChevronDoubleRight" @click="clickScrollRightBtn" />
     <!-- 右键菜单内容 -->
     <ContextMenu
       :show="showRightMenuBox"
@@ -43,18 +38,22 @@
 </template>
 
 <script lang="ts" setup>
-import { ICON } from '@/enums/icon';
-import type { MenuOption } from 'naive-ui';
 import ContextMenu from './contextmenu.vue';
 import useTagStore from '@/store/module/tag';
 import { useRouter } from 'vue-router';
-import { renderIcon } from '@/utils/common';
+import MdiIcon from '@/components/MdiIcon/MdiIcon.vue';
+import { mdiChevronDoubleLeft, mdiChevronDoubleRight, mdiWindowClose } from '@quasar/extras/mdi-v6';
 
 const router = useRouter();
 
 // 扩展ITags的属性
-type ITags = MenuOption & {
+type ITags = {
   path: string;
+  name: string;
+  key?: string;
+  disabled?: boolean;
+  icon?: string;
+  show?: boolean;
 };
 
 const tagStore = useTagStore();

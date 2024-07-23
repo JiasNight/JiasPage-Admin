@@ -1,16 +1,15 @@
 import useAppStore from '@/store/module/app';
 import useUserStore from '@/store/module/user';
-import { createDiscreteApi } from 'naive-ui';
 import { Router, RouteLocationNormalizedLoaded, RouteRecordRaw } from 'vue-router';
 import { getToken } from '../utils/auth';
+import { LoadingBar } from 'quasar';
 
-const { loadingBar } = createDiscreteApi(['loadingBar']);
 // 路由白名单
 const whiteList: Array<String> = ['/signIn', '/signUp'];
 
 export const setupPermission = (router: Router) => {
   router.beforeEach(async (to: RouteLocationNormalizedLoaded, from: RouteLocationNormalizedLoaded) => {
-    loadingBar.start();
+    LoadingBar.start();
     const appStore = useAppStore();
     const isSignIn: boolean | string | null = getToken();
 
@@ -24,7 +23,7 @@ export const setupPermission = (router: Router) => {
     // 判断是否登录
     if (isSignIn) {
       if (to.path === '/signIn') {
-        loadingBar.finish();
+        LoadingBar.stop();
         return { path: '/' };
       } else {
         const currentRoutes: Array<RouteRecordRaw> = await appStore.getRoutes;
@@ -49,6 +48,6 @@ export const setupPermission = (router: Router) => {
   });
 
   router.afterEach(() => {
-    loadingBar.finish();
+    LoadingBar.stop();
   });
 };

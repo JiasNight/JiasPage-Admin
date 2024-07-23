@@ -1,32 +1,21 @@
 <template>
   <!-- 面包屑 -->
-  <!-- <n-breadcrumb class="header-breadcrumb">
-    <n-breadcrumb-item>
-      <n-icon size="20">
-        <icon-mdi:home></icon-mdi:home>
-      </n-icon>
-      首页
-    </n-breadcrumb-item>
-    <n-breadcrumb-item v-for="(item, i) in breadcrumbList" :key="i">
-      <n-space align="center">
-        <n-icon :component="renderIcon(ICON.O, item.meta.icon, { size: 20 })" style="bottom: 2px"> </n-icon>
-        {{ item.meta.title }}
-      </n-space>
-    </n-breadcrumb-item>
-  </n-breadcrumb> -->
-  <q-breadcrumbs>
+  <q-breadcrumbs active-color="info">
     <q-breadcrumbs-el label="首页" :icon="mdiHome" />
-    <q-breadcrumbs-el v-for="(item, i) in breadcrumbList" :key="i" :label="item.meta.title" :icon="item.meta.icon">
+    <q-breadcrumbs-el v-for="(item, i) in breadcrumbList" :key="i">
+      <q-icon size="xs">
+        <MdiIcon :icon="item.meta.icon"></MdiIcon>
+      </q-icon>
+      <span>{{ item.meta.title }}</span>
     </q-breadcrumbs-el>
   </q-breadcrumbs>
 </template>
 
 <script lang="ts" setup>
 import { mdiHome } from '@quasar/extras/mdi-v6';
-import { ICON } from '@/enums/icon';
-import { renderIcon } from '@/utils/common';
 import useAppStore from '@/store/module/app';
 import { useRouter } from 'vue-router';
+import MdiIcon from '@/components/MdiIcon/MdiIcon.vue';
 
 const router = useRouter();
 
@@ -64,9 +53,3 @@ const getRoutePath = (cRoute: any, routes: Array<any>) => {
   return result;
 };
 </script>
-
-<style lang="scss" scoped>
-.header-breadcrumb {
-  color: $topHeaderTextColor !important;
-}
-</style>

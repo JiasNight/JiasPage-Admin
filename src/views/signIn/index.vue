@@ -67,6 +67,7 @@
                   clearable
                   lazy-rules
                   :rules="[(val) => (val && val.length > 0) || $t('signIn.inputVerifyCodePlaceholder')]"
+                  @keyup.enter="submitSignInBtn"
                 >
                   <template #prepend>
                     <q-icon :name="mdiAlphabeticalVariant" />

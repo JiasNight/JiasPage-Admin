@@ -1,8 +1,8 @@
 <template>
-  <div class="logo-wrap" @click="$router.push('/index')">
+  <div class="logo-wrapper" @click="$router.push('/index')">
     <img class="logo-img" src="@/assets/images/logo.png" alt="logo" />
-    <!-- <span v-if="!collapsedValue" class="logo-text">PAGE</span> -->
-    <span class="logo-text">PAGE</span>
+    <span v-if="!collapsedValue" class="logo-text">PAGE</span>
+    <!-- <span class="logo-text">PAGE</span> -->
   </div>
 </template>
 
@@ -15,7 +15,7 @@ const collapsedValue: ComputedRef<boolean> = computed(() => appStore.getCollapse
 </script>
 
 <style lang="scss" scoped>
-.logo-wrap {
+.logo-wrapper {
   width: $siderBarWidth;
   display: flex;
   align-items: center;

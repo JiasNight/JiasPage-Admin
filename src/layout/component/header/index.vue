@@ -42,15 +42,12 @@
 
 <script lang="ts" setup>
 import { mdiMenu, mdiAccount, mdiDraw, mdiLogout, mdiEmail, mdiMagnify } from '@quasar/extras/mdi-v6';
-import { ICON } from '@/enums/icon';
-import { renderIcon } from '@/utils/common';
 import { IUserInfo } from '@/interface/common';
 import useUserStore from '@/store/module/user';
 import useAppStore from '@/store/module/app';
 import { useRouter } from 'vue-router';
 import Logo from '@/layout/component/logo/index.vue';
 import Breadcrumbs from '@/layout/component/header/breadcrumbs.vue';
-import ThemeStyle from '@/layout/component/themeStyle/index.vue';
 import { useQuasar } from 'quasar';
 
 const router = useRouter();

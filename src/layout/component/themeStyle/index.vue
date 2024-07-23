@@ -101,9 +101,7 @@
 </template>
 
 <script lang="ts" setup>
-import { renderIcon } from '@/utils/common';
 import useUserStore from '@/store/module/user';
-import { FormInst } from 'naive-ui';
 import { useRouter } from 'vue-router';
 import {
   mdiChartBox,
@@ -144,7 +142,6 @@ const props = defineProps({
 const emits = defineEmits(['close']);
 
 // 定义响应式数据
-let themeForm = $ref<FormInst | null>(null);
 let appThemeData = reactive<IThemeFormData>({
   model: true,
   color: '#6e40c9',

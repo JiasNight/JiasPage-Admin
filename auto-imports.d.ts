@@ -8,6 +8,7 @@ declare global {
   const BottomSheet: typeof import('quasar')['BottomSheet']
   const EffectScope: typeof import('vue')['EffectScope']
   const Loading: typeof import('quasar')['Loading']
+  const LoadingBar: typeof import('quasar')['LoadingBar']
   const NDropdown: typeof import('naive-ui')['NDropdown']
   const NI: typeof import('naive-ui')['NI']
   const NImage: typeof import('naive-ui')['NImage']

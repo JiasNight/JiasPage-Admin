@@ -1,6 +1,5 @@
 import axios, { Axios, AxiosResponse, AxiosRequestConfig, AxiosInstance, AxiosError } from 'axios';
-import { NotificationOptions, createDiscreteApi } from 'naive-ui';
-import { Notify } from 'quasar';
+import { Notify, Dialog } from 'quasar';
 import router from '@/router';
 import useUserStore from '@/store/module/user';
 import { handleResCode } from './common/requestCodeEnum';
@@ -8,8 +7,6 @@ import { handleResCode } from './common/requestCodeEnum';
 import { aesUtil, rsaUtil, publicKey } from './common/security';
 import { IResponse } from '@/interface/common';
 import { getToken } from './auth';
-
-const { message, dialog, notification } = createDiscreteApi(['message', 'dialog', 'notification']);
 
 const currentNotification = null;
 
@@ -110,33 +107,19 @@ class AxiosTool {
         // return Promise.reject(res); reject只有catch才能捕获到
         // 登录信息失效，跳转登录界面并清空token
         if (res.code === 401) {
-          // notification.error({
-          //   title: '系统提示',
-          //   content: '登录信息失效，请重新登录!'
-          // });
-          const d = dialog.warning({
+          Dialog.create({
             title: '系统提示',
-            content: '登录信息失效，请重新登录!',
-            positiveText: '确 定',
-            negativeText: '取 消',
-            onPositiveClick: () => {
-              useUserStore().logoutSystem();
-            },
-            onNegativeClick: () => {
-              // message.error('不确定');
-            }
+            message: '登录信息失效，请重新登录!',
+            cancel: true,
+            persistent: true,
+            color: 'negative'
+          }).onOk(() => {
+            useUserStore().logoutSystem();
           });
           return Promise.reject(res);
         } else if (res.code === 200) {
           return Promise.resolve(res);
         } else {
-          console.log(res);
-          // notification.error({
-          //   title: '请求错误',
-          //   content: res.message || '请求异常',
-          //   description: res.data,
-          //   duration: 2000
-          // });
           Notify.create({
             type: 'negative',
             position: 'top-right',
@@ -155,7 +138,11 @@ class AxiosTool {
           return;
         }
         if (!navigator.onLine) {
-          message.error('网络连接失败');
+          Notify.create({
+            type: 'negative',
+            position: 'top-right',
+            message: '网络连接失败'
+          });
           // 可以跳转到错误页面，也可以不做操作
           return router.replace({
             path: '/404'

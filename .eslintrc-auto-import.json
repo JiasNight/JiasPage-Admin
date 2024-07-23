@@ -95,6 +95,7 @@
     ")": true,
     "*": true,
     "Loading": true,
-    "BottomSheet": true
+    "BottomSheet": true,
+    "LoadingBar": true
   }
 }

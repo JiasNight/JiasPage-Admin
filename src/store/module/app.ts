@@ -9,8 +9,7 @@ import Layout from '@/layout/index.vue';
 import useTagStore from '@/store/module/tag';
 import useUserStore from '@/store/module/user';
 import router from '@/router';
-
-const { loadingBar } = createDiscreteApi(['loadingBar']);
+import { LoadingBar } from 'quasar';
 
 const modules = import.meta.glob('../../views/**/*.vue');
 
@@ -63,11 +62,11 @@ const useAppStore = defineStore({
   actions: {
     // 重新加载页面
     reloadPage() {
-      loadingBar.start();
+      LoadingBar.start();
       this.reloadViews = true;
       nextTick(() => {
         this.reloadViews = false;
-        loadingBar.finish();
+        LoadingBar.stop();
       });
       setTimeout(() => {
         document.documentElement.scrollTo({ left: 0, top: 0 });

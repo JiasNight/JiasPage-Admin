@@ -8,9 +8,10 @@ export default defineConfig({
     ['flex', { display: 'flex' }],
     ['c-p', { cursor: 'pointer' }],
     ['p-r', { position: 'relative' }],
+    ['p-a', { position: 'absolute' }],
     // 使用时只需要写 p-c 即可应用该组样式
     [
-      'p-c',
+      'p-a-center',
       {
         position: 'absolute',
         top: '50%',
@@ -18,6 +19,8 @@ export default defineConfig({
         transform: 'translate(-50%, -50%)'
       }
     ],
+    ['w-100', { width: '6.25rem' }],
+    ['w-200', { width: '12.5rem' }],
     [/^m-(\d+)$/, ([, d]) => ({ margin: `${Number(d) * 10}px` })]
   ],
   // 组合样式 自定义

@@ -5,11 +5,11 @@
       <q-btn dense flat round :icon="mdiMenu" @click="handleToggleSider" />
       <Breadcrumbs></Breadcrumbs>
       <q-space />
-      <!-- <q-input v-model="searchValue" flat dark borderless rounded outlined>
+      <q-input v-model="searchValue" flat dark borderless rounded dense outlined>
         <template #append>
           <q-icon :name="mdiMagnify"></q-icon>
         </template>
-      </q-input> -->
+      </q-input>
       <q-btn flat dense color="purple" round :icon="mdiEmail">
         <q-badge color="red" floating>4</q-badge>
         <q-tooltip anchor="top middle" self="center middle"> 你有4条消息待处理！ </q-tooltip>

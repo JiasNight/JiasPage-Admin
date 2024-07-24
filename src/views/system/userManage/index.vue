@@ -1,213 +1,81 @@
 <template>
-  <div class="view-container">
-    <n-grid cols="1 600:2 800:6 1000:8" :x-gap="10">
-      <n-grid-item class="grid-left" span="1 600:1 800:2 1000:2">
-        <n-card>
-          <n-space justify="end" item-style="margin-bottom: 0.625rem">
-            <n-tooltip trigger="hover">
-              <template #trigger>
-                <n-button strong secondary circle type="info" size="small" @click="refreshTreeBtn">
-                  <template #icon>
-                    <n-icon>
-                      <icon-mdi:refresh></icon-mdi:refresh>
-                    </n-icon>
-                  </template>
-                </n-button>
-              </template>
-              <span>刷新</span>
-            </n-tooltip>
-          </n-space>
-          <n-input v-model:value="deptTreePattern" placeholder="搜索" />
-          <template v-if="deptTreeLoading">
-            <div class="flex items-center justify-center py-4">
-              <n-spin size="medium" />
-            </div>
-          </template>
-          <template v-else>
-            <n-tree
-              :pattern="deptTreePattern"
-              :data="deptTreeData"
-              key-field="id"
-              label-field="name"
-              children-field="children"
-              block-line
-              default-expand-all
-              @update:selected-keys="handleClickTree"
+  <div class="view-container row justify-between">
+    <div class="col-xs-12 col-sm-6 col-md-2 col-lg-2 col-xl-3">
+      <LeftTree
+        :data="deptTreeData"
+        :loading="deptTreeLoading"
+        node-key="id"
+        label-key="name"
+        @refresh="refreshTreeBtn"
+        @selected="handleClickTree"
+      ></LeftTree>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-10 col-lg-10 col-xl-9 q-pl-md">
+      <q-card class="q-pa-md" flat bordered>
+        <q-form class="row items-center q-gutter-md">
+          <div class="row items-center q-gutter-xs">
+            <span class="text-size-base">用户名</span>
+            <q-input v-model="userFormData.username" class="w-200" outlined dense clearable placeholder="请输入用户名">
+            </q-input>
+          </div>
+          <div class="row items-center q-gutter-xs">
+            <span class="text-size-base">用户昵称</span>
+            <q-input v-model="userFormData.userNick" class="w-200" outlined dense clearable placeholder="请输入用户名">
+            </q-input>
+          </div>
+          <div class="row items-center q-gutter-xs">
+            <span class="text-size-base">手机号码</span>
+            <q-input v-model="userFormData.userPhone" class="w-200" outlined dense clearable placeholder="请输入用户名">
+            </q-input>
+          </div>
+          <div class="row items-center q-gutter-xs">
+            <span class="text-size-base">角色</span>
+            <q-select
+              v-model="userFormData.userAvatar"
+              class="w-200"
+              :options="roleOptions"
+              outlined
+              dense
+              placeholder="请选择用户名"
             />
-          </template>
-        </n-card>
-      </n-grid-item>
-      <n-grid-item class="grid-right" span="1 600:1 800:4 1000:6">
-        <n-form ref="queryForm" :model="queryFormData" inline label-placement="left" label-width="auto">
-          <n-grid cols="6" responsive="screen" :x-gap="20">
-            <n-form-item-gi span="2" label="用户名">
-              <n-input v-model:value="queryFormData.userName" clearable placeholder="请输入用户名" />
-            </n-form-item-gi>
-            <n-form-item-gi span="2" label="登录账户">
-              <n-input v-model:value="queryFormData.userAccount" clearable placeholder="请输入登录账户" />
-            </n-form-item-gi>
-            <n-form-item-gi span="2" label="手机">
-              <n-input v-model:value="queryFormData.userPhone" clearable placeholder="请输入手机" />
-            </n-form-item-gi>
-            <n-form-item-gi span="2" label="角色">
-              <n-select
-                v-model:value="queryFormData.userRole"
-                placeholder="请选择角色名称"
-                :options="roleOptions"
-                multiple
-                clearable
-              />
-            </n-form-item-gi>
-            <n-form-item-gi span="2" label="创建时间">
-              <n-date-picker
-                v-model:value="queryFormData.dataRange"
-                type="daterange"
-                value-format="yyyy-MM-dd"
-                clearable
-              />
-            </n-form-item-gi>
-            <n-form-item-gi span="2">
-              <n-space>
-                <n-button attr-type="reset" @click="resetQueryFormBtn">
-                  <template #icon>
-                    <n-icon>
-                      <icon-mdi:autorenew></icon-mdi:autorenew>
-                    </n-icon>
-                  </template>
-                  重 置
-                </n-button>
-                <n-button attr-type="submit" type="primary" @click="queryTableDataBtn">
-                  <template #icon>
-                    <n-icon>
-                      <icon-mdi:magnify></icon-mdi:magnify>
-                    </n-icon>
-                  </template>
-                  查 询
-                </n-button>
-              </n-space>
-            </n-form-item-gi>
-          </n-grid>
-        </n-form>
-        <!-- 新增 -->
-        <n-space class="right-space" justify="end">
-          <n-button type="primary" @click="handleAddUser">
-            <template #icon>
-              <icon-mdi:plus></icon-mdi:plus>
-            </template>
-            新 增
-          </n-button>
-          <n-button type="primary">
-            <template #icon>
-              <icon-mdi:cloud-download-outline></icon-mdi:cloud-download-outline>
-            </template>
-            导 出
-          </n-button>
-        </n-space>
-        <!-- 表格 -->
-        <n-data-table
-          :columns="userTableHeaderColumns"
-          :data="userTableData"
-          :row-key="tableRowKey"
-          :row-class-name="rowClassName"
-          :bordered="true"
-          :single-line="false"
-          :loading="tableIsLoading"
-          :pagination="tablePagination"
-        >
-        </n-data-table>
-      </n-grid-item>
-    </n-grid>
-    <!-- 新增和修改用户信息弹框 -->
-    <n-modal
-      v-model:show="showUserModal"
-      class="container-card"
-      preset="card"
-      :title="userModelTitle"
-      :auto-focus="false"
-      :style="{ width: '37.5rem' }"
-    >
-      <n-form
-        ref="userFormRef"
-        :model="userFormData"
-        :rules="userFormRules"
-        label-placement="left"
-        label-width="auto"
-        require-mark-placement="left"
+          </div>
+
+          <div class="row items-center q-gutter-xs">
+            <q-btn label="查 询" color="primary" :icon="mdiMagnify" @click="queryTableDataBtn" />
+            <q-btn label="重 置" color="info" :icon="mdiRestore" @click="resetQueryFormBtn" />
+          </div>
+        </q-form>
+      </q-card>
+
+      <q-table
+        class="q-mt-md"
+        :loading="tableIsLoading"
+        :rows="userTableData"
+        :columns="userTableHeaderColumns"
+        row-key="userId"
+        separator="cell"
+        flat
+        bordered
       >
-        <n-grid :cols="24" :x-gap="20">
-          <n-form-item-gi :span="12" label="用户账号" path="userName">
-            <n-input v-model:value="userFormData.userName" maxlength="20" placeholder="请输入菜单名称" />
-          </n-form-item-gi>
-          <n-form-item-gi :span="12" label="用户密码" path="userPassword">
-            <n-input
-              v-model:value="userFormData.userPassword"
-              type="password"
-              maxlength="20"
-              placeholder="请输入用户密码"
-            />
-          </n-form-item-gi>
-          <n-form-item-gi :span="12" label="用户昵称" path="userNick">
-            <n-input v-model:value="userFormData.userNick" maxlength="20" placeholder="请输入名称代码" />
-          </n-form-item-gi>
-          <n-form-item-gi :span="12" label="所属部门" path="userDept">
-            <n-cascader
-              v-model:value="userFormData.userDept"
-              placeholder="请选择部门"
-              :options="deptTreeData"
-              :show-path="true"
-            />
-          </n-form-item-gi>
-          <n-form-item-gi :span="12" label="用户性别" path="userGender">
-            <n-radio-group v-model:value="userFormData.userGender" name="genderType">
-              <n-radio :value="0" label="女"> </n-radio>
-              <n-radio :value="1" label="男"> </n-radio>
-            </n-radio-group>
-          </n-form-item-gi>
-          <n-form-item-gi :span="12" label="出身日期" path="userBirthday">
-            <n-date-picker
-              v-model:formatted-value="userFormData.userBirthday"
-              type="date"
-              format="yyyy年-MM月-dd日"
-              value-format="yyyy-MM-dd"
-            />
-          </n-form-item-gi>
-          <n-form-item-gi :span="12" label="用户手机" path="userPhone">
-            <n-input v-model:value="userFormData.userPhone" maxlength="11" placeholder="请输入用户手机" />
-          </n-form-item-gi>
-          <n-form-item-gi :span="12" label="电子邮箱" path="userEmail">
-            <n-input v-model:value="userFormData.userEmail" type="email" maxlength="50" placeholder="请输入电子邮箱" />
-          </n-form-item-gi>
-          <n-form-item-gi :span="12" label="所在城市" path="userCity">
-            <n-input v-model:value="userFormData.userCity" maxlength="50" placeholder="请输入所在城市" />
-          </n-form-item-gi>
-          <n-form-item-gi :span="12" label="状态" path="userStatus">
-            <n-switch v-model:value="userFormData.userStatus" :checked-value="0" :unchecked-value="1">
-              <template #checked> 启用 </template>
-              <template #unchecked> 关闭 </template>
-            </n-switch>
-          </n-form-item-gi>
-          <n-form-item-gi :span="12" label="备注" path="userMarks">
-            <n-input
-              v-model:value="userFormData.userMarks"
-              type="textarea"
-              :autosize="{
-                minRows: 2,
-                maxRows: 3
-              }"
-              show-count
-              maxlength="100"
-              placeholder="请输入备注"
-            />
-          </n-form-item-gi>
-        </n-grid>
-      </n-form>
-      <template #footer>
-        <n-space justify="end">
-          <n-button type="primary" :loading="confirmLoading" @click="handleConfirm">确 定</n-button>
-          <n-button type="default" @click="showUserModal = false">取 消</n-button>
-        </n-space>
-      </template>
-    </n-modal>
+        <template #loading>
+          <q-inner-loading showing color="primary" />
+        </template>
+        <template #body-cell-userAvatar="props">
+          <q-td :props="props">
+            <!-- <span>{{ props.value }}</span> -->
+            <q-avatar square>
+              <img src="https://picsum.photos/200" />
+            </q-avatar>
+          </q-td>
+        </template>
+        <template #body-cell-ops="props">
+          <q-td :props="props">
+            <q-btn push flat dense color="primary" :icon="mdiPlus" label="新增"> </q-btn>
+            <q-btn flat dense color="primary" :icon="mdiPencil" label="编辑" />
+          </q-td>
+        </template>
+      </q-table>
+    </div>
     <!-- 用户角色权限弹框 -->
     <UserRoles :show="showUserRoleModal" @close="showUserRoleModal = false"></UserRoles>
     <!-- 修改用户密码 -->
@@ -236,9 +104,12 @@ import { getUserList } from '@/api/system/userManage';
 import { getDeptList } from '@/api/system/deptManage';
 import UserRoles from './components/UserRoles.vue';
 import ModifyPassword from './components/ModifyPassword.vue';
+import { mdiMagnify, mdiPencil, mdiPlus, mdiRestore } from '@quasar/extras/mdi-v6';
+import LeftTree from '@/components/LeftTree/index.vue';
+import { QTableColumn, QTreeNode } from 'quasar';
 
 interface IQueryForm {
-  userName: string | null;
+  username: string | null;
   userAccount: string | null;
   userPhone: string | null;
   userRole: Array<string> | null;
@@ -246,8 +117,9 @@ interface IQueryForm {
 }
 
 type IUserTable = {
+  index?: number;
   userId: string;
-  userName: string;
+  username: string;
   userAccount: string;
   userRole: string;
   userAvatar: string;
@@ -256,7 +128,7 @@ type IUserTable = {
 
 interface IUserForms {
   userId: string;
-  userName: string;
+  username: string;
   userPassword: string;
   userNick: string;
   userEmail: string;
@@ -272,7 +144,7 @@ interface IUserForms {
 
 let emptyUserForm = {
   userId: '',
-  userName: '',
+  username: '',
   userPassword: '',
   userNick: '',
   userDept: '',
@@ -295,22 +167,7 @@ let currentSelectedTreeKey: any = null;
 
 let deptTreePattern = $ref<string>('');
 
-let deptTreeData = $ref<TreeOption[]>([
-  {
-    label: '部门1',
-    key: '0',
-    children: [
-      {
-        label: '部门1.1',
-        key: '0-0'
-      },
-      {
-        label: '部门1.2',
-        key: '0-1'
-      }
-    ]
-  }
-]);
+let deptTreeData = $ref<QTreeNode[]>([]);
 
 let tableRowKey = (rowData: IUserTable) => {
   return rowData.userId;
@@ -319,7 +176,7 @@ let tableRowKey = (rowData: IUserTable) => {
 let queryForm = $ref<FormInst | null>(null);
 
 let queryFormData = $ref<IQueryForm>({
-  userName: null,
+  username: null,
   userAccount: null,
   userPhone: null,
   userRole: null,
@@ -340,7 +197,7 @@ let userModelTitle = $ref<string>('');
 let userFormData = $ref<IUserForms>(JSON.parse(JSON.stringify(emptyUserForm)));
 
 let userFormRules = {
-  userName: {
+  username: {
     required: true,
     trigger: 'blur',
     message: '请输入用户账户'
@@ -354,152 +211,51 @@ let userFormRules = {
 
 let confirmLoading = $ref<boolean>(false);
 
-let tableIsLoading = $ref<boolean | null>(false);
+let tableIsLoading = $ref<boolean>(false);
 
 let showUserRoleModal = $ref<boolean>(false);
 
 let showModifyPasswordModal = $ref<boolean>(false);
 
-let userTableHeaderColumns = $ref<DataTableColumns>([
+let userTableHeaderColumns = $ref<QTableColumn[]>([
   {
-    title: '序号',
-    key: 'index',
+    label: '序号',
+    name: 'index',
+    field: 'index',
     align: 'center',
-    titleAlign: 'center',
-    width: '60',
-    render: (row, index) => {
-      return index + 1;
-    }
+    headerStyle: 'font-weight: bold'
   },
-  { title: '用户账号', key: 'username', align: 'center' },
-  { title: '用户昵称', key: 'userNick', align: 'center' },
+  { label: '用户账号', name: 'username', field: 'username', align: 'center', headerStyle: 'font-weight: bold' },
+  { label: '用户昵称', name: 'userNick', field: 'userNick', align: 'center', headerStyle: 'font-weight: bold' },
   {
-    title: '头像',
-    key: 'userAvatar',
+    label: '头像',
+    name: 'userAvatar',
+    field: 'userAvatar',
+    format: (val) => `${val}`,
     align: 'center',
-    render: (row) => {
-      return h('n-space', [
-        h(NImage, {
-          src: 'https://picsum.photos/id/1/100/100',
-          width: 20,
-          lazy: true,
-          'show-toolbar-tooltip': true
-        })
-      ]);
-    }
+    headerStyle: 'font-weight: bold'
   },
   {
-    title: '角色',
-    key: 'userRole',
+    label: '手机号',
+    name: 'userPhone',
+    field: 'userPhone',
     align: 'center',
-    render: (row, index) => {
-      if (row.userRole === '0') return '角色1';
-      else return '角色2';
-    }
+    headerStyle: 'font-weight: bold'
   },
-  { title: '创建时间', key: 'createTime', align: 'center' },
   {
-    title: '操作',
-    key: 'ops',
+    label: '创建时间',
+    name: 'createTime',
+    field: 'createTime',
+    sortable: true,
     align: 'center',
-    width: '250',
-    render: (row) => {
-      return h(
-        NSpace,
-        { justify: 'center', align: 'center' },
-        {
-          default: () => [
-            h(
-              NButton,
-              {
-                text: true,
-                type: 'primary',
-                onClick: (e: any) => {
-                  userFormData = JSON.parse(JSON.stringify(row));
-                  userModelTitle = '编辑用户';
-                  showUserModal = true;
-                }
-              },
-              {
-                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, 'mdi:playlist-edit') }),
-                default: () => h('span', '编辑')
-              }
-            ),
-            h(
-              NDropdown,
-              {
-                options: [
-                  {
-                    label: '角色权限',
-                    key: 'userRole',
-                    icon: renderIcon(ICON.F, 'mdi:account-multiple-check')
-                  },
-                  {
-                    label: '修改密码',
-                    key: 'modifyPassword',
-                    icon: renderIcon(ICON.F, 'mdi:account-key')
-                  },
-                  {
-                    label: '重置密码',
-                    key: 'resetPassword',
-                    icon: renderIcon(ICON.F, 'mdi:lock-reset')
-                  }
-                ],
-                onSelect: (key: string): void => {
-                  if (key === 'userRole') {
-                    showUserRoleModal = true;
-                  } else if (key === 'modifyPassword') {
-                    showModifyPasswordModal = true;
-                  } else if (key === 'resetPassword') {
-                    handleResetPassword();
-                  }
-                }
-              },
-              {
-                default: () =>
-                  h(
-                    NButton,
-                    {
-                      text: true,
-                      type: 'primary'
-                    },
-                    {
-                      icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, 'mdi:chevron-triple-right') }),
-                      default: () => h('span', '更多')
-                    }
-                  )
-              }
-            ),
-            h(
-              NButton,
-              {
-                text: true,
-                type: 'error',
-                onClick: (e: any) => {
-                  window.$dialog.warning({
-                    title: '警告',
-                    content: '你是否确定进行删除？',
-                    positiveText: '确定',
-                    negativeText: '不确定',
-                    onPositiveClick: () => {
-                      console.log(row);
-                      window.$message.success('确定');
-                    },
-                    onNegativeClick: () => {
-                      window.$message.error('不确定');
-                    }
-                  });
-                }
-              },
-              {
-                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, 'mdi:delete') }),
-                default: () => h('span', '删除')
-              }
-            )
-          ]
-        }
-      );
-    }
+    headerStyle: 'font-weight: bold'
+  },
+  {
+    label: '操作',
+    name: 'ops',
+    field: 'ops',
+    align: 'center',
+    headerStyle: 'font-weight: bold'
   }
 ]);
 
@@ -525,24 +281,27 @@ let tablePagination = $ref<PaginationProps>({
 
 // 刷新树
 const refreshTreeBtn = () => {
-  deptTreeLoading = true;
-  setTimeout(() => {
-    deptTreeLoading = false;
-  }, 1000);
+  getDeptData();
 };
 
 // 获取部门树
 const getDeptData = () => {
-  getDeptList().then((res: IRes) => {
-    if (res && res.code === 200) {
-      deptTreeData = res.data;
-    }
-  });
+  deptTreeLoading = true;
+  getDeptList()
+    .then((res: IRes) => {
+      if (res && res.code === 200) {
+        deptTreeData = res.data;
+        deptTreeLoading = false;
+      }
+    })
+    .catch(() => {
+      deptTreeLoading = false;
+    });
 };
 
 // 点击树
-const handleClickTree = (keys: Array<any>) => {
-  currentSelectedTreeKey = keys[0];
+const handleClickTree = (key: String) => {
+  currentSelectedTreeKey = key;
   getUserTable();
 };
 
@@ -559,7 +318,11 @@ const getUserTable = () => {
     .then((res: IRes) => {
       if (res && res.code === 200) {
         let reData = res.data;
-        userTableData = reData.records;
+        let tableData = reData.records;
+        tableData.forEach((item: IUserTable, index: number) => {
+          item.index = index + 1;
+        });
+        userTableData = tableData;
         tablePagination.itemCount = reData.total;
       }
       tableIsLoading = false;
@@ -630,14 +393,5 @@ const handleResetPassword = () => {
 
 <style lang="scss" scoped>
 .view-container {
-  .grid-left {
-    min-width: 12.5rem;
-  }
-  .grid-right {
-    min-width: 12.5rem;
-    .right-space {
-      margin-bottom: 0.625rem;
-    }
-  }
 }
 </style>

@@ -6,6 +6,7 @@
 export {}
 declare global {
   const BottomSheet: typeof import('quasar')['BottomSheet']
+  const Dialog: typeof import('quasar')['Dialog']
   const EffectScope: typeof import('vue')['EffectScope']
   const Loading: typeof import('quasar')['Loading']
   const LoadingBar: typeof import('quasar')['LoadingBar']

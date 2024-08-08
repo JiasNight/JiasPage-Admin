@@ -26,3 +26,14 @@ export const getDynamicRoutes = () => {
     method: 'get'
   });
 };
+
+// 登出系统
+export const setLogoutSystem = () => {
+  return service.request({
+    url: '/authApi/system/logout',
+    method: 'get',
+    headers: {
+      hasToken: false
+    }
+  });
+};

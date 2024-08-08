@@ -9,19 +9,6 @@
 
 @import './app-variables.scss';
 
-:root {
-  // font-size: 16px;
-  // line-height: 24px;
-  // font-weight: 400;
-  // color-scheme: light dark;
-  // background-color: #242424;
-  // font-synthesis: none;
-  // text-rendering: optimizelegibility;
-  // -moz-osx-font-smoothing: grayscale;
-  // -webkit-font-smoothing: antialiased;
-  // text-size-adjust: 100%;
-}
-
 html {
   overflow: hidden !important;
   width: 100vw;
@@ -50,11 +37,6 @@ img {
   max-width: 100%;
   border: 0;
   vertical-align: middle;
-}
-
-// 去掉图片低测默认的3像素空白缝隙
-table {
-  border-collapse: collapse;
 }
 
 /* 自定义滚动条样式 */
@@ -97,11 +79,6 @@ body {
   min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
 #app {
   width: 100%;
   height: 100%;
@@ -118,21 +95,13 @@ h1 {
   -o-border-radius: 0.3125rem;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    // color: #213547;
-    background-color: #fff;
-  }
-
-  a:hover {
-    color: #747bff;
-  }
+.cus-table-th {
+  background-color: #f8faff !important;
+  font-size: 0.8rem !important;
+  font-weight: bold !important;
+  color: #4e5d78 !important;
 }
 
-.n-button {
-  background-color: var(--n-color);
-}
-
-.n-button .n-button__icon {
-  margin: 0 !important;
+.cus-table-td {
+  font-size: 0.875rem !important;
 }

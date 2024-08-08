@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { userSignIn, getUserInfo } from '@/api/signIn/index';
+import { setLogoutSystem } from '@/api/app/index';
 import { setToken, removeToken } from '@/utils/auth';
 import { IRes, IUserInfo } from '@/interface/common';
 import { aesUtil, rsaUtil } from '@/utils/common/security';
@@ -68,11 +69,15 @@ const useUserStore = defineStore({
     },
     // 退出系统
     logoutSystem() {
-      removeToken();
-      this.userInfo = null;
-      useAppStore().routes = [];
-      localStorage.clear();
-      router.push('/signIn');
+      setLogoutSystem().then((res: IRes) => {
+        if (res && res.code === 200) {
+          removeToken();
+          this.userInfo = null;
+          useAppStore().routes = [];
+          localStorage.clear();
+          router.push('/signIn');
+        }
+      });
     }
   },
   // 所有数据持久化

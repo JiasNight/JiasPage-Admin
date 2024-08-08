@@ -30,9 +30,14 @@ export const setupPermission = (router: Router) => {
         const routesLength = toRaw(currentRoutes);
         // 如果没有路由信息，则通过当前用户获取路由表
         if (routesLength.length === 0) {
-          await appStore.generateRoutes().then(() => {
-            return { ...to, replace: true };
-          });
+          await appStore
+            .generateRoutes()
+            .then(() => {
+              return { ...to, replace: true };
+            })
+            .catch(() => {
+              useUserStore().logoutSystem();
+            });
         } else {
           return;
         }

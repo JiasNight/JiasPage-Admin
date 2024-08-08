@@ -15,29 +15,60 @@
         <q-form class="row items-center q-gutter-md">
           <div class="row items-center q-gutter-xs">
             <span class="text-size-base">用户名</span>
-            <q-input v-model="userFormData.username" class="w-200" outlined dense clearable placeholder="请输入用户名">
+            <q-input v-model="queryFormData.username" class="w-200" outlined dense clearable placeholder="请输入用户名">
             </q-input>
           </div>
           <div class="row items-center q-gutter-xs">
             <span class="text-size-base">用户昵称</span>
-            <q-input v-model="userFormData.userNick" class="w-200" outlined dense clearable placeholder="请输入用户名">
+            <q-input v-model="queryFormData.nickName" class="w-200" outlined dense clearable placeholder="请输入用户名">
             </q-input>
           </div>
           <div class="row items-center q-gutter-xs">
             <span class="text-size-base">手机号码</span>
-            <q-input v-model="userFormData.userPhone" class="w-200" outlined dense clearable placeholder="请输入用户名">
+            <q-input
+              v-model="queryFormData.phoneNumber"
+              class="w-200"
+              outlined
+              dense
+              clearable
+              placeholder="请输入用户名"
+            >
             </q-input>
           </div>
           <div class="row items-center q-gutter-xs">
             <span class="text-size-base">角色</span>
             <q-select
-              v-model="userFormData.userAvatar"
+              v-model="queryFormData.userRole"
               class="w-200"
               :options="roleOptions"
               outlined
               dense
               placeholder="请选择用户名"
             />
+          </div>
+          <div class="row items-center q-gutter-xs">
+            <span class="text-size-base">创建日期</span>
+            <q-input
+              v-model="queryFormData.createDate"
+              class="w-200"
+              outlined
+              dense
+              mask="date"
+              placeholder="请选择日期"
+            >
+              <template #append>
+                <q-icon :name="mdiCalendar" class="cursor-pointer">
+                  <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                    <q-date v-model="queryFormData.dateRange" minimal mask="YYYY-MM-DD">
+                      <div class="row items-center justify-end">
+                        <q-btn v-close-popup label="确定" color="primary" />
+                        <q-btn v-close-popup label="关闭" color="info" flat />
+                      </div>
+                    </q-date>
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
           </div>
 
           <div class="row items-center q-gutter-xs">
@@ -53,9 +84,12 @@
         :rows="userTableData"
         :columns="userTableHeaderColumns"
         row-key="userId"
-        separator="cell"
+        separator="horizontal"
         flat
         bordered
+        :pagination="pageInfo"
+        :rows-per-page-options="[10, 20, 50, 100]"
+        @request="queryTableDataBtn"
       >
         <template #loading>
           <q-inner-loading showing color="primary" />
@@ -70,8 +104,9 @@
         </template>
         <template #body-cell-ops="props">
           <q-td :props="props">
-            <q-btn push flat dense color="primary" :icon="mdiPlus" label="新增"> </q-btn>
-            <q-btn flat dense color="primary" :icon="mdiPencil" label="编辑" />
+            <q-btn push flat dense color="accent" :icon="mdiPlus" label="新增"> </q-btn>
+            <q-btn flat dense color="primary" :icon="mdiPlaylistEdit" label="编辑" />
+            <q-btn flat dense color="info" :icon="mdiArrowRight" label="更多" />
           </q-td>
         </template>
       </q-table>
@@ -86,17 +121,6 @@
 <script lang="ts" setup>
 import { ICON } from '@/enums/icon';
 import { Ref, ComputedRef, h, Component } from 'vue';
-import {
-  TreeOption,
-  FormInst,
-  DataTableColumns,
-  NButton,
-  NIcon,
-  useDialog,
-  useMessage,
-  PaginationProps,
-  PaginationInfo
-} from 'naive-ui';
 import { resetForm } from '@/utils/common';
 import { IRes } from '@/interface/common';
 import useUserStore from '@/store/module/user';
@@ -104,16 +128,25 @@ import { getUserList } from '@/api/system/userManage';
 import { getDeptList } from '@/api/system/deptManage';
 import UserRoles from './components/UserRoles.vue';
 import ModifyPassword from './components/ModifyPassword.vue';
-import { mdiMagnify, mdiPencil, mdiPlus, mdiRestore } from '@quasar/extras/mdi-v6';
+import {
+  mdiArrowRight,
+  mdiCalendar,
+  mdiMagnify,
+  mdiPencil,
+  mdiPlaylistEdit,
+  mdiPlus,
+  mdiRestore
+} from '@quasar/extras/mdi-v6';
 import LeftTree from '@/components/LeftTree/index.vue';
-import { QTableColumn, QTreeNode } from 'quasar';
+import { QPagination, QTableColumn, QTreeNode } from 'quasar';
 
 interface IQueryForm {
   username: string | null;
-  userAccount: string | null;
-  userPhone: string | null;
+  nickName: string | null;
+  phoneNumber: string | null;
   userRole: Array<string> | null;
-  dataRange: Array<[string, string]> | null;
+  createDate: string;
+  dateRange: string;
 }
 
 type IUserTable = {
@@ -173,14 +206,13 @@ let tableRowKey = (rowData: IUserTable) => {
   return rowData.userId;
 };
 
-let queryForm = $ref<FormInst | null>(null);
-
 let queryFormData = $ref<IQueryForm>({
   username: null,
-  userAccount: null,
-  userPhone: null,
+  nickName: null,
+  phoneNumber: null,
   userRole: null,
-  dataRange: null
+  createDate: '',
+  dateRange: ''
 });
 
 let roleOptions = $ref<Array<object>>([
@@ -190,7 +222,7 @@ let roleOptions = $ref<Array<object>>([
 
 let showUserModal = $ref<boolean>(false);
 
-let userFormRef = $ref<FormInst | null>(null);
+let userFormRef = $ref<null>(null);
 
 let userModelTitle = $ref<string>('');
 
@@ -209,6 +241,12 @@ let userFormRules = {
   }
 };
 
+let pageInfo = $ref({
+  page: 1,
+  rowsPerPage: 3,
+  rowsNumber: 1
+});
+
 let confirmLoading = $ref<boolean>(false);
 
 let tableIsLoading = $ref<boolean>(false);
@@ -223,24 +261,41 @@ let userTableHeaderColumns = $ref<QTableColumn[]>([
     name: 'index',
     field: 'index',
     align: 'center',
-    headerStyle: 'font-weight: bold'
+    headerClasses: 'cus-table-th',
+    classes: 'cus-table-td'
   },
-  { label: '用户账号', name: 'username', field: 'username', align: 'center', headerStyle: 'font-weight: bold' },
-  { label: '用户昵称', name: 'userNick', field: 'userNick', align: 'center', headerStyle: 'font-weight: bold' },
+  {
+    label: '用户账号',
+    name: 'username',
+    field: 'username',
+    align: 'center',
+    headerClasses: 'cus-table-th',
+    classes: 'cus-table-td'
+  },
+  {
+    label: '用户昵称',
+    name: 'userNick',
+    field: 'userNick',
+    align: 'center',
+    headerClasses: 'cus-table-th',
+    classes: 'cus-table-td'
+  },
   {
     label: '头像',
     name: 'userAvatar',
     field: 'userAvatar',
     format: (val) => `${val}`,
     align: 'center',
-    headerStyle: 'font-weight: bold'
+    headerClasses: 'cus-table-th',
+    classes: 'cus-table-td'
   },
   {
     label: '手机号',
     name: 'userPhone',
     field: 'userPhone',
     align: 'center',
-    headerStyle: 'font-weight: bold'
+    headerClasses: 'cus-table-th',
+    classes: 'cus-table-td'
   },
   {
     label: '创建时间',
@@ -248,14 +303,16 @@ let userTableHeaderColumns = $ref<QTableColumn[]>([
     field: 'createTime',
     sortable: true,
     align: 'center',
-    headerStyle: 'font-weight: bold'
+    headerClasses: 'cus-table-th',
+    classes: 'cus-table-td'
   },
   {
     label: '操作',
     name: 'ops',
     field: 'ops',
     align: 'center',
-    headerStyle: 'font-weight: bold'
+    headerClasses: 'cus-table-th',
+    classes: 'cus-table-td'
   }
 ]);
 
@@ -266,18 +323,6 @@ let rowClassName = (row: IUserTable) => {
 };
 
 let userTableData: Array<IUserTable[]> = [];
-
-let tablePagination = $ref<PaginationProps>({
-  page: 1,
-  pageSize: 10,
-  itemCount: 0,
-  pageSizes: [10, 20, 30, 40, 50],
-  showQuickJumper: true,
-  showSizePicker: true,
-  prefix({ itemCount }: PaginationInfo) {
-    return `共 ${itemCount} 条`;
-  }
-});
 
 // 刷新树
 const refreshTreeBtn = () => {
@@ -310,8 +355,8 @@ const getUserTable = () => {
   const data = {
     ...queryFormData,
     deptId: currentSelectedTreeKey,
-    pageSize: tablePagination.pageSize,
-    pageNum: tablePagination.page
+    pageSize: pageInfo.rowsPerPage,
+    pageNum: pageInfo.page
   };
   tableIsLoading = true;
   getUserList(data)
@@ -323,7 +368,7 @@ const getUserTable = () => {
           item.index = index + 1;
         });
         userTableData = tableData;
-        tablePagination.itemCount = reData.total;
+        pageInfo.rowsNumber = reData.total;
       }
       tableIsLoading = false;
     })

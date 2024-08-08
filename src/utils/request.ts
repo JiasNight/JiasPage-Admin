@@ -125,9 +125,6 @@ class AxiosTool {
           });
           return Promise.resolve(res);
         }
-        // if (res.code && res.code !== 200) {
-        //   handleResCode(res.code);
-        // }
       },
       (error: AxiosError) => {
         const { response } = error;

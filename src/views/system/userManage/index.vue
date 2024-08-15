@@ -20,7 +20,7 @@
           </div>
           <div class="row items-center q-gutter-xs">
             <span class="text-size-base">用户昵称</span>
-            <q-input v-model="queryFormData.nickName" class="w-200" outlined dense clearable placeholder="请输入用户名">
+            <q-input v-model="queryFormData.nickname" class="w-200" outlined dense clearable placeholder="请输入用户名">
             </q-input>
           </div>
           <div class="row items-center q-gutter-xs">
@@ -36,33 +36,14 @@
             </q-input>
           </div>
           <div class="row items-center q-gutter-xs">
-            <span class="text-size-base">角色</span>
-            <q-select
-              v-model="queryFormData.userRole"
-              class="w-200"
-              :options="roleOptions"
-              outlined
-              dense
-              placeholder="请选择用户名"
-            />
-          </div>
-          <div class="row items-center q-gutter-xs">
             <span class="text-size-base">创建日期</span>
-            <q-input
-              v-model="queryFormData.createDate"
-              class="w-200"
-              outlined
-              dense
-              mask="date"
-              placeholder="请选择日期"
-            >
+            <q-input v-model="queryFormData.createDate" class="w-200" outlined dense clearable placeholder="请选择日期">
               <template #append>
                 <q-icon :name="mdiCalendar" class="cursor-pointer">
                   <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                    <q-date v-model="queryFormData.dateRange" minimal mask="YYYY-MM-DD">
+                    <q-date v-model="queryFormData.createDate" minimal mask="YYYY-MM-DD">
                       <div class="row items-center justify-end">
                         <q-btn v-close-popup label="确定" color="primary" />
-                        <q-btn v-close-popup label="关闭" color="info" flat />
                       </div>
                     </q-date>
                   </q-popup-proxy>
@@ -71,15 +52,19 @@
             </q-input>
           </div>
 
-          <div class="row items-center q-gutter-xs">
+          <div class="row items-center q-gutter-x-sm q-gutter-y-xs">
             <q-btn label="查 询" color="primary" :icon="mdiMagnify" @click="queryTableDataBtn" />
             <q-btn label="重 置" color="info" :icon="mdiRestore" @click="resetQueryFormBtn" />
           </div>
         </q-form>
       </q-card>
 
+      <div class="row items-center q-my-md q-gutter-x-sm">
+        <q-btn color="accent" :icon="mdiPlus" label="新增" @click="handleAddUser"> </q-btn>
+        <q-btn color="info" :icon="mdiDownload" label="导 出"> </q-btn>
+      </div>
+
       <q-table
-        class="q-mt-md"
         :loading="tableIsLoading"
         :rows="userTableData"
         :columns="userTableHeaderColumns"
@@ -94,9 +79,8 @@
         <template #loading>
           <q-inner-loading showing color="primary" />
         </template>
-        <template #body-cell-userAvatar="props">
+        <template #body-cell-avatar="props">
           <q-td :props="props">
-            <!-- <span>{{ props.value }}</span> -->
             <q-avatar square>
               <img src="https://picsum.photos/200" />
             </q-avatar>
@@ -104,13 +88,159 @@
         </template>
         <template #body-cell-ops="props">
           <q-td :props="props">
-            <q-btn push flat dense color="accent" :icon="mdiPlus" label="新增"> </q-btn>
             <q-btn flat dense color="primary" :icon="mdiPlaylistEdit" label="编辑" />
             <q-btn flat dense color="info" :icon="mdiArrowRight" label="更多" />
           </q-td>
         </template>
       </q-table>
     </div>
+    <!-- 新增和编辑弹框 -->
+    <q-dialog v-model="userInfoDialog" persistent>
+      <q-card bordered style="width: 700px; max-width: 80vw">
+        <q-card-section class="row items-center">
+          <div class="text-h6">{{ userInfoDialogTitle }}</div>
+          <q-space />
+          <q-btn v-close-popup :icon="mdiClose" flat round dense />
+        </q-card-section>
+        <q-card-section class="row items-center">
+          <MyForm ref="userFormRef" v-model="userFormData" label-width="80px" layout="horizontal">
+            <MyFormItem label="用户账号" required>
+              <q-input
+                v-model="userFormData.username"
+                class="w-200"
+                outlined
+                dense
+                clearable
+                lazy-rules
+                :rules="userFormRules.username"
+                hint=""
+                placeholder="请输入用户账号"
+              >
+              </q-input>
+            </MyFormItem>
+            <MyFormItem label="用户密码" required>
+              <q-input
+                v-model="userFormData.password"
+                class="w-200"
+                type="password"
+                outlined
+                dense
+                clearable
+                lazy-rules
+                :rules="userFormRules.password"
+                hint=""
+                placeholder="请输入用户密码"
+              >
+              </q-input>
+            </MyFormItem>
+            <MyFormItem label="用户昵称" required>
+              <q-input
+                v-model="userFormData.nickname"
+                class="w-200"
+                outlined
+                dense
+                clearable
+                lazy-rules
+                :rules="userFormRules.nickname"
+                hint=""
+                placeholder="请输入用户昵称"
+              >
+              </q-input>
+            </MyFormItem>
+            <MyFormItem label="手机号码" required>
+              <q-input
+                v-model="userFormData.phone"
+                class="w-200"
+                type="tel"
+                outlined
+                dense
+                clearable
+                lazy-rules
+                :rules="userFormRules.phone"
+                hint=""
+                placeholder="请输入手机号码"
+              >
+              </q-input>
+            </MyFormItem>
+            <MyFormItem label="电子邮箱" required>
+              <q-input
+                v-model="userFormData.email"
+                class="w-200"
+                type="email"
+                outlined
+                dense
+                clearable
+                lazy-rules
+                :rules="userFormRules.email"
+                hint=""
+                placeholder="请输入电子邮箱"
+              >
+              </q-input>
+            </MyFormItem>
+            <MyFormItem label="性别">
+              <q-select
+                v-model="userFormData.gender"
+                class="w-200"
+                transition-show="scale"
+                transition-hide="scale"
+                :options="genderOptions"
+                hint=""
+                emit-value
+                outlined
+                dense
+                options-dense
+                placeholder="请选择用户名"
+              />
+            </MyFormItem>
+            <MyFormItem label="出生日期">
+              <q-input
+                v-model="userFormData.birthday"
+                class="w-200"
+                outlined
+                dense
+                clearable
+                placeholder="请选择出生日期"
+                hint=""
+              >
+                <template #append>
+                  <q-icon :name="mdiCalendar" class="c-p">
+                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                      <q-date v-model="userFormData.birthday" minimal mask="YYYY-MM-DD">
+                        <div class="row items-center justify-end">
+                          <q-btn v-close-popup label="确定" color="primary" />
+                        </div>
+                      </q-date>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+            </MyFormItem>
+            <MyFormItem label="状态">
+              <q-toggle v-model="userFormData.status" class="w-200" color="info" :true-value="1" :false-value="0" />
+            </MyFormItem>
+            <MyFormItem label="备注" alone-row>
+              <q-input
+                v-model="userFormData.remarks"
+                class="w-200"
+                type="textarea"
+                outlined
+                dense
+                clearable
+                hint=""
+                placeholder="请输入备注"
+              >
+              </q-input>
+            </MyFormItem>
+          </MyForm>
+        </q-card-section>
+        <q-separator />
+        <q-card-actions align="right" class="q-ma-sm">
+          <q-btn flat label="重 置" color="primary" @click="handleResetForm" />
+          <q-btn v-close-popup flat label="取 消" color="primary" />
+          <q-btn label="确 定" color="primary" @click="handleSubmitForm" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
     <!-- 用户角色权限弹框 -->
     <UserRoles :show="showUserRoleModal" @close="showUserRoleModal = false"></UserRoles>
     <!-- 修改用户密码 -->
@@ -124,13 +254,18 @@ import { Ref, ComputedRef, h, Component } from 'vue';
 import { resetForm } from '@/utils/common';
 import { IRes } from '@/interface/common';
 import useUserStore from '@/store/module/user';
-import { getUserList } from '@/api/system/userManage';
+import { getUserList, newAddUser } from '@/api/system/userManage';
 import { getDeptList } from '@/api/system/deptManage';
 import UserRoles from './components/UserRoles.vue';
 import ModifyPassword from './components/ModifyPassword.vue';
+import MyForm from '@/components/MyForm/MyForm.vue';
+import MyFormItem from '@/components/MyForm/MyFormItem.vue';
 import {
   mdiArrowRight,
+  mdiAsterisk,
   mdiCalendar,
+  mdiClose,
+  mdiDownload,
   mdiMagnify,
   mdiPencil,
   mdiPlaylistEdit,
@@ -142,53 +277,54 @@ import { QPagination, QTableColumn, QTreeNode } from 'quasar';
 
 interface IQueryForm {
   username: string | null;
-  nickName: string | null;
+  nickname: string | null;
   phoneNumber: string | null;
-  userRole: Array<string> | null;
   createDate: string;
-  dateRange: string;
 }
 
 type IUserTable = {
   index?: number;
   userId: string;
   username: string;
-  userAccount: string;
-  userRole: string;
-  userAvatar: string;
+  nickname: string;
+  gender: number;
+  email: string;
+  avatar: string;
+  remarks: string;
+  createBy: string;
   createTime: string;
 };
 
 interface IUserForms {
   userId: string;
   username: string;
-  userPassword: string;
-  userNick: string;
-  userEmail: string;
-  userPhone: number;
-  userGender: number;
-  userBirthday: any | null;
-  userCity: string;
-  userDept: string;
-  userAvatar: string;
-  userStatus: number;
-  userMarks: string;
+  password: string;
+  nickname: string;
+  email: string;
+  phone: number;
+  gender: number;
+  birthday: any | null;
+  city: string;
+  dept: string;
+  avatar: string;
+  status: number;
+  remarks: string;
 }
 
 let emptyUserForm = {
   userId: '',
   username: '',
-  userPassword: '',
-  userNick: '',
-  userDept: '',
-  userEmail: '',
-  userPhone: '',
-  userGender: '',
-  userBirthday: null,
-  userCity: '',
-  userAvatar: '',
-  userStatus: 0,
-  userMarks: ''
+  password: '',
+  nickname: '',
+  email: '',
+  phone: '',
+  gender: 0,
+  birthday: '',
+  city: '',
+  dept: '',
+  avatar: '',
+  status: 0,
+  remarks: ''
 };
 
 // 引入全局方法
@@ -208,42 +344,38 @@ let tableRowKey = (rowData: IUserTable) => {
 
 let queryFormData = $ref<IQueryForm>({
   username: null,
-  nickName: null,
+  nickname: null,
   phoneNumber: null,
-  userRole: null,
-  createDate: '',
-  dateRange: ''
+  createDate: ''
 });
 
-let roleOptions = $ref<Array<object>>([
-  { label: '角1', value: 'role1' },
-  { label: '角2', value: 'role3' }
+let genderOptions = $ref<Array<object>>([
+  { label: '男', value: 0 },
+  { label: '女', value: 1 }
 ]);
 
-let showUserModal = $ref<boolean>(false);
+let userInfoDialog = $ref<boolean>(false);
 
-let userFormRef = $ref<null>(null);
+let userFormRef = $ref<any>(null);
 
-let userModelTitle = $ref<string>('');
+let userInfoDialogTitle = $ref<string>('');
 
 let userFormData = $ref<IUserForms>(JSON.parse(JSON.stringify(emptyUserForm)));
 
 let userFormRules = {
-  username: {
-    required: true,
-    trigger: 'blur',
-    message: '请输入用户账户'
-  },
-  userPassword: {
-    required: true,
-    trigger: 'blur',
-    message: '请输入用户密码'
-  }
+  username: [(val: string) => (val && val.length > 0) || '请输入用户账号'],
+  password: [(val: string) => (val && val.length > 0) || '请输入用户密码'],
+  nickname: [(val: string) => (val && val.length > 0) || '请输入用户昵称'],
+  phone: [(val: string) => (val && val.length > 0) || '请输入手机号码'],
+  email: [
+    (val: string) => (val && val.length > 0) || '',
+    (val: string, rules: any) => rules.email(val) || '请输入正确的邮箱地址'
+  ]
 };
 
 let pageInfo = $ref({
   page: 1,
-  rowsPerPage: 3,
+  rowsPerPage: 10,
   rowsNumber: 1
 });
 
@@ -274,16 +406,16 @@ let userTableHeaderColumns = $ref<QTableColumn[]>([
   },
   {
     label: '用户昵称',
-    name: 'userNick',
-    field: 'userNick',
+    name: 'nickname',
+    field: 'nickname',
     align: 'center',
     headerClasses: 'cus-table-th',
     classes: 'cus-table-td'
   },
   {
     label: '头像',
-    name: 'userAvatar',
-    field: 'userAvatar',
+    name: 'avatar',
+    field: 'avatar',
     format: (val) => `${val}`,
     align: 'center',
     headerClasses: 'cus-table-th',
@@ -291,8 +423,8 @@ let userTableHeaderColumns = $ref<QTableColumn[]>([
   },
   {
     label: '手机号',
-    name: 'userPhone',
-    field: 'userPhone',
+    name: 'phone',
+    field: 'phone',
     align: 'center',
     headerClasses: 'cus-table-th',
     classes: 'cus-table-td'
@@ -302,6 +434,14 @@ let userTableHeaderColumns = $ref<QTableColumn[]>([
     name: 'createTime',
     field: 'createTime',
     sortable: true,
+    align: 'center',
+    headerClasses: 'cus-table-th',
+    classes: 'cus-table-td'
+  },
+  {
+    label: '创建人',
+    name: 'createBy',
+    field: 'createBy',
     align: 'center',
     headerClasses: 'cus-table-th',
     classes: 'cus-table-td'
@@ -317,7 +457,7 @@ let userTableHeaderColumns = $ref<QTableColumn[]>([
 ]);
 
 let rowClassName = (row: IUserTable) => {
-  if (row.userAvatar) {
+  if (row.avatar) {
     return 'row-avatar';
   }
 };
@@ -379,7 +519,7 @@ const getUserTable = () => {
 
 // 重置查询内容
 const resetQueryFormBtn = () => {
-  queryFormData = resetForm(queryForm, queryFormData);
+  queryFormData = resetForm(queryFormData);
 };
 
 // 查询按钮
@@ -387,28 +527,37 @@ const queryTableDataBtn = () => {
   getUserTable();
 };
 
-// 加载之前
-onMounted(() => {
-  getDeptData();
-  getUserTable();
-});
-
 // 新增用户
 const handleAddUser = (): void => {
   userFormData = JSON.parse(JSON.stringify(emptyUserForm));
-  showUserModal = true;
-  userModelTitle = '新增用户';
+  userInfoDialogTitle = '新增用户';
+  userInfoDialog = true;
+  nextTick(() => {
+    userFormRef.resetValidation();
+    userFormRef.reset();
+  });
 };
 
 // 确定新增和修改按钮
-const handleConfirm = (): void => {
-  userFormRef?.validate((errors) => {
-    if (!errors) {
+const handleSubmitForm = (): void => {
+  userFormRef.validate().then((valid: boolean) => {
+    if (valid) {
+      //
       console.log(userFormData);
+      newAddUser(userFormData).then((res: IRes) => {
+        if (res && res.code === 200) {
+          userInfoDialog = false;
+          getUserTable();
+        }
+      });
     } else {
-      window.$message.error('表单必填项请填写！');
+      // 校验不通过
     }
   });
+};
+
+const handleResetForm = (): void => {
+  userFormRef.reset();
 };
 
 // 重置密码
@@ -434,6 +583,12 @@ const handleResetPassword = () => {
     }
   });
 };
+
+// 加载之前
+onMounted(() => {
+  getDeptData();
+  getUserTable();
+});
 </script>
 
 <style lang="scss" scoped>

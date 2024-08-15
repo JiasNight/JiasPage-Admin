@@ -5,9 +5,10 @@
       <q-btn dense flat round :icon="mdiMenu" @click="handleToggleSider" />
       <Breadcrumbs></Breadcrumbs>
       <q-space />
-      <q-input v-model="searchValue" flat dark borderless rounded dense outlined>
+      <q-input v-model="searchValue" dark standout rounded dense>
         <template #append>
-          <q-icon :name="mdiMagnify"></q-icon>
+          <q-icon v-if="searchValue === ''" :name="mdiMagnify" />
+          <q-icon v-else class="c-p" :name="mdiClose" @click="searchValue = ''" />
         </template>
       </q-input>
       <q-btn flat dense color="purple" round :icon="mdiEmail">
@@ -41,7 +42,7 @@
 </template>
 
 <script lang="ts" setup>
-import { mdiMenu, mdiAccount, mdiDraw, mdiLogout, mdiEmail, mdiMagnify } from '@quasar/extras/mdi-v6';
+import { mdiMenu, mdiAccount, mdiDraw, mdiLogout, mdiEmail, mdiMagnify, mdiClose } from '@quasar/extras/mdi-v6';
 import { IUserInfo } from '@/interface/common';
 import useUserStore from '@/store/module/user';
 import useAppStore from '@/store/module/app';

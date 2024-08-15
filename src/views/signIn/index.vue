@@ -24,7 +24,7 @@
           <q-tooltip> {{ $t('signIn.language') }} </q-tooltip>
         </q-btn>
         <div class="signIn-form">
-          <q-form ref="signInForm" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false">
+          <q-form ref="signInFormRef" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false">
             <q-input
               v-model="adminFormData.username"
               class="form-item"
@@ -209,7 +209,7 @@ const adminFormRules = reactive({
   }
 });
 
-const signInForm: any = $ref<null>(null);
+const signInFormRef: any = $ref<null>(null);
 
 let isPwd: boolean = $ref(true);
 
@@ -219,7 +219,7 @@ let isRememberPassword: Boolean = $ref(false);
 
 const submitSignInBtn = (e: Event) => {
   e.preventDefault();
-  signInForm.validate().then((valid: any) => {
+  signInFormRef.validate().then((valid: any) => {
     if (valid) {
       // 是的，模型是正确的
       submitBtnIsLoading = true;

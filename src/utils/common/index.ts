@@ -80,19 +80,41 @@ export function getRandomColor() {
  * * 重置表单对象
  * @param refsEl 表单元素
  */
-export const resetForm = (refsEl: FormInst | null, formObj: any) => {
-  const object = formObj;
-  const resultObj: any = {};
+export const resetForm = (formData: any) => {
+  const object = formData;
+  const resultFormData: any = {};
   for (const key in object) {
     if (Object.prototype.hasOwnProperty.call(object, key)) {
-      let ele = object[key];
-      // Array.isArray(ele) ? (ele = []) : (ele = null);
-      ele = null;
-      resultObj[key] = ele;
+      let value = object[key];
+      const valType = Object.prototype.toString.call(value).slice(8, -1);
+      console.log(value);
+      console.log(valType);
+      switch (valType) {
+        case 'Array':
+          value = [];
+          break;
+        case 'Object':
+          value = {};
+          break;
+        case 'String':
+          value = '';
+          break;
+        case 'Boolean':
+          value = false;
+          break;
+        case 'Number':
+          value = 0;
+          break;
+        case 'Null':
+          value = null;
+          break;
+        default:
+          break;
+      }
+      resultFormData[key] = value;
     }
   }
-  if (refsEl) refsEl.restoreValidation();
-  return resultObj;
+  return resultFormData;
 };
 
 // /**

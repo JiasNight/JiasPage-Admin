@@ -81,9 +81,10 @@
         </template>
         <template #body-cell-avatar="props">
           <q-td :props="props">
-            <q-avatar square>
+            <!-- <q-avatar square>
               <img src="https://picsum.photos/200" />
-            </q-avatar>
+            </q-avatar> -->
+            <MyImage src="https://picsum.photos/200"></MyImage>
           </q-td>
         </template>
         <template #body-cell-ops="props">
@@ -260,6 +261,7 @@ import UserRoles from './components/UserRoles.vue';
 import ModifyPassword from './components/ModifyPassword.vue';
 import MyForm from '@/components/MyForm/MyForm.vue';
 import MyFormItem from '@/components/MyForm/MyFormItem.vue';
+import MyImage from '@/components/MyImage/MyImage.vue';
 import {
   mdiArrowRight,
   mdiAsterisk,

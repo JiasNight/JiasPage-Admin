@@ -1,6 +1,6 @@
 <template>
   <div class="view-container row justify-between">
-    <div class="col-xs-12 col-sm-6 col-md-2 col-lg-2 col-xl-3">
+    <div class="col-xs-12 col-sm-6 col-md-2 col-lg-2 col-xl-3 q-pa-sm">
       <LeftTree
         :data="deptTreeData"
         :loading="deptTreeLoading"
@@ -10,7 +10,7 @@
         @selected="handleClickTree"
       ></LeftTree>
     </div>
-    <div class="col-xs-12 col-sm-6 col-md-10 col-lg-10 col-xl-9 q-pl-md">
+    <div class="col-xs-12 col-sm-6 col-md-10 col-lg-10 col-xl-9 q-pa-sm">
       <q-card class="q-pa-md" flat bordered>
         <q-form class="row items-center q-gutter-md">
           <div class="row items-center q-gutter-xs">
@@ -89,8 +89,26 @@
         </template>
         <template #body-cell-ops="props">
           <q-td :props="props">
-            <q-btn flat dense color="primary" :icon="mdiPlaylistEdit" label="编辑" />
-            <q-btn flat dense color="info" :icon="mdiArrowRight" label="更多" />
+            <q-btn flat dense color="primary" :icon="mdiPlaylistEdit" label="编辑" @click="handleEditUser(props.row)" />
+            <q-btn flat dense color="info" :icon="mdiArrowRight" label="更多">
+              <q-popup-proxy>
+                <q-list dense bordered>
+                  <q-item
+                    v-for="(item, i) in userRowMoreList"
+                    :key="i"
+                    v-close-popup
+                    v-ripple
+                    clickable
+                    @click="handleClickUserMore(item.key)"
+                  >
+                    <q-item-section avatar>
+                      <q-icon color="primary" :name="item.icon" />
+                    </q-item-section>
+                    <q-item-section no-wrap>{{ item.label }}</q-item-section>
+                  </q-item>
+                </q-list>
+              </q-popup-proxy>
+            </q-btn>
           </q-td>
         </template>
       </q-table>
@@ -187,10 +205,11 @@
                 :options="genderOptions"
                 hint=""
                 emit-value
+                map-options
                 outlined
                 dense
                 options-dense
-                placeholder="请选择用户名"
+                placeholder="请选择用户性别"
               />
             </MyFormItem>
             <MyFormItem label="出生日期">
@@ -217,7 +236,7 @@
               </q-input>
             </MyFormItem>
             <MyFormItem label="状态">
-              <q-toggle v-model="userFormData.status" class="w-200" color="info" :true-value="1" :false-value="0" />
+              <q-toggle v-model="userFormData.status" class="w-200" color="positive" :true-value="1" :false-value="0" />
             </MyFormItem>
             <MyFormItem label="备注" alone-row>
               <q-input
@@ -237,7 +256,7 @@
         <q-separator />
         <q-card-actions align="right" class="q-ma-sm">
           <q-btn flat label="重 置" color="primary" @click="handleResetForm" />
-          <q-btn v-close-popup flat label="取 消" color="primary" />
+          <q-btn v-close-popup label="取 消" color="warning" />
           <q-btn label="确 定" color="primary" @click="handleSubmitForm" />
         </q-card-actions>
       </q-card>
@@ -245,7 +264,7 @@
     <!-- 用户角色权限弹框 -->
     <UserRoles :show="showUserRoleModal" @close="showUserRoleModal = false"></UserRoles>
     <!-- 修改用户密码 -->
-    <ModifyPassword :show="showModifyPasswordModal" @close="showModifyPasswordModal = false"></ModifyPassword>
+    <ModifyPassword :show="showModifyPasswordDialog" @close="showModifyPasswordDialog = false"></ModifyPassword>
   </div>
 </template>
 
@@ -259,20 +278,20 @@ import { getUserList, newAddUser } from '@/api/system/userManage';
 import { getDeptList } from '@/api/system/deptManage';
 import UserRoles from './components/UserRoles.vue';
 import ModifyPassword from './components/ModifyPassword.vue';
-import MyForm from '@/components/MyForm/MyForm.vue';
-import MyFormItem from '@/components/MyForm/MyFormItem.vue';
-import MyImage from '@/components/MyImage/MyImage.vue';
 import {
+  mdiAccountLock,
   mdiArrowRight,
   mdiAsterisk,
   mdiCalendar,
   mdiClose,
   mdiDownload,
+  mdiLockReset,
   mdiMagnify,
   mdiPencil,
   mdiPlaylistEdit,
   mdiPlus,
-  mdiRestore
+  mdiRestore,
+  mdiShieldAccount
 } from '@quasar/extras/mdi-v6';
 import LeftTree from '@/components/LeftTree/index.vue';
 import { QPagination, QTableColumn, QTreeNode } from 'quasar';
@@ -320,7 +339,7 @@ let emptyUserForm = {
   nickname: '',
   email: '',
   phone: '',
-  gender: 0,
+  gender: null,
   birthday: '',
   city: '',
   dept: '',
@@ -387,7 +406,7 @@ let tableIsLoading = $ref<boolean>(false);
 
 let showUserRoleModal = $ref<boolean>(false);
 
-let showModifyPasswordModal = $ref<boolean>(false);
+let showModifyPasswordDialog = $ref<boolean>(false);
 
 let userTableHeaderColumns = $ref<QTableColumn[]>([
   {
@@ -458,11 +477,23 @@ let userTableHeaderColumns = $ref<QTableColumn[]>([
   }
 ]);
 
-let rowClassName = (row: IUserTable) => {
-  if (row.avatar) {
-    return 'row-avatar';
+let userRowMoreList = [
+  {
+    label: '账户解冻',
+    key: 'accountFreeze',
+    icon: mdiAccountLock
+  },
+  {
+    label: '角色权限',
+    key: 'rolePermission',
+    icon: mdiShieldAccount
+  },
+  {
+    label: '重置密码',
+    key: 'resetPassword',
+    icon: mdiLockReset
   }
-};
+];
 
 let userTableData: Array<IUserTable[]> = [];
 
@@ -540,6 +571,14 @@ const handleAddUser = (): void => {
   });
 };
 
+// 编辑用户
+const handleEditUser = (row: IUserTable): void => {
+  console.log(row);
+  userFormData = JSON.parse(JSON.stringify(row));
+  userInfoDialogTitle = '编辑用户';
+  userInfoDialog = true;
+};
+
 // 确定新增和修改按钮
 const handleSubmitForm = (): void => {
   userFormRef.validate().then((valid: boolean) => {
@@ -559,7 +598,13 @@ const handleSubmitForm = (): void => {
 };
 
 const handleResetForm = (): void => {
-  userFormRef.reset();
+  userFormRef.resetValidation();
+  userFormData = JSON.parse(JSON.stringify(emptyUserForm));
+};
+
+const handleClickUserMore = (key: string) => {
+  console.log(key);
+  if (key === 'resetPassword') showModifyPasswordDialog = true;
 };
 
 // 重置密码

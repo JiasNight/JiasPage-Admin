@@ -1,7 +1,7 @@
 <template>
   <!-- 修改用户密码 -->
-  <n-modal
-    v-model:show="showModifyPasswordModal"
+  <!-- <n-modal
+    v-model:show="showModifyPasswordDialog"
     class="container-card"
     preset="card"
     title="修改密码"
@@ -44,10 +44,118 @@
         <n-button type="primary" :loading="confirmLoading" @click="handleConfirm">确 定</n-button>
       </n-space>
     </template>
-  </n-modal>
+  </n-modal> -->
+  <q-dialog v-model="showModifyPasswordDialog" persistent>
+    <q-card bordered>
+      <q-card-section class="row items-center">
+        <div class="text-h6">修改密码</div>
+        <q-space />
+        <q-btn v-close-popup :icon="mdiClose" flat round dense @click="handleCancel" />
+      </q-card-section>
+      <q-card-section class="row items-center">
+        <MyForm ref="modifyFormRef" v-model="modifyFormData">
+          <MyFormItem>
+            <q-input
+              v-model="modifyFormData.initPassword"
+              class="w-md"
+              :type="initPasswordType"
+              outlined
+              dense
+              clearable
+              lazy-rules
+              :rules="modifyFormRules.initPassword"
+              hint=""
+              placeholder="请输入初始密码"
+            >
+              <template #append>
+                <q-icon
+                  v-if="initPasswordType === 'password'"
+                  class="c-p"
+                  :name="mdiEye"
+                  @click="initPasswordType = 'text'"
+                />
+                <q-icon
+                  v-if="initPasswordType === 'text'"
+                  class="c-p"
+                  :name="mdiEyeOff"
+                  @click="initPasswordType = 'password'"
+                />
+              </template>
+            </q-input>
+          </MyFormItem>
+          <MyFormItem>
+            <q-input
+              v-model="modifyFormData.newPassword"
+              class="w-md"
+              :type="newPasswordType"
+              outlined
+              dense
+              clearable
+              lazy-rules
+              :rules="modifyFormRules.newPassword"
+              hint=""
+              placeholder="请输入用请输入新密码户密码"
+            >
+              <template #append>
+                <q-icon
+                  v-if="newPasswordType === 'password'"
+                  class="c-p"
+                  :name="mdiEye"
+                  @click="newPasswordType = 'text'"
+                />
+                <q-icon
+                  v-if="newPasswordType === 'text'"
+                  class="c-p"
+                  :name="mdiEyeOff"
+                  @click="newPasswordType = 'password'"
+                />
+              </template>
+            </q-input>
+          </MyFormItem>
+          <MyFormItem>
+            <q-input
+              v-model="modifyFormData.confirmNewPassword"
+              class="w-md"
+              :type="confirmNewPasswordType"
+              outlined
+              dense
+              clearable
+              lazy-rules
+              :rules="modifyFormRules.confirmNewPassword"
+              hint=""
+              placeholder="请确认新密码"
+            >
+              <template #append>
+                <q-icon
+                  v-if="confirmNewPasswordType === 'password'"
+                  class="c-p"
+                  :name="mdiEye"
+                  @click="confirmNewPasswordType = 'text'"
+                />
+                <q-icon
+                  v-if="confirmNewPasswordType === 'text'"
+                  class="c-p"
+                  :name="mdiEyeOff"
+                  @click="confirmNewPasswordType = 'password'"
+                />
+              </template>
+            </q-input>
+          </MyFormItem>
+        </MyForm>
+      </q-card-section>
+      <q-separator />
+      <q-card-actions align="right" class="q-ma-sm">
+        <q-btn label="取 消" color="warning" @click="handleCancel" />
+        <q-btn label="确 定" color="primary" @click="handleConfirm" />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script lang="ts" setup>
+import { mdiClose, mdiEye, mdiEyeOff } from '@quasar/extras/mdi-v6';
+import { QInputType } from 'quasar';
+
 let props = defineProps({
   show: {
     type: Boolean,
@@ -57,25 +165,41 @@ let props = defineProps({
 
 let emit = defineEmits(['close']);
 
+let modifyFormRef = $ref<any>(null);
+
 let confirmLoading = $ref<boolean>(false);
-let initPassword = $ref<string>('');
-let newPassword = $ref<string>('');
-let confirmNewPassword = $ref<string>('');
+
+let initPasswordType = $ref<QInputType>('password');
+let newPasswordType = $ref<QInputType>('password');
+let confirmNewPasswordType = $ref<QInputType>('password');
+
+let modifyFormData = reactive({
+  initPassword: '',
+  newPassword: '',
+  confirmNewPassword: ''
+});
+
+let modifyFormRules = {
+  initPassword: [(val: string) => (val && val.length > 0) || '请输入初始密码'],
+  newPassword: [(val: string) => (val && val.length > 0) || '请输入新密码'],
+  confirmNewPassword: [(val: string) => (val && val.length > 0) || '请确认新密码']
+};
+
 let errorAlert = reactive({
   show: false,
   type: '',
   content: ''
 });
 
-let showModifyPasswordModal = computed(() => {
+let showModifyPasswordDialog = computed(() => {
   return props.show;
 });
 
-watch(showModifyPasswordModal, (nVal, oVal) => {
+watch(showModifyPasswordDialog, (nVal, oVal) => {
   if (nVal) {
-    initPassword = '';
-    newPassword = '';
-    confirmNewPassword = '';
+    modifyFormData.initPassword = '';
+    modifyFormData.newPassword = '';
+    modifyFormData.confirmNewPassword = '';
   }
 });
 
@@ -83,7 +207,7 @@ watch(showModifyPasswordModal, (nVal, oVal) => {
 const handleCheckPassword = (): void => {
   let newPasswordIsOk = false;
   let reg = new RegExp(/^.*(?=.{6,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).{6,20}$/);
-  if (!reg.test(newPassword)) {
+  if (!reg.test(modifyFormData.newPassword)) {
     errorAlert.show = true;
     errorAlert.type = 'error';
     errorAlert.content =
@@ -92,8 +216,8 @@ const handleCheckPassword = (): void => {
     errorAlert.show = false;
     newPasswordIsOk = true;
   }
-  if (confirmNewPassword && newPasswordIsOk) {
-    if (newPassword.replaceAll(' ', '') !== confirmNewPassword.replaceAll(' ', '')) {
+  if (modifyFormData.confirmNewPassword && newPasswordIsOk) {
+    if (modifyFormData.newPassword.replaceAll(' ', '') !== modifyFormData.confirmNewPassword.replaceAll(' ', '')) {
       errorAlert.show = true;
       errorAlert.type = 'warning';
       errorAlert.content = '两次密码输入不一致，请检查！';
@@ -104,21 +228,20 @@ const handleCheckPassword = (): void => {
 };
 
 const handleConfirm = (): void => {
-  if (initPassword === '') {
-    window.$message.warning('你必须填写原始密码！');
-    return;
-  }
-  if (newPassword === '') {
-    window.$message.warning('你必须填写新密码！');
-    return;
-  }
-  if (errorAlert.show) return;
-  confirmLoading = true;
-  setTimeout(() => {
-    window.$message.success('确定');
-    confirmLoading = false;
-    emit('close');
-  }, 1000);
+  console.log(modifyFormRef);
+  modifyFormRef.validate().then((valid: boolean) => {
+    if (valid) {
+      // 校验通过
+      confirmLoading = true;
+      setTimeout(() => {
+        window.$message.success('确定');
+        confirmLoading = false;
+        emit('close');
+      }, 1000);
+    } else {
+      // 校验不通过
+    }
+  });
 };
 
 const handleModalShow = (val: boolean) => {
@@ -129,5 +252,3 @@ const handleCancel = (): void => {
   emit('close');
 };
 </script>
-
-<style lang="scss" scoped></style>

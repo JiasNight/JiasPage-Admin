@@ -87,12 +87,12 @@ body {
 .view-container {
   height: calc(100vh - 110px);
   background: #fff;
-  padding: 0.625rem;
   border-radius: 0.3125rem;
   -webkit-border-radius: 0.3125rem;
   -moz-border-radius: 0.3125rem;
   -ms-border-radius: 0.3125rem;
   -o-border-radius: 0.3125rem;
+  overflow: auto;
 }
 
 .cus-table-th {

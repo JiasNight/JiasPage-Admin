@@ -22,7 +22,7 @@ let props = defineProps({
   },
   labelWidth: {
     type: String,
-    default: '100px'
+    default: 'auto'
   },
   labelAlign: {
     type: String,

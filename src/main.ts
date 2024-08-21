@@ -30,12 +30,21 @@ import { setupPermission } from '@/router/permission';
 // 引入工具函数
 import { formatDate, renderIcon } from '@/utils/common';
 import useAppStore from '@/store/module/app';
+// 引入全局组件
+import MyForm from '@/components/MyForm/MyForm.vue';
+import MyFormItem from '@/components/MyForm/MyFormItem.vue';
+import MyImage from '@/components/MyImage/MyImage.vue';
 
 // 权限设置
 setupPermission(router);
 
 // 创建app实例
 const myApp = createApp(App);
+
+// 注册全局组件
+myApp.component('MyForm', MyForm);
+myApp.component('MyFormItem', MyFormItem);
+myApp.component('MyImage', MyImage);
 
 // 挂载全局方法
 myApp.provide('renderIcon', renderIcon);

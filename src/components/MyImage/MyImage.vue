@@ -42,7 +42,7 @@ const handleClick = () => {
   bodyDom.style.background = 'rgba(0,0,0,0.5)';
 
   let imgDom = document.createElement('img');
-  imgDom.src = props.src;
+  imgDom.src = props.src + `?t=${new Date().getTime()}`;
   imgDom.style.width = '500px';
   imgDom.style.minWidth = '20px';
   imgDom.style.maxWidth = '2000px';

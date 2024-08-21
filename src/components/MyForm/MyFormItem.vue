@@ -1,6 +1,6 @@
 <template>
   <div class="my-form-item" :style="formItemStyle">
-    <div class="form-item-label" :style="formItemLabelStyle">
+    <div v-if="labelWidth !== 'auto'" class="form-item-label" :style="formItemLabelStyle">
       <span v-if="props.required" class="text-red">*</span>{{ props.label }}
     </div>
     <div class="form-item-control" :style="formItemControlStyle">
@@ -32,6 +32,8 @@ let props = defineProps({
 // 接受传递过来的值
 const labelWidth = inject('labelWidth');
 
+console.log('labelWidth' + labelWidth);
+
 let formItemStyle = reactive({});
 let formItemLabelStyle = reactive({});
 let formItemControlStyle = reactive({});
@@ -57,7 +59,7 @@ onMounted(() => {});
 .my-form-item {
   display: flex;
   flex-direction: row;
-  margin-bottom: 0.125rem;
+  margin-bottom: 0.25rem;
   padding: 0 0.3125rem;
   .form-item-label {
     line-height: 2.5rem;

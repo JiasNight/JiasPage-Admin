@@ -17,3 +17,20 @@ export const newAddUser = (data: object) => {
     data: data
   });
 };
+
+// 编辑用户
+export const updateUser = (data: object) => {
+  return service.request({
+    url: '/adminApi/system/user/update',
+    method: 'post',
+    data: data
+  });
+};
+
+// 删除用户
+export const deleteUser = (uId: string) => {
+  return service.request({
+    url: '/adminApi/system/user/delete/' + uId,
+    method: 'get'
+  });
+};

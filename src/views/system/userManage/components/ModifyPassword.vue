@@ -1,52 +1,6 @@
 <template>
-  <!-- 修改用户密码 -->
-  <!-- <n-modal
-    v-model:show="showModifyPasswordDialog"
-    class="container-card"
-    preset="card"
-    title="修改密码"
-    :auto-focus="false"
-    :style="{ width: '37.5rem' }"
-    :on-update:show="handleModalShow"
-  >
-    <n-grid :y-gap="10" :cols="1">
-      <n-grid-item>
-        <span class>原始密码：</span>
-        <n-input v-model:value="initPassword" type="password" show-password-on="click" placeholder="请输入初始密码" />
-      </n-grid-item>
-      <n-grid-item>
-        <span>新密码：</span>
-        <n-input
-          v-model:value="newPassword"
-          type="password"
-          show-password-on="click"
-          placeholder="请输入新密码"
-          :on-blur="handleCheckPassword"
-        />
-      </n-grid-item>
-      <n-grid-item>
-        <span>确认新密码：</span>
-        <n-input
-          v-model:value="confirmNewPassword"
-          type="password"
-          show-password-on="click"
-          placeholder="请确认新密码"
-          :on-blur="handleCheckPassword"
-        />
-      </n-grid-item>
-      <n-grid-item v-if="errorAlert.show">
-        <n-alert :type="errorAlert.type" closable> {{ errorAlert.content }} </n-alert>
-      </n-grid-item>
-    </n-grid>
-    <template #footer>
-      <n-space justify="end">
-        <n-button type="default" @click="handleCancel">取 消</n-button>
-        <n-button type="primary" :loading="confirmLoading" @click="handleConfirm">确 定</n-button>
-      </n-space>
-    </template>
-  </n-modal> -->
   <q-dialog v-model="showModifyPasswordDialog" persistent>
-    <q-card bordered>
+    <q-card bordered style="width: 500px">
       <q-card-section class="row items-center">
         <div class="text-h6">修改密码</div>
         <q-space />
@@ -146,7 +100,7 @@
       <q-separator />
       <q-card-actions align="right" class="q-ma-sm">
         <q-btn label="取 消" color="warning" @click="handleCancel" />
-        <q-btn label="确 定" color="primary" @click="handleConfirm" />
+        <q-btn label="确 定" color="primary" :loading="confirmBtnLoading" @click="handleConfirm" />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -167,7 +121,7 @@ let emit = defineEmits(['close']);
 
 let modifyFormRef = $ref<any>(null);
 
-let confirmLoading = $ref<boolean>(false);
+let confirmBtnLoading = $ref<boolean>(false);
 
 let initPasswordType = $ref<QInputType>('password');
 let newPasswordType = $ref<QInputType>('password');
@@ -181,15 +135,20 @@ let modifyFormData = reactive({
 
 let modifyFormRules = {
   initPassword: [(val: string) => (val && val.length > 0) || '请输入初始密码'],
-  newPassword: [(val: string) => (val && val.length > 0) || '请输入新密码'],
-  confirmNewPassword: [(val: string) => (val && val.length > 0) || '请确认新密码']
+  newPassword: [
+    (val: string) => (val && val.length > 0) || '请输入新密码',
+    (val: string) => val.length >= 6 || '密码不能少于6位',
+    (val: string) => val.length <= 20 || '密码不能超过20位',
+    (val: string) => {
+      let reg = new RegExp(/^.*(?=.{6,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).{6,20}$/);
+      return reg.test(val) || '密码必须包含数字、大小写字母、特殊字符';
+    }
+  ],
+  confirmNewPassword: [
+    (val: string) => (val && val.length > 0) || '请确认新密码',
+    (val: string) => val === modifyFormData.newPassword || '两次密码输入不一致'
+  ]
 };
-
-let errorAlert = reactive({
-  show: false,
-  type: '',
-  content: ''
-});
 
 let showModifyPasswordDialog = computed(() => {
   return props.show;
@@ -203,49 +162,25 @@ watch(showModifyPasswordDialog, (nVal, oVal) => {
   }
 });
 
-// 检查密码设置
-const handleCheckPassword = (): void => {
-  let newPasswordIsOk = false;
-  let reg = new RegExp(/^.*(?=.{6,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).{6,20}$/);
-  if (!reg.test(modifyFormData.newPassword)) {
-    errorAlert.show = true;
-    errorAlert.type = 'error';
-    errorAlert.content =
-      '密码中必须包含至少一个数字、小写字母、大写字母、一个特殊字符，不能包含空格，密码长度在6到20个字符之间';
-  } else {
-    errorAlert.show = false;
-    newPasswordIsOk = true;
-  }
-  if (modifyFormData.confirmNewPassword && newPasswordIsOk) {
-    if (modifyFormData.newPassword.replaceAll(' ', '') !== modifyFormData.confirmNewPassword.replaceAll(' ', '')) {
-      errorAlert.show = true;
-      errorAlert.type = 'warning';
-      errorAlert.content = '两次密码输入不一致，请检查！';
-    } else {
-      errorAlert.show = false;
-    }
-  }
-};
-
 const handleConfirm = (): void => {
   console.log(modifyFormRef);
   modifyFormRef.validate().then((valid: boolean) => {
     if (valid) {
       // 校验通过
-      confirmLoading = true;
+      confirmBtnLoading = true;
       setTimeout(() => {
-        window.$message.success('确定');
-        confirmLoading = false;
+        Notify.create({
+          type: 'positive',
+          position: 'top-right',
+          message: '密码修改成功！'
+        });
+        confirmBtnLoading = false;
         emit('close');
       }, 1000);
     } else {
       // 校验不通过
     }
   });
-};
-
-const handleModalShow = (val: boolean) => {
-  if (!val) emit('close');
 };
 
 const handleCancel = (): void => {

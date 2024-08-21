@@ -1,6 +1,6 @@
 <template>
   <div class="my-form-item" :style="formItemStyle">
-    <div v-if="labelWidth !== 'auto'" class="form-item-label" :style="formItemLabelStyle">
+    <div v-if="labelWidth !== 'auto' && props.label !== ''" class="form-item-label" :style="formItemLabelStyle">
       <span v-if="props.required" class="text-red">*</span>{{ props.label }}
     </div>
     <div class="form-item-control" :style="formItemControlStyle">

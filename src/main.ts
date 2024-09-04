@@ -74,7 +74,11 @@ myApp.use(Quasar, {
     AddressbarColor
   }, // import Quasar plugins and add here
   lang: quasarLang,
-  iconSet: quasarIconSet
+  iconSet: quasarIconSet,
+  config: {
+    // 关闭监听Ajax流量
+    loadingBar: { skipHijack: true }
+  }
 });
 
 // 挂载

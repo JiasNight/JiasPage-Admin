@@ -1,10 +1,9 @@
 import { defineStore } from 'pinia';
 import { userSignIn, getUserInfo } from '@/api/signIn/index';
 import { setLogoutSystem } from '@/api/app/index';
-import { setToken, removeToken } from '@/utils/auth';
+import { setToken, removeToken, removeLocalStorage } from '@/utils/auth';
 import { IRes, IUserInfo } from '@/interface/common';
 import { aesUtil, rsaUtil } from '@/utils/common/security';
-import router from '@/router';
 import { getToken } from '@/utils/auth';
 import { Md5 } from 'ts-md5';
 import useAppStore from '@/store/module/app';
@@ -69,14 +68,18 @@ const useUserStore = defineStore({
     },
     // 退出系统
     logoutSystem() {
-      setLogoutSystem().then((res: IRes) => {
-        if (res && res.code === 200) {
-          removeToken();
-          this.userInfo = null;
-          useAppStore().routes = [];
-          localStorage.clear();
-          router.push('/signIn');
-        }
+      return new Promise((resolve, reject) => {
+        setLogoutSystem()
+          .then((res: IRes) => {
+            this.userInfo = null;
+            useAppStore().routes = [];
+            removeToken();
+            removeLocalStorage();
+            resolve(res);
+          })
+          .catch(() => {
+            reject();
+          });
       });
     }
   },

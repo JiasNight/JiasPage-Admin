@@ -104,7 +104,9 @@ const handleSelectDropdown = (key: string) => {
       persistent: true,
       color: 'negative'
     }).onOk(() => {
-      userStore.logoutSystem();
+      userStore.logoutSystem().then(() => {
+        router.push('/signIn');
+      });
     });
   }
 };

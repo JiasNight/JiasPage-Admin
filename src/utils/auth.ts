@@ -28,3 +28,10 @@ export function getSessionId() {
 export function setSessionId(session: string) {
   return cookies.set(sessionId, session);
 }
+
+export function removeLocalStorage() {
+  const localList: Storage = localStorage;
+  for (const key in localList) {
+    localStorage.removeItem(key);
+  }
+}

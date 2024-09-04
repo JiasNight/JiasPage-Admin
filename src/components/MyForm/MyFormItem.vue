@@ -59,12 +59,12 @@ onMounted(() => {});
 .my-form-item {
   display: flex;
   flex-direction: row;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.3125rem;
   padding: 0 0.3125rem;
   .form-item-label {
     line-height: 2.5rem;
     font-size: 1rem;
-    margin-right: 0.125rem;
+    margin-right: .25rem;
   }
   .form-item-control {
     // background-color: red;

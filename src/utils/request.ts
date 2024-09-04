@@ -112,7 +112,10 @@ class AxiosTool {
             persistent: true,
             color: 'negative'
           }).onOk(() => {
-            useUserStore().logoutSystem();
+            const userStore = useUserStore();
+            userStore.logoutSystem().then(() => {
+              router.push('/signIn');
+            });
           });
           return Promise.reject(res);
         } else if (res.code === 200) {

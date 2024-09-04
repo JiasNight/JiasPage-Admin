@@ -1,14 +1,14 @@
 <template>
   <div class="view-container row justify-between">
     <div class="col-xs-12 col-sm-6 col-md-2 col-lg-2 col-xl-3 q-pa-sm">
-      <LeftTree
+      <DeptTree
         :data="deptTreeData"
         :loading="deptTreeLoading"
         node-key="id"
         label-key="name"
         @refresh="refreshTreeBtn"
         @selected="handleClickTree"
-      ></LeftTree>
+      ></DeptTree>
     </div>
     <div class="col-xs-12 col-sm-6 col-md-10 col-lg-10 col-xl-9 q-pa-sm">
       <q-card class="q-pa-md" flat bordered>
@@ -296,7 +296,7 @@ import {
   mdiRestore,
   mdiShieldAccount
 } from '@quasar/extras/mdi-v6';
-import LeftTree from '@/components/LeftTree/index.vue';
+import DeptTree from '@/components/DeptTree/index.vue';
 import { QPagination, QTableColumn, QTreeNode } from 'quasar';
 import { Md5 } from 'ts-md5';
 import { aesUtil } from '@/utils/common/security';
@@ -318,7 +318,7 @@ type IUserTable = {
   avatar: string;
   remarks: string;
   createBy: string;
-  createTime: string;
+  createDate: string;
 };
 
 interface IUserForms {
@@ -533,8 +533,10 @@ const handleClickTree = (key: String) => {
 // 查询用户列表
 const getUserTable = () => {
   const data = {
-    ...queryFormData,
-    deptId: currentSelectedTreeKey,
+    query: {
+      deptId: currentSelectedTreeKey,
+      ...queryFormData
+    },
     pageSize: pageInfo.rowsPerPage,
     pageNum: pageInfo.page
   };

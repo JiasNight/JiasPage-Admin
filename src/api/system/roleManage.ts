@@ -4,7 +4,7 @@ import service from '@/utils/request';
 export const getRoleList = (data: object) => {
   return service.request({
     url: '/adminApi/system/role/list',
-    method: 'get',
+    method: 'post',
     data: data
   });
 };

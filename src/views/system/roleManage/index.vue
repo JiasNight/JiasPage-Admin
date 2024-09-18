@@ -344,7 +344,11 @@ const resetQueryFormBtn = () => {
 // 获取角色数据
 const getRoleTableData = (): void => {
   const data = {
-    token: useUserStore().token
+    query: {
+      ...queryFormData
+    },
+    pageSize: pageInfo.rowsPerPage,
+    pageNum: pageInfo.page
   };
   tableIsLoading = true;
   getRoleList(data)

@@ -1,5 +1,5 @@
 <template>
-  <NConfigProvider
+  <!-- <NConfigProvider
     :theme-overrides="themeOverrides"
     :theme="currentTheme"
     :locale="currentLanguage"
@@ -8,10 +8,13 @@
     <AppProvider>
       <RouterView></RouterView>
     </AppProvider>
-  </NConfigProvider>
-  <!-- <transition v-if="isLock" name="slide-up">
+  </NConfigProvider> -->
+  <div>
+    <RouterView></RouterView>
+  </div>
+  <transition v-if="isLock" name="slide-up">
     <LockScreen />
-  </transition> -->
+  </transition>
 </template>
 
 <script lang="ts" setup>
@@ -38,11 +41,11 @@ const isLock = computed(() => globalStore.getIsLock);
 
 <style>
 #app {
-  /* font-family: Avenir, Helvetica, Arial, sans-serif; */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   width: 100%;
   height: 100vh;
   background-color: aliceblue;
+  font-family: 'SourceHanSans';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 </style>

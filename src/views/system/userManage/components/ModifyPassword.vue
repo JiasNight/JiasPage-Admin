@@ -107,47 +107,47 @@
 </template>
 
 <script lang="ts" setup>
-import { mdiClose, mdiEye, mdiEyeOff } from '@quasar/extras/mdi-v6';
-import { QInputType } from 'quasar';
+import { mdiClose, mdiEye, mdiEyeOff } from "@quasar/extras/mdi-v6";
+import { QInputType } from "quasar";
 
 let props = defineProps({
   show: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
 
-let emit = defineEmits(['close']);
+let emit = defineEmits(["close"]);
 
 let modifyFormRef = $ref<any>(null);
 
 let confirmBtnLoading = $ref<boolean>(false);
 
-let initPasswordType = $ref<QInputType>('password');
-let newPasswordType = $ref<QInputType>('password');
-let confirmNewPasswordType = $ref<QInputType>('password');
+let initPasswordType = $ref<QInputType>("password");
+let newPasswordType = $ref<QInputType>("password");
+let confirmNewPasswordType = $ref<QInputType>("password");
 
 let modifyFormData = reactive({
-  initPassword: '',
-  newPassword: '',
-  confirmNewPassword: ''
+  initPassword: "",
+  newPassword: "",
+  confirmNewPassword: "",
 });
 
 let modifyFormRules = {
-  initPassword: [(val: string) => (val && val.length > 0) || '请输入初始密码'],
+  initPassword: [(val: string) => (val && val.length > 0) || "请输入初始密码"],
   newPassword: [
-    (val: string) => (val && val.length > 0) || '请输入新密码',
-    (val: string) => val.length >= 6 || '密码不能少于6位',
-    (val: string) => val.length <= 20 || '密码不能超过20位',
+    (val: string) => (val && val.length > 0) || "请输入新密码",
+    (val: string) => val.length >= 6 || "密码不能少于6位",
+    (val: string) => val.length <= 20 || "密码不能超过20位",
     (val: string) => {
       let reg = new RegExp(/^.*(?=.{6,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).{6,20}$/);
-      return reg.test(val) || '密码必须包含数字、大小写字母、特殊字符';
-    }
+      return reg.test(val) || "密码必须包含数字、大小写字母、特殊字符";
+    },
   ],
   confirmNewPassword: [
-    (val: string) => (val && val.length > 0) || '请确认新密码',
-    (val: string) => val === modifyFormData.newPassword || '两次密码输入不一致'
-  ]
+    (val: string) => (val && val.length > 0) || "请确认新密码",
+    (val: string) => val === modifyFormData.newPassword || "两次密码输入不一致",
+  ],
 };
 
 let showModifyPasswordDialog = computed(() => {
@@ -156,9 +156,9 @@ let showModifyPasswordDialog = computed(() => {
 
 watch(showModifyPasswordDialog, (nVal, oVal) => {
   if (nVal) {
-    modifyFormData.initPassword = '';
-    modifyFormData.newPassword = '';
-    modifyFormData.confirmNewPassword = '';
+    modifyFormData.initPassword = "";
+    modifyFormData.newPassword = "";
+    modifyFormData.confirmNewPassword = "";
   }
 });
 
@@ -170,12 +170,12 @@ const handleConfirm = (): void => {
       confirmBtnLoading = true;
       setTimeout(() => {
         Notify.create({
-          type: 'positive',
-          position: 'top-right',
-          message: '密码修改成功！'
+          type: "positive",
+          position: "top-right",
+          message: "密码修改成功！",
         });
         confirmBtnLoading = false;
-        emit('close');
+        emit("close");
       }, 1000);
     } else {
       // 校验不通过
@@ -184,6 +184,6 @@ const handleConfirm = (): void => {
 };
 
 const handleCancel = (): void => {
-  emit('close');
+  emit("close");
 };
 </script>

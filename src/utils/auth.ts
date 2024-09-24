@@ -1,13 +1,13 @@
 // 引入cookie
-import { useCookies } from 'vue3-cookies';
+import { useCookies } from "vue3-cookies";
 const { cookies } = useCookies();
 
-const tokenKey = 'page-token';
+const tokenKey = "page-token";
 
 // cookie存储时间
-const expireTimes = '1d';
+const expireTimes = "1d";
 
-const sessionId = 'sso-sessionid';
+const sessionId = "sso-sessionid";
 
 export function getToken() {
   return cookies.get(tokenKey);

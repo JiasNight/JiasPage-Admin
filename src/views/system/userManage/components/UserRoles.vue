@@ -35,16 +35,16 @@
 </template>
 
 <script lang="ts" setup>
-import { mdiClose } from '@quasar/extras/mdi-v6';
+import { mdiClose } from "@quasar/extras/mdi-v6";
 
 let props = defineProps({
   show: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
 
-let emit = defineEmits(['close']);
+let emit = defineEmits(["close"]);
 
 let showUserRoleDialog = computed(() => {
   return props.show;
@@ -56,17 +56,17 @@ const handleConfirm = (): void => {
   confirmBtnLoading = true;
   setTimeout(() => {
     Notify.create({
-      type: 'positive',
-      position: 'top-right',
-      message: '分配成功！'
+      type: "positive",
+      position: "top-right",
+      message: "分配成功！",
     });
     confirmBtnLoading = false;
-    emit('close');
+    emit("close");
   }, 1000);
 };
 
 const handleCancel = (): void => {
-  emit('close');
+  emit("close");
 };
 </script>
 

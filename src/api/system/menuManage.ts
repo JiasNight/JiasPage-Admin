@@ -1,36 +1,36 @@
-import service from '@/utils/request';
+import service from "@/utils/request";
 
 // 获取菜单列表
 export const getMenuList = (data?: object) => {
   return service.request({
-    url: '/adminApi/system/menu/list',
-    method: 'post',
-    data: data
+    url: "/adminApi/system/menu/list",
+    method: "post",
+    data: data,
   });
 };
 
 // 新增菜单列表
 export const addMenuList = (data: object) => {
   return service.request({
-    url: '/adminApi/system/menu/add',
-    method: 'post',
-    data: data
+    url: "/adminApi/system/menu/add",
+    method: "post",
+    data: data,
   });
 };
 
 // 修改菜单
 export const updateMenu = (data: object) => {
   return service.request({
-    url: '/adminApi/system/menu/update',
-    method: 'post',
-    data: data
+    url: "/adminApi/system/menu/update",
+    method: "post",
+    data: data,
   });
 };
 
 // 删除菜单
 export const deleteMenu = (mId: string) => {
   return service.request({
-    url: '/adminApi/system/menu/delete/' + mId,
-    method: 'get'
+    url: "/adminApi/system/menu/delete/" + mId,
+    method: "get",
   });
 };

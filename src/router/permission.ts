@@ -1,11 +1,11 @@
-import useAppStore from '@/store/module/app';
-import useUserStore from '@/store/module/user';
-import { Router, RouteLocationNormalizedLoaded, RouteRecordRaw } from 'vue-router';
-import { getToken } from '../utils/auth';
-import { LoadingBar } from 'quasar';
+import useAppStore from "@/store/module/app";
+import useUserStore from "@/store/module/user";
+import { Router, RouteLocationNormalizedLoaded, RouteRecordRaw } from "vue-router";
+import { getToken } from "../utils/auth";
+import { LoadingBar } from "quasar";
 
 // 路由白名单
-const whiteList: Array<String> = ['/signIn', '/signUp'];
+const whiteList: Array<String> = ["/signIn", "/signUp"];
 
 export const setupPermission = (router: Router) => {
   router.beforeEach(async (to: RouteLocationNormalizedLoaded, from: RouteLocationNormalizedLoaded) => {
@@ -14,7 +14,7 @@ export const setupPermission = (router: Router) => {
     const isSignIn: boolean | string | null = getToken();
 
     // 判断是否需要对请求和响应加解密
-    const isEncrypt: boolean | null = localStorage.getItem('safe') === 'true';
+    const isEncrypt: boolean | null = localStorage.getItem("safe") === "true";
 
     if (isEncrypt) {
       // 安全认证校验获取
@@ -22,9 +22,9 @@ export const setupPermission = (router: Router) => {
     }
     // 判断是否登录
     if (isSignIn) {
-      if (to.path === '/signIn') {
+      if (to.path === "/signIn") {
         LoadingBar.stop();
-        return { path: '/' };
+        return { path: "/" };
       } else {
         const currentRoutes: Array<RouteRecordRaw> = await appStore.getRoutes;
         const routesLength = toRaw(currentRoutes);
@@ -47,7 +47,7 @@ export const setupPermission = (router: Router) => {
       if (whiteList.indexOf(to.path) !== -1) {
         return;
       } else {
-        return { path: '/signIn' };
+        return { path: "/signIn" };
       }
     }
   });

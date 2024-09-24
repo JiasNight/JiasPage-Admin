@@ -1,7 +1,7 @@
-import CryptoJS from 'crypto-js';
-import { JSEncrypt } from 'jsencrypt';
+import CryptoJS from "crypto-js";
+import { JSEncrypt } from "jsencrypt";
 
-const DEFAULT_KEY = 'def009A1bcO538JK';
+const DEFAULT_KEY = "def009A1bcO538JK";
 
 /**
  * aes加密
@@ -9,8 +9,8 @@ const DEFAULT_KEY = 'def009A1bcO538JK';
 export const aesUtil = {
   // 获取key，
   genKey: (length = 16) => {
-    const random = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let str = '';
+    const random = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let str = "";
     for (let i = 0; i < length; i++) {
       str = str + random.charAt(Math.random() * random.length);
     }
@@ -27,7 +27,7 @@ export const aesUtil = {
       // ECB不需要iv
       // iv:  CryptoJS.enc.Utf8.parse(iv),
       mode: CryptoJS.mode.ECB,
-      padding: CryptoJS.pad.Pkcs7
+      padding: CryptoJS.pad.Pkcs7,
     });
     return CryptoJS.enc.Base64.stringify(encrypted.ciphertext);
   },
@@ -39,11 +39,11 @@ export const aesUtil = {
     const decrypt = CryptoJS.AES.decrypt(src, CryptoJS.enc.Utf8.parse(key), {
       // iv: CryptoJS.enc.Utf8.parse(iv),
       mode: CryptoJS.mode.ECB,
-      padding: CryptoJS.pad.Pkcs7
+      padding: CryptoJS.pad.Pkcs7,
     });
     const decString = decrypt.toString(CryptoJS.enc.Utf8);
     return decString.toString();
-  }
+  },
 };
 
 /**
@@ -61,7 +61,7 @@ export const rsaUtil: any = {
     const genKeyPair: any = {};
     rsaUtil.thisKeyPair = new JSEncrypt({
       // eslint-disable-next-line camelcase
-      default_key_size: bits
+      default_key_size: bits,
     });
     // 这里项目使用的是静态秘钥，所以该方法在本地执行一次，获取到配对的公私钥保存下即可
     // 获取私钥
@@ -90,12 +90,12 @@ export const rsaUtil: any = {
   decrypt: (textStr: any, privateKey: string) => {
     privateKey && rsaUtil.thisKeyPair.setPrivateKey(privateKey);
     let decString = rsaUtil.thisKeyPair.decrypt(textStr);
-    if (decString.charAt(0) === '{' || decString.charAt(0) === '[') {
+    if (decString.charAt(0) === "{" || decString.charAt(0) === "[") {
       // JSON.parse
       decString = JSON.parse(decString);
     }
     return decString;
-  }
+  },
 };
 
 /**

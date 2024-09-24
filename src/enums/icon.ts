@@ -1,4 +1,4 @@
 export enum ICON {
-  O = 'O',
-  F = 'F'
+  O = "O",
+  F = "F",
 }

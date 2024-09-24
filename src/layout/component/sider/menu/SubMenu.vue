@@ -33,10 +33,10 @@
 </template>
 
 <script lang="ts" setup name="SubMenu">
-import 'animate.css';
-import { mdiMenuDown, mdiMenuUp } from '@quasar/extras/mdi-v6';
-import useAppStore from '@/store/module/app';
-import MdiIcon from '@/components/MdiIcon/MdiIcon.vue';
+import "animate.css";
+import { mdiMenuDown, mdiMenuUp } from "@quasar/extras/mdi-v6";
+import useAppStore from "@/store/module/app";
+import MdiIcon from "@/components/MdiIcon/MdiIcon.vue";
 
 interface IMenu {
   label: string;
@@ -59,28 +59,28 @@ const router = useRouter();
 
 const appStore = useAppStore();
 
-const handleToggle = inject<any>('toggle');
+const handleToggle = inject<any>("toggle");
 
 const props = defineProps({
   data: {
     type: Array<IMenu>,
-    default: () => []
+    default: () => [],
   },
   // 是否收缩
   collapsed: {
     type: Boolean,
-    default: false
+    default: false,
   },
   // 是否开启手风琴
   accordion: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
 
 let menuData: ComputedRef<IMenu[]> = computed(() => props.data);
 
-let currentActiveMenuKey = $ref('');
+let currentActiveMenuKey = $ref("");
 
 const handleClick = (item: any) => {
   let key = item.key;
@@ -106,7 +106,7 @@ $active-radius: 0.3125rem;
       border-bottom-left-radius: $active-radius;
       position: relative;
       &::before {
-        content: '';
+        content: "";
         width: 8px;
         height: 100%;
         background-color: $negative;
@@ -125,7 +125,7 @@ $active-radius: 0.3125rem;
       // justify-content: space-between;
       width: calc(100% - 1.8rem);
       .section-label {
-        font-family: '微软雅黑';
+        font-family: "微软雅黑";
         font-weight: 600;
         text-wrap: nowrap;
         overflow: hidden;

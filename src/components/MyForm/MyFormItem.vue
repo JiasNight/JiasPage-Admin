@@ -13,26 +13,26 @@
 let props = defineProps({
   label: {
     type: String,
-    default: ''
+    default: "",
   },
   labelAlign: {
     type: String,
-    default: 'right'
+    default: "right",
   },
   aloneRow: {
     type: Boolean,
-    default: false
+    default: false,
   },
   required: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
 
 // 接受传递过来的值
-const labelWidth = inject('labelWidth');
+const labelWidth = inject("labelWidth");
 
-console.log('labelWidth' + labelWidth);
+console.log("labelWidth" + labelWidth);
 
 let formItemStyle = reactive({});
 let formItemLabelStyle = reactive({});
@@ -41,10 +41,10 @@ let formItemControlStyle = reactive({});
 const styleInit = () => {
   formItemLabelStyle = { width: labelWidth, textAlign: props.labelAlign };
   formItemStyle = {
-    width: props.aloneRow ? '100%' : ''
+    width: props.aloneRow ? "100%" : "",
   };
   formItemControlStyle = {
-    width: props.aloneRow ? `calc(100% - ${labelWidth})` : ''
+    width: props.aloneRow ? `calc(100% - ${labelWidth})` : "",
   };
 };
 
@@ -64,7 +64,7 @@ onMounted(() => {});
   .form-item-label {
     line-height: 2.5rem;
     font-size: 1rem;
-    margin-right: .25rem;
+    margin-right: 0.25rem;
   }
   .form-item-control {
     // background-color: red;

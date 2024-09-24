@@ -18,16 +18,25 @@
 </template>
 
 <script lang="ts" setup>
-import { ComputedRef } from 'vue';
-import { GlobalThemeOverrides, darkTheme, dateZhCN, zhCN } from 'naive-ui';
-import type { GlobalTheme, NLocale, NDateLocale } from 'naive-ui';
-import useAppStore from '@/store/module/app';
-import useGlobalStore from '@/store/module/global';
-import AppProvider from '@/components/AppProvider/index.vue';
-import { naiveThemeOverrides } from '@/style/theme/naiveTheme.json';
+import { useQuasar } from "quasar";
+import { ComputedRef } from "vue";
+import { GlobalThemeOverrides, darkTheme, dateZhCN, zhCN } from "naive-ui";
+import type { GlobalTheme, NLocale, NDateLocale } from "naive-ui";
+import useAppStore from "@/store/module/app";
+import useGlobalStore from "@/store/module/theme";
+import AppProvider from "@/components/AppProvider/index.vue";
+import { naiveThemeOverrides } from "@/style/theme/naiveTheme.json";
 
+const $q = useQuasar();
 const appStore = useAppStore();
 const globalStore = useGlobalStore();
+
+console.log($q.dark.isActive);
+
+// setTimeout(() => {
+//   console.log('设置程序暗色模式');
+//   $q.dark.set(!$q.dark.isActive);
+// }, 10000);
 
 // 自定义的样式
 const themeOverrides: GlobalThemeOverrides = naiveThemeOverrides;
@@ -44,7 +53,7 @@ const isLock = computed(() => globalStore.getIsLock);
   width: 100%;
   height: 100vh;
   background-color: aliceblue;
-  font-family: 'SourceHanSans';
+  font-family: "SourceHanSans";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

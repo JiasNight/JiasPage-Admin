@@ -10,8 +10,8 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref, ComputedRef } from 'vue';
-import { useRouter } from 'vue-router';
+import { Ref, ComputedRef } from "vue";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 
@@ -26,7 +26,7 @@ const gotoPage = (url: string) => {
   .container-svg {
     width: 31.25rem;
     height: 25rem;
-    background: url('@/assets/svg/error/500.svg') no-repeat;
+    background: url("@/assets/svg/error/500.svg") no-repeat;
     background-size: contain;
     margin: 0 auto;
   }

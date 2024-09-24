@@ -5,45 +5,45 @@
 </template>
 
 <script lang="ts" setup name="CustomMenu">
-import appStore from '@/store/module/app';
-import { useRouter, RouteRecordRaw } from 'vue-router';
-import { mdiMenu, mdiViewDashboard } from '@quasar/extras/mdi-v6';
-import SubMenu from './SubMenu.vue';
+import appStore from "@/store/module/app";
+import { useRouter, RouteRecordRaw } from "vue-router";
+import { mdiMenu, mdiViewDashboard } from "@quasar/extras/mdi-v6";
+import SubMenu from "./SubMenu.vue";
 
 // 定义props
 const props = defineProps({
   modelValue: {
     type: [String, Number],
-    default: ''
+    default: "",
   },
   data: {
     type: Array,
-    default: () => []
+    default: () => [],
   },
   // 是否收缩
   collapsed: {
     type: Boolean,
-    default: false
+    default: false,
   },
   // 是否开启手风琴
   accordion: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
 
 let menuList = $ref<any[]>([]);
 
-const emits = defineEmits(['update:modelValue', 'change']);
+const emits = defineEmits(["update:modelValue", "change"]);
 
 // 构建树形菜单需要的属性
 const buildMenuTree = (list: Array<any>) => {
   // let resultMenuTree: Array<IMenu> = [];
   const loopItem = (mList: Array<any>, level: number) => {
     mList.forEach((item: any) => {
-      item['expand'] = true;
-      item['level'] = level;
-      item['active'] = item.key === props.modelValue;
+      item["expand"] = true;
+      item["level"] = level;
+      item["active"] = item.key === props.modelValue;
       if (item.children && item.children.length > 0) {
         loopItem(item.children, level + 1);
       }
@@ -84,11 +84,11 @@ const setSubMenu = (val: any) => {
 const toggle = (val: any) => {
   let key = val.key;
   setSubMenu(val);
-  emits('update:modelValue', val.key);
-  emits('change', val);
+  emits("update:modelValue", val.key);
+  emits("change", val);
 };
 
-provide('toggle', toggle);
+provide("toggle", toggle);
 
 // 监听
 watch(
@@ -98,7 +98,7 @@ watch(
   },
   {
     immediate: true,
-    deep: true // 开启深度监听
+    deep: true, // 开启深度监听
   }
 );
 </script>

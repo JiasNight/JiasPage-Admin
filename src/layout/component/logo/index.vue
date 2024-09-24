@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-import useAppStore from '@/store/module/app';
+import useAppStore from "@/store/module/app";
 
 const appStore = useAppStore();
 

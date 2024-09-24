@@ -19,11 +19,11 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref, ComputedRef, h, Component } from 'vue';
-import { TreeOption, FormInst, DataTableColumns, NButton, NIcon, useDialog, useMessage } from 'naive-ui';
+import { Ref, ComputedRef, h, Component } from "vue";
+import { TreeOption, FormInst, DataTableColumns, NButton, NIcon, useDialog, useMessage } from "naive-ui";
 // import { renderIcon } from '@/utils/common';
 // import { IRes } from '@/interface/common';
-import useUserStore from '@/store/module/user';
+import useUserStore from "@/store/module/user";
 // import { Icon } from '@iconify/vue';
 // import { getDeptTree, getUserList } from '@/api/system/userManage';
 

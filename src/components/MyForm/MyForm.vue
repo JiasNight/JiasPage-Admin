@@ -18,36 +18,36 @@
 let props = defineProps({
   modelValue: {
     type: Object,
-    default: () => {}
+    default: () => {},
   },
   labelWidth: {
     type: String,
-    default: 'auto'
+    default: "auto",
   },
   labelAlign: {
     type: String,
-    default: 'left'
+    default: "left",
   },
   layout: {
     type: String,
-    default: 'vertical'
-  }
+    default: "vertical",
+  },
 });
 
 // 传递给子组件
-provide('labelWidth', props.labelWidth);
+provide("labelWidth", props.labelWidth);
 
 let formRef = $ref<any>(null);
 
 // 判断布局是垂直还是水平
 const getLayout = () => {
-  let defaultLayout = 'vertical';
+  let defaultLayout = "vertical";
   switch (props.layout) {
-    case 'vertical':
-      defaultLayout = 'column';
+    case "vertical":
+      defaultLayout = "column";
       break;
-    case 'horizontal':
-      defaultLayout = 'row';
+    case "horizontal":
+      defaultLayout = "row";
       break;
   }
   return defaultLayout;
@@ -73,12 +73,12 @@ const resetValidation = () => {
 defineExpose({
   validate,
   resetValidation,
-  reset
+  reset,
 });
 
 onMounted(() => {
   myFormStyle = {
-    flexDirection: getLayout()
+    flexDirection: getLayout(),
   };
 });
 </script>

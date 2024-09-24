@@ -96,7 +96,7 @@
             type="textarea"
             :autosize="{
               minRows: 2,
-              maxRows: 3
+              maxRows: 3,
             }"
             show-count
             maxlength="100"
@@ -126,15 +126,15 @@
 </template>
 
 <script lang="ts" setup>
-import { ICON } from '@/enums/icon';
-import { Ref, ComputedRef, h, Component } from 'vue';
-import { TreeOption, FormInst, DataTableColumns, NButton, NIcon } from 'naive-ui';
-import { Icon } from '@iconify/vue';
-import { renderIcon, resetForm } from '@/utils/common';
-import { IRes } from '@/interface/common';
-import useUserStore from '@/store/module/user';
-import { getRoleList, addRoleList, updateRole, deleteRole } from '@/api/system/roleManage';
-import RoleWithAuth from '@/views/system/roleManage/components/RoleWithAuth.vue';
+import { ICON } from "@/enums/icon";
+import { Ref, ComputedRef, h, Component } from "vue";
+import { TreeOption, FormInst, DataTableColumns, NButton, NIcon } from "naive-ui";
+import { Icon } from "@iconify/vue";
+import { renderIcon, resetForm } from "@/utils/common";
+import { IRes } from "@/interface/common";
+import useUserStore from "@/store/module/user";
+import { getRoleList, addRoleList, updateRole, deleteRole } from "@/api/system/roleManage";
+import RoleWithAuth from "@/views/system/roleManage/components/RoleWithAuth.vue";
 
 interface IQueryForm {
   roleName: string | null;
@@ -158,23 +158,23 @@ let queryForm = $ref<FormInst | null>(null);
 
 let queryFormData = $ref<IQueryForm>({
   roleName: null,
-  dataRange: null
+  dataRange: null,
 });
 
 let showModal = $ref<boolean>(false);
 
 let showRoleWithAuthModal = $ref<boolean>(false);
 
-let modelTitle = $ref<string>('');
+let modelTitle = $ref<string>("");
 
 let emptyRoleForm = {
-  pid: '',
-  id: '',
-  name: '',
-  code: '',
-  description: '',
-  status: '',
-  order: 0
+  pid: "",
+  id: "",
+  name: "",
+  code: "",
+  description: "",
+  status: "",
+  order: 0,
 };
 
 const roleFormRef = $ref<FormInst | null>(null);
@@ -184,129 +184,129 @@ let roleFormData = $ref<IRoleForm>(JSON.parse(JSON.stringify(emptyRoleForm)));
 let roleFormRules = {
   name: {
     required: true,
-    trigger: ['input', 'blur'],
-    message: '请输入角色名称'
+    trigger: ["input", "blur"],
+    message: "请输入角色名称",
   },
   code: {
     required: true,
-    trigger: ['input', 'blur'],
-    message: '请输入角色代码'
-  }
+    trigger: ["input", "blur"],
+    message: "请输入角色代码",
+  },
 };
 
 let roleTableData = $ref<IRoleForm[]>([]);
 
 let roleTableHeader = $ref<DataTableColumns>([
   {
-    title: '序号',
-    key: '',
-    align: 'center',
-    width: '60',
+    title: "序号",
+    key: "",
+    align: "center",
+    width: "60",
     render: (row, index) => {
       return index + 1;
-    }
+    },
   },
   {
-    title: '角色名称',
-    key: 'name',
-    align: 'center'
+    title: "角色名称",
+    key: "name",
+    align: "center",
   },
   {
-    title: '角色代码',
-    key: 'code',
-    align: 'center'
+    title: "角色代码",
+    key: "code",
+    align: "center",
   },
-  { title: '创建者', key: 'createBy', align: 'center' },
-  { title: '创建时间', key: 'createTime', align: 'center', width: '200' },
+  { title: "创建者", key: "createBy", align: "center" },
+  { title: "创建时间", key: "createTime", align: "center", width: "200" },
   {
-    title: '操作',
-    key: 'ops',
-    align: 'center',
-    width: '250',
+    title: "操作",
+    key: "ops",
+    align: "center",
+    width: "250",
     render: (rowData: any, rowIndex) => {
       return h(
         NSpace,
-        { justify: 'center' },
+        { justify: "center" },
         {
           default: () => [
             h(
               NButton,
               {
                 text: true,
-                type: 'primary',
+                type: "primary",
                 onClick: (e: any) => {
                   let copyRow = JSON.parse(JSON.stringify(rowData));
                   roleFormData = copyRow;
-                  modelTitle = '修改';
+                  modelTitle = "修改";
                   showModal = true;
-                }
+                },
               },
               {
-                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, 'mdi:text-box-edit-outline') }),
-                default: () => h('span', '修改')
+                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, "mdi:text-box-edit-outline") }),
+                default: () => h("span", "修改"),
               }
             ),
             h(
               NButton,
               {
                 text: true,
-                type: 'primary',
+                type: "primary",
                 onClick: (e) => {
                   roleFormData = JSON.parse(JSON.stringify(emptyRoleForm));
                   showRoleWithAuthModal = true;
-                }
+                },
               },
               {
-                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, 'mdi:account-key') }),
-                default: () => h('span', '权限')
+                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, "mdi:account-key") }),
+                default: () => h("span", "权限"),
               }
             ),
             h(
               NButton,
               {
                 text: true,
-                type: 'error',
+                type: "error",
                 onClick: (e: any) => {
                   window.$dialog.warning({
-                    title: '警告',
-                    content: '你是否确定进行删除？',
-                    positiveText: '确定',
-                    negativeText: '不确定',
+                    title: "警告",
+                    content: "你是否确定进行删除？",
+                    positiveText: "确定",
+                    negativeText: "不确定",
                     onPositiveClick: () => {
-                      window.$message.success('确定');
+                      window.$message.success("确定");
                       handleDeleteRole(rowData.id);
                     },
                     onNegativeClick: () => {
-                      window.$message.error('不确定');
-                    }
+                      window.$message.error("不确定");
+                    },
                   });
-                }
+                },
               },
               {
-                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, 'mdi:delete') }),
-                default: () => h('span', '删除')
+                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, "mdi:delete") }),
+                default: () => h("span", "删除"),
               }
-            )
-          ]
+            ),
+          ],
         }
       );
-    }
-  }
+    },
+  },
 ]);
 
 let pageInfo = {
   pageSize: 10,
   pageNum: 1,
-  total: 0
+  total: 0,
 };
 
 let pagination = reactive<object>({
-  'show-size-picker': true,
-  'show-quick-jumper': true,
+  "show-size-picker": true,
+  "show-quick-jumper": true,
   pageSizes: [10, 20, 30, 40],
   pageSize: pageInfo.pageSize,
   page: pageInfo.pageNum,
-  itemCount: pageInfo.total
+  itemCount: pageInfo.total,
 });
 
 let tableRowKey = (rowData: IRoleForm, i: number) => {
@@ -320,7 +320,7 @@ let confirmLoading = $ref<boolean>(false);
 const resetQueryFormBtn = () => {
   queryFormData = {
     roleName: null,
-    dataRange: null
+    dataRange: null,
   };
   if (queryForm) queryForm.restoreValidation();
 };
@@ -328,7 +328,7 @@ const resetQueryFormBtn = () => {
 // 获取角色数据
 const getRoleData = (): void => {
   const data = {
-    token: useUserStore().token
+    token: useUserStore().token,
   };
   tableIsLoading = true;
   getRoleList(data)
@@ -351,13 +351,13 @@ const handleQueryTable = (): void => {
 // 新增
 const handleAddRole = (): void => {
   roleFormData = JSON.parse(JSON.stringify(emptyRoleForm));
-  modelTitle = '新增';
+  modelTitle = "新增";
   showModal = true;
 };
 
 // 导出
 const handleDownload = (): void => {
-  window.$message.warning('还未开发该功能！');
+  window.$message.warning("还未开发该功能！");
 };
 
 // 确定
@@ -366,11 +366,11 @@ const handleConfirm = (): void => {
     if (!errors) {
       console.log(roleFormData);
       confirmLoading = true;
-      if (modelTitle === '新增') {
+      if (modelTitle === "新增") {
         addRoleList(roleFormData)
           .then((res) => {
             if (res && res.code === 200) {
-              window.$message.success('新增角色成功');
+              window.$message.success("新增角色成功");
               confirmLoading = false;
               showModal = false;
               handleQueryTable();
@@ -383,7 +383,7 @@ const handleConfirm = (): void => {
         updateRole(roleFormData)
           .then((res) => {
             if (res && res.code === 200) {
-              window.$message.success('修改角色成功');
+              window.$message.success("修改角色成功");
               confirmLoading = false;
               showModal = false;
               handleQueryTable();
@@ -394,7 +394,7 @@ const handleConfirm = (): void => {
           });
       }
     } else {
-      window.$message.error('表单必填项请填写！');
+      window.$message.error("表单必填项请填写！");
     }
   });
 };
@@ -404,12 +404,12 @@ const handleDeleteRole = (mId: string): void => {
   deleteRole(mId)
     .then((res: IRes) => {
       if (res && res.code === 200) {
-        window.$message.success('已删除角色！');
+        window.$message.success("已删除角色！");
         handleQueryTable();
       }
     })
     .catch(() => {
-      window.$message.warning('删除角色失败！');
+      window.$message.warning("删除角色失败！");
     });
 };
 

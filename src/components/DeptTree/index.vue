@@ -47,37 +47,37 @@
 </template>
 
 <script lang="ts" setup name="LeftTree">
-import { mdiDelete, mdiMagnify, mdiMinus, mdiPlus, mdiRefresh } from '@quasar/extras/mdi-v6';
-import { QTreeNode } from 'quasar';
+import { mdiDelete, mdiMagnify, mdiMinus, mdiPlus, mdiRefresh } from "@quasar/extras/mdi-v6";
+import { QTreeNode } from "quasar";
 
 const props = defineProps({
   data: {
     type: Array<QTreeNode>,
-    default: () => []
+    default: () => [],
   },
   nodeKey: {
     type: String,
-    default: () => 'id'
+    default: () => "id",
   },
   labelKey: {
     type: String,
-    default: () => 'name'
+    default: () => "name",
   },
   childrenKey: {
     type: String,
-    default: () => 'children'
+    default: () => "children",
   },
   loading: {
     type: Boolean,
-    default: () => false
-  }
+    default: () => false,
+  },
 });
 
-let filterText = $ref('');
+let filterText = $ref("");
 
-let treeSelectedValue = $ref('');
+let treeSelectedValue = $ref("");
 
-const emits = defineEmits(['refresh', 'selected']);
+const emits = defineEmits(["refresh", "selected"]);
 
 // 新增
 const handleClickPlus = () => {};
@@ -87,7 +87,7 @@ const handleClickMinus = () => {};
 
 // 刷新树
 const handleClickRefresh = () => {
-  emits('refresh');
+  emits("refresh");
 };
 
 // 搜索
@@ -97,6 +97,6 @@ const handleInputFilter = (val: String | Number | null) => {
 
 // 点击树
 const handleTreeSelected = (val: any) => {
-  emits('selected', val);
+  emits("selected", val);
 };
 </script>

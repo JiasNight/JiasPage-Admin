@@ -3,6 +3,5 @@
 </template>
 
 <script lang="ts" setup>
-import { ComputedRef } from 'vue';
-
+import { ComputedRef } from "vue";
 </script>

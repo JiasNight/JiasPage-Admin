@@ -194,7 +194,7 @@
               type="textarea"
               :autosize="{
                 minRows: 2,
-                maxRows: 3
+                maxRows: 3,
               }"
               show-count
               maxlength="100"
@@ -214,14 +214,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ICON } from '@/enums/icon';
-import { Ref, ComputedRef, h, Component } from 'vue';
-import { TreeOption, FormInst, DataTableColumns, NButton, NIcon, useDialog, useMessage } from 'naive-ui';
-import { resetForm } from '@/utils/common';
-import { IRes } from '@/interface/common';
-import useUserStore from '@/store/module/user';
-import { getUserList } from '@/api/system/userManage';
-import { getDeptList } from '@/api/system/deptManage';
+import { ICON } from "@/enums/icon";
+import { Ref, ComputedRef, h, Component } from "vue";
+import { TreeOption, FormInst, DataTableColumns, NButton, NIcon, useDialog, useMessage } from "naive-ui";
+import { resetForm } from "@/utils/common";
+import { IRes } from "@/interface/common";
+import useUserStore from "@/store/module/user";
+import { getUserList } from "@/api/system/userManage";
+import { getDeptList } from "@/api/system/deptManage";
 
 interface IQueryForm {
   userName: string | null;
@@ -257,45 +257,45 @@ interface IUserForms {
 }
 
 let emptyUserForm = {
-  userId: '',
-  userName: '',
-  userPassword: '',
-  userNick: '',
-  userDept: '',
-  userEmail: '',
-  userPhone: '',
-  userGender: '',
+  userId: "",
+  userName: "",
+  userPassword: "",
+  userNick: "",
+  userDept: "",
+  userEmail: "",
+  userPhone: "",
+  userGender: "",
   userBirthday: null,
-  userCity: '',
-  userAvatar: '',
+  userCity: "",
+  userAvatar: "",
   userStatus: 0,
-  userMarks: ''
+  userMarks: "",
 };
 
 // 引入全局方法
-const renderIcon: any = inject('renderIcon');
+const renderIcon: any = inject("renderIcon");
 
 let deptTreeLoading = $ref<boolean>(false);
 
 let currentSelectedTreeKey: any = null;
 
-let deptTreePattern = $ref<string>('');
+let deptTreePattern = $ref<string>("");
 
 let deptTreeData = $ref<TreeOption[]>([
   {
-    label: '部门1',
-    key: '0',
+    label: "部门1",
+    key: "0",
     children: [
       {
-        label: '部门1.1',
-        key: '0-0'
+        label: "部门1.1",
+        key: "0-0",
       },
       {
-        label: '部门1.2',
-        key: '0-1'
-      }
-    ]
-  }
+        label: "部门1.2",
+        key: "0-1",
+      },
+    ],
+  },
 ]);
 
 let tableRowKey = (rowData: IUserTable) => {
@@ -309,33 +309,33 @@ let queryFormData = $ref<IQueryForm>({
   userAccount: null,
   userPhone: null,
   userRole: null,
-  dataRange: null
+  dataRange: null,
 });
 
 let roleOptions = $ref<Array<object>>([
-  { label: '角1', value: 'role1' },
-  { label: '角2', value: 'role3' }
+  { label: "角1", value: "role1" },
+  { label: "角2", value: "role3" },
 ]);
 
 let showUserModal = $ref<boolean>(false);
 
 let userFormRef = $ref<FormInst | null>(null);
 
-let userModelTitle = $ref<string>('');
+let userModelTitle = $ref<string>("");
 
 let userFormData = $ref<IUserForms>(JSON.parse(JSON.stringify(emptyUserForm)));
 
 let userFormRules = {
   userName: {
     required: true,
-    trigger: 'blur',
-    message: '请输入用户账户'
+    trigger: "blur",
+    message: "请输入用户账户",
   },
   userPassword: {
     required: true,
-    trigger: 'blur',
-    message: '请输入用户密码'
-  }
+    trigger: "blur",
+    message: "请输入用户密码",
+  },
 };
 
 let confirmLoading = $ref<boolean>(false);
@@ -348,67 +348,67 @@ let showModifyPasswordModal = $ref<boolean>(false);
 
 let userTableHeaderColumns = $ref<DataTableColumns>([
   {
-    title: '序号',
-    key: 'index',
-    align: 'center',
-    titleAlign: 'center',
-    width: '60',
+    title: "序号",
+    key: "index",
+    align: "center",
+    titleAlign: "center",
+    width: "60",
     render: (row, index) => {
       return index + 1;
-    }
+    },
   },
-  { title: '用户账号', key: 'userName', align: 'center' },
-  { title: '用户昵称', key: 'userNick', align: 'center' },
+  { title: "用户账号", key: "userName", align: "center" },
+  { title: "用户昵称", key: "userNick", align: "center" },
   {
-    title: '头像',
-    key: 'userAvatar',
-    align: 'center',
+    title: "头像",
+    key: "userAvatar",
+    align: "center",
     render: (row) => {
-      return h('n-space', [
+      return h("n-space", [
         h(NImage, {
-          src: 'https://picsum.photos/id/1/100/100',
+          src: "https://picsum.photos/id/1/100/100",
           width: 50,
           lazy: true,
-          'show-toolbar-tooltip': true
-        })
+          "show-toolbar-tooltip": true,
+        }),
       ]);
-    }
+    },
   },
   {
-    title: '角色',
-    key: 'userRole',
-    align: 'center',
+    title: "角色",
+    key: "userRole",
+    align: "center",
     render: (row, index) => {
-      if (row.userRole === '0') return '角色1';
-      else return '角色2';
-    }
+      if (row.userRole === "0") return "角色1";
+      else return "角色2";
+    },
   },
-  { title: '创建时间', key: 'createTime', align: 'center' },
+  { title: "创建时间", key: "createTime", align: "center" },
   {
-    title: '操作',
-    key: 'ops',
-    align: 'center',
-    width: '200',
+    title: "操作",
+    key: "ops",
+    align: "center",
+    width: "200",
     render: (row) => {
       return h(
         NSpace,
-        { justify: 'center', align: 'center' },
+        { justify: "center", align: "center" },
         {
           default: () => [
             h(
               NButton,
               {
                 text: true,
-                type: 'primary',
+                type: "primary",
                 onClick: (e: any) => {
                   userFormData = JSON.parse(JSON.stringify(row));
-                  userModelTitle = '编辑用户';
+                  userModelTitle = "编辑用户";
                   showUserModal = true;
-                }
+                },
               },
               {
-                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, 'mdi:playlist-edit') }),
-                default: () => h('span', '编辑')
+                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, "mdi:playlist-edit") }),
+                default: () => h("span", "编辑"),
               }
             ),
             h(
@@ -416,30 +416,30 @@ let userTableHeaderColumns = $ref<DataTableColumns>([
               {
                 options: [
                   {
-                    label: '角色权限',
-                    key: 'userRole',
-                    icon: renderIcon(ICON.F, 'mdi:account-multiple-check')
+                    label: "角色权限",
+                    key: "userRole",
+                    icon: renderIcon(ICON.F, "mdi:account-multiple-check"),
                   },
                   {
-                    label: '修改密码',
-                    key: 'modifyPassword',
-                    icon: renderIcon(ICON.F, 'mdi:account-key')
+                    label: "修改密码",
+                    key: "modifyPassword",
+                    icon: renderIcon(ICON.F, "mdi:account-key"),
                   },
                   {
-                    label: '重置密码',
-                    key: 'resetPassword',
-                    icon: renderIcon(ICON.F, 'mdi:lock-reset')
-                  }
+                    label: "重置密码",
+                    key: "resetPassword",
+                    icon: renderIcon(ICON.F, "mdi:lock-reset"),
+                  },
                 ],
                 onSelect: (key: string): void => {
-                  if (key === 'userRole') {
+                  if (key === "userRole") {
                     showUserRoleModal = true;
-                  } else if (key === 'modifyPassword') {
+                  } else if (key === "modifyPassword") {
                     showModifyPasswordModal = true;
-                  } else if (key === 'resetPassword') {
+                  } else if (key === "resetPassword") {
                     handleResetPassword();
                   }
-                }
+                },
               },
               {
                 default: () =>
@@ -447,51 +447,51 @@ let userTableHeaderColumns = $ref<DataTableColumns>([
                     NButton,
                     {
                       text: true,
-                      type: 'primary'
+                      type: "primary",
                     },
                     {
-                      icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, 'mdi:chevron-triple-right') }),
-                      default: () => h('span', '更多')
+                      icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, "mdi:chevron-triple-right") }),
+                      default: () => h("span", "更多"),
                     }
-                  )
+                  ),
               }
             ),
             h(
               NButton,
               {
                 text: true,
-                type: 'error',
+                type: "error",
                 onClick: (e: any) => {
                   window.$dialog.warning({
-                    title: '警告',
-                    content: '你是否确定进行删除？',
-                    positiveText: '确定',
-                    negativeText: '不确定',
+                    title: "警告",
+                    content: "你是否确定进行删除？",
+                    positiveText: "确定",
+                    negativeText: "不确定",
                     onPositiveClick: () => {
                       console.log(row);
-                      window.$message.success('确定');
+                      window.$message.success("确定");
                     },
                     onNegativeClick: () => {
-                      window.$message.error('不确定');
-                    }
+                      window.$message.error("不确定");
+                    },
                   });
-                }
+                },
               },
               {
-                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, 'mdi:delete') }),
-                default: () => h('span', '删除')
+                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, "mdi:delete") }),
+                default: () => h("span", "删除"),
               }
-            )
-          ]
+            ),
+          ],
         }
       );
-    }
-  }
+    },
+  },
 ]);
 
 let rowClassName = (row: IUserTable) => {
   if (row.userAvatar) {
-    return 'row-avatar';
+    return "row-avatar";
   }
 };
 
@@ -503,7 +503,7 @@ let tablePagination = $ref<object>({
   pageSize: 10,
   prefix({ itemCount }: any) {
     return `Total is ${itemCount}.`;
-  }
+  },
 });
 
 // 刷新树
@@ -517,7 +517,7 @@ const refreshTreeBtn = () => {
 // 获取部门树
 const getDeptData = () => {
   const data = {
-    token: useUserStore().token
+    token: useUserStore().token,
   };
   getDeptList(data).then((res: IRes) => {
     if (res && res.code === 200) {
@@ -537,7 +537,7 @@ const getUserTable = () => {
   const data = {
     ...queryFormData,
     deptId: currentSelectedTreeKey,
-    ...tablePagination
+    ...tablePagination,
   };
   tableIsLoading = true;
   getUserList(data)
@@ -573,7 +573,7 @@ onMounted(() => {
 const handleAddUser = (): void => {
   userFormData = JSON.parse(JSON.stringify(emptyUserForm));
   showUserModal = true;
-  userModelTitle = '新增用户';
+  userModelTitle = "新增用户";
 };
 
 // 确定新增和修改按钮
@@ -582,7 +582,7 @@ const handleConfirm = (): void => {
     if (!errors) {
       console.log(userFormData);
     } else {
-      window.$message.error('表单必填项请填写！');
+      window.$message.error("表单必填项请填写！");
     }
   });
 };
@@ -590,24 +590,24 @@ const handleConfirm = (): void => {
 // 重置密码
 const handleResetPassword = () => {
   const d = window.$dialog.warning({
-    title: '密码重置',
-    content: '您正在重置用户的密码，是否确认？',
-    negativeText: '取消',
-    positiveText: '确认',
+    title: "密码重置",
+    content: "您正在重置用户的密码，是否确认？",
+    negativeText: "取消",
+    positiveText: "确认",
     onPositiveClick: () => {
       d.loading = true;
       return new Promise((resolve) => {
         setTimeout(() => {
           window.$notification.success({
-            content: '密码重置成功！',
-            meta: 'ab*73223k',
+            content: "密码重置成功！",
+            meta: "ab*73223k",
             duration: 2500,
-            keepAliveOnHover: true
+            keepAliveOnHover: true,
           });
           resolve(true);
         }, 2000);
       });
-    }
+    },
   });
 };
 </script>

@@ -30,8 +30,8 @@
 </template>
 
 <script lang="ts" setup>
-import { IRes } from '@/interface/common';
-import { getMenuList, addMenuList, updateMenu, deleteMenu } from '@/api/system/menuManage';
+import { IRes } from "@/interface/common";
+import { getMenuList, addMenuList, updateMenu, deleteMenu } from "@/api/system/menuManage";
 
 interface IMenuForm {
   id: string;
@@ -55,11 +55,11 @@ interface IMenuForm {
 let props = defineProps({
   show: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
 
-let emit = defineEmits(['close']);
+let emit = defineEmits(["close"]);
 
 let showRoleWithAuthModal = computed(() => {
   return props.show;
@@ -72,29 +72,29 @@ let appMenuTreeData: any = reactive([]);
 const handleConfirm = (): void => {
   confirmLoading = true;
   setTimeout(() => {
-    window.$message.success('确定');
+    window.$message.success("确定");
     confirmLoading = false;
-    emit('close');
+    emit("close");
   }, 1000);
 };
 
 const handleModalShow = (val: boolean) => {
-  if (!val) emit('close');
+  if (!val) emit("close");
 };
 
 const handleCancel = (): void => {
-  emit('close');
+  emit("close");
 };
 
 // 菜单目录名称递归
 const getMenuTree = (menuList: Array<IMenuForm>) => {
   let menuTree: Array<any> = [
     {
-      menuName: '系统根目录',
-      id: '0',
-      pid: '0',
-      children: []
-    }
+      menuName: "系统根目录",
+      id: "0",
+      pid: "0",
+      children: [],
+    },
   ];
   const recursionMenu = (menuList: Array<IMenuForm>) => {
     const clonedTree: any = [];
@@ -102,7 +102,7 @@ const getMenuTree = (menuList: Array<IMenuForm>) => {
       const clonedNode: any = {
         menuName: node.meta.title,
         id: node.id,
-        pid: node.path
+        pid: node.path,
       };
       if (node.children && node.children.length > 0) {
         clonedNode.children = recursionMenu(node.children);

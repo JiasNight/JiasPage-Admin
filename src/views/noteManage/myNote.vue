@@ -136,7 +136,7 @@
             type="textarea"
             :autosize="{
               minRows: 2,
-              maxRows: 3
+              maxRows: 3,
             }"
             show-count
             maxlength="100"
@@ -178,8 +178,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ICON } from '@/enums/icon';
-import { Ref, ComputedRef, h, Component } from 'vue';
+import { ICON } from "@/enums/icon";
+import { Ref, ComputedRef, h, Component } from "vue";
 import {
   TreeOption,
   FormInst,
@@ -189,14 +189,14 @@ import {
   NTag,
   UploadInst,
   UploadFileInfo,
-  UploadCustomRequestOptions
-} from 'naive-ui';
-import { MdEditor } from 'md-editor-v3';
-import 'md-editor-v3/lib/style.css';
-import { renderIcon, resetForm, getRandomColor } from '@/utils/common';
-import { IRes } from '@/interface/common';
-import useUserStore from '@/store/module/user';
-import { getNoteList, addNoteList, updateNote, deleteNote } from '@/api/noteManage/myNote';
+  UploadCustomRequestOptions,
+} from "naive-ui";
+import { MdEditor } from "md-editor-v3";
+import "md-editor-v3/lib/style.css";
+import { renderIcon, resetForm, getRandomColor } from "@/utils/common";
+import { IRes } from "@/interface/common";
+import useUserStore from "@/store/module/user";
+import { getNoteList, addNoteList, updateNote, deleteNote } from "@/api/noteManage/myNote";
 
 interface IQueryForm {
   name: string | null;
@@ -221,11 +221,11 @@ let uploadRef = $ref<UploadInst | null>(null);
 
 let previewFileList = $ref<UploadFileInfo[]>([
   {
-    id: 'vue',
-    name: '我是vue.png',
-    status: 'finished',
-    url: 'https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg'
-  }
+    id: "vue",
+    name: "我是vue.png",
+    status: "finished",
+    url: "https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg",
+  },
 ]);
 
 let tableIsLoading = $ref<boolean>(false);
@@ -237,7 +237,7 @@ let queryFormData = $ref<IQueryForm>({
   module: null,
   type: null,
   tags: null,
-  dataRange: null
+  dataRange: null,
 });
 
 let showEditNoteModal = $ref<boolean>(false);
@@ -248,19 +248,19 @@ let noteTypeOptions = $ref<Array<object>>([]);
 
 let noteTagOptions = $ref<Array<object>>([]);
 
-let modelTitle = $ref<string>('');
+let modelTitle = $ref<string>("");
 
 let emptyNoteForm = {
-  pid: '',
-  id: '',
-  name: '',
-  code: '',
-  description: '',
-  status: '',
+  pid: "",
+  id: "",
+  name: "",
+  code: "",
+  description: "",
+  status: "",
   type: null,
   tags: [],
   module: null,
-  mdContent: ''
+  mdContent: "",
 };
 
 const noteFormRef = $ref<FormInst | null>(null);
@@ -270,161 +270,161 @@ let noteFormData = $ref<INoteForm>(JSON.parse(JSON.stringify(emptyNoteForm)));
 let noteFormRules = {
   name: {
     required: true,
-    trigger: ['input', 'blur'],
-    message: '请输入笔记名称'
+    trigger: ["input", "blur"],
+    message: "请输入笔记名称",
   },
   module: {
     required: true,
-    trigger: ['change', 'blur'],
-    message: '请选择所属模块'
+    trigger: ["change", "blur"],
+    message: "请选择所属模块",
   },
   type: {
     required: true,
-    trigger: ['change', 'blur'],
-    message: '请选择分类'
+    trigger: ["change", "blur"],
+    message: "请选择分类",
   },
   mdContent: {
     required: true,
-    trigger: ['input', 'blur'],
-    message: '请输入内容'
-  }
+    trigger: ["input", "blur"],
+    message: "请输入内容",
+  },
 };
 
 let noteTableData = $ref<INoteForm[]>([]);
 
 let noteTableHeader = $ref<DataTableColumns>([
   {
-    title: '序号',
-    key: '',
-    align: 'center',
-    width: '60',
+    title: "序号",
+    key: "",
+    align: "center",
+    width: "60",
     render: (row, index) => {
       return index + 1;
-    }
+    },
   },
   {
-    title: '笔记名称',
-    key: 'name',
-    align: 'center'
+    title: "笔记名称",
+    key: "name",
+    align: "center",
   },
   {
-    title: '笔记代码',
-    key: 'code',
-    align: 'center'
+    title: "笔记代码",
+    key: "code",
+    align: "center",
   },
-  { title: '分类', key: 'type', align: 'center' },
+  { title: "分类", key: "type", align: "center" },
   {
-    title: '标签',
-    key: 'tags',
-    align: 'center',
+    title: "标签",
+    key: "tags",
+    align: "center",
     render: (rowData: any, rowIndex: number) => {
       return h(
         NTag,
         {
-          size: 'small',
+          size: "small",
           bordered: false,
           round: true,
           color: {
             color: getRandomColor(),
-            textColor: '#fff'
-          }
+            textColor: "#fff",
+          },
         },
         {
-          default: () => h('span', '标签')
+          default: () => h("span", "标签"),
         }
       );
-    }
+    },
   },
-  { title: '创建者', key: 'createBy', align: 'center' },
-  { title: '创建时间', key: 'createTime', align: 'center', width: '200' },
+  { title: "创建者", key: "createBy", align: "center" },
+  { title: "创建时间", key: "createTime", align: "center", width: "200" },
   {
-    title: '操作',
-    key: 'ops',
-    align: 'center',
-    width: '200',
+    title: "操作",
+    key: "ops",
+    align: "center",
+    width: "200",
     render: (rowData: any, rowIndex: number) => {
       return h(
         NSpace,
-        { justify: 'center' },
+        { justify: "center" },
         {
           default: () => [
             h(
               NButton,
               {
                 text: true,
-                type: 'primary',
+                type: "primary",
                 onClick: (e) => {
                   noteFormData = JSON.parse(JSON.stringify(emptyNoteForm));
-                }
+                },
               },
               {
-                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, 'mdi:print-preview') }),
-                default: () => h('span', '预览')
+                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, "mdi:print-preview") }),
+                default: () => h("span", "预览"),
               }
             ),
             h(
               NButton,
               {
                 text: true,
-                type: 'primary',
+                type: "primary",
                 onClick: (e: any) => {
                   let copyRow = JSON.parse(JSON.stringify(rowData));
                   noteFormData = copyRow;
-                  modelTitle = '编辑';
+                  modelTitle = "编辑";
                   showEditNoteModal = true;
-                }
+                },
               },
               {
-                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, 'mdi:text-box-edit-outline') }),
-                default: () => h('span', '编辑')
+                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, "mdi:text-box-edit-outline") }),
+                default: () => h("span", "编辑"),
               }
             ),
             h(
               NButton,
               {
                 text: true,
-                type: 'error',
+                type: "error",
                 onClick: (e: any) => {
                   window.$dialog.warning({
-                    title: '警告',
-                    content: '你是否确定进行删除？',
-                    positiveText: '确定',
-                    negativeText: '不确定',
+                    title: "警告",
+                    content: "你是否确定进行删除？",
+                    positiveText: "确定",
+                    negativeText: "不确定",
                     onPositiveClick: () => {
-                      window.$message.success('确定');
+                      window.$message.success("确定");
                       handleDeleteNote(rowData.id);
                     },
                     onNegativeClick: () => {
-                      window.$message.error('不确定');
-                    }
+                      window.$message.error("不确定");
+                    },
                   });
-                }
+                },
               },
               {
-                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, 'mdi:delete') }),
-                default: () => h('span', '删除')
+                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, "mdi:delete") }),
+                default: () => h("span", "删除"),
               }
-            )
-          ]
+            ),
+          ],
         }
       );
-    }
-  }
+    },
+  },
 ]);
 
 let pageInfo = {
   pageSize: 10,
   pageNum: 1,
-  total: 0
+  total: 0,
 };
 
 let pagination = reactive<object>({
-  'show-size-picker': true,
-  'show-quick-jumper': true,
+  "show-size-picker": true,
+  "show-quick-jumper": true,
   pageSizes: [10, 20, 30, 40],
   pageSize: pageInfo.pageSize,
   page: pageInfo.pageNum,
-  itemCount: pageInfo.total
+  itemCount: pageInfo.total,
 });
 
 let tableRowKey = (rowData: INoteForm, i: number) => {
@@ -440,7 +440,7 @@ const resetQueryFormBtn = () => {
     noteName: null,
     type: null,
     tags: null,
-    dataRange: null
+    dataRange: null,
   };
   if (queryForm) queryForm.restoreValidation();
 };
@@ -448,7 +448,7 @@ const resetQueryFormBtn = () => {
 // 获取笔记数据
 const getNoteData = (): void => {
   const data = {
-    token: useUserStore().token
+    token: useUserStore().token,
   };
   tableIsLoading = true;
   getNoteList(data)
@@ -471,13 +471,13 @@ const handleQueryTable = (): void => {
 // 新增
 const handleAddNote = (): void => {
   noteFormData = JSON.parse(JSON.stringify(emptyNoteForm));
-  modelTitle = '新增';
+  modelTitle = "新增";
   showEditNoteModal = true;
 };
 
 // 导出
 const handleDownload = (): void => {
-  window.$message.warning('还未开发该功能！');
+  window.$message.warning("还未开发该功能！");
 };
 
 // 确定
@@ -486,11 +486,11 @@ const handleConfirm = (): void => {
     if (!errors) {
       console.log(noteFormData);
       confirmLoading = true;
-      if (modelTitle === '新增') {
+      if (modelTitle === "新增") {
         addNoteList(noteFormData)
           .then((res) => {
             if (res && res.code === 200) {
-              window.$message.success('新增笔记成功');
+              window.$message.success("新增笔记成功");
               confirmLoading = false;
               showEditNoteModal = false;
               handleQueryTable();
@@ -503,7 +503,7 @@ const handleConfirm = (): void => {
         updateNote(noteFormData)
           .then((res) => {
             if (res && res.code === 200) {
-              window.$message.success('修改笔记成功');
+              window.$message.success("修改笔记成功");
               confirmLoading = false;
               showEditNoteModal = false;
               handleQueryTable();
@@ -514,7 +514,7 @@ const handleConfirm = (): void => {
           });
       }
     } else {
-      window.$message.error('表单必填项请填写！');
+      window.$message.error("表单必填项请填写！");
     }
   });
 };
@@ -524,12 +524,12 @@ const handleDeleteNote = (mId: string): void => {
   deleteNote(mId)
     .then((res: IRes) => {
       if (res && res.code === 200) {
-        window.$message.success('已删除笔记！');
+        window.$message.success("已删除笔记！");
         handleQueryTable();
       }
     })
     .catch(() => {
-      window.$message.warning('删除笔记失败！');
+      window.$message.warning("删除笔记失败！");
     });
 };
 
@@ -538,17 +538,17 @@ const handleBeforeUpload = (data: { file: UploadFileInfo; fileList: UploadFileIn
   let uFile = data.file.file;
   const fileName = uFile!.name as string;
   // 允许上传的文件格式列表
-  let acceptList = ['jpg', 'png'];
+  let acceptList = ["jpg", "png"];
   // 根据文件名获取文件的后缀名
-  let fileType = fileName.split('.').pop()?.toLowerCase() as string;
+  let fileType = fileName.split(".").pop()?.toLowerCase() as string;
   // 判断文件格式是否符合要求
   if (acceptList.indexOf(fileType) === -1) {
-    window.$message.error('只能上传 jpg/png 格式的文件 !');
+    window.$message.error("只能上传 jpg/png 格式的文件 !");
     return false;
   }
   // 判断文件大小是否符合要求
   if (uFile!.size / 1024 / 1024 > 1) {
-    window.$message.error('上传文件大小不能超过 1M !');
+    window.$message.error("上传文件大小不能超过 1M !");
     return false;
   }
 };
@@ -565,10 +565,10 @@ const handleCustomUpload = (options: UploadCustomRequestOptions) => {
   const formData = new FormData();
   if (data) {
     Object.keys(data).forEach((key) => {
-      formData.append(key, data[key as keyof UploadCustomRequestOptions['data']]);
+      formData.append(key, data[key as keyof UploadCustomRequestOptions["data"]]);
     });
   }
-  formData.append('file', file.file as File);
+  formData.append("file", file.file as File);
   console.log(formData);
 };
 

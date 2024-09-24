@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-import MapChart from './components/MapChart.vue';
+import MapChart from "./components/MapChart.vue";
 </script>
 
 <style lang="scss" scoped>

@@ -271,15 +271,15 @@
 </template>
 
 <script lang="ts" setup>
-import { ICON } from '@/enums/icon';
-import { Ref, ComputedRef, h, Component } from 'vue';
-import { resetForm } from '@/utils/common';
-import { IRes } from '@/interface/common';
-import useUserStore from '@/store/module/user';
-import { getUserList, newAddUser, updateUser, deleteUser } from '@/api/system/userManage';
-import { getDeptList } from '@/api/system/deptManage';
-import UserRoles from './components/UserRoles.vue';
-import ModifyPassword from './components/ModifyPassword.vue';
+import { ICON } from "@/enums/icon";
+import { Ref, ComputedRef, h, Component } from "vue";
+import { resetForm } from "@/utils/common";
+import { IRes } from "@/interface/common";
+import useUserStore from "@/store/module/user";
+import { getUserList, newAddUser, updateUser, deleteUser } from "@/api/system/userManage";
+import { getDeptList } from "@/api/system/deptManage";
+import UserRoles from "./components/UserRoles.vue";
+import ModifyPassword from "./components/ModifyPassword.vue";
 import {
   mdiAccountLock,
   mdiArrowRight,
@@ -294,12 +294,12 @@ import {
   mdiPlaylistEdit,
   mdiPlus,
   mdiRestore,
-  mdiShieldAccount
-} from '@quasar/extras/mdi-v6';
-import DeptTree from '@/components/DeptTree/index.vue';
-import { QPagination, QTableColumn, QTreeNode } from 'quasar';
-import { Md5 } from 'ts-md5';
-import { aesUtil } from '@/utils/common/security';
+  mdiShieldAccount,
+} from "@quasar/extras/mdi-v6";
+import DeptTree from "@/components/DeptTree/index.vue";
+import { QPagination, QTableColumn, QTreeNode } from "quasar";
+import { Md5 } from "ts-md5";
+import { aesUtil } from "@/utils/common/security";
 
 interface IQueryForm {
   username: string | null;
@@ -338,29 +338,29 @@ interface IUserForms {
 }
 
 let emptyUserForm = {
-  userId: '',
-  username: '',
-  password: '',
-  nickname: '',
-  email: '',
-  phone: '',
+  userId: "",
+  username: "",
+  password: "",
+  nickname: "",
+  email: "",
+  phone: "",
   gender: null,
-  birthday: '',
-  city: '',
-  dept: '',
-  avatar: '',
+  birthday: "",
+  city: "",
+  dept: "",
+  avatar: "",
   status: 0,
-  remarks: ''
+  remarks: "",
 };
 
 // 引入全局方法
-const renderIcon: any = inject('renderIcon');
+const renderIcon: any = inject("renderIcon");
 
 let deptTreeLoading = $ref<boolean>(false);
 
 let currentSelectedTreeKey: any = null;
 
-let deptTreePattern = $ref<string>('');
+let deptTreePattern = $ref<string>("");
 
 let deptTreeData = $ref<QTreeNode[]>([]);
 
@@ -372,39 +372,39 @@ let queryFormData = $ref<IQueryForm>({
   username: null,
   nickname: null,
   phone: null,
-  createDate: ''
+  createDate: "",
 });
 
 let genderOptions = $ref<Array<object>>([
-  { label: '男', value: 0 },
-  { label: '女', value: 1 }
+  { label: "男", value: 0 },
+  { label: "女", value: 1 },
 ]);
 
 let userInfoDialog = $ref<boolean>(false);
 
 let userFormRef = $ref<any>(null);
 
-let userInfoDialogTitle = $ref<string>('');
+let userInfoDialogTitle = $ref<string>("");
 
-let useDialogType = $ref<string>('add');
+let useDialogType = $ref<string>("add");
 
 let userFormData = $ref<IUserForms>(JSON.parse(JSON.stringify(emptyUserForm)));
 
 let userFormRules = {
-  username: [(val: string) => (val && val.length > 0) || '请输入用户账号'],
-  password: [(val: string) => (val && val.length > 0) || '请输入用户密码'],
-  nickname: [(val: string) => (val && val.length > 0) || '请输入用户昵称'],
-  phone: [(val: string) => (val && val.length > 0) || '请输入手机号码'],
+  username: [(val: string) => (val && val.length > 0) || "请输入用户账号"],
+  password: [(val: string) => (val && val.length > 0) || "请输入用户密码"],
+  nickname: [(val: string) => (val && val.length > 0) || "请输入用户昵称"],
+  phone: [(val: string) => (val && val.length > 0) || "请输入手机号码"],
   email: [
-    (val: string) => (val && val.length > 0) || '',
-    (val: string, rules: any) => rules.email(val) || '请输入正确的邮箱地址'
-  ]
+    (val: string) => (val && val.length > 0) || "",
+    (val: string, rules: any) => rules.email(val) || "请输入正确的邮箱地址",
+  ],
 };
 
 let pageInfo = $ref({
   page: 1,
   rowsPerPage: 10,
-  rowsNumber: 1
+  rowsNumber: 1,
 });
 
 let confirmLoading = $ref<boolean>(false);
@@ -417,89 +417,89 @@ let showModifyPasswordDialog = $ref<boolean>(false);
 
 let userTableHeaderColumns = $ref<QTableColumn[]>([
   {
-    label: '序号',
-    name: 'index',
-    field: 'index',
-    align: 'center',
-    headerClasses: 'cus-table-th',
-    classes: 'cus-table-td'
+    label: "序号",
+    name: "index",
+    field: "index",
+    align: "center",
+    headerClasses: "cus-table-th",
+    classes: "cus-table-td",
   },
   {
-    label: '用户账号',
-    name: 'username',
-    field: 'username',
-    align: 'center',
-    headerClasses: 'cus-table-th',
-    classes: 'cus-table-td'
+    label: "用户账号",
+    name: "username",
+    field: "username",
+    align: "center",
+    headerClasses: "cus-table-th",
+    classes: "cus-table-td",
   },
   {
-    label: '用户昵称',
-    name: 'nickname',
-    field: 'nickname',
-    align: 'center',
-    headerClasses: 'cus-table-th',
-    classes: 'cus-table-td'
+    label: "用户昵称",
+    name: "nickname",
+    field: "nickname",
+    align: "center",
+    headerClasses: "cus-table-th",
+    classes: "cus-table-td",
   },
   {
-    label: '头像',
-    name: 'avatar',
-    field: 'avatar',
+    label: "头像",
+    name: "avatar",
+    field: "avatar",
     format: (val) => `${val}`,
-    align: 'center',
-    headerClasses: 'cus-table-th',
-    classes: 'cus-table-td'
+    align: "center",
+    headerClasses: "cus-table-th",
+    classes: "cus-table-td",
   },
   {
-    label: '手机号',
-    name: 'phone',
-    field: 'phone',
-    align: 'center',
-    headerClasses: 'cus-table-th',
-    classes: 'cus-table-td'
+    label: "手机号",
+    name: "phone",
+    field: "phone",
+    align: "center",
+    headerClasses: "cus-table-th",
+    classes: "cus-table-td",
   },
   {
-    label: '创建时间',
-    name: 'createTime',
-    field: 'createTime',
+    label: "创建时间",
+    name: "createTime",
+    field: "createTime",
     sortable: true,
-    align: 'center',
-    headerClasses: 'cus-table-th',
-    classes: 'cus-table-td'
+    align: "center",
+    headerClasses: "cus-table-th",
+    classes: "cus-table-td",
   },
   {
-    label: '创建人',
-    name: 'createBy',
-    field: 'createBy',
-    align: 'center',
-    headerClasses: 'cus-table-th',
-    classes: 'cus-table-td'
+    label: "创建人",
+    name: "createBy",
+    field: "createBy",
+    align: "center",
+    headerClasses: "cus-table-th",
+    classes: "cus-table-td",
   },
   {
-    label: '操作',
-    name: 'ops',
-    field: 'ops',
-    align: 'center',
-    headerClasses: 'cus-table-th',
-    classes: 'cus-table-td'
-  }
+    label: "操作",
+    name: "ops",
+    field: "ops",
+    align: "center",
+    headerClasses: "cus-table-th",
+    classes: "cus-table-td",
+  },
 ]);
 
 let userRowMoreList = [
   {
-    label: '账户解冻',
-    key: 'accountFreeze',
-    icon: mdiAccountLock
+    label: "账户解冻",
+    key: "accountFreeze",
+    icon: mdiAccountLock,
   },
   {
-    label: '角色权限',
-    key: 'rolePermission',
-    icon: mdiShieldAccount
+    label: "角色权限",
+    key: "rolePermission",
+    icon: mdiShieldAccount,
   },
   {
-    label: '重置密码',
-    key: 'resetPassword',
-    icon: mdiLockReset
-  }
+    label: "重置密码",
+    key: "resetPassword",
+    icon: mdiLockReset,
+  },
 ];
 
 let userTableData: Array<IUserTable[]> = [];
@@ -535,10 +535,10 @@ const getUserTable = () => {
   const data = {
     query: {
       deptId: currentSelectedTreeKey,
-      ...queryFormData
+      ...queryFormData,
     },
     pageSize: pageInfo.rowsPerPage,
-    pageNum: pageInfo.page
+    pageNum: pageInfo.page,
   };
   console.log(data);
   tableIsLoading = true;
@@ -580,8 +580,8 @@ const handelTablePage = (page: any) => {
 
 // 新增用户
 const handleAddUser = (): void => {
-  userInfoDialogTitle = '新增用户';
-  useDialogType = 'add';
+  userInfoDialogTitle = "新增用户";
+  useDialogType = "add";
   userInfoDialog = true;
   nextTick(() => {
     userFormRef.resetValidation();
@@ -593,8 +593,8 @@ const handleAddUser = (): void => {
 const handleEditUser = (row: IUserTable): void => {
   console.log(row);
   userFormData = JSON.parse(JSON.stringify(row));
-  userInfoDialogTitle = '编辑用户';
-  useDialogType = 'edit';
+  userInfoDialogTitle = "编辑用户";
+  useDialogType = "edit";
   userInfoDialog = true;
 };
 
@@ -602,18 +602,18 @@ const handleEditUser = (row: IUserTable): void => {
 const handleDeleteUser = (row: IUserTable): void => {
   console.log(row);
   Dialog.create({
-    title: '系统提示',
-    message: '此操作将会删除该用户，是否继续？',
+    title: "系统提示",
+    message: "此操作将会删除该用户，是否继续？",
     cancel: true,
     persistent: true,
-    color: 'negative'
+    color: "negative",
   }).onOk(() => {
     deleteUser(row.userId).then((res: IRes) => {
       if (res && res.code === 200) {
         Notify.create({
-          type: 'positive',
-          position: 'top-right',
-          message: '删除成功！'
+          type: "positive",
+          position: "top-right",
+          message: "删除成功！",
         });
         getUserTable();
       }
@@ -626,7 +626,7 @@ const handleSubmitForm = (): void => {
   userFormRef.validate().then((valid: boolean) => {
     if (valid) {
       const copyUserFormData = JSON.parse(JSON.stringify(userFormData));
-      if (useDialogType === 'add') {
+      if (useDialogType === "add") {
         // 定义MD5对象
         const md5: any = new Md5();
         md5.appendAsciiStr(copyUserFormData.password);
@@ -639,9 +639,9 @@ const handleSubmitForm = (): void => {
             if (res && res.code === 200) {
               userInfoDialog = false;
               Notify.create({
-                type: 'positive',
-                position: 'top-right',
-                message: '新增成功！'
+                type: "positive",
+                position: "top-right",
+                message: "新增成功！",
               });
               getUserTable();
             }
@@ -655,9 +655,9 @@ const handleSubmitForm = (): void => {
             if (res && res.code === 200) {
               userInfoDialog = false;
               Notify.create({
-                type: 'positive',
-                position: 'top-right',
-                message: '修改成功！'
+                type: "positive",
+                position: "top-right",
+                message: "修改成功！",
               });
               getUserTable();
             }
@@ -680,8 +680,8 @@ const handleResetForm = (): void => {
 
 const handleClickUserMore = (key: string) => {
   console.log(key);
-  if (key === 'resetPassword') showModifyPasswordDialog = true;
-  if (key === 'rolePermission') showUserRoleDialog = true;
+  if (key === "resetPassword") showModifyPasswordDialog = true;
+  if (key === "rolePermission") showUserRoleDialog = true;
   // if (key === 'accountFreeze') showUserRoleDialog = true;
 };
 

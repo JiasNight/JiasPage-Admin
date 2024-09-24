@@ -42,14 +42,14 @@
 </template>
 
 <script lang="ts" setup>
-import { mdiMenu, mdiAccount, mdiDraw, mdiLogout, mdiEmail, mdiMagnify, mdiClose } from '@quasar/extras/mdi-v6';
-import { IUserInfo } from '@/interface/common';
-import useUserStore from '@/store/module/user';
-import useAppStore from '@/store/module/app';
-import { useRouter } from 'vue-router';
-import Logo from '@/layout/component/logo/index.vue';
-import Breadcrumbs from '@/layout/component/header/breadcrumbs.vue';
-import { useQuasar } from 'quasar';
+import { mdiMenu, mdiAccount, mdiDraw, mdiLogout, mdiEmail, mdiMagnify, mdiClose } from "@quasar/extras/mdi-v6";
+import { IUserInfo } from "@/interface/common";
+import useUserStore from "@/store/module/user";
+import useAppStore from "@/store/module/app";
+import { useRouter } from "vue-router";
+import Logo from "@/layout/component/logo/index.vue";
+import Breadcrumbs from "@/layout/component/header/breadcrumbs.vue";
+import { useQuasar } from "quasar";
 
 const router = useRouter();
 
@@ -63,49 +63,49 @@ let todoNumVal = $ref<number>(10);
 
 let themeDrawerShow = $ref<boolean>(false);
 
-let searchValue = $ref<string>('');
+let searchValue = $ref<string>("");
 
 let appUserInfo = computed(() => userStore.getUserInfo);
 
 // 用户下拉菜单选项
 const dropdownOptions = [
   {
-    label: '用户信息',
-    key: 'userInfo',
+    label: "用户信息",
+    key: "userInfo",
     icon: mdiAccount,
-    color: 'primary'
+    color: "primary",
   },
   {
-    label: '主题模式',
-    key: 'theme',
+    label: "主题模式",
+    key: "theme",
     icon: mdiDraw,
-    color: 'primary'
+    color: "primary",
   },
   {
-    label: '退出登录',
-    key: 'logout',
+    label: "退出登录",
+    key: "logout",
     icon: mdiLogout,
-    color: 'negative'
-  }
+    color: "negative",
+  },
 ];
 
 // 处理下拉菜单按钮点击
 const handleSelectDropdown = (key: string) => {
-  if (key === 'userInfo') {
-    router.push('/personalCenter');
-  } else if (key === 'theme') {
+  if (key === "userInfo") {
+    router.push("/personalCenter");
+  } else if (key === "theme") {
     themeDrawerShow = true;
-  } else if (key === 'logout') {
+  } else if (key === "logout") {
     console.log($q);
     $q.dialog({
-      title: '系统提示',
-      message: '是否确认退出登录？',
+      title: "系统提示",
+      message: "是否确认退出登录？",
       cancel: true,
       persistent: true,
-      color: 'negative'
+      color: "negative",
     }).onOk(() => {
       userStore.logoutSystem().then(() => {
-        router.push('/signIn');
+        router.push("/signIn");
       });
     });
   }

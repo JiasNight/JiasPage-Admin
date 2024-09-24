@@ -157,7 +157,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ICON } from '@/enums/icon';
+import { ICON } from "@/enums/icon";
 import {
   mdiAccountLock,
   mdiArrowRight,
@@ -172,19 +172,19 @@ import {
   mdiPlaylistEdit,
   mdiPlus,
   mdiRestore,
-  mdiShieldAccount
-} from '@quasar/extras/mdi-v6';
-import { QPagination, QTableColumn, QTreeNode } from 'quasar';
-import { Ref, ComputedRef, h, Component } from 'vue';
-import { TreeOption, FormInst, DataTableColumns, NButton, NIcon } from 'naive-ui';
-import { Icon } from '@iconify/vue';
-import { renderIcon, resetForm } from '@/utils/common';
-import { IRes } from '@/interface/common';
-import useUserStore from '@/store/module/user';
-import { getRoleList, addRoleList, updateRole, deleteRole } from '@/api/system/roleManage';
-import RoleWithAuth from '@/views/system/roleManage/components/RoleWithAuth.vue';
-import { Md5 } from 'ts-md5';
-import { aesUtil } from '@/utils/common/security';
+  mdiShieldAccount,
+} from "@quasar/extras/mdi-v6";
+import { QPagination, QTableColumn, QTreeNode } from "quasar";
+import { Ref, ComputedRef, h, Component } from "vue";
+import { TreeOption, FormInst, DataTableColumns, NButton, NIcon } from "naive-ui";
+import { Icon } from "@iconify/vue";
+import { renderIcon, resetForm } from "@/utils/common";
+import { IRes } from "@/interface/common";
+import useUserStore from "@/store/module/user";
+import { getRoleList, addRoleList, updateRole, deleteRole } from "@/api/system/roleManage";
+import RoleWithAuth from "@/views/system/roleManage/components/RoleWithAuth.vue";
+import { Md5 } from "ts-md5";
+import { aesUtil } from "@/utils/common/security";
 
 interface IQueryForm {
   roleName: string | null;
@@ -221,25 +221,25 @@ let queryForm = $ref<FormInst | null>(null);
 let queryFormData = $ref<IQueryForm>({
   roleName: null,
   roleCode: null,
-  createDate: null
+  createDate: null,
 });
 
 let showModal = $ref<boolean>(false);
 
 let showRoleWithAuthModal = $ref<boolean>(false);
 
-let modelTitle = $ref<string>('');
+let modelTitle = $ref<string>("");
 
-let useDialogType = $ref<string>('add');
+let useDialogType = $ref<string>("add");
 
 let emptyRoleForm = {
-  pid: '',
-  id: '',
-  name: '',
-  code: '',
-  description: '',
-  status: '',
-  order: 0
+  pid: "",
+  id: "",
+  name: "",
+  code: "",
+  description: "",
+  status: "",
+  order: 0,
 };
 
 const roleFormRef = $ref<any>(null);
@@ -247,81 +247,81 @@ const roleFormRef = $ref<any>(null);
 let roleFormData = $ref<IRoleForm>(JSON.parse(JSON.stringify(emptyRoleForm)));
 
 let roleFormRules = {
-  name: [(val: string) => (val && val.length > 0) || '请输入角色名称'],
-  code: [(val: string) => (val && val.length > 0) || '请输入角色代码']
+  name: [(val: string) => (val && val.length > 0) || "请输入角色名称"],
+  code: [(val: string) => (val && val.length > 0) || "请输入角色代码"],
 };
 
 let roleTableData = $ref<IRoleForm[]>([]);
 
 let roleTableHeaderColumns = $ref<QTableColumn[]>([
   {
-    label: '序号',
-    name: 'index',
-    field: 'index',
-    align: 'center',
-    headerClasses: 'cus-table-th',
-    classes: 'cus-table-td'
+    label: "序号",
+    name: "index",
+    field: "index",
+    align: "center",
+    headerClasses: "cus-table-th",
+    classes: "cus-table-td",
   },
   {
-    label: '角色名称',
-    name: 'name',
-    field: 'name',
-    align: 'center',
-    headerClasses: 'cus-table-th',
-    classes: 'cus-table-td'
+    label: "角色名称",
+    name: "name",
+    field: "name",
+    align: "center",
+    headerClasses: "cus-table-th",
+    classes: "cus-table-td",
   },
   {
-    label: '角色代码',
-    name: 'code',
-    field: 'code',
-    align: 'center',
-    headerClasses: 'cus-table-th',
-    classes: 'cus-table-td'
+    label: "角色代码",
+    name: "code",
+    field: "code",
+    align: "center",
+    headerClasses: "cus-table-th",
+    classes: "cus-table-td",
   },
   {
-    label: '创建时间',
-    name: 'createTime',
-    field: 'createTime',
+    label: "创建时间",
+    name: "createTime",
+    field: "createTime",
     sortable: true,
-    align: 'center',
-    headerClasses: 'cus-table-th',
-    classes: 'cus-table-td'
+    align: "center",
+    headerClasses: "cus-table-th",
+    classes: "cus-table-td",
   },
   {
-    label: '创建人',
-    name: 'createBy',
-    field: 'createBy',
-    align: 'center',
-    headerClasses: 'cus-table-th',
-    classes: 'cus-table-td'
+    label: "创建人",
+    name: "createBy",
+    field: "createBy",
+    align: "center",
+    headerClasses: "cus-table-th",
+    classes: "cus-table-td",
   },
   {
-    label: '操作',
-    name: 'ops',
-    field: 'ops',
-    align: 'center',
-    headerClasses: 'cus-table-th',
-    classes: 'cus-table-td'
-  }
+    label: "操作",
+    name: "ops",
+    field: "ops",
+    align: "center",
+    headerClasses: "cus-table-th",
+    classes: "cus-table-td",
+  },
 ]);
 
 let pageInfo = $ref({
   page: 1,
   rowsPerPage: 10,
-  rowsNumber: 1
+  rowsNumber: 1,
 });
 
 let roleRowMoreList = [
   {
-    label: '数据权限',
-    key: 'accountFreeze',
-    icon: mdiAccountLock
+    label: "数据权限",
+    key: "accountFreeze",
+    icon: mdiAccountLock,
   },
   {
-    label: '分配用户',
-    key: 'rolePermission',
-    icon: mdiShieldAccount
-  }
+    label: "分配用户",
+    key: "rolePermission",
+    icon: mdiShieldAccount,
+  },
 ];
 
 let tableRowKey = (rowData: IRoleForm, i: number) => {
@@ -336,7 +336,7 @@ const resetQueryFormBtn = () => {
   queryFormData = {
     roleName: null,
     roleCode: null,
-    createDate: null
+    createDate: null,
   };
   if (queryForm) queryForm.restoreValidation();
 };
@@ -345,10 +345,10 @@ const resetQueryFormBtn = () => {
 const getRoleTableData = (): void => {
   const data = {
     query: {
-      ...queryFormData
+      ...queryFormData,
     },
     pageSize: pageInfo.rowsPerPage,
-    pageNum: pageInfo.page
+    pageNum: pageInfo.page,
   };
   tableIsLoading = true;
   getRoleList(data)
@@ -374,17 +374,17 @@ const handleQueryTableBtn = (): void => {
 // 新增
 const handleAddRole = (): void => {
   roleFormData = JSON.parse(JSON.stringify(emptyRoleForm));
-  modelTitle = '新增';
+  modelTitle = "新增";
   showModal = true;
 };
 
 // 导出
 const handleDownload = (): void => {
-  window.$message.warning('还未开发该功能！');
+  window.$message.warning("还未开发该功能！");
 };
 
 const handleEditRole = (row: any): void => {
-  window.$message.warning('还未开发该功能！');
+  window.$message.warning("还未开发该功能！");
 };
 
 // 删除
@@ -392,12 +392,12 @@ const handleDeleteRole = (rId: string): void => {
   deleteRole(rId)
     .then((res: IRes) => {
       if (res && res.code === 200) {
-        window.$message.success('已删除角色！');
+        window.$message.success("已删除角色！");
         getRoleTableData();
       }
     })
     .catch(() => {
-      window.$message.warning('删除角色失败！');
+      window.$message.warning("删除角色失败！");
     });
 };
 
@@ -406,15 +406,15 @@ const handleSubmitForm = (): void => {
   roleFormRef.validate().then((valid: boolean) => {
     if (valid) {
       const copyRoleFormData = JSON.parse(JSON.stringify(roleFormData));
-      if (useDialogType === 'add') {
+      if (useDialogType === "add") {
         addRoleList(copyRoleFormData)
           .then((res: IRes) => {
             if (res && res.code === 200) {
               showModal = false;
               Notify.create({
-                type: 'positive',
-                position: 'top-right',
-                message: '新增成功！'
+                type: "positive",
+                position: "top-right",
+                message: "新增成功！",
               });
               getRoleTableData();
             }
@@ -428,9 +428,9 @@ const handleSubmitForm = (): void => {
             if (res && res.code === 200) {
               showModal = false;
               Notify.create({
-                type: 'positive',
-                position: 'top-right',
-                message: '修改成功！'
+                type: "positive",
+                position: "top-right",
+                message: "修改成功！",
               });
               getRoleTableData();
             }
@@ -447,8 +447,8 @@ const handleSubmitForm = (): void => {
 
 const handleClickRoleMore = (key: string) => {
   console.log(key);
-  if (key === 'resetPassword') showModifyPasswordDialog = true;
-  if (key === 'rolePermission') showUserRoleDialog = true;
+  if (key === "resetPassword") showModifyPasswordDialog = true;
+  if (key === "rolePermission") showUserRoleDialog = true;
   // if (key === 'accountFreeze') showUserRoleDialog = true;
 };
 
@@ -460,8 +460,6 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .view-container {
-  .container-form {
-  }
   .container-space {
     margin-bottom: 0.625rem;
   }

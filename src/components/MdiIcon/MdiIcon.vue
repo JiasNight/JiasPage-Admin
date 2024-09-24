@@ -8,19 +8,19 @@
 const props = defineProps({
   icon: {
     type: String,
-    default: ''
-  }
+    default: "",
+  },
 });
 
-let iconPath = $ref<string>('');
+let iconPath = $ref<string>("");
 
 const iconKey: any = computed(() => props.icon);
 
 // 动态加载module
 const loadModule = async () => {
-  let defaultKey = 'mdiMenu';
-  const module: any = await import('@quasar/extras/mdi-v6');
-  defaultKey = iconKey.value !== '' ? iconKey.value : defaultKey;
+  let defaultKey = "mdiMenu";
+  const module: any = await import("@quasar/extras/mdi-v6");
+  defaultKey = iconKey.value !== "" ? iconKey.value : defaultKey;
   if (module[defaultKey]) {
     iconPath = module[defaultKey];
   } else {

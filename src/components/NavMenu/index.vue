@@ -17,8 +17,8 @@
 </template>
 
 <script lang="ts" setup>
-import NavMenu from '@/components/NavMenu/index.vue';
-import { KeyboardArrowDownFilled } from '@vicons/material';
+import NavMenu from "@/components/NavMenu/index.vue";
+import { KeyboardArrowDownFilled } from "@vicons/material";
 interface IMenu {
   id: string;
   pid: string;
@@ -35,8 +35,8 @@ interface IMenu {
 const currentProps = defineProps({
   navMenus: {
     type: Array<IMenu>,
-    default: () => []
-  }
+    default: () => [],
+  },
 });
 </script>
 3

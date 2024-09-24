@@ -1,7 +1,7 @@
-import { h, Component, defineComponent } from 'vue';
-import { NIcon, FormInst } from 'naive-ui';
-import { Icon } from '@iconify/vue';
-import { ICON } from '@/enums/icon';
+import { h, Component, defineComponent } from "vue";
+import { NIcon, FormInst } from "naive-ui";
+import { Icon } from "@iconify/vue";
+import { ICON } from "@/enums/icon";
 
 // 渲染菜单图标方法
 // export function renderIcon(icon = 'mdi:emoticon', props = { size: 16 }) {
@@ -9,14 +9,14 @@ import { ICON } from '@/enums/icon';
 // }
 
 // 图标渲染
-export function renderIcon(type: ICON, icon = 'mdi:emoticon', props = { size: 14 }) {
+export function renderIcon(type: ICON, icon = "mdi:emoticon", props = { size: 14 }) {
   // 判断是直接渲染还是返回图标对象进行渲染
-  if (type === 'O') {
+  if (type === "O") {
     const iconInfo = {
       name: icon,
       render: () => {
         return h(NIcon, props, { default: () => h(Icon as Component, { icon: icon }) });
-      }
+      },
     };
     return iconInfo;
   } else {
@@ -30,24 +30,24 @@ export function renderIcon(type: ICON, icon = 'mdi:emoticon', props = { size: 14
  * @param fmt 输出格式
  * @returns 期望的输出格式
  */
-export function formatDate(date = new Date(), fmt = 'yyyy-MM-dd hh:mm:ss') {
+export function formatDate(date = new Date(), fmt = "yyyy-MM-dd hh:mm:ss") {
   const _date = new Date(date);
   function padLeftZero(str: string) {
-    return ('00' + str).substring(str.length);
+    return ("00" + str).substring(str.length);
   }
   if (/(y+)/.test(fmt)) {
-    fmt = fmt.replace(RegExp.$1, (_date.getFullYear() + '').substring(4 - RegExp.$1.length));
+    fmt = fmt.replace(RegExp.$1, (_date.getFullYear() + "").substring(4 - RegExp.$1.length));
   }
   const o: any = {
-    'M+': _date.getMonth() + 1,
-    'd+': _date.getDate(),
-    'h+': _date.getHours(),
-    'm+': _date.getMinutes(),
-    's+': _date.getSeconds()
+    "M+": _date.getMonth() + 1,
+    "d+": _date.getDate(),
+    "h+": _date.getHours(),
+    "m+": _date.getMinutes(),
+    "s+": _date.getSeconds(),
   };
   for (const k in o) {
     if (new RegExp(`(${k})`).test(fmt)) {
-      const str = o[k] + '';
+      const str = o[k] + "";
       fmt = fmt.replace(RegExp.$1, RegExp.$1.length === 1 ? str : padLeftZero(str));
     }
   }
@@ -68,8 +68,8 @@ export const getUUID = (randomLength = 10) => {
  * @returns 随机颜色
  */
 export function getRandomColor() {
-  const letters = '0123456789ABCDEF';
-  let color = '#';
+  const letters = "0123456789ABCDEF";
+  let color = "#";
   for (let i = 0; i < 6; i++) {
     color += letters[Math.floor(Math.random() * 16)];
   }
@@ -90,22 +90,22 @@ export const resetForm = (formData: any) => {
       console.log(value);
       console.log(valType);
       switch (valType) {
-        case 'Array':
+        case "Array":
           value = [];
           break;
-        case 'Object':
+        case "Object":
           value = {};
           break;
-        case 'String':
-          value = '';
+        case "String":
+          value = "";
           break;
-        case 'Boolean':
+        case "Boolean":
           value = false;
           break;
-        case 'Number':
+        case "Number":
           value = 0;
           break;
-        case 'Null':
+        case "Null":
           value = null;
           break;
         default:

@@ -15,12 +15,12 @@
 </template>
 
 <script lang="ts" setup>
-import * as echarts from 'echarts';
-import 'echarts-gl';
-import { getJSON } from '@/api/app';
-import { mdiEarth, mdiMap } from '@quasar/extras/mdi-v6';
+import * as echarts from "echarts";
+import "echarts-gl";
+import { getJSON } from "@/api/app";
+import { mdiEarth, mdiMap } from "@quasar/extras/mdi-v6";
 
-let chartType = $ref<string>('map');
+let chartType = $ref<string>("map");
 
 let mapChart: HTMLElement | undefined = $ref<HTMLElement>();
 let earthChart: HTMLElement | undefined = $ref<HTMLElement>();
@@ -31,132 +31,132 @@ let earthMap: any = null;
 
 // 获取地图数据
 const getMapData = async () => {
-  await getJSON('/map/china.json').then((res) => {
+  await getJSON("/map/china.json").then((res) => {
     chinaMap = res.data;
   });
 };
 
 // 获取地图数据
 const getEarthData = async () => {
-  await getJSON('/map/earth.json').then((res) => {
+  await getJSON("/map/earth.json").then((res) => {
     earthMap = res.data;
   });
 };
 const initMapChart = async () => {
   chartLoading = true;
   await getMapData();
-  echarts.registerMap('china', chinaMap as any);
+  echarts.registerMap("china", chinaMap as any);
   let myChart = echarts.getInstanceByDom(mapChart as HTMLElement);
   if (!myChart) {
     myChart = echarts.init(mapChart as HTMLElement);
   }
   let option = {
     tooltip: {
-      show: true
+      show: true,
     },
     geo: {
-      map: 'china',
+      map: "china",
       roam: true,
       scaleLimit: {
         min: 1.2,
-        max: 3
+        max: 3,
       },
       zoom: 1.2,
       // 区域文本的样式
       label: {
         show: true,
         fontSize: 10,
-        fontWeight: 'bold',
-        color: '#666'
+        fontWeight: "bold",
+        color: "#666",
       },
       // 地图区域的边样式，有 normal 和 emphasis 两个状态
       itemStyle: {
-        areaColor: '#7cc7ff',
-        borderColor: '#d9ffff',
-        borderWidth: 1.5
+        areaColor: "#7cc7ff",
+        borderColor: "#d9ffff",
+        borderWidth: 1.5,
       },
       // emphasis 是图形在高亮状态下的样式，比如在鼠标悬浮或者图例联动高亮时。
       emphasis: {
         itemStyle: {
-          areaColor: '#FA8C16',
-          borderWidth: 0
+          areaColor: "#FA8C16",
+          borderWidth: 0,
         },
         label: {
-          color: '#fff'
-        }
-      }
+          color: "#fff",
+        },
+      },
     },
     series: [
       {
-        name: 'effectScatter',
-        type: 'effectScatter',
-        coordinateSystem: 'geo',
+        name: "effectScatter",
+        type: "effectScatter",
+        coordinateSystem: "geo",
         zlevel: 1,
-        effectType: 'ripple',
-        symbol: 'circle',
+        effectType: "ripple",
+        symbol: "circle",
         rippleEffect: {
           period: 4,
           number: 3,
-          brushType: 'fill'
+          brushType: "fill",
         },
         symbolSize: (value: Array<any>, params: any) => {
           return 20;
         },
-        showEffectOn: 'render',
+        showEffectOn: "render",
         label: {
           show: true,
-          position: 'top',
-          color: '#e74c3c',
+          position: "top",
+          color: "#e74c3c",
           fontSize: 14,
-          fontWeight: 'bold',
-          formatter: '{b}'
+          fontWeight: "bold",
+          formatter: "{b}",
         },
         itemStyle: {
-          color: '#e74c3c',
-          shadowBlur: 10
+          color: "#e74c3c",
+          shadowBlur: 10,
         },
         emphasis: {
           label: {
-            show: true
-          }
+            show: true,
+          },
         },
         tooltip: {
-          formatter: '{a} <br/>{b} : {c}'
+          formatter: "{a} <br/>{b} : {c}",
         },
-        data: [{ name: '昆明', value: [102.712251, 25.040609, 20] }]
+        data: [{ name: "昆明", value: [102.712251, 25.040609, 20] }],
       },
       {
-        name: 'scatter',
-        type: 'scatter',
-        coordinateSystem: 'geo',
+        name: "scatter",
+        type: "scatter",
+        coordinateSystem: "geo",
         zlevel: 1,
-        symbol: 'pin',
+        symbol: "pin",
         symbolSize: (value: Array<any>, params: any) => {
           return 50;
         },
         label: {
           show: true,
-          position: 'top',
-          color: '#9b59b6',
+          position: "top",
+          color: "#9b59b6",
           fontSize: 14,
-          fontWeight: 'bold',
-          formatter: '{b}'
+          fontWeight: "bold",
+          formatter: "{b}",
         },
         itemStyle: {
-          color: '#9b59b6'
+          color: "#9b59b6",
         },
         tooltip: {
-          formatter: '{a} <br/>{b} : {c}'
+          formatter: "{a} <br/>{b} : {c}",
         },
         data: [
-          { name: '北京', value: [116.405285, 39.904989, 30] },
-          { name: '上海', value: [121.472644, 31.231706, 20] }
-        ]
+          { name: "北京", value: [116.405285, 39.904989, 30] },
+          { name: "上海", value: [121.472644, 31.231706, 20] },
+        ],
       },
       {
-        name: 'lines',
-        type: 'lines',
-        coordinateSystem: 'geo',
+        name: "lines",
+        type: "lines",
+        coordinateSystem: "geo",
         zlevel: 1,
         effect: {
           show: true,
@@ -165,38 +165,38 @@ const initMapChart = async () => {
           // 特效尾迹长度[0,1]值越大，尾迹越长重
           trailLength: 0.02,
           // 箭头图标
-          symbol: 'arrow',
+          symbol: "arrow",
           // 图标大小
-          symbolSize: 8
+          symbolSize: 8,
         },
         tooltip: {
-          formatter: '{a} <br/>{b} : {c}'
+          formatter: "{a} <br/>{b} : {c}",
         },
         lineStyle: {
           // 尾迹线条宽度
           width: 2,
-          color: '#e84118',
+          color: "#e84118",
           // 尾迹线条透明度
           opacity: 1,
           // 尾迹线条曲直度
-          curveness: 0.3
+          curveness: 0.3,
         },
         data: [
           {
             coords: [
               [116.405285, 39.904989],
-              [102.712251, 25.040609]
-            ]
+              [102.712251, 25.040609],
+            ],
           },
           {
             coords: [
               [121.472644, 31.231706],
-              [102.712251, 25.040609]
-            ]
-          }
-        ]
-      }
-    ]
+              [102.712251, 25.040609],
+            ],
+          },
+        ],
+      },
+    ],
   };
   myChart.clear();
   myChart.resize();
@@ -207,61 +207,61 @@ const initMapChart = async () => {
 const initEarthChart = async () => {
   chartLoading = true;
   await getEarthData();
-  echarts.registerMap('earth', earthMap as any);
+  echarts.registerMap("earth", earthMap as any);
   let myChart = echarts.getInstanceByDom(earthChart as HTMLElement);
   if (!myChart) {
     myChart = echarts.init(earthChart as HTMLElement);
   }
 
   // 地球球面纹理
-  let canvas = document.createElement('canvas');
+  let canvas = document.createElement("canvas");
   let baseTexture = echarts.init(canvas, null as any, {
     width: 4096,
-    height: 2048
+    height: 2048,
   });
   let earthOption = {
-    backgroundColor: '#031c48',
+    backgroundColor: "#031c48",
     geo: {
-      type: 'map',
-      map: 'earth',
+      type: "map",
+      map: "earth",
       left: 0,
       top: 0,
       right: 0,
       bottom: 0,
       boundingCoords: [
         [-180, 90],
-        [180, -90]
+        [180, -90],
       ],
       zoom: 0,
       label: {
-        show: false
+        show: false,
       },
       itemStyle: {
-        areaColor: '#174f87',
-        color: '#fff',
-        borderColor: '#ecf0f1',
+        areaColor: "#174f87",
+        color: "#fff",
+        borderColor: "#ecf0f1",
         borderWidth: 1,
-        opacity: 0.9
-      }
-    }
+        opacity: 0.9,
+      },
+    },
   };
   baseTexture.setOption(earthOption);
   let option = {
     tooltip: {
-      show: true
+      show: true,
     },
     globe: {
       baseTexture: baseTexture,
       silent: true,
       globeRadius: 60,
       globeOuterRadius: 100,
-      shading: 'lambert',
+      shading: "lambert",
       // shading: 'color',
-      environment: '#000',
+      environment: "#000",
       light: {
         ambient: {
           // 设置环境光
-          intensity: 1
+          intensity: 1,
         },
         main: {
           // 设置主光源
@@ -269,15 +269,15 @@ const initEarthChart = async () => {
           // 开启阴影
           shadow: true,
           alpha: 40,
-          beta: -30
-        }
+          beta: -30,
+        },
       },
       atmosphere: {
         show: true,
         offset: 4,
-        color: 'rgba(61,149,248,0.6)',
+        color: "rgba(61,149,248,0.6)",
         glowPower: 5,
-        innerGlowPower: 8
+        innerGlowPower: 8,
       },
       viewControl: {
         distance: 150,
@@ -295,7 +295,7 @@ const initEarthChart = async () => {
         // 旋转操作的灵敏度，值越大越灵敏。支持使用数组分别设置横向和纵向的旋转灵敏度。
         rotateSensitivity: 10,
         // 平移操作的灵敏度，值越大越灵敏。支持使用数组分别设置横向和纵向的平移灵敏度 默认为`` 设置为0后无法平移
-        panSensitivity: 10
+        panSensitivity: 10,
       },
       // 为画面添加高光，景深，环境光遮蔽（SSAO），调色等效果
       postEffect: {
@@ -307,46 +307,46 @@ const initEarthChart = async () => {
           radius: 1,
           // 环境光遮蔽的强度
           intensity: 1,
-          enable: true
-        }
-      }
+          enable: true,
+        },
+      },
     },
     series: [
       {
-        name: 'scatter3D',
-        type: 'scatter3D',
-        coordinateSystem: 'globe',
+        name: "scatter3D",
+        type: "scatter3D",
+        coordinateSystem: "globe",
         zlevel: 1,
-        symbol: 'circle',
+        symbol: "circle",
         symbolSize: 15,
         silent: true,
         label: {
           show: true,
-          position: 'right',
-          formatter: '{b}',
+          position: "right",
+          formatter: "{b}",
           textStyle: {
             fontSize: 16,
-            color: '#f5d909',
-            fontWeight: 'bold'
-          }
+            color: "#f5d909",
+            fontWeight: "bold",
+          },
         },
         itemStyle: {
-          color: 'rgb(29,183,255)'
+          color: "rgb(29,183,255)",
         },
         data: [
           {
-            name: '北京',
-            value: [116.46, 39.92]
+            name: "北京",
+            value: [116.46, 39.92],
           },
           {
-            name: '上海',
-            value: [121.48, 31.22]
+            name: "上海",
+            value: [121.48, 31.22],
           },
           {
-            name: '昆明',
-            value: [102.73, 25.04]
-          }
-        ]
+            name: "昆明",
+            value: [102.73, 25.04],
+          },
+        ],
       },
       // 柱状图
       // {
@@ -379,9 +379,9 @@ const initEarthChart = async () => {
       //   ]
       // },
       {
-        name: 'lines3D',
-        type: 'lines3D',
-        coordinateSystem: 'globe',
+        name: "lines3D",
+        type: "lines3D",
+        coordinateSystem: "globe",
         zlevel: 2,
         // 飞线的尾迹特效。
         effect: {
@@ -396,63 +396,63 @@ const initEarthChart = async () => {
           // 尾迹的不透明度，默认跟线条不透明度相同
           trailOpacity: 1,
           // 尾迹的颜色，默认跟线条颜色相同
-          trailColor: '#0087f4'
+          trailColor: "#0087f4",
         },
-        blendMode: 'lighter',
+        blendMode: "lighter",
         // 图形是否不响应和触发鼠标事件，默认为 false，即响应和触发鼠标事件
         silent: true,
         // 飞线的线条样式
         lineStyle: {
           width: 1,
-          color: '#0087f4',
-          opacity: 0
+          color: "#0087f4",
+          opacity: 0,
         },
         data: [
           {
             coords: [
               [116.46, 39.92],
-              [102.73, 25.04]
+              [102.73, 25.04],
             ],
-            value: 100
+            value: 100,
           },
           {
             coords: [
               [-155.589933, 19.901194],
-              [116.46, 39.92]
+              [116.46, 39.92],
             ],
-            value: 1010
-          }
-        ]
+            value: 1010,
+          },
+        ],
       },
 
       {
-        type: 'lines3D',
-        coordinateSystem: 'globe',
+        type: "lines3D",
+        coordinateSystem: "globe",
         zlevel: 2,
         effect: {
           show: true,
           trailWidth: 5,
           trailOpacity: 1,
           trailLength: 0.2,
-          constantSpeed: 5
+          constantSpeed: 5,
         },
-        blendMode: 'lighter',
+        blendMode: "lighter",
         lineStyle: {
           // 航线的视图效果
-          color: '#EBE806',
+          color: "#EBE806",
           width: 1,
-          opacity: 1
+          opacity: 1,
         },
         data: [
           [
             [121.48, 31.22],
-            [102.73, 25.04]
-          ]
-        ]
-      }
-    ]
+            [102.73, 25.04],
+          ],
+        ],
+      },
+    ],
   };
-  myChart.on('click', (params) => {
+  myChart.on("click", (params) => {
     console.log(params);
   });
   myChart.clear();
@@ -462,23 +462,23 @@ const initEarthChart = async () => {
 };
 
 const handleChangeChart = (type: string) => {
-  if (type === 'map') {
-    chartType = 'map';
+  if (type === "map") {
+    chartType = "map";
     initMapChart();
   } else {
-    chartType = 'earth';
+    chartType = "earth";
     initEarthChart();
   }
 };
 
 onMounted(() => {
-  if (chartType === 'map') {
+  if (chartType === "map") {
     initMapChart();
   } else {
     initEarthChart();
   }
-  window.addEventListener('resize', () => {
-    if (chartType === 'map') {
+  window.addEventListener("resize", () => {
+    if (chartType === "map") {
       initMapChart();
     } else {
       initEarthChart();

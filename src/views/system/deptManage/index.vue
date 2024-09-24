@@ -107,7 +107,7 @@
             type="textarea"
             :autosize="{
               minRows: 2,
-              maxRows: 3
+              maxRows: 3,
             }"
             show-count
             maxlength="100"
@@ -135,14 +135,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ICON } from '@/enums/icon';
-import { Ref, ComputedRef, h, Component } from 'vue';
-import { TreeOption, FormInst, DataTableColumns, NButton, NIcon } from 'naive-ui';
-import { Icon } from '@iconify/vue';
-import { renderIcon, resetForm } from '@/utils/common';
-import { IRes } from '@/interface/common';
-import useUserStore from '@/store/module/user';
-import { getDeptList, addDeptList, updateDept, deleteDept } from '@/api/system/deptManage';
+import { ICON } from "@/enums/icon";
+import { Ref, ComputedRef, h, Component } from "vue";
+import { TreeOption, FormInst, DataTableColumns, NButton, NIcon } from "naive-ui";
+import { Icon } from "@iconify/vue";
+import { renderIcon, resetForm } from "@/utils/common";
+import { IRes } from "@/interface/common";
+import useUserStore from "@/store/module/user";
+import { getDeptList, addDeptList, updateDept, deleteDept } from "@/api/system/deptManage";
 
 interface IQueryForm {
   deptName: string | null;
@@ -166,21 +166,21 @@ let queryForm = $ref<FormInst | null>(null);
 
 let queryFormData = $ref<IQueryForm>({
   deptName: null,
-  dataRange: null
+  dataRange: null,
 });
 
 let showModal = $ref<boolean>(false);
 
-let modelTitle = $ref<string>('');
+let modelTitle = $ref<string>("");
 
 let emptyDeptForm = {
-  pid: '',
-  id: '',
-  name: '',
-  code: '',
-  description: '',
-  status: '',
-  order: 0
+  pid: "",
+  id: "",
+  name: "",
+  code: "",
+  description: "",
+  status: "",
+  order: 0,
 };
 
 const deptFormRef = $ref<FormInst | null>(null);
@@ -192,123 +192,123 @@ let deptFormData = $ref<IDeptForm>(JSON.parse(JSON.stringify(emptyDeptForm)));
 let deptFormRules = {
   pid: {
     required: true,
-    trigger: ['blur', 'change'],
-    message: '请选择上级部门'
+    trigger: ["blur", "change"],
+    message: "请选择上级部门",
   },
   name: {
     required: true,
-    trigger: ['input', 'blur'],
-    message: '请输入部门名称'
+    trigger: ["input", "blur"],
+    message: "请输入部门名称",
   },
   code: {
     required: true,
-    trigger: ['input', 'blur'],
-    message: '请输入部门代码'
-  }
+    trigger: ["input", "blur"],
+    message: "请输入部门代码",
+  },
 };
 
 let deptTableData = $ref<IDeptForm[]>([]);
 
 let deptTableHeader = $ref<DataTableColumns>([
   {
-    title: '部门名称',
-    key: 'name',
-    align: 'center'
+    title: "部门名称",
+    key: "name",
+    align: "center",
   },
-  { title: '创建者', key: 'createBy', align: 'center' },
-  { title: '创建时间', key: 'createTime', align: 'center', width: '200' },
+  { title: "创建者", key: "createBy", align: "center" },
+  { title: "创建时间", key: "createTime", align: "center", width: "200" },
   {
-    title: '操作',
-    key: 'ops',
-    align: 'center',
-    width: '250',
+    title: "操作",
+    key: "ops",
+    align: "center",
+    width: "250",
     render: (rowData: any, rowIndex) => {
       return h(
         NSpace,
-        { justify: 'center' },
+        { justify: "center" },
         {
           default: () => [
             h(
               NButton,
               {
                 text: true,
-                type: 'primary',
+                type: "primary",
                 onClick: (e) => {
                   deptFormData = JSON.parse(JSON.stringify(emptyDeptForm));
                   deptFormData.pid = rowData.id;
-                  modelTitle = '新增';
+                  modelTitle = "新增";
                   showModal = true;
-                }
+                },
               },
               {
-                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, 'mdi:playlist-plus') }),
-                default: () => h('span', '新增')
+                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, "mdi:playlist-plus") }),
+                default: () => h("span", "新增"),
               }
             ),
             h(
               NButton,
               {
                 text: true,
-                type: 'primary',
+                type: "primary",
                 onClick: (e: any) => {
                   let copyRow = JSON.parse(JSON.stringify(rowData));
                   delete copyRow.children;
                   deptFormData = copyRow;
-                  modelTitle = '修改';
+                  modelTitle = "修改";
                   showModal = true;
-                }
+                },
               },
               {
-                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, 'mdi:text-box-edit-outline') }),
-                default: () => h('span', '修改')
+                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, "mdi:text-box-edit-outline") }),
+                default: () => h("span", "修改"),
               }
             ),
             h(
               NButton,
               {
                 text: true,
-                type: 'error',
+                type: "error",
                 onClick: (e: any) => {
                   window.$dialog.warning({
-                    title: '警告',
-                    content: '你是否确定进行删除？',
-                    positiveText: '确定',
-                    negativeText: '不确定',
+                    title: "警告",
+                    content: "你是否确定进行删除？",
+                    positiveText: "确定",
+                    negativeText: "不确定",
                     onPositiveClick: () => {
-                      window.$message.success('确定');
+                      window.$message.success("确定");
                       handleDeleteDept(rowData.id);
                     },
                     onNegativeClick: () => {
-                      window.$message.error('不确定');
-                    }
+                      window.$message.error("不确定");
+                    },
                   });
-                }
+                },
               },
               {
-                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, 'mdi:delete') }),
-                default: () => h('span', '删除')
+                icon: () => h(NIcon, { size: 20, component: renderIcon(ICON.O, "mdi:delete") }),
+                default: () => h("span", "删除"),
               }
-            )
-          ]
+            ),
+          ],
         }
       );
-    }
-  }
+    },
+  },
 ]);
 
 let pageInfo = {
   pageSize: 10,
   pageNum: 1,
-  total: 0
+  total: 0,
 };
 
 let pagination = reactive<object>({
-  'show-size-picker': true,
-  'show-quick-jumper': true,
+  "show-size-picker": true,
+  "show-quick-jumper": true,
   pageSizes: [10, 20, 30, 40],
   pageSize: pageInfo.pageSize,
   page: pageInfo.pageNum,
-  itemCount: pageInfo.total
+  itemCount: pageInfo.total,
 });
 
 let tableRowKey = (rowData: IDeptForm, i: number) => {
@@ -322,11 +322,11 @@ let confirmLoading = $ref<boolean>(false);
 const getDeptTree = (deptList: Array<IDeptForm>) => {
   let deptTree: Array<any> = [
     {
-      deptName: '部门根目录',
-      id: '0',
-      pid: '0',
-      children: []
-    }
+      deptName: "部门根目录",
+      id: "0",
+      pid: "0",
+      children: [],
+    },
   ];
   const recursionDept = (deptList: Array<IDeptForm>) => {
     const clonedTree: any = [];
@@ -334,7 +334,7 @@ const getDeptTree = (deptList: Array<IDeptForm>) => {
       const clonedNode: any = {
         deptName: node.name,
         id: node.id,
-        pid: node.pid
+        pid: node.pid,
       };
       if (node.children && node.children.length > 0) {
         clonedNode.children = recursionDept(node.children);
@@ -352,7 +352,7 @@ const getDeptTree = (deptList: Array<IDeptForm>) => {
 const resetQueryFormBtn = () => {
   queryFormData = {
     deptName: null,
-    dataRange: null
+    dataRange: null,
   };
   if (queryForm) queryForm.restoreValidation();
 };
@@ -381,13 +381,13 @@ const handleQueryTable = (): void => {
 // 新增
 const handleAddDept = (): void => {
   deptFormData = JSON.parse(JSON.stringify(emptyDeptForm));
-  modelTitle = '新增';
+  modelTitle = "新增";
   showModal = true;
 };
 
 // 导出
 const handleDownload = (): void => {
-  window.$message.warning('还未开发该功能！');
+  window.$message.warning("还未开发该功能！");
 };
 
 // 确定
@@ -396,11 +396,11 @@ const handleConfirm = (): void => {
     if (!errors) {
       console.log(deptFormData);
       confirmLoading = true;
-      if (modelTitle === '新增') {
+      if (modelTitle === "新增") {
         addDeptList(deptFormData)
           .then((res) => {
             if (res && res.code === 200) {
-              window.$message.success('新增部门成功');
+              window.$message.success("新增部门成功");
               confirmLoading = false;
               showModal = false;
               handleQueryTable();
@@ -413,7 +413,7 @@ const handleConfirm = (): void => {
         updateDept(deptFormData)
           .then((res) => {
             if (res && res.code === 200) {
-              window.$message.success('修改部门成功');
+              window.$message.success("修改部门成功");
               confirmLoading = false;
               showModal = false;
               handleQueryTable();
@@ -424,7 +424,7 @@ const handleConfirm = (): void => {
           });
       }
     } else {
-      window.$message.error('表单必填项请填写！');
+      window.$message.error("表单必填项请填写！");
     }
   });
 };
@@ -434,12 +434,12 @@ const handleDeleteDept = (mId: string): void => {
   deleteDept(mId)
     .then((res: IRes) => {
       if (res && res.code === 200) {
-        window.$message.success('已删除部门！');
+        window.$message.success("已删除部门！");
         handleQueryTable();
       }
     })
     .catch(() => {
-      window.$message.warning('删除部门失败！');
+      window.$message.warning("删除部门失败！");
     });
 };
 

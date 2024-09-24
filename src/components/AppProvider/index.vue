@@ -34,7 +34,7 @@ const NaiveProviderContent = defineComponent({
     setupNaiveTools();
   },
   render() {
-    return h('div');
-  }
+    return h("div");
+  },
 });
 </script>

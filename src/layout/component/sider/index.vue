@@ -19,9 +19,9 @@
 </template>
 
 <script lang="ts" setup>
-import { useRouter, RouteRecordRaw } from 'vue-router';
-import CustomMenu from './menu/index.vue';
-import useAppStore from '@/store/module/app';
+import { useRouter, RouteRecordRaw } from "vue-router";
+import CustomMenu from "./menu/index.vue";
+import useAppStore from "@/store/module/app";
 
 interface IMenu {
   label: string;
@@ -45,7 +45,7 @@ const collapsedValue: ComputedRef<boolean> = computed(() => appStore.getCollapse
 
 let siderCollapsed = $ref<boolean>(true);
 
-let activeMenu = $ref<string | number>('');
+let activeMenu = $ref<string | number>("");
 
 // 监听
 watch(
@@ -55,7 +55,7 @@ watch(
   },
   {
     immediate: true,
-    deep: true
+    deep: true,
   }
 );
 
@@ -74,15 +74,15 @@ let menusList: Array<IMenu> = $ref<Array<IMenu>>([]);
 const generateMenuByRoute = (routerList: Array<RouteRecordRaw>) => {
   menusList = [];
   menusList.push({
-    label: '仪表盘',
+    label: "仪表盘",
     disabled: false,
-    icon: 'mdiViewDashboard',
-    key: 'Index',
+    icon: "mdiViewDashboard",
+    key: "Index",
     type: 1,
-    path: '/',
+    path: "/",
     show: true,
     cache: true,
-    description: '仪表盘'
+    description: "仪表盘",
   });
   const recursionTree = (tree: Array<RouteRecordRaw>) => {
     let newTree: Array<IMenu> = [];
@@ -90,13 +90,13 @@ const generateMenuByRoute = (routerList: Array<RouteRecordRaw>) => {
       let menu: IMenu = {
         label: item.meta.title,
         disabled: item.meta.disabled === 0 ? true : false,
-        icon: item.meta.icon ? item.meta.icon : 'mdiMenu',
+        icon: item.meta.icon ? item.meta.icon : "mdiMenu",
         key: item.name,
         type: item.meta.type,
         path: item.path,
         show: item.meta.show === 0 ? true : false,
         cache: item.meta.cache === 0 ? true : false,
-        description: item.meta.description
+        description: item.meta.description,
       };
       if (item.children && item.children.length > 0) {
         menu.children = recursionTree(item.children);
@@ -142,12 +142,12 @@ const handleClickMenu = (item: any) => {
     if (isHaveComponent) {
       router.push({ name: key });
     } else {
-      router.push({ path: '/notFound' });
+      router.push({ path: "/notFound" });
     }
   } else if (item.type === 2) {
     // pass
   } else if (item.type === 3) {
-    window.open(item.path, '_blank');
+    window.open(item.path, "_blank");
   }
 };
 

@@ -38,11 +38,11 @@
 </template>
 
 <script lang="ts" setup>
-import ContextMenu from './contextmenu.vue';
-import useTagStore from '@/store/module/tag';
-import { useRouter } from 'vue-router';
-import MdiIcon from '@/components/MdiIcon/MdiIcon.vue';
-import { mdiChevronDoubleLeft, mdiChevronDoubleRight, mdiWindowClose } from '@quasar/extras/mdi-v6';
+import ContextMenu from "./contextmenu.vue";
+import useTagStore from "@/store/module/tag";
+import { useRouter } from "vue-router";
+import MdiIcon from "@/components/MdiIcon/MdiIcon.vue";
+import { mdiChevronDoubleLeft, mdiChevronDoubleRight, mdiWindowClose } from "@quasar/extras/mdi-v6";
 
 const router = useRouter();
 
@@ -68,7 +68,7 @@ let tagScroll = $ref<HTMLElement>();
 
 // 加载之后
 onMounted(() => {
-  window.addEventListener('click', () => {
+  window.addEventListener("click", () => {
     showRightMenuBox = false;
   });
 });
@@ -88,7 +88,7 @@ const closeTagBtn = (tag: ITags) => {
 
 // 点击标签
 const clickTagViewBtn = (tag: ITags) => {
-  localStorage.setItem('activeTag', tag.name as string);
+  localStorage.setItem("activeTag", tag.name as string);
   router.push(tag.path);
 };
 
@@ -97,7 +97,7 @@ let showRightMenuBox = $ref<boolean>(false);
 // 右键菜单位置
 let rightMenuX = $ref<number>(0);
 let rightMenuY = $ref<number>(0);
-let currentContextClickPath = $ref<string>('');
+let currentContextClickPath = $ref<string>("");
 
 // 右键按钮
 const rightClickTagBtn = (tag: ITags, e: any) => {

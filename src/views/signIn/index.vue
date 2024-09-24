@@ -2,7 +2,7 @@
   <div class="signIn-container">
     <div class="content-wrapper animate__animated animate__bounceInLeft">
       <div class="wrapper-signIn">
-        <p class="signIn-title">{{ $t('signIn.title') }}</p>
+        <p class="signIn-title">{{ $t("signIn.title") }}</p>
         <q-btn
           class="signIn-theme"
           color="ghost"
@@ -11,7 +11,7 @@
           :icon="mdiThemeLightDark"
           @click="changeCurrentThemeBtn"
         >
-          <q-tooltip> {{ $t('signIn.theme') }} </q-tooltip>
+          <q-tooltip> {{ $t("signIn.theme") }} </q-tooltip>
         </q-btn>
         <q-btn
           class="signIn-language"
@@ -21,7 +21,7 @@
           :icon="mdiTranslate"
           @click="changeCurrentLanguageBtn"
         >
-          <q-tooltip> {{ $t('signIn.language') }} </q-tooltip>
+          <q-tooltip> {{ $t("signIn.language") }} </q-tooltip>
         </q-btn>
         <div class="signIn-form">
           <q-form ref="signInFormRef" autocorrect="off" autocapitalize="off" autocomplete="off" spellcheck="false">
@@ -86,7 +86,7 @@
                 class="tool-remember-password"
                 :label="$t('signIn.rememberPassword')"
               />
-              <a class="tool-forget-password" href="#">{{ $t('signIn.forgetPassword') }}</a>
+              <a class="tool-forget-password" href="#">{{ $t("signIn.forgetPassword") }}</a>
             </div>
             <q-btn
               class="form-submit"
@@ -99,10 +99,10 @@
           </q-form>
           <div class="other-signIn">
             <q-icon color="ghost" round size="md" :name="mdiQrcode">
-              <q-tooltip> {{ $t('signIn.QRSignIn') }} </q-tooltip>
+              <q-tooltip> {{ $t("signIn.QRSignIn") }} </q-tooltip>
             </q-icon>
             <q-icon color="ghost" round size="md" :name="mdiGithub">
-              <q-tooltip> {{ $t('signIn.githubSignIn') }} </q-tooltip>
+              <q-tooltip> {{ $t("signIn.githubSignIn") }} </q-tooltip>
             </q-icon>
           </div>
         </div>
@@ -114,7 +114,7 @@
 </template>
 
 <script lang="ts" setup>
-import { FormInst, useMessage } from 'naive-ui';
+import { FormInst, useMessage } from "naive-ui";
 import {
   mdiAccount,
   mdiAccountKey,
@@ -124,15 +124,15 @@ import {
   mdiThemeLightDark,
   mdiTranslate,
   mdiQrcode,
-  mdiGithub
-} from '@quasar/extras/mdi-v6';
-import { getValidateCode } from '@/api/signIn/index';
-import useUserStore from '@/store/module/user';
-import useAppStore from '@/store/module/app';
-import { useI18n } from 'vue-i18n';
-import { IRes } from '@/interface/common';
-import 'animate.css';
-import { useRouter } from 'vue-router';
+  mdiGithub,
+} from "@quasar/extras/mdi-v6";
+import { getValidateCode } from "@/api/signIn/index";
+import useUserStore from "@/store/module/user";
+import useAppStore from "@/store/module/app";
+import { useI18n } from "vue-i18n";
+import { IRes } from "@/interface/common";
+import "animate.css";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 
@@ -145,7 +145,7 @@ const instance = getCurrentInstance()?.appContext;
 let globalProxy = instance?.config.globalProperties;
 
 // 响应式变量
-let verifyCodeImg = $ref<string>('');
+let verifyCodeImg = $ref<string>("");
 let verifyImgLoading = $ref<boolean>(false);
 
 // 获取验证码
@@ -156,7 +156,7 @@ const getCurrentVerifyCode = () => {
       if (res && res.code === 200) {
         verifyCodeImg = res.data.base64;
         const safe = res.data.safe;
-        localStorage.setItem('safe', safe);
+        localStorage.setItem("safe", safe);
         verifyImgLoading = false;
       } else {
         verifyImgLoading = false;
@@ -172,11 +172,11 @@ const changeCurrentThemeBtn = (): void => {
   appStore.setTheme();
 };
 
-let currentLanguage = 'zh_CN';
+let currentLanguage = "zh_CN";
 
 // 切换当前语言
 const changeCurrentLanguageBtn = (): void => {
-  currentLanguage = currentLanguage === 'zh_CN' ? 'en_US' : 'zh_CN';
+  currentLanguage = currentLanguage === "zh_CN" ? "en_US" : "zh_CN";
   locale.value = currentLanguage;
   appStore.setLanguage(currentLanguage);
 };
@@ -186,27 +186,27 @@ const clickCodeImgBtn = () => {
 };
 
 const adminFormData = reactive({
-  username: '',
-  password: '',
-  verifyCode: ''
+  username: "",
+  password: "",
+  verifyCode: "",
 });
 
 const adminFormRules = reactive({
   username: {
     required: true,
-    trigger: ['blur', 'input'],
-    message: globalProxy?.$t('signIn.inputUsernamePlaceholder')
+    trigger: ["blur", "input"],
+    message: globalProxy?.$t("signIn.inputUsernamePlaceholder"),
   },
   password: {
     required: true,
-    trigger: ['blur', 'input'],
-    message: globalProxy?.$t('signIn.inputPasswordPlaceholder')
+    trigger: ["blur", "input"],
+    message: globalProxy?.$t("signIn.inputPasswordPlaceholder"),
   },
   verifyCode: {
     required: true,
-    trigger: ['blur', 'input'],
-    message: globalProxy?.$t('signIn.inputVerifyCodePlaceholder')
-  }
+    trigger: ["blur", "input"],
+    message: globalProxy?.$t("signIn.inputVerifyCodePlaceholder"),
+  },
 });
 
 const signInFormRef: any = $ref<null>(null);
@@ -224,7 +224,7 @@ const submitSignInBtn = (e: Event) => {
       // 是的，模型是正确的
       submitBtnIsLoading = true;
       userStore.userSignInHandler(adminFormData).then(() => {
-        router.push('/');
+        router.push("/");
         submitBtnIsLoading = false;
       });
     } else {
@@ -251,7 +251,7 @@ onMounted(() => {
   position: relative;
   width: 100vw;
   height: 100vh;
-  background-image: url('/src/assets/images/signIn/signIn-background-1.jpg');
+  background-image: url("/src/assets/images/signIn/signIn-background-1.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

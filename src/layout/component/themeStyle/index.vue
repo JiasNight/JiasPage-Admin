@@ -1,13 +1,12 @@
 <template>
   <!-- 样式设置 -->
-  <q-drawer v-model="drawerOpen" class="q-pa-md" :width="250" :mini-width="200" overlay elevated side="right" bordered>
-    <!-- 菜单 -->
+  <div class="q-pa-md">
     <h5 class="text-center text-bold text-dark q-mb-md">主题设计</h5>
     <q-separator />
     <div class="theme-row">
       <div class="row-title">主题</div>
       <div class="row-content">
-        <q-toggle v-model="appThemeData.model" :icon="mdiThemeLightDark" />
+        <q-toggle v-model="appThemeData.darkMode" :icon="mdiThemeLightDark" />
       </div>
     </div>
     <div class="theme-row">
@@ -22,7 +21,7 @@
           :icon="appThemeData.color === item.color ? mdiCheck : ''"
           text-color="white"
           :style="{
-            background: item.color
+            background: item.color,
           }"
           @click="handleSelectColor(item.color)"
         >
@@ -45,7 +44,7 @@
           :icon="appThemeData.size === item.size ? mdiCheck : ''"
           text-color="white"
           :style="{
-            background: appThemeData.color
+            background: appThemeData.color,
           }"
           @click="handleSelectSize(item.size)"
         >
@@ -70,39 +69,55 @@
     <div class="theme-row">
       <div class="row-title">侧栏宽度</div>
       <div class="row-content">
-        <q-input v-model="appThemeData.siderWidth" type="number"></q-input>
+        <q-slider
+          v-model="appThemeData.siderWidth"
+          class="w-100 q-mr-sm"
+          :min="100"
+          :max="500"
+          :inner-min="100"
+          :inner-max="500"
+          :step="50"
+          color="green"
+          track-color="orange"
+          inner-track-color="transparent"
+          selection-color="red"
+          label
+          label-always
+          markers
+        />
       </div>
     </div>
     <div class="theme-row">
       <div class="row-title">头部</div>
       <div class="row-content">
-        <q-toggle v-model="appThemeData.model" :icon="mdiDockTop" />
+        <q-toggle v-model="appThemeData.header" :icon="mdiDockTop" />
       </div>
     </div>
     <div class="theme-row">
       <div class="row-title">面包屑</div>
       <div class="row-content">
-        <q-toggle v-model="appThemeData.model" :icon="mdiLink" />
+        <q-toggle v-model="appThemeData.breadcrumbs" :icon="mdiLink" />
       </div>
     </div>
     <div class="theme-row">
       <div class="row-title">标签页</div>
       <div class="row-content">
-        <q-toggle v-model="appThemeData.model" :icon="mdiTab" />
+        <q-toggle v-model="appThemeData.tagPage" :icon="mdiTab" />
       </div>
     </div>
     <div class="theme-row">
       <div class="row-title">底部</div>
       <div class="row-content">
-        <q-toggle v-model="appThemeData.model" :icon="mdiDockBottom" />
+        <q-toggle v-model="appThemeData.footer" :icon="mdiDockBottom" />
       </div>
     </div>
-  </q-drawer>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import useUserStore from '@/store/module/user';
-import { useRouter } from 'vue-router';
+import useUserStore from "@/store/module/user";
+import { useRouter } from "vue-router";
+import useAppStore from "@/store/module/app";
 import {
   mdiChartBox,
   mdiCheck,
@@ -110,17 +125,26 @@ import {
   mdiDockTop,
   mdiLink,
   mdiTab,
-  mdiThemeLightDark
-} from '@quasar/extras/mdi-v6';
+  mdiThemeLightDark,
+} from "@quasar/extras/mdi-v6";
 
 const router = useRouter();
 
+const appStore = useAppStore();
+
+// 计算属性
+const darkMode: ComputedRef<boolean> = computed(() => appStore.getDarkMode);
+
 interface IThemeFormData {
-  model?: boolean;
+  darkMode?: boolean;
   color?: string;
   size?: string;
-  siderWidth?: number;
   layout?: string;
+  siderWidth?: number;
+  header?: boolean;
+  breadcrumbs?: boolean;
+  tagPage?: boolean;
+  footer?: boolean;
 }
 
 // 静态资源请求
@@ -135,88 +159,89 @@ let userStore = useUserStore();
 const props = defineProps({
   open: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
 
-const emits = defineEmits(['close']);
+// 传递给父组件的方法
+const emit = defineEmits(["close"]);
 
 // 定义响应式数据
 let appThemeData = reactive<IThemeFormData>({
-  model: true,
-  color: '#6e40c9',
-  size: 'md',
+  darkMode: false,
+  color: "#6e40c9",
+  size: "md",
+  layout: "",
   siderWidth: 250,
-  layout: ''
+  header: true,
+  breadcrumbs: true,
+  tagPage: true,
+  footer: true,
 });
 
 let defaultColorOptions = reactive<Array<any>>([
   {
-    color: '#2177b8',
-    key: '#2177b8',
-    label: '虹蓝'
+    color: "#2177b8",
+    key: "#2177b8",
+    label: "虹蓝",
   },
   {
-    color: '#12a182',
-    key: '#12a182',
-    label: '蓝绿'
+    color: "#12a182",
+    key: "#12a182",
+    label: "蓝绿",
   },
   {
-    color: '#10aec2',
-    key: '#10aec2',
-    label: '甸子蓝'
+    color: "#10aec2",
+    key: "#10aec2",
+    label: "甸子蓝",
   },
   {
-    color: '#ee2c79',
-    key: '#ee2c79',
-    label: '紫荆红'
+    color: "#ee2c79",
+    key: "#ee2c79",
+    label: "紫荆红",
   },
   {
-    color: '#815c94',
-    key: '#815c94',
-    label: '蕈紫'
+    color: "#815c94",
+    key: "#815c94",
+    label: "蕈紫",
   },
   {
-    color: '#fff',
-    key: 'custom',
-    label: '自定义'
-  }
+    color: "#fff",
+    key: "custom",
+    label: "自定义",
+  },
 ]);
 
 let defaultSizeOptions = reactive<Array<any>>([
   {
-    size: 'xs',
-    label: '很小'
+    size: "xs",
+    label: "很小",
   },
   {
-    size: 'sm',
-    label: '有点小'
+    size: "sm",
+    label: "有点小",
   },
   {
-    size: 'md',
-    label: '适中'
+    size: "md",
+    label: "适中",
   },
   {
-    size: 'lg',
-    label: '有点大'
+    size: "lg",
+    label: "有点大",
   },
-  {
-    size: 'xl',
-    label: '很大'
-  }
 ]);
 
 let defaultStyleOptions = reactive<Array<any>>([
   {
-    img: new URL('@/assets/images/theme/header-theme-dark.svg', import.meta.url),
-    key: 'dark',
-    label: '很小'
+    img: new URL("@/assets/images/theme/header-theme-dark.svg", import.meta.url),
+    key: "dark",
+    label: "很小",
   },
   {
-    img: new URL('@/assets/images/theme/nav-horizontal-mix.svg', import.meta.url),
-    key: 'mix',
-    label: '很小'
-  }
+    img: new URL("@/assets/images/theme/nav-horizontal-mix.svg", import.meta.url),
+    key: "mix",
+    label: "很小",
+  },
   // {
   //   img: getImg('@/assets/images/theme/nav-horizontal.svg'),
   //   label: '很小'
@@ -238,7 +263,7 @@ const drawerOpen: ComputedRef<boolean> = computed(() => props.open);
 
 // 关闭主题设置的抽屉
 const cancelDrawerBtn = () => {
-  emits('close');
+  emit("close");
 };
 
 const handleSelectColor = (color: string): void => {
@@ -257,30 +282,34 @@ const handleSelectStyle = (style: string): void => {
 <style lang="scss" scoped>
 .theme-row {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   margin: 10px 0;
+
   .row-title {
     text-wrap: nowrap;
     margin-right: 10px;
   }
+
   .row-content {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+
     .active-style {
       position: relative;
+
       &::after {
-        content: '';
-        width: 8px;
-        height: 8px;
         position: absolute;
         bottom: -5px;
         left: 50%;
-        transform: translateX(-50%);
-        background: $primary;
+        width: 8px;
+        height: 8px;
         border-radius: 50%;
+        background: $primary;
         transition: 0.5s;
+        content: "";
+        transform: translateX(-50%);
       }
     }
   }

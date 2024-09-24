@@ -1,12 +1,12 @@
-import { defineStore } from 'pinia';
-import { userSignIn, getUserInfo } from '@/api/signIn/index';
-import { setLogoutSystem } from '@/api/app/index';
-import { setToken, removeToken, removeLocalStorage } from '@/utils/auth';
-import { IRes, IUserInfo } from '@/interface/common';
-import { aesUtil, rsaUtil } from '@/utils/common/security';
-import { getToken } from '@/utils/auth';
-import { Md5 } from 'ts-md5';
-import useAppStore from '@/store/module/app';
+import { defineStore } from "pinia";
+import { userSignIn, getUserInfo } from "@/api/signIn/index";
+import { setLogoutSystem } from "@/api/app/index";
+import { setToken, removeToken, removeLocalStorage } from "@/utils/auth";
+import { IRes, IUserInfo } from "@/interface/common";
+import { aesUtil, rsaUtil } from "@/utils/common/security";
+import { getToken } from "@/utils/auth";
+import { Md5 } from "ts-md5";
+import useAppStore from "@/store/module/app";
 
 interface IUserState {
   token: string;
@@ -14,17 +14,17 @@ interface IUserState {
 }
 
 const useUserStore = defineStore({
-  id: 'user', // id必填，且需要唯一
+  id: "user", // id必填，且需要唯一
   state: (): IUserState => {
     return {
-      token: '',
-      userInfo: null
+      token: "",
+      userInfo: null,
     };
   },
   getters: {
     getUserInfo(state): IUserInfo | null {
       return state.userInfo;
-    }
+    },
   },
   actions: {
     // 用户登录
@@ -38,9 +38,9 @@ const useUserStore = defineStore({
         const aesPassword = aesUtil.encrypt(md5Password);
         copyAdminForm.password = aesPassword;
         const fd = new FormData();
-        fd.append('username', copyAdminForm.username);
-        fd.append('password', copyAdminForm.password);
-        fd.append('verifyCode', copyAdminForm.verifyCode);
+        fd.append("username", copyAdminForm.username);
+        fd.append("password", copyAdminForm.password);
+        fd.append("verifyCode", copyAdminForm.verifyCode);
         userSignIn(fd).then((res: IRes) => {
           if (res && res.code === 200) {
             setToken(res.data);
@@ -81,18 +81,18 @@ const useUserStore = defineStore({
             reject();
           });
       });
-    }
+    },
   },
   // 所有数据持久化
   // persist: true
   persist: {
     // 存储storage的键名称，默认用当前store的id
-    key: 'userInfo',
+    key: "userInfo",
     // 修改存储，默认为localStorage，可修改为sessionStorage
     storage: localStorage,
     // 指定 state 中哪些数据需要被持久化,[] 表示不持久化任何状态，undefined 或 null 表示持久化整个 state。
-    paths: ['userInfo']
-  }
+    paths: ["userInfo"],
+  },
 });
 
 export default useUserStore;

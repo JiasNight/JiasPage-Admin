@@ -3,7 +3,7 @@
     <div class="content-box">
       <div class="box-right">
         <div class="right-signUp">
-          <p class="signUp-title">{{ $t('signUp.title') }}</p>
+          <p class="signUp-title">{{ $t("signUp.title") }}</p>
           <n-tooltip trigger="hover">
             <template #trigger>
               <n-button tertiary circle class="signUp-theme" @click="changeCurrentThemeBtn">
@@ -12,7 +12,7 @@
                 </n-icon>
               </n-button>
             </template>
-            <span>{{ $t('signUp.theme') }}</span>
+            <span>{{ $t("signUp.theme") }}</span>
           </n-tooltip>
           <n-tooltip trigger="hover">
             <template #trigger>
@@ -22,7 +22,7 @@
                 </n-icon>
               </n-button>
             </template>
-            <span>{{ $t('signUp.language') }}</span>
+            <span>{{ $t("signUp.language") }}</span>
           </n-tooltip>
           <div class="signUp-form">
             <n-form
@@ -70,10 +70,10 @@
               <div class="form-tool">
                 <n-checkbox class="tool-remember-password" :label="$t('signUp.rememberPassword')" value="success">
                 </n-checkbox>
-                <a class="tool-forget-password" href="#">{{ $t('signUp.forgetPassword') }}</a>
+                <a class="tool-forget-password" href="#">{{ $t("signUp.forgetPassword") }}</a>
               </div>
               <n-button class="form-submit" :loading="submitBtnIsLoading" type="primary" round @click="submitSignUpBtn">
-                {{ $t('signUp.signUpBtn') }}
+                {{ $t("signUp.signUpBtn") }}
               </n-button>
             </n-form>
           </div>
@@ -84,14 +84,14 @@
 </template>
 
 <script lang="ts" setup>
-import { FormInst } from 'naive-ui';
-import { userSignUp } from '@/api/signIn/index';
-import useUserStore from '@/store/module/user';
-import useAppStore from '@/store/module/app';
-import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
-import { Md5 } from 'ts-md5';
-import { aesUtil } from '@/utils/common/security';
+import { FormInst } from "naive-ui";
+import { userSignUp } from "@/api/signIn/index";
+import useUserStore from "@/store/module/user";
+import useAppStore from "@/store/module/app";
+import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
+import { Md5 } from "ts-md5";
+import { aesUtil } from "@/utils/common/security";
 
 const router = useRouter();
 const { locale } = useI18n();
@@ -110,7 +110,7 @@ interface Ires {
 
 // 响应式变量
 let isLoading = $ref<boolean>(false);
-let verifyCodeImg = $ref<string>('');
+let verifyCodeImg = $ref<string>("");
 let verifyImgLoading = $ref<boolean>(false);
 
 onMounted(() => {
@@ -125,11 +125,11 @@ const changeCurrentThemeBtn = (): void => {
   useAppStore().setTheme();
 };
 
-let currentLanguage = 'zh_CN';
+let currentLanguage = "zh_CN";
 
 // 切换当前语言
 const changeCurrentLanguageBtn = (): void => {
-  currentLanguage = currentLanguage === 'zh_CN' ? 'en_US' : 'zh_CN';
+  currentLanguage = currentLanguage === "zh_CN" ? "en_US" : "zh_CN";
   locale.value = currentLanguage;
   useAppStore().setLanguage(currentLanguage);
 };
@@ -137,21 +137,21 @@ const changeCurrentLanguageBtn = (): void => {
 const clickCodeImgBtn = () => {};
 
 const signUpFormData = reactive({
-  username: '',
-  password: ''
+  username: "",
+  password: "",
 });
 
 const signUpFormRules = reactive({
   username: {
     required: true,
-    trigger: ['blur', 'input'],
-    message: globalProxy?.$t('signUp.inputUsernamePlaceholder')
+    trigger: ["blur", "input"],
+    message: globalProxy?.$t("signUp.inputUsernamePlaceholder"),
   },
   password: {
     required: true,
-    trigger: ['blur', 'input'],
-    message: globalProxy?.$t('signUp.inputPasswordPlaceholder')
-  }
+    trigger: ["blur", "input"],
+    message: globalProxy?.$t("signUp.inputPasswordPlaceholder"),
+  },
 });
 
 const signUpForm: any = $ref<FormInst | null>(null);
@@ -190,7 +190,7 @@ const submitSignUpBtn = (e: MouseEvent) => {
 .signUp-container {
   width: 100vw;
   height: 100vh;
-  background-image: url('/src/assets/images/signIn/signIn-background-1.jpg');
+  background-image: url("/src/assets/images/signIn/signIn-background-1.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

@@ -11,9 +11,9 @@
 </template>
 
 <script lang="ts" setup>
-import useAppStore from '@/store/module/app';
-import useTagStore from '@/store/module/tag';
-import MdiIcon from '@/components/MdiIcon/MdiIcon.vue';
+import useAppStore from "@/store/module/app";
+import useTagStore from "@/store/module/tag";
+import MdiIcon from "@/components/MdiIcon/MdiIcon.vue";
 
 const appStore = useAppStore();
 const tagStore = useTagStore();
@@ -21,60 +21,60 @@ const tagStore = useTagStore();
 const props = defineProps({
   show: {
     type: Boolean,
-    default: false
+    default: false,
   },
   label: {
     type: String,
-    default: ''
+    default: "",
   },
   currentPath: {
     type: String,
-    default: ''
+    default: "",
   },
   left: {
     type: Number,
-    default: 0
+    default: 0,
   },
   top: {
     type: Number,
-    default: 0
-  }
+    default: 0,
+  },
 });
 
-let labelStr = $ref('');
+let labelStr = $ref("");
 
 // 右键菜单
 const contextMenuOption = $ref([
   {
-    label: '重新加载',
-    key: 'reload',
+    label: "重新加载",
+    key: "reload",
     // disabled: props.currentPath !== tagsStore.activeTag,
-    icon: 'mdiRefresh'
+    icon: "mdiRefresh",
   },
   {
-    label: '关闭',
-    key: 'close',
+    label: "关闭",
+    key: "close",
     // disabled: tagsStore.tags.length <= 1,
-    icon: 'mdiClose'
+    icon: "mdiClose",
   },
   {
-    label: '关闭其他',
-    key: 'close-other',
+    label: "关闭其他",
+    key: "close-other",
     // disabled: tagsStore.tags.length <= 1,
-    icon: 'mdiCloseBoxOutline'
+    icon: "mdiCloseBoxOutline",
   },
   {
-    label: '关闭左侧',
-    key: 'close-left',
+    label: "关闭左侧",
+    key: "close-left",
     // disabled: tagsStore.tags.length <= 1 || props.currentPath === tagsStore.tags[0].path,
-    icon: 'mdiFormatPilcrowArrowLeft'
+    icon: "mdiFormatPilcrowArrowLeft",
   },
   {
-    label: '关闭右侧',
-    key: 'close-right',
+    label: "关闭右侧",
+    key: "close-right",
     // disabled: tagsStore.tags.length <= 1 || props.currentPath === tagsStore.tags[tagsStore.tags.length - 1].path,
-    icon: 'mdiFormatPilcrowArrowRight'
-  }
+    icon: "mdiFormatPilcrowArrowRight",
+  },
 ]);
 
 // 标签菜单功能

@@ -12,10 +12,10 @@
 </template>
 
 <script lang="ts" setup>
-import { mdiHome } from '@quasar/extras/mdi-v6';
-import useAppStore from '@/store/module/app';
-import { useRouter } from 'vue-router';
-import MdiIcon from '@/components/MdiIcon/MdiIcon.vue';
+import { mdiHome } from "@quasar/extras/mdi-v6";
+import useAppStore from "@/store/module/app";
+import { useRouter } from "vue-router";
+import MdiIcon from "@/components/MdiIcon/MdiIcon.vue";
 
 const router = useRouter();
 

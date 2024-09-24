@@ -15,7 +15,7 @@
  * - 支持iconify和本地svg图标
  * - 同时传递了icon和localIcon，localIcon会优先渲染
  */
- interface Props {
+interface Props {
   /** 图标名称 */
   icon?: string;
   /** 本地svg的文件名 */
@@ -27,12 +27,12 @@ const props = defineProps<Props>();
 const attrs = useAttrs();
 
 const bindAttrs = computed<{ class: string; style: string }>(() => ({
-  class: (attrs.class as string) || '',
-  style: (attrs.style as string) || ''
+  class: (attrs.class as string) || "",
+  style: (attrs.style as string) || "",
 }));
 
 const symbolId = computed(() => {
-  const defaultLocalIcon = 'no-icon';
+  const defaultLocalIcon = "no-icon";
   const icon = props.localIcon || defaultLocalIcon;
   return `#icon-local-${icon}`;
 });

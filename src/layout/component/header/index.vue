@@ -121,46 +121,51 @@ const handleToggleSider = (): void => {
 <style lang="scss" scoped>
 .header-container {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   padding: 0 0.625rem;
   height: 100%;
   min-height: 3.125rem;
   max-height: 6.25rem;
-  background: $topHeaderBgColor;
-  color: $topHeaderTextColor;
   box-shadow: 0 0.2125rem 0.1125rem #d6d9da;
+  flex-direction: row;
+
   .container-logo {
     max-width: $siderBarWidth;
     height: 100%;
   }
+
   .container-wrap {
-    width: calc(100% - $siderBarWidth);
-    height: 100%;
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
     align-items: center;
     padding: 0 0.625rem;
+    width: calc(100% - $siderBarWidth);
+    height: 100%;
+    flex-direction: row;
+
     .wrap-breadcrumb {
       display: flex;
       flex-direction: row;
       justify-content: start;
       align-items: center;
     }
+
     .header-right {
       display: flex;
       flex-direction: row;
       justify-content: start;
       align-items: center;
+
       .right-search {
         display: inline-block;
       }
+
       .right-todo {
         margin-left: 1rem;
         cursor: pointer;
       }
+
       .right-user {
         overflow: hidden;
         margin: 0 1rem;
@@ -170,6 +175,7 @@ const handleToggleSider = (): void => {
         text-overflow: ellipsis;
         white-space: nowrap;
       }
+
       .right-avatar {
         width: 2.5rem;
         height: 2.5rem;

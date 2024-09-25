@@ -1,8 +1,15 @@
 import { defineStore } from "pinia";
+import { setCssVar } from "quasar";
+
+interface IThemeColor {
+  color: string;
+  label: string;
+  key: string;
+}
 
 type IThemeState = {
   darkMode: boolean;
-  themeColor: string;
+  themeColor: Array<IThemeColor>;
   language: string;
   loading: boolean;
   progress: number | null;
@@ -16,7 +23,48 @@ const useThemeStore = defineStore({
     // 暗黑模式
     darkMode: window.matchMedia("(prefers-color-scheme: dark)").matches,
     // 主题颜色
-    themeColor: "#409EFF",
+    themeColor: [
+      {
+        label: "默认",
+        key: "primary",
+        color: "#6e40c9",
+      },
+      {
+        label: "默认",
+        key: "secondary",
+        color: "#31ccec",
+      },
+      {
+        label: "默认",
+        key: "accent",
+        color: "#00a8ff",
+      },
+      {
+        label: "默认",
+        key: "positive",
+        color: "#2ed573",
+      },
+      {
+        label: "默认",
+        key: "negative",
+        color: "#eb2f06",
+      },
+      {
+        label: "默认",
+        key: "info",
+        color: "#00d2d3",
+      },
+      {
+        label: "默认",
+        key: "warning",
+        color: "#fc9607",
+      },
+      {
+        label: "默认",
+        key: "dark",
+        color: "#1d1d1d",
+      },
+    ],
     // 语言
     language: (window.navigator.languages && window.navigator.languages[0]) || window.navigator.language,
     loading: false,
@@ -44,8 +92,15 @@ const useThemeStore = defineStore({
     setDarkMode(darkMode: boolean) {
       this.darkMode = darkMode;
     },
-    setThemeColor(themeColor: string) {
-      this.themeColor = themeColor;
+    setThemeColor(data: IThemeColor) {
+      console.log(data);
+      setCssVar("primary", data.color);
+      this.themeColor.forEach((item) => {
+        if (item.key === data.key) {
+          item.color = data.color;
+        }
+      });
+      console.log(this.themeColor);
     },
     setLoading(display: boolean) {
       this.loading = display;

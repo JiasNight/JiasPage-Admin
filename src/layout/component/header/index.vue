@@ -1,5 +1,5 @@
 <template>
-  <q-header bordered class="bg-primary text-white">
+  <q-header bordered class="text-white">
     <q-toolbar>
       <Logo class="container-logo"></Logo>
       <q-btn dense flat round :icon="mdiMenu" @click="handleToggleSider" />

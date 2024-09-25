@@ -1,7 +1,8 @@
 import { defineStore } from "pinia";
 
-type IGlobalState = {
+type IThemeState = {
   darkMode: boolean;
+  themeColor: string;
   language: string;
   loading: boolean;
   progress: number | null;
@@ -9,11 +10,13 @@ type IGlobalState = {
   screenLocked: boolean;
 };
 
-const useGlobalStore = defineStore({
+const useThemeStore = defineStore({
   id: "theme",
-  state: (): IGlobalState => ({
+  state: (): IThemeState => ({
     // 暗黑模式
     darkMode: window.matchMedia("(prefers-color-scheme: dark)").matches,
+    // 主题颜色
+    themeColor: "#409EFF",
     // 语言
     language: (window.navigator.languages && window.navigator.languages[0]) || window.navigator.language,
     loading: false,
@@ -24,6 +27,7 @@ const useGlobalStore = defineStore({
   }),
   getters: {
     getDarkMode: (state) => state.darkMode,
+    getThemeColor: (state) => state.themeColor,
     getLanguage: (state) => state.language,
     getLoading(state): boolean {
       return state.loading;
@@ -37,6 +41,12 @@ const useGlobalStore = defineStore({
     },
   },
   actions: {
+    setDarkMode(darkMode: boolean) {
+      this.darkMode = darkMode;
+    },
+    setThemeColor(themeColor: string) {
+      this.themeColor = themeColor;
+    },
     setLoading(display: boolean) {
       this.loading = display;
     },
@@ -55,4 +65,4 @@ const useGlobalStore = defineStore({
   },
 });
 
-export default useGlobalStore;
+export default useThemeStore;

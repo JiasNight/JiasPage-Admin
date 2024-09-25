@@ -1,12 +1,17 @@
 <template>
   <!-- 样式设置 -->
   <div class="q-pa-md">
-    <h5 class="text-center text-bold text-dark q-mb-md">主题设计</h5>
+    <h5 class="text-center text-bold q-mb-md">主题设计</h5>
     <q-separator />
     <div class="theme-row">
       <div class="row-title">主题</div>
       <div class="row-content">
-        <q-toggle v-model="appThemeData.darkMode" :icon="mdiThemeLightDark" />
+        <q-toggle
+          v-model="appThemeData.darkMode"
+          :icon="mdiThemeLightDark"
+          keep-color
+          @update:model-value="handleToggleDarkMode"
+        />
       </div>
     </div>
     <div class="theme-row">
@@ -118,6 +123,7 @@
 import useUserStore from "@/store/module/user";
 import { useRouter } from "vue-router";
 import useAppStore from "@/store/module/app";
+import useThemeStore from "@/store/module/theme";
 import {
   mdiChartBox,
   mdiCheck,
@@ -127,13 +133,17 @@ import {
   mdiTab,
   mdiThemeLightDark,
 } from "@quasar/extras/mdi-v6";
+import { useQuasar } from "quasar";
+
+const $q = useQuasar();
 
 const router = useRouter();
 
 const appStore = useAppStore();
+const themeStore = useThemeStore();
 
 // 计算属性
-const darkMode: ComputedRef<boolean> = computed(() => appStore.getDarkMode);
+const darkMode: ComputedRef<boolean> = computed(() => themeStore.getDarkMode);
 
 interface IThemeFormData {
   darkMode?: boolean;
@@ -261,13 +271,20 @@ let defaultStyleOptions = reactive<Array<any>>([
 const drawerOpen: ComputedRef<boolean> = computed(() => props.open);
 // let drawerOpen = $ref<Boolean>(true);
 
-// 关闭主题设置的抽屉
-const cancelDrawerBtn = () => {
-  emit("close");
+// 主题设置暗色模式
+const handleToggleDarkMode = (value: boolean, evt: Event) => {
+  themeStore.setDarkMode(value);
+  $q.loading.show();
+  setTimeout(() => {
+    $q.dark.set(value);
+    $q.loading.hide();
+  }, 500);
 };
 
+// 主题色选择
 const handleSelectColor = (color: string): void => {
   appThemeData.color = color;
+  themeStore.setThemeColor(color);
 };
 
 const handleSelectSize = (size: string): void => {

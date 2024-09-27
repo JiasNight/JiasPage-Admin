@@ -17,54 +17,57 @@ type IThemeState = {
   screenLocked: boolean;
 };
 
+// 默认主题颜色
+const sysDefaultThemeColor = [
+  {
+    label: "默认",
+    key: "primary",
+    color: "#6e40c9",
+  },
+  {
+    label: "默认",
+    key: "secondary",
+    color: "#31ccec",
+  },
+  {
+    label: "默认",
+    key: "accent",
+    color: "#00a8ff",
+  },
+  {
+    label: "默认",
+    key: "positive",
+    color: "#2ed573",
+  },
+  {
+    label: "默认",
+    key: "negative",
+    color: "#eb2f06",
+  },
+  {
+    label: "默认",
+    key: "info",
+    color: "#00d2d3",
+  },
+  {
+    label: "默认",
+    key: "warning",
+    color: "#fc9607",
+  },
+  {
+    label: "默认",
+    key: "dark",
+    color: "#1d1d1d",
+  },
+];
+
 const useThemeStore = defineStore({
   id: "theme",
   state: (): IThemeState => ({
     // 暗黑模式
     darkMode: window.matchMedia("(prefers-color-scheme: dark)").matches,
     // 主题颜色
-    themeColor: [
-      {
-        label: "默认",
-        key: "primary",
-        color: "#6e40c9",
-      },
-      {
-        label: "默认",
-        key: "secondary",
-        color: "#31ccec",
-      },
-      {
-        label: "默认",
-        key: "accent",
-        color: "#00a8ff",
-      },
-      {
-        label: "默认",
-        key: "positive",
-        color: "#2ed573",
-      },
-      {
-        label: "默认",
-        key: "negative",
-        color: "#eb2f06",
-      },
-      {
-        label: "默认",
-        key: "info",
-        color: "#00d2d3",
-      },
-      {
-        label: "默认",
-        key: "warning",
-        color: "#fc9607",
-      },
-      {
-        label: "默认",
-        key: "dark",
-        color: "#1d1d1d",
-      },
-    ],
+    themeColor: sysDefaultThemeColor,
     // 语言
     language: (window.navigator.languages && window.navigator.languages[0]) || window.navigator.language,
     loading: false,
@@ -93,14 +96,12 @@ const useThemeStore = defineStore({
       this.darkMode = darkMode;
     },
     setThemeColor(data: IThemeColor) {
-      console.log(data);
-      setCssVar("primary", data.color);
       this.themeColor.forEach((item) => {
         if (item.key === data.key) {
           item.color = data.color;
+          setCssVar(data.key, data.color);
         }
       });
-      console.log(this.themeColor);
     },
     setLoading(display: boolean) {
       this.loading = display;

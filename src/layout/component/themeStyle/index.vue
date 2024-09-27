@@ -25,16 +25,16 @@
           class="q-ma-xs"
           padding="3px"
           size="xs"
-          :icon="appThemeData.color === item.color ? mdiCheck : ''"
+          :icon="appThemeData.color === item.color ? mdiSelectColor : null"
           text-color="white"
           :style="{
             background: item.color,
           }"
         >
           <q-tooltip anchor="top middle" self="center middle"> {{ item.key }} </q-tooltip>
-          <q-popup-edit v-slot="scope" v-model="item.color" auto-save>
-            <q-color v-model="scope.value" @update:model-value="handleSelectColor($event, item)" />
-          </q-popup-edit>
+          <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+            <q-color v-model="appThemeData.color" no-footer @update:model-value="handleSelectColor($event, item)" />
+          </q-popup-proxy>
         </q-btn>
       </div>
     </div>
@@ -75,9 +75,19 @@
     <div class="theme-row">
       <div class="row-title">侧栏颜色</div>
       <div class="row-content">
-        <q-popup-edit v-slot="scope" v-model="appThemeData.siderWidth" auto-save>
-          <q-color v-model="scope.value" />
-        </q-popup-edit>
+        <q-btn
+          class="q-ma-xs"
+          padding="3px"
+          size="xs"
+          text-color="white"
+          :style="{
+            background: item.color,
+          }"
+        >
+          <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+            <q-color v-model="appThemeData.siderWidth" />
+          </q-popup-proxy>
+        </q-btn>
       </div>
     </div>
     <div class="theme-row">
@@ -142,10 +152,17 @@ import {
   mdiDockTop,
   mdiDraw,
   mdiLink,
+  mdiSelectColor,
   mdiTab,
   mdiThemeLightDark,
 } from "@quasar/extras/mdi-v6";
-import { useQuasar } from "quasar";
+import { QSpinnerBars, QSpinnerGears, useQuasar } from "quasar";
+
+// 静态资源请求
+let getImg = (src: string) => {
+  let url = new URL(src, import.meta.url);
+  return url;
+};
 
 interface IThemeFormData {
   darkMode?: boolean;
@@ -170,20 +187,8 @@ const $q = useQuasar();
 const router = useRouter();
 
 const appStore = useAppStore();
-const themeStore = useThemeStore();
-
-// 计算属性
-const darkMode: ComputedRef<boolean> = computed(() => themeStore.getDarkMode);
-const sysDefaultThemeColor: ComputedRef<Array<IThemeColor>> = computed(() => themeStore.getThemeColor);
-
-// 静态资源请求
-let getImg = (src: string) => {
-  let url = new URL(src, import.meta.url);
-  console.log(url);
-  return url;
-};
-
 let userStore = useUserStore();
+const themeStore = useThemeStore();
 
 const props = defineProps({
   open: {
@@ -191,9 +196,6 @@ const props = defineProps({
     default: false,
   },
 });
-
-// 传递给父组件的方法
-const emit = defineEmits(["close"]);
 
 // 定义响应式数据
 let appThemeData = reactive<IThemeFormData>({
@@ -208,33 +210,7 @@ let appThemeData = reactive<IThemeFormData>({
   footer: true,
 });
 
-// let defaultColorOptions = reactive<Array<any>>([
-//   {
-//     color: "#2177b8",
-//     key: "#2177b8",
-//     label: "虹蓝",
-//   },
-//   {
-//     color: "#12a182",
-//     key: "#12a182",
-//     label: "蓝绿",
-//   },
-//   {
-//     color: "#10aec2",
-//     key: "#10aec2",
-//     label: "甸子蓝",
-//   },
-//   {
-//     color: "#ee2c79",
-//     key: "#ee2c79",
-//     label: "紫荆红",
-//   },
-//   {
-//     color: "#815c94",
-//     key: "#815c94",
-//     label: "蕈紫",
-//   },
-// ]);
+let defaultColorOptions = reactive<Array<any>>([]);
 
 let defaultSizeOptions = reactive<Array<any>>([
   {
@@ -281,34 +257,66 @@ let defaultStyleOptions = reactive<Array<any>>([
 ]);
 
 // 计算属性
-// 抽屉是否打开
-const drawerOpen: ComputedRef<boolean> = computed(() => props.open);
-// let drawerOpen = $ref<Boolean>(true);
+const darkMode: ComputedRef<boolean> = computed(() => themeStore.getDarkMode);
+const sysDefaultThemeColor: ComputedRef<Array<IThemeColor>> = computed(() => themeStore.getThemeColor);
+
+// 监听
+watch(
+  () => sysDefaultThemeColor,
+  (nVal, oVal) => {
+    defaultColorOptions = nVal.value;
+  },
+  {
+    immediate: true,
+    deep: true,
+  }
+);
+
+// 传递给父组件的方法
+const emit = defineEmits(["close"]);
+
+// 开启loading
+const showLoading = () => {
+  $q.loading.show({
+    message: "主题设置中...",
+    spinner: QSpinnerBars,
+    boxClass: "bg-grey-2 text-grey text-bold",
+    spinnerColor: "primary",
+    delay: 400,
+  });
+};
 
 // 主题设置暗色模式
 const handleToggleDarkMode = (value: boolean, evt: Event) => {
   themeStore.setDarkMode(value);
-  $q.loading.show();
+  showLoading();
   setTimeout(() => {
     $q.dark.set(value);
     $q.loading.hide();
-  }, 500);
+  }, 1000);
 };
 
 // 主题色选择
-const handleSelectColor = (event: Event, data: IThemeColor): void => {
-  console.log(event);
-  console.log(data);
-  appThemeData.color = data.color;
-  $q.loading.show();
+const handleSelectColor = (evt: string, data: IThemeColor): void => {
+  data.color = evt;
+  // appThemeData.color = data.color;
+  showLoading();
   setTimeout(() => {
-    themeStore.setThemeColor();
+    themeStore.setThemeColor(data);
     $q.loading.hide();
-  }, 500);
+  }, 1000);
 };
 
+// 设置组件的大小
 const handleSelectSize = (size: string): void => {
   appThemeData.size = size;
+  console.log($q);
+  showLoading();
+  setTimeout(() => {
+    console.log(size);
+    // themeStore.setThemeColor(size);
+    $q.loading.hide();
+  }, 1000);
 };
 
 const handleSelectStyle = (style: string): void => {

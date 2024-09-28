@@ -16,6 +16,7 @@ import { mdiHome } from "@quasar/extras/mdi-v6";
 import useAppStore from "@/store/module/app";
 import { useRouter } from "vue-router";
 import MdiIcon from "@/components/MdiIcon/MdiIcon.vue";
+import { RouteRecordRaw } from "vue-router";
 
 const router = useRouter();
 
@@ -23,8 +24,8 @@ let appStore = useAppStore();
 
 let breadcrumbList = $ref<any>([]);
 
-let allRoutes = computed(() => appStore.getRoutes);
-let currentRoute = computed(() => appStore.getCurrentRoute);
+let allRoutes: ComputedRef<Array<RouteRecordRaw>> = computed(() => appStore.getRoutes);
+let currentRoute: ComputedRef<any> = computed(() => appStore.getCurrentRoute);
 
 watch(currentRoute, (nVal, oVal) => {
   let routePath = getRoutePath(nVal, allRoutes.value);
@@ -52,4 +53,9 @@ const getRoutePath = (cRoute: any, routes: Array<any>) => {
   traverse(cRoute, [], routes);
   return result;
 };
+
+// 挂载
+onMounted(() => {
+  breadcrumbList = getRoutePath(currentRoute.value, allRoutes.value);
+});
 </script>

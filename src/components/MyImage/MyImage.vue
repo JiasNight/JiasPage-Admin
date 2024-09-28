@@ -99,24 +99,26 @@ const handleClick = () => {
 <style lang="scss" scoped>
 .image-wrapper {
   position: relative;
-  cursor: pointer;
-  border-radius: 0.125rem;
+  display: inline;
   overflow: hidden;
+  border-radius: 0.125rem;
+  cursor: pointer;
+
   &:hover::after {
-    content: "预览";
-    width: 100%;
-    height: 100%;
     position: absolute;
-    left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.5);
+    left: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #fff;
+    width: 100%;
+    height: 100%;
     font-size: 0.75rem;
     text-align: center;
+    color: #fff;
+    background: rgb(0 0 0 / 50%);
+    content: "预览";
+    transform: translate(-50%, -50%);
   }
 }
 </style>

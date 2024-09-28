@@ -1,9 +1,9 @@
 <template>
-  <q-header bordered class="text-white">
+  <q-header bordered class="text-white" :style="{ height: headerHeight, backgroundColor: headerBgColor }">
     <q-toolbar>
       <Logo class="container-logo"></Logo>
       <q-btn dense flat round :icon="mdiMenu" @click="handleToggleSider" />
-      <Breadcrumbs></Breadcrumbs>
+      <Breadcrumbs v-if="breadcrumbsShow"></Breadcrumbs>
       <q-space />
       <q-input v-model="searchValue" dark standout rounded dense>
         <template #append>
@@ -46,6 +46,7 @@ import { mdiMenu, mdiAccount, mdiDraw, mdiLogout, mdiEmail, mdiMagnify, mdiClose
 import { IUserInfo } from "@/interface/common";
 import useUserStore from "@/store/module/user";
 import useAppStore from "@/store/module/app";
+import useThemeStore from "@/store/module/theme";
 import { useRouter } from "vue-router";
 import Logo from "@/layout/component/logo/index.vue";
 import Breadcrumbs from "@/layout/component/header/breadcrumbs.vue";
@@ -55,6 +56,7 @@ const router = useRouter();
 
 let userStore = useUserStore();
 let appStore = useAppStore();
+let themeStore = useThemeStore();
 
 const $q = useQuasar();
 
@@ -65,7 +67,11 @@ let themeDrawerShow = $ref<boolean>(false);
 
 let searchValue = $ref<string>("");
 
+// 计算属性
 let appUserInfo = computed(() => userStore.getUserInfo);
+let headerBgColor: ComputedRef<string> = computed(() => themeStore.getHeaderBgColor);
+const headerHeight: ComputedRef<number> = computed(() => themeStore.getHeaderHeight);
+const breadcrumbsShow: ComputedRef<boolean> = computed(() => themeStore.getBreadcrumbsShow);
 
 // 用户下拉菜单选项
 const dropdownOptions = [
@@ -131,58 +137,7 @@ const handleToggleSider = (): void => {
   flex-direction: row;
 
   .container-logo {
-    max-width: $siderBarWidth;
     height: 100%;
-  }
-
-  .container-wrap {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 0.625rem;
-    width: calc(100% - $siderBarWidth);
-    height: 100%;
-    flex-direction: row;
-
-    .wrap-breadcrumb {
-      display: flex;
-      flex-direction: row;
-      justify-content: start;
-      align-items: center;
-    }
-
-    .header-right {
-      display: flex;
-      flex-direction: row;
-      justify-content: start;
-      align-items: center;
-
-      .right-search {
-        display: inline-block;
-      }
-
-      .right-todo {
-        margin-left: 1rem;
-        cursor: pointer;
-      }
-
-      .right-user {
-        overflow: hidden;
-        margin: 0 1rem;
-        width: 9.375rem;
-        font-size: 1rem;
-        font-weight: bolder;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      .right-avatar {
-        width: 2.5rem;
-        height: 2.5rem;
-        border-radius: 50%;
-        cursor: pointer;
-      }
-    }
   }
 }
 </style>

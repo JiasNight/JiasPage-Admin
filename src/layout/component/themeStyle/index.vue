@@ -73,20 +73,60 @@
       </div>
     </div>
     <div class="theme-row">
+      <div class="row-title">侧栏样式</div>
+      <div class="row-content">
+        <q-radio
+          v-model="appThemeData.siderHasHeader"
+          :checked-icon="mdiDockTop"
+          val="hasTop"
+          label="顶部"
+          keep-color
+          color="orange"
+          @update:model-value="handleSelectSiderStyle('hasTop')"
+        />
+        <q-radio
+          v-model="appThemeData.siderHasHeader"
+          :checked-icon="mdiDockBottom"
+          val="noTop"
+          label="底部"
+          keep-color
+          color="orange"
+          @update:model-value="handleSelectSiderStyle('noTop')"
+        />
+      </div>
+    </div>
+    <div class="theme-row">
+      <div class="row-title">侧栏方向</div>
+      <div class="row-content">
+        <q-radio
+          v-model="appThemeData.siderPosition"
+          :checked-icon="mdiDockLeft"
+          val="left"
+          label="left"
+          keep-color
+          color="orange"
+          @update:model-value="handleSelectSiderPosition('left')"
+        />
+        <q-radio
+          v-model="appThemeData.siderPosition"
+          :checked-icon="mdiDockRight"
+          val="right"
+          label="right"
+          keep-color
+          color="orange"
+          @update:model-value="handleSelectSiderPosition('right')"
+        />
+      </div>
+    </div>
+    <div class="theme-row">
       <div class="row-title">侧栏颜色</div>
       <div class="row-content">
-        <q-btn
-          class="q-ma-xs"
-          padding="3px"
-          size="xs"
-          text-color="white"
-          :style="{
-            background: item.color,
-          }"
-        >
-          <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-            <q-color v-model="appThemeData.siderWidth" />
-          </q-popup-proxy>
+        <q-btn class="q-ma-xs" padding="3px" size="xs" text-color="white" color="white">
+          <q-icon :name="mdiDockLeft" :style="{ color: appThemeData.siderBgColor }">
+            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+              <q-color v-model="appThemeData.siderBgColor" @update:model-value="handleSelectSiderBgColor" />
+            </q-popup-proxy>
+          </q-icon>
         </q-btn>
       </div>
     </div>
@@ -96,38 +136,82 @@
         <q-slider
           v-model="appThemeData.siderWidth"
           class="w-100 q-mr-sm"
-          :min="100"
-          :max="500"
-          :inner-min="100"
-          :inner-max="500"
+          :min="150"
+          :max="400"
+          :inner-min="150"
+          :inner-max="400"
           :step="50"
+          track-size="8px"
           color="primary"
           track-color="positive"
           inner-track-color="transparent"
           selection-color="primary"
           label
-          label-always
           markers
           @update:model-value="handleSelectSiderWidth"
         />
       </div>
     </div>
     <div class="theme-row">
-      <div class="row-title">头部</div>
+      <div class="row-title">头部显示</div>
       <div class="row-content">
-        <q-toggle v-model="appThemeData.header" :icon="mdiDockTop" />
+        <q-toggle v-model="appThemeData.headerShow" :icon="mdiDockTop" @update:model-value="handleChangeHeaderShow" />
+      </div>
+    </div>
+    <div class="theme-row">
+      <div class="row-title">头部高度</div>
+      <div class="row-content">
+        <q-slider
+          v-model="appThemeData.headerHeight"
+          class="w-100 q-mr-sm"
+          :min="40"
+          :max="100"
+          :inner-min="40"
+          :inner-max="100"
+          :step="10"
+          track-size="8px"
+          color="primary"
+          track-color="positive"
+          inner-track-color="transparent"
+          selection-color="primary"
+          label
+          markers
+          @update:model-value="handleSelectHeaderHeight"
+        />
+      </div>
+    </div>
+    <div class="theme-row">
+      <div class="row-title">头部颜色</div>
+      <div class="row-content">
+        <q-btn class="q-ma-xs" padding="3px" size="xs" text-color="white" color="white">
+          <q-icon :name="mdiDockTop" :style="{ color: appThemeData.headerBgColor }">
+            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+              <q-color v-model="appThemeData.headerBgColor" @update:model-value="handleSelectHeaderBgColor" />
+            </q-popup-proxy>
+          </q-icon>
+        </q-btn>
+      </div>
+    </div>
+    <div class="theme-row">
+      <div class="row-title">Logo显示</div>
+      <div class="row-content">
+        <q-toggle v-model="appThemeData.logoShow" :icon="mdiDockTop" @update:model-value="handleChangeLogoShow" />
       </div>
     </div>
     <div class="theme-row">
       <div class="row-title">面包屑</div>
       <div class="row-content">
-        <q-toggle v-model="appThemeData.breadcrumbs" :icon="mdiLink" />
+        <q-toggle
+          v-model="appThemeData.breadcrumbsShow"
+          :icon="mdiLink"
+          @update:model-value="handleChangeBreadcrumbsShow"
+        />
       </div>
     </div>
     <div class="theme-row">
       <div class="row-title">标签页</div>
       <div class="row-content">
-        <q-toggle v-model="appThemeData.tagPage" :icon="mdiTab" />
+        <q-toggle v-model="appThemeData.tagPageShow" :icon="mdiTab" @update:model-value="handleChangeTagPageShow" />
       </div>
     </div>
     <div class="theme-row">
@@ -149,6 +233,8 @@ import {
   mdiCheck,
   mdiChevronRight,
   mdiDockBottom,
+  mdiDockLeft,
+  mdiDockRight,
   mdiDockTop,
   mdiDraw,
   mdiLink,
@@ -169,10 +255,16 @@ interface IThemeFormData {
   color?: string;
   size?: string;
   layout?: string;
+  siderHasHeader?: string;
+  siderPosition?: string;
   siderWidth?: number;
-  header?: boolean;
-  breadcrumbs?: boolean;
-  tagPage?: boolean;
+  siderBgColor?: string;
+  headerShow?: boolean;
+  headerBgColor?: string;
+  headerHeight: number;
+  logoShow?: boolean;
+  breadcrumbsShow?: boolean;
+  tagPageShow?: boolean;
   footer?: boolean;
 }
 
@@ -203,10 +295,16 @@ let appThemeData = reactive<IThemeFormData>({
   color: "#6e40c9",
   size: "md",
   layout: "",
+  siderHasHeader: "noTop",
+  siderPosition: "left",
   siderWidth: 250,
-  header: true,
-  breadcrumbs: true,
-  tagPage: true,
+  siderBgColor: "#6e40c9",
+  headerShow: true,
+  headerBgColor: "#23272f",
+  headerHeight: 50,
+  logoShow: true,
+  breadcrumbsShow: true,
+  tagPageShow: true,
   footer: true,
 });
 
@@ -280,31 +378,35 @@ const showLoading = () => {
   $q.loading.show({
     message: "主题设置中...",
     spinner: QSpinnerBars,
-    boxClass: "bg-grey-2 text-grey text-bold",
+    boxClass: "bg-grey-2 glass-effect text-grey text-bold",
     spinnerColor: "primary",
     delay: 400,
   });
 };
 
-// 主题设置暗色模式
-const handleToggleDarkMode = (value: boolean, evt: Event) => {
-  themeStore.setDarkMode(value);
+// 公用的设置方法
+const handleSetTheme = (fn: Function) => {
   showLoading();
   setTimeout(() => {
-    $q.dark.set(value);
+    fn();
     $q.loading.hide();
   }, 1000);
+};
+
+// 主题设置暗色模式
+const handleToggleDarkMode = (value: boolean, evt: Event) => {
+  handleSetTheme(() => {
+    themeStore.setDarkMode(value);
+  });
 };
 
 // 主题色选择
 const handleSelectColor = (evt: string, data: IThemeColor): void => {
   data.color = evt;
   // appThemeData.color = data.color;
-  showLoading();
-  setTimeout(() => {
+  handleSetTheme(() => {
     themeStore.setThemeColor(data);
-    $q.loading.hide();
-  }, 1000);
+  });
 };
 
 // 设置组件的大小
@@ -319,13 +421,90 @@ const handleSelectSize = (size: string): void => {
   }, 1000);
 };
 
-const handleSelectStyle = (style: string): void => {
-  appThemeData.layout = style;
+// 设置侧栏的样式
+const handleSelectSiderStyle = (style: string): void => {
+  let has: boolean = style === "hasTop";
+  appThemeData.siderHasHeader = style;
+  handleSetTheme(() => {
+    themeStore.setSiderHasHeader(has);
+  });
 };
 
-const handleSelectSiderWidth = (siderWidth: number): void => {
-  console.log(siderWidth);
-  appThemeData.siderWidth = siderWidth;
+// 设置侧栏的位置
+const handleSelectSiderPosition = (position: string): void => {
+  appThemeData.siderPosition = position;
+  handleSetTheme(() => {
+    themeStore.setSiderPosition(position);
+  });
+};
+
+// 设置侧栏的颜色
+const handleSelectSiderBgColor = (siderBgColor: string): void => {
+  appThemeData.siderBgColor = siderBgColor;
+  handleSetTheme(() => {
+    themeStore.setSiderBgColor(siderBgColor);
+  });
+};
+
+// 设置侧栏的宽度
+const handleSelectSiderWidth = (width: number): void => {
+  console.log(width);
+  appThemeData.siderWidth = width;
+  handleSetTheme(() => {
+    themeStore.setSiderWidth(width);
+  });
+};
+
+// 设置header是否显示
+const handleChangeHeaderShow = (show: boolean): void => {
+  appThemeData.headerShow = show;
+  handleSetTheme(() => {
+    themeStore.setHeaderShow(show);
+  });
+};
+
+// 设置头部的高度
+const handleSelectHeaderHeight = (height: number): void => {
+  appThemeData.headerHeight = height;
+  handleSetTheme(() => {
+    themeStore.setHeaderHeight(height);
+  });
+};
+
+// 设置头部的背景颜色
+const handleSelectHeaderBgColor = (color: string): void => {
+  appThemeData.headerBgColor = color;
+  handleSetTheme(() => {
+    themeStore.setHeaderBgColor(color);
+  });
+};
+
+// 设置logo是否显示
+const handleChangeLogoShow = (show: boolean): void => {
+  appThemeData.logoShow = show;
+  handleSetTheme(() => {
+    themeStore.setLogoShow(show);
+  });
+};
+
+// 设置面包屑是否显示
+const handleChangeBreadcrumbsShow = (show: boolean): void => {
+  appThemeData.breadcrumbsShow = show;
+  handleSetTheme(() => {
+    themeStore.setBreadcrumbsShow(show);
+  });
+};
+
+// 设置标签页是否显示
+const handleChangeTagPageShow = (show: boolean): void => {
+  appThemeData.tagPageShow = show;
+  handleSetTheme(() => {
+    themeStore.setTagPageShow(show);
+  });
+};
+
+const handleSelectStyle = (style: string): void => {
+  appThemeData.layout = style;
 };
 </script>
 

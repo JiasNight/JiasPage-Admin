@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { setCssVar } from "quasar";
+import { setCssVar, Dark } from "quasar";
 
 interface IThemeColor {
   color: string;
@@ -10,6 +10,16 @@ interface IThemeColor {
 type IThemeState = {
   darkMode: boolean;
   themeColor: Array<IThemeColor>;
+  siderHasHeader: boolean;
+  siderPosition: string;
+  siderWidth: number;
+  siderBgColor: string;
+  headerShow: boolean;
+  headerBgColor: string;
+  headerHeight: number;
+  logoShow: boolean;
+  breadcrumbsShow: boolean;
+  tagPageShow: boolean;
   language: string;
   loading: boolean;
   progress: number | null;
@@ -68,6 +78,26 @@ const useThemeStore = defineStore({
     darkMode: window.matchMedia("(prefers-color-scheme: dark)").matches,
     // 主题颜色
     themeColor: sysDefaultThemeColor,
+    // 侧栏是否有顶部
+    siderHasHeader: false,
+    // 侧栏位置
+    siderPosition: "left",
+    // 侧栏宽度
+    siderWidth: 200,
+    // 侧栏颜色
+    siderBgColor: "#6e40c9",
+    // 头部是否显示
+    headerShow: true,
+    // 头部背景颜色
+    headerBgColor: "#23272f",
+    // 头部高度
+    headerHeight: 50,
+    // logo是否显示
+    logoShow: true,
+    // 面包屑显示
+    breadcrumbsShow: true,
+    // 标签页显示
+    tagPageShow: true,
     // 语言
     language: (window.navigator.languages && window.navigator.languages[0]) || window.navigator.language,
     loading: false,
@@ -79,6 +109,16 @@ const useThemeStore = defineStore({
   getters: {
     getDarkMode: (state) => state.darkMode,
     getThemeColor: (state) => state.themeColor,
+    getSiderHasHeader: (state) => state.siderHasHeader,
+    getSiderPosition: (state) => state.siderPosition,
+    getSiderWidth: (state) => state.siderWidth,
+    getSiderBgColor: (state) => state.siderBgColor,
+    getHeaderShow: (state) => state.headerShow,
+    getHeaderBgColor: (state) => state.headerBgColor,
+    getHeaderHeight: (state) => state.headerHeight,
+    getLogoShow: (state) => state.logoShow,
+    getBreadcrumbsShow: (state) => state.breadcrumbsShow,
+    getTagPageShow: (state) => state.tagPageShow,
     getLanguage: (state) => state.language,
     getLoading(state): boolean {
       return state.loading;
@@ -94,6 +134,7 @@ const useThemeStore = defineStore({
   actions: {
     setDarkMode(darkMode: boolean) {
       this.darkMode = darkMode;
+      Dark.set(darkMode);
     },
     setThemeColor(data: IThemeColor) {
       this.themeColor.forEach((item) => {
@@ -102,6 +143,36 @@ const useThemeStore = defineStore({
           setCssVar(data.key, data.color);
         }
       });
+    },
+    setSiderHasHeader(hasHeader: boolean) {
+      this.siderHasHeader = hasHeader;
+    },
+    setSiderPosition(position: string) {
+      this.siderPosition = position;
+    },
+    setSiderWidth(width: number) {
+      this.siderWidth = width;
+    },
+    setSiderBgColor(color: string) {
+      this.siderBgColor = color;
+    },
+    setHeaderShow(display: boolean) {
+      this.headerShow = display;
+    },
+    setHeaderBgColor(color: string) {
+      this.headerBgColor = color;
+    },
+    setHeaderHeight(height: number) {
+      this.headerHeight = height;
+    },
+    setLogoShow(display: boolean) {
+      this.logoShow = display;
+    },
+    setBreadcrumbsShow(show: boolean) {
+      this.breadcrumbsShow = show;
+    },
+    setTagPageShow(show: boolean) {
+      this.tagPageShow = show;
     },
     setLoading(display: boolean) {
       this.loading = display;

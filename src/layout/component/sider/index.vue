@@ -1,11 +1,14 @@
 <template>
   <q-drawer
-    class="bg-primary text-white"
-    :width="siderCollapsed ? 50 : 230"
+    class="text-white"
+    :width="siderCollapsed ? 50 : siderWidth"
     elevated
     show-if-above
-    side="left"
+    :side="siderPosition"
     bordered
+    :style="{
+      background: siderBgColor,
+    }"
   >
     <!-- 菜单 -->
     <CustomMenu
@@ -22,6 +25,7 @@
 import { useRouter, RouteRecordRaw } from "vue-router";
 import CustomMenu from "./menu/index.vue";
 import useAppStore from "@/store/module/app";
+import useThemeStore from "@/store/module/theme";
 
 interface IMenu {
   label: string;
@@ -38,14 +42,20 @@ interface IMenu {
 }
 
 const appStore = useAppStore();
-// 使用store
+const themeStore = useThemeStore();
 const router = useRouter();
 
-const collapsedValue: ComputedRef<boolean> = computed(() => appStore.getCollapsedSider);
-
+// 响应式
 let siderCollapsed = $ref<boolean>(true);
-
 let activeMenu = $ref<string | number>("");
+// 菜单列表数据
+let menusList: Array<IMenu> = reactive<Array<IMenu>>([]);
+
+// 计算属性
+const collapsedValue: ComputedRef<boolean> = computed(() => appStore.getCollapsedSider);
+const siderPosition: ComputedRef<string> = computed(() => themeStore.getSiderPosition);
+const siderBgColor: ComputedRef<string> = computed(() => themeStore.getSiderBgColor);
+const siderWidth: ComputedRef<number> = computed(() => themeStore.getSiderWidth);
 
 // 监听
 watch(
@@ -66,9 +76,6 @@ let activeRouter: any = computed(() => {
 watch(activeRouter, (nVal, oVal) => {
   activeMenu = nVal.name;
 });
-
-// 响应式菜单列表数据
-let menusList: Array<IMenu> = $ref<Array<IMenu>>([]);
 
 // 生成菜单
 const generateMenuByRoute = (routerList: Array<RouteRecordRaw>) => {

@@ -6,15 +6,19 @@
 */
 
 @charset "UTF-8";
-
-@import "./app-variables.scss";
+@import "./app-variables";
 
 html {
   overflow: hidden !important;
-  width: 100vw;
-  height: 100vh;
   scrollbar-width: none;
   -ms-overflow-style: none;
+}
+
+body {
+  width: 100%;
+  min-width: 320px;
+  height: 100%;
+  min-height: 100vh;
 }
 
 html,
@@ -39,7 +43,12 @@ img {
   vertical-align: middle;
 }
 
-/* 自定义滚动条样式 */
+a {
+  font-weight: 500;
+  text-decoration: inherit;
+}
+
+// 自定义滚动条样式
 .cus-scroll {
   &::-webkit-scrollbar {
     width: 8px;
@@ -66,37 +75,30 @@ img {
   }
 }
 
-a {
-  font-weight: 500;
-  text-decoration: inherit;
-  color: $themeColor;
-}
-
-body {
-  width: 100%;
-  min-width: 320px;
-  height: 100%;
-  min-height: 100vh;
-}
-
 .view-container {
-  height: calc(100vh - 110px);
-  background: #fff;
-  border-radius: 0.3125rem;
-  -webkit-border-radius: 0.3125rem;
-  -moz-border-radius: 0.3125rem;
-  -ms-border-radius: 0.3125rem;
-  -o-border-radius: 0.3125rem;
   overflow: auto;
+
+  // height: calc(100vh - 110px);
+  height: 100%;
+  border-radius: 0.3125rem;
+  background: #fff;
 }
 
+// 自定义表格的表头
 .cus-table-th {
-  background-color: #f8faff !important;
   font-size: 0.8rem !important;
   font-weight: bold !important;
   color: #4e5d78 !important;
+  background-color: #f8faff !important;
 }
 
+// 自定义表格的单元格
 .cus-table-td {
   font-size: 0.875rem !important;
+}
+
+// 毛玻璃效果
+.glass-effect {
+  backdrop-filter: blur(0.625rem);
+  box-shadow: 0 0 1.875rem 0.625rem rgb(0 0 0 / 30%);
 }

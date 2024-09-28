@@ -1,11 +1,11 @@
 <template>
-  <q-layout view="hHh lpR fFf">
-    <Header :collapsed="collapsedValue"></Header>
+  <q-layout :view="viewLayout">
+    <Header v-if="headerShow" :collapsed="collapsedValue"></Header>
 
     <Sider></Sider>
 
     <q-page-container>
-      <PageTags></PageTags>
+      <TagsPage v-if="tagPageShow"></TagsPage>
       <!-- 主要内容 -->
       <ViewMain></ViewMain>
       <!-- 主题配置按钮 -->
@@ -24,35 +24,46 @@
 import { Ref, ComputedRef } from "vue";
 import Sider from "./component/sider/index.vue";
 import Header from "./component/header/index.vue";
-import PageTags from "./component/tags/index.vue";
+import TagsPage from "./component/tags/index.vue";
 import ViewMain from "./component/main/index.vue";
 import ThemeStyle from "@/layout/component/themeStyle/index.vue";
 import useGlobalStore from "@/store/module/theme";
 import useAppStore from "@/store/module/app";
+import useThemeStore from "@/store/module/theme";
 import { mdiCog } from "@quasar/extras/mdi-v6";
 import { morph } from "quasar";
 
 const appStore = useAppStore();
-
-const globalStore = useGlobalStore();
+const themeStore = useThemeStore();
 
 let siderCollapsed = $ref<boolean>(false);
-
-const openMenu = $ref<boolean>(true);
-let drawerWidth = $ref<number>(230);
-
 let themeDrawerOpen = $ref<boolean>(false);
-
 let themeBtnRef = $ref<Element>();
-
 let themeBtnOffset = reactive<Array<number>>([2, 200]);
+let viewLayout = $ref<string>("hHh lpR lFr");
 
 // 计算属性
 const collapsedValue: ComputedRef<boolean> = computed(() => appStore.getCollapsedSider);
+const siderHasHeader: ComputedRef<boolean> = computed(() => themeStore.getSiderHasHeader);
+const siderPosition: ComputedRef<string> = computed(() => themeStore.getSiderPosition);
+const headerShow: ComputedRef<boolean> = computed(() => themeStore.getHeaderShow);
+const tagPageShow: ComputedRef<boolean> = computed(() => themeStore.getTagPageShow);
 
 // 监听
 watch(collapsedValue, (nVal, oVal) => {
   siderCollapsed = nVal;
+});
+
+watch(siderHasHeader, (nVal, oVal) => {
+  if (nVal && siderPosition.value === "left") {
+    viewLayout = "lHh lpR lFr";
+  } else if (nVal && siderPosition.value === "right") {
+    viewLayout = "lHr lpR lFr";
+  } else if (!nVal && siderPosition.value === "left") {
+    viewLayout = "hHh lpR lFr";
+  } else if (!nVal && siderPosition.value === "right") {
+    viewLayout = "hHh lpR lFr";
+  }
 });
 
 watch($$(themeDrawerOpen), (nVal, oVal) => {
@@ -79,31 +90,8 @@ const triggerRightDrawer = (): void => {
   });
 };
 
-// 切换当前主题
-const changeCurrentThemeBtn = (): void => {
-  appStore.setTheme();
-};
-
 // 退出登录
 const signOutBtn = (): void => {
   alert("退出成功！");
 };
 </script>
-
-<style lang="scss" scoped>
-.screen-layout {
-  .layout-header {
-    height: $topHeaderHeight;
-  }
-  .layout-body {
-    top: $topHeaderHeight;
-    .body-sider {
-      background: $siderBarBgColor;
-      box-shadow: 2px 0 8px 0 rgb(29 35 41 / 5%);
-      transition: all 0.2s ease-in-out;
-    }
-    .body-content {
-    }
-  }
-}
-</style>

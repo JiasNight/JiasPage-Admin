@@ -58,32 +58,28 @@ type ITags = {
 
 const tagStore = useTagStore();
 
-// 标签列表
-let tagsList = $ref<Array<any>>(tagStore.getVisitedTags);
-
+// 定义响应式数据
 let tagScroll = $ref<HTMLElement>();
+
+// 计算属性
+const tagsList: ComputedRef<Array<any>> = computed(() => tagStore.getVisitedTags);
 
 // 当前活动路径
 // let currentActivePath = $ref<string>(tagStore.getActiveTag);
 
-// 加载之后
-onMounted(() => {
-  window.addEventListener("click", () => {
-    showRightMenuBox = false;
-  });
-});
-
 // 监听
 watch(
   () => tagsList,
-  (newRoute, oldRoute) => {},
+  (newRoute, oldRoute) => {
+    console.log(newRoute);
+  },
   { immediate: true }
 );
 
 // 关闭按钮
 const closeTagBtn = (tag: ITags) => {
-  let i: number = tagsList.findIndex((item: ITags) => item.path === tag.path);
-  tagsList.splice(i, 1);
+  let i: number = tagsList.value.findIndex((item: ITags) => item.path === tag.path);
+  tagsList.value.splice(i, 1);
 };
 
 // 点击标签
@@ -149,6 +145,13 @@ const clickScrollRightBtn = (e: Event) => {
     scrollMoveAnimate(tagScroll, 50);
   }
 };
+
+// 加载之后
+onMounted(() => {
+  window.addEventListener("click", () => {
+    showRightMenuBox = false;
+  });
+});
 </script>
 
 <style lang="scss" scoped>
@@ -160,30 +163,35 @@ const clickScrollRightBtn = (e: Event) => {
   width: 100%;
   border-bottom: 1px solid #e8eaed;
   box-shadow: 0 2px 2px #e8eaed;
+
   .tags-arrow {
     padding: 0 0.3125rem;
+
     &:hover {
       background-color: #f7f8fa;
     }
+
     &:first-of-type {
       box-shadow: 2px 0 2px #e8eaed;
     }
+
     &:last-of-type {
       box-shadow: 0 0 2px #e8eaed;
     }
   }
+
   .tags-wrap {
     display: flex;
     overflow: hidden;
     padding: 0 0.3125rem;
     width: 100%;
     border-radius: 0.125rem;
+
     .tag-item {
       display: flex;
-      flex-direction: row;
+      flex-flow: row nowrap;
       justify-content: space-around;
       align-items: center;
-      flex-wrap: nowrap;
       margin: 0.3125rem 0;
       margin-left: 0.3125rem;
       width: 6.25rem;
@@ -195,14 +203,17 @@ const clickScrollRightBtn = (e: Event) => {
       cursor: pointer;
       color: #495060;
       background: #fff;
+
       .tag-item-span {
         display: inline-block;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
       }
+
       .tag-item-end-icon {
         color: #8c8e91;
+
         &:hover {
           border-radius: 50%;
           color: #ffa502;
@@ -210,28 +221,33 @@ const clickScrollRightBtn = (e: Event) => {
         }
       }
     }
+
     .tag-active {
       background-color: #45e3ff;
     }
+
     // 定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸
     &::-webkit-scrollbar {
       width: 10px;
       height: 10px;
       background-color: #f5f5f5;
     }
+
     // 定义滚动条轨道 内阴影+圆角
     &::-webkit-scrollbar-track {
       border-radius: 10px;
       background-color: #f5f5f5;
-      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+      box-shadow: inset 0 0 6px rgb(0 0 0 / 30%);
     }
+
     // 定义滑块 内阴影+圆角
     &::-webkit-scrollbar-thumb {
       border-radius: 10px;
       background-image: linear-gradient(90deg, #5b247a, #1bcedf);
-      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+      box-shadow: inset 0 0 6px rgb(0 0 0 / 30%);
     }
   }
+
   .right-menu-box {
     position: absolute;
     width: 100px;
@@ -241,31 +257,37 @@ const clickScrollRightBtn = (e: Event) => {
     background-color: #fff;
     box-shadow: 2px 2px 2px #b7b7bd;
     cursor: pointer;
+
     .box-btn {
       margin: 0 5px;
       width: 90%;
     }
+
     p {
       margin-left: 1px;
       padding-left: 10px;
       text-justify: middle;
+
       &:hover {
         color: #f9f7fa;
         background-color: #b7b7bd;
       }
     }
   }
+
   // 进入之前和离开后的样式
   .right-menu-enter-from,
   .right-menu-leave-to {
     opacity: 0;
   }
+
   // 离开和进入过程中的样式
   .right-menu-enter-active,
   .right-menu-leave-active {
     // 添加过渡动画
     transition: opacity 0.5s ease;
   }
+
   // 进入之后和离开之前的样式
   .right-menu-enter-to,
   .right-menu-leave-from {

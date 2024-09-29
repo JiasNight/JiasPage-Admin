@@ -237,35 +237,13 @@ import {
   mdiThemeLightDark,
 } from "@quasar/extras/mdi-v6";
 import { QSpinnerBars, QSpinnerGears, useQuasar } from "quasar";
+import { IThemeFormData, IThemeColor } from "@/interface/common";
 
 // 静态资源请求
 let getImg = (src: string) => {
   let url = new URL(src, import.meta.url);
   return url;
 };
-
-interface IThemeFormData {
-  darkMode?: boolean;
-  color?: string;
-  size?: string;
-  layout?: string;
-  siderHasHeader?: string;
-  siderPosition?: string;
-  siderWidth?: number;
-  siderBgColor?: string;
-  headerShow?: boolean;
-  headerBgColor?: string;
-  headerHeight: number;
-  logoShow?: boolean;
-  breadcrumbsShow?: boolean;
-  tagPageShow?: boolean;
-}
-
-interface IThemeColor {
-  color: string;
-  label: string;
-  key: string;
-}
 
 const $q = useQuasar();
 

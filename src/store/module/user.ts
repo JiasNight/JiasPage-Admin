@@ -10,7 +10,7 @@ import useAppStore from "@/store/module/app";
 
 interface IUserState {
   token: string;
-  userInfo: IUserInfo | null;
+  userInfo: IUserInfo;
 }
 
 const useUserStore = defineStore({
@@ -18,11 +18,18 @@ const useUserStore = defineStore({
   state: (): IUserState => {
     return {
       token: "",
-      userInfo: null,
+      userInfo: {
+        userId: "",
+        username: "",
+        nickName: "",
+        token: "",
+        deptId: "",
+        deptName: "",
+      },
     };
   },
   getters: {
-    getUserInfo(state): IUserInfo | null {
+    getUserInfo(state): IUserInfo {
       return state.userInfo;
     },
   },

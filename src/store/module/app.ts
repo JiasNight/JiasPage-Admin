@@ -1,10 +1,9 @@
 import { defineStore } from "pinia";
-import { createDiscreteApi } from "naive-ui";
 import { RouteLocationNormalizedLoaded, RouteRecordRaw } from "vue-router";
 import { getDynamicRoutes } from "@/api/app";
 import { getToken } from "@/utils/auth";
 import { getPublicKey } from "@/api/app/index";
-import { IRes } from "@/interface/common";
+import { IRes, IAppState } from "@/interface/common";
 import Layout from "@/layout/index.vue";
 import useTagStore from "@/store/module/tag";
 import useUserStore from "@/store/module/user";
@@ -12,14 +11,6 @@ import router from "@/router";
 import { LoadingBar } from "quasar";
 
 const modules = import.meta.glob("../../views/**/*.vue");
-
-type IAppState = {
-  collapsedSider: boolean;
-  reloadViews: boolean;
-  routes: Array<RouteRecordRaw>;
-  currentRoute: object;
-  breadcrumbs: Array<RouteRecordRaw>;
-};
 
 const useAppStore = defineStore({
   id: "app", // id必填，且需要唯一
@@ -33,6 +24,8 @@ const useAppStore = defineStore({
     currentRoute: {},
     // 面包屑数据
     breadcrumbs: [] as Array<RouteRecordRaw>,
+    // 是否锁屏
+    lockScreen: false,
   }),
   getters: {
     getCollapsedSider: (state) => state.collapsedSider,
@@ -50,6 +43,10 @@ const useAppStore = defineStore({
     // 获取面包屑数据
     getBreadcrumbs(state): Array<RouteRecordRaw> {
       return state.breadcrumbs;
+    },
+    // 是否锁屏
+    getLockScreen(state): boolean {
+      return state.lockScreen;
     },
   },
   actions: {
@@ -126,6 +123,10 @@ const useAppStore = defineStore({
           })
           .catch(() => {});
       }
+    },
+    // 设置锁屏
+    setLockScreen(lockScreen: boolean) {
+      this.lockScreen = lockScreen;
     },
   },
   // 所有数据持久化

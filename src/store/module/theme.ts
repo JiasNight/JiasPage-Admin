@@ -1,31 +1,6 @@
 import { defineStore } from "pinia";
 import { setCssVar, Dark } from "quasar";
-
-interface IThemeColor {
-  color: string;
-  label: string;
-  key: string;
-}
-
-type IThemeState = {
-  darkMode: boolean;
-  themeColor: Array<IThemeColor>;
-  siderHasHeader: boolean;
-  siderPosition: string;
-  siderWidth: number;
-  siderBgColor: string;
-  headerShow: boolean;
-  headerBgColor: string;
-  headerHeight: number;
-  logoShow: boolean;
-  breadcrumbsShow: boolean;
-  tagPageShow: boolean;
-  language: string;
-  loading: boolean;
-  progress: number | null;
-  message: string | null;
-  screenLocked: boolean;
-};
+import { IThemeState, IThemeColor } from "@/interface/common";
 
 // 默认主题颜色
 const sysDefaultThemeColor = [
@@ -99,13 +74,6 @@ const useThemeStore = defineStore({
     breadcrumbsShow: true,
     // 标签页显示
     tagPageShow: true,
-    // 语言
-    language: (window.navigator.languages && window.navigator.languages[0]) || window.navigator.language,
-    loading: false,
-    progress: null,
-    message: null,
-    // 是否锁屏
-    screenLocked: false,
   }),
   getters: {
     getDarkMode: (state) => state.darkMode,
@@ -120,17 +88,6 @@ const useThemeStore = defineStore({
     getLogoShow: (state) => state.logoShow,
     getBreadcrumbsShow: (state) => state.breadcrumbsShow,
     getTagPageShow: (state) => state.tagPageShow,
-    getLanguage: (state) => state.language,
-    getLoading(state): boolean {
-      return state.loading;
-    },
-    getProgress(state): number | null {
-      state.loading = true;
-      return state.progress;
-    },
-    getMessage(state): string | null {
-      return state.message;
-    },
   },
   actions: {
     setDarkMode(darkMode: boolean) {
@@ -138,7 +95,7 @@ const useThemeStore = defineStore({
       Dark.set(darkMode);
     },
     setThemeColor(data: IThemeColor) {
-      this.themeColor.forEach((item) => {
+      this.themeColor.forEach((item: IThemeColor) => {
         if (item.key === data.key) {
           item.color = data.color;
           setCssVar(data.key, data.color);
@@ -174,21 +131,6 @@ const useThemeStore = defineStore({
     },
     setTagPageShow(show: boolean) {
       this.tagPageShow = show;
-    },
-    setLoading(display: boolean) {
-      this.loading = display;
-    },
-    // 语言切换
-    setLanguage(language: string) {
-      this.language = language;
-      localStorage.setItem("language", language);
-    },
-    setProgress(progress: number | null) {
-      this.progress = progress;
-      this.loading = true;
-    },
-    setMessage(message: string) {
-      this.message = message;
     },
   },
 });

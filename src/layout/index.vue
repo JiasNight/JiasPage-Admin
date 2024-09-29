@@ -1,6 +1,6 @@
 <template>
   <q-layout :view="viewLayout">
-    <Header v-if="headerShow" :collapsed="collapsedValue"></Header>
+    <Header v-if="headerShow" :collapsed="collapsedValue" @toggleTheme="triggerThemeDrawer"></Header>
 
     <Sider></Sider>
 
@@ -10,7 +10,7 @@
       <ViewMain></ViewMain>
       <!-- 主题配置按钮 -->
       <q-page-sticky position="top-right" :offset="themeBtnOffset">
-        <q-btn ref="themeBtnRef" round :icon="mdiCog" color="accent" @click="triggerRightDrawer" />
+        <q-btn ref="themeBtnRef" round :icon="mdiCog" color="accent" @click="triggerThemeDrawer" />
       </q-page-sticky>
     </q-page-container>
 
@@ -72,7 +72,7 @@ watch($$(themeDrawerOpen), (nVal, oVal) => {
 });
 
 // 触发主题配置抽屉
-const triggerRightDrawer = (): void => {
+const triggerThemeDrawer = (): void => {
   themeDrawerOpen = !themeDrawerOpen;
   if (!themeDrawerOpen) {
     themeBtnOffset = [0, 200];

@@ -1,51 +1,31 @@
 <template>
-  <!-- <NConfigProvider
-    :theme-overrides="themeOverrides"
-    :theme="currentTheme"
-    :locale="currentLanguage"
-    :date-locale="currentDateLocale"
-  >
-    <AppProvider>
-      <RouterView></RouterView>
-    </AppProvider>
-  </NConfigProvider> -->
   <div>
     <RouterView></RouterView>
   </div>
-  <transition v-if="isLock" name="slide-up">
+  <!-- <transition v-if="screenIsLock" name="slide-up">
     <LockScreen />
-  </transition>
+  </transition> -->
+  <q-slide-transition v-if="screenIsLock">
+    <LockScreen />
+  </q-slide-transition>
 </template>
 
 <script lang="ts" setup>
-import { useQuasar } from "quasar";
 import { ComputedRef } from "vue";
-import { GlobalThemeOverrides, darkTheme, dateZhCN, zhCN } from "naive-ui";
-import type { GlobalTheme, NLocale, NDateLocale } from "naive-ui";
 import useAppStore from "@/store/module/app";
-import useGlobalStore from "@/store/module/theme";
-import AppProvider from "@/components/AppProvider/index.vue";
-import { naiveThemeOverrides } from "@/style/theme/naiveTheme.json";
+import LockScreen from "@/components/LockScreen/index.vue";
 
-const $q = useQuasar();
 const appStore = useAppStore();
-const globalStore = useGlobalStore();
 
-console.log($q.dark.isActive);
+// 计算属性
+const screenIsLock: ComputedRef<boolean> = computed(() => appStore.getLockScreen);
 
-// setTimeout(() => {
-//   console.log('设置程序暗色模式');
-//   $q.dark.set(!$q.dark.isActive);
-// }, 10000);
-
-// 自定义的样式
-const themeOverrides: GlobalThemeOverrides = naiveThemeOverrides;
-
-let currentTheme: ComputedRef<GlobalTheme | null> = computed(() => (appStore.getTheme ? darkTheme : null));
-let currentLanguage: ComputedRef<NLocale | null> = computed(() => (appStore.getLanguage ? zhCN : null));
-let currentDateLocale: ComputedRef<NDateLocale | null> = computed(() => dateZhCN);
-
-const isLock = computed(() => globalStore.getIsLock);
+// 监听
+watch(screenIsLock, (nVal, oVal) => {
+  if (nVal) {
+    console.log("锁屏");
+  }
+});
 </script>
 
 <style>
@@ -53,8 +33,8 @@ const isLock = computed(() => globalStore.getIsLock);
   width: 100%;
   height: 100vh;
   background-color: aliceblue;
-  font-family: "SourceHanSans";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-family: SourceHanSans;
 }
 </style>

@@ -11,15 +11,23 @@
           <q-icon v-else class="c-p" :name="mdiClose" @click="searchValue = ''" />
         </template>
       </q-input>
-      <q-btn flat dense color="purple" round :icon="mdiEmail">
+      <q-btn flat dense color="negative" round :icon="mdiEmail">
         <q-badge color="red" floating>4</q-badge>
-        <q-tooltip anchor="top middle" self="center middle"> 你有4条消息待处理！ </q-tooltip>
+        <q-tooltip> 你有4条消息待处理！ </q-tooltip>
       </q-btn>
-      <span> 欢迎您，{{ appUserInfo?.nickName }}</span>
+      <q-btn flat dense color="info" round :icon="mdiMonitorLock" @click="handleLockScreen">
+        <q-tooltip> 点击进行锁屏 </q-tooltip>
+      </q-btn>
+      <q-chip class="chip-labels" :icon="mdiAccount" outline clickable text-color="white">
+        <div class="ellipsis">
+          欢迎您，{{ appUserInfo?.nickName }}
+          <q-tooltip>欢迎您，{{ appUserInfo?.nickName }}</q-tooltip>
+        </div>
+      </q-chip>
       <q-btn-dropdown flat color="info" ripple push no-caps>
         <template #label>
           <q-avatar flat>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo.svg" />
+            <img src="../../../assets/images/profile.png" />
           </q-avatar>
         </template>
         <q-list class="q-pa-xs" bordered dense>
@@ -41,7 +49,16 @@
 </template>
 
 <script lang="ts" setup>
-import { mdiMenu, mdiAccount, mdiDraw, mdiLogout, mdiEmail, mdiMagnify, mdiClose } from "@quasar/extras/mdi-v6";
+import {
+  mdiMenu,
+  mdiAccount,
+  mdiDraw,
+  mdiLogout,
+  mdiEmail,
+  mdiMagnify,
+  mdiClose,
+  mdiMonitorLock,
+} from "@quasar/extras/mdi-v6";
 import { IUserInfo } from "@/interface/common";
 import useUserStore from "@/store/module/user";
 import useAppStore from "@/store/module/app";
@@ -59,7 +76,7 @@ let themeStore = useThemeStore();
 
 const $q = useQuasar();
 
-let emit = defineEmits(["close"]);
+let emit = defineEmits(["toggleTheme"]);
 
 // 定义响应式数据
 let todoNumVal = $ref<number>(10);
@@ -69,7 +86,7 @@ let themeDrawerShow = $ref<boolean>(false);
 let searchValue = $ref<string>("");
 
 // 计算属性
-let appUserInfo = computed(() => userStore.getUserInfo);
+let appUserInfo: ComputedRef<IUserInfo> = computed(() => userStore.getUserInfo);
 let headerBgColor: ComputedRef<string> = computed(() => themeStore.getHeaderBgColor);
 const headerHeight: ComputedRef<number> = computed(() => themeStore.getHeaderHeight);
 const breadcrumbsShow: ComputedRef<boolean> = computed(() => themeStore.getBreadcrumbsShow);
@@ -102,6 +119,7 @@ const handleSelectDropdown = (key: string) => {
     router.push("/personalCenter");
   } else if (key === "theme") {
     themeDrawerShow = true;
+    emit("toggleTheme");
   } else if (key === "logout") {
     console.log($q);
     $q.dialog({
@@ -123,22 +141,16 @@ const handleToggleSider = (): void => {
   let isCollapsed = appStore.getCollapsedSider;
   appStore.setCollapsedSider(!isCollapsed);
 };
+
+// 锁屏
+const handleLockScreen = (): void => {
+  appStore.setLockScreen(true);
+};
 </script>
 
 <style lang="scss" scoped>
-.header-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 0.625rem;
-  height: 100%;
-  min-height: 3.125rem;
-  max-height: 6.25rem;
-  box-shadow: 0 0.2125rem 0.1125rem #d6d9da;
-  flex-direction: row;
-
-  .container-logo {
-    height: 100%;
-  }
+:deep(.chip-labels) {
+  max-width: 9.375rem;
+  border: none;
 }
 </style>

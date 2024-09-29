@@ -33,7 +33,7 @@ const tagStore = useTagStore();
 const themeStore = useThemeStore();
 
 // 定义响应式数据
-let headerHeight = $ref<string>("");
+let headerHeight = $ref<string>("calc(100vh - 100px)");
 
 // 计算属性
 const headerShow: ComputedRef<boolean> = computed(() => themeStore.getHeaderShow);
@@ -51,13 +51,25 @@ watch(
 );
 
 watch(headerShow, (nVal, oVal) => {
-  if (nVal && tagPageShow) {
+  if (nVal && tagPageShow.value) {
     headerHeight = "calc(100vh - 100px)";
-  } else if (nVal && !tagPageShow) {
-    headerHeight = "calc(100vh - 50px - 35px)";
-  } else if (!nVal && tagPageShow) {
+  } else if (nVal && !tagPageShow.value) {
+    headerHeight = "calc(100vh - 60px)";
+  } else if (!nVal && tagPageShow.value) {
     headerHeight = "calc(100vh - 50px)";
-  } else if (!nVal && !tagPageShow) {
+  } else if (!nVal && !tagPageShow.value) {
+    headerHeight = "calc(100vh)";
+  }
+});
+
+watch(tagPageShow, (nVal, oVal) => {
+  if (nVal && headerShow.value) {
+    headerHeight = "calc(100vh - 100px)";
+  } else if (nVal && !headerShow.value) {
+    headerHeight = "calc(100vh - 50px)";
+  } else if (!nVal && headerShow.value) {
+    headerHeight = "calc(100vh - 60px)";
+  } else if (!nVal && !headerShow.value) {
     headerHeight = "calc(100vh)";
   }
 });

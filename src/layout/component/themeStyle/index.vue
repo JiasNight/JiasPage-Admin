@@ -102,7 +102,7 @@
           v-model="appThemeData.siderPosition"
           :checked-icon="mdiDockLeft"
           val="left"
-          label="left"
+          label="左边"
           keep-color
           color="orange"
           @update:model-value="handleSelectSiderPosition('left')"
@@ -111,7 +111,7 @@
           v-model="appThemeData.siderPosition"
           :checked-icon="mdiDockRight"
           val="right"
-          label="right"
+          label="右边"
           keep-color
           color="orange"
           @update:model-value="handleSelectSiderPosition('right')"
@@ -214,12 +214,6 @@
         <q-toggle v-model="appThemeData.tagPageShow" :icon="mdiTab" @update:model-value="handleChangeTagPageShow" />
       </div>
     </div>
-    <div class="theme-row">
-      <div class="row-title">底部</div>
-      <div class="row-content">
-        <q-toggle v-model="appThemeData.footer" :icon="mdiDockBottom" />
-      </div>
-    </div>
   </div>
 </template>
 
@@ -265,7 +259,6 @@ interface IThemeFormData {
   logoShow?: boolean;
   breadcrumbsShow?: boolean;
   tagPageShow?: boolean;
-  footer?: boolean;
 }
 
 interface IThemeColor {
@@ -305,7 +298,6 @@ let appThemeData = reactive<IThemeFormData>({
   logoShow: true,
   breadcrumbsShow: true,
   tagPageShow: true,
-  footer: true,
 });
 
 let defaultColorOptions = reactive<Array<any>>([]);

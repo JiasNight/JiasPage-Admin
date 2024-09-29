@@ -75,7 +75,8 @@ const useThemeStore = defineStore({
   id: "theme",
   state: (): IThemeState => ({
     // 暗黑模式
-    darkMode: window.matchMedia("(prefers-color-scheme: dark)").matches,
+    // darkMode: window.matchMedia("(prefers-color-scheme: dark)").matches,
+    darkMode: false,
     // 主题颜色
     themeColor: sysDefaultThemeColor,
     // 侧栏是否有顶部

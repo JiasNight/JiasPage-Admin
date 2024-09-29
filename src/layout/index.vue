@@ -27,7 +27,6 @@ import Header from "./component/header/index.vue";
 import TagsPage from "./component/tags/index.vue";
 import ViewMain from "./component/main/index.vue";
 import ThemeStyle from "@/layout/component/themeStyle/index.vue";
-import useGlobalStore from "@/store/module/theme";
 import useAppStore from "@/store/module/app";
 import useThemeStore from "@/store/module/theme";
 import { mdiCog } from "@quasar/extras/mdi-v6";

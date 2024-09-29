@@ -1,5 +1,5 @@
 <template>
-  <q-header bordered class="text-white" :style="{ height: headerHeight, backgroundColor: headerBgColor }">
+  <q-header class="text-white" :style="{ height: headerHeight, backgroundColor: headerBgColor }">
     <q-toolbar>
       <Logo class="container-logo"></Logo>
       <q-btn dense flat round :icon="mdiMenu" @click="handleToggleSider" />
@@ -22,7 +22,6 @@
             <img src="https://cdn.quasar.dev/logo-v2/svg/logo.svg" />
           </q-avatar>
         </template>
-
         <q-list class="q-pa-xs" bordered dense>
           <template v-for="(item, i) in dropdownOptions" :key="i">
             <q-item v-close-popup v-ripple clickable @click="handleSelectDropdown(item.key)">
@@ -59,6 +58,8 @@ let appStore = useAppStore();
 let themeStore = useThemeStore();
 
 const $q = useQuasar();
+
+let emit = defineEmits(["close"]);
 
 // 定义响应式数据
 let todoNumVal = $ref<number>(10);

@@ -33,7 +33,7 @@
               filled
               clearable
               lazy-rules
-              :rules="[(val) => (val && val.length > 0) || $t('signIn.inputUsernamePlaceholder')]"
+              :rules="[(val: string) => (val && val.length > 0) || $t('signIn.inputUsernamePlaceholder')]"
             >
               <template #prepend>
                 <q-icon :name="mdiAccount" />
@@ -48,7 +48,7 @@
               filled
               clearable
               lazy-rules
-              :rules="[(val) => (val && val.length > 0) || $t('signIn.inputPasswordPlaceholder')]"
+              :rules="[(val: string) => (val && val.length > 0) || $t('signIn.inputPasswordPlaceholder')]"
             >
               <template #prepend>
                 <q-icon :name="mdiAccountKey" />
@@ -66,7 +66,7 @@
                   filled
                   clearable
                   lazy-rules
-                  :rules="[(val) => (val && val.length > 0) || $t('signIn.inputVerifyCodePlaceholder')]"
+                  :rules="[(val: string) => (val && val.length > 0) || $t('signIn.inputVerifyCodePlaceholder')]"
                   @keyup.enter="submitSignInBtn"
                 >
                   <template #prepend>
@@ -114,7 +114,6 @@
 </template>
 
 <script lang="ts" setup>
-import { FormInst, useMessage } from "naive-ui";
 import {
   mdiAccount,
   mdiAccountKey,
@@ -169,7 +168,7 @@ const getCurrentVerifyCode = () => {
 
 // 切换当前主题
 const changeCurrentThemeBtn = (): void => {
-  appStore.setTheme();
+  // appStore.setTheme();
 };
 
 let currentLanguage = "zh_CN";
@@ -178,7 +177,7 @@ let currentLanguage = "zh_CN";
 const changeCurrentLanguageBtn = (): void => {
   currentLanguage = currentLanguage === "zh_CN" ? "en_US" : "zh_CN";
   locale.value = currentLanguage;
-  appStore.setLanguage(currentLanguage);
+  // appStore.setLanguage(currentLanguage);
 };
 
 const clickCodeImgBtn = () => {
@@ -255,6 +254,7 @@ onMounted(() => {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+
   .content-wrapper {
     position: absolute;
     top: 20%;
@@ -268,16 +268,17 @@ onMounted(() => {
     min-width: 25rem;
     max-width: 28.125rem;
     height: 34.375rem;
-    border-top: 2px solid rgba(99, 91, 236, 0.5);
-    border-left: 2px solid rgba(99, 91, 236, 0.5);
+    border-top: 2px solid rgb(99 91 236 / 50%);
+    border-left: 2px solid rgb(99 91 236 / 50%);
     border-radius: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 10px rgba(99, 91, 236, 0.5);
+    background: rgb(255 255 255 / 10%);
+    box-shadow: 0 0 10px rgb(99 91 236 / 50%);
     backdrop-filter: blur(5px);
 
     .wrapper-signIn {
-      width: 100%;
       position: relative;
+      width: 100%;
+
       .signIn-title {
         padding: 1.875rem;
         font-size: 1.875rem;
@@ -285,39 +286,47 @@ onMounted(() => {
         text-align: center;
         color: #fff;
       }
+
       .signIn-theme {
         position: absolute;
         top: 0;
         right: 0;
       }
+
       .signIn-language {
         position: absolute;
         top: 1.875rem;
         right: 0;
       }
+
       .signIn-form {
         padding: 0 3.125rem;
+
         .form-item {
           margin-bottom: 0.625rem;
         }
+
         .form-verify-code {
-          width: 100%;
-          height: 100%;
           display: flex;
-          flex-direction: row;
           justify-content: space-between;
           align-items: flex-start;
+          width: 100%;
+          height: 100%;
+          flex-direction: row;
+
           .code-input {
             width: calc(100% - 6.25rem - 10px);
           }
+
           .code-img {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             width: 6.25rem;
             height: 3.5rem;
             cursor: pointer;
-            display: flex;
             flex-direction: row;
-            justify-content: center;
-            align-items: center;
+
             img {
               width: 100%;
               height: 100%;
@@ -325,33 +334,41 @@ onMounted(() => {
             }
           }
         }
+
         .form-driver {
-          width: 90%;
           margin: 10px auto;
+          width: 90%;
           height: 1px;
           border: 1px solid #f5f6fa0f;
         }
+
         .form-tools {
           display: flex;
           flex-direction: row;
           justify-content: space-between;
           align-items: center;
+
           .tool-remember-password :deep(.n-checkbox__label) {
             color: #000 !important;
           }
+
           .tool-remember-password :deep(.n-checkbox__label):hover {
             color: #5b1ee9 !important;
           }
+
           .tool-forget-password {
             color: #000;
           }
+
           .tool-forget-password:hover {
             color: #5b1ee9;
           }
         }
+
         .form-submit {
           margin-top: 20px;
           width: 100%;
+
           // background-color: #5b1ee9;
           // border-color: #5b1ee9 !important;
           // &:hover {
@@ -359,6 +376,7 @@ onMounted(() => {
           // }
         }
       }
+
       .other-signIn {
         display: flex;
         flex-direction: row;
@@ -367,12 +385,14 @@ onMounted(() => {
         margin: 0 auto;
         margin-top: 1.25rem;
         width: 80%;
+
         svg {
           cursor: pointer;
         }
       }
     }
   }
+
   .copyright {
     position: fixed;
     bottom: 0;

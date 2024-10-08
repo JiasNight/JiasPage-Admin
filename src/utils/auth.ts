@@ -5,7 +5,7 @@ const { cookies } = useCookies();
 const tokenKey = "page-token";
 
 // cookie存储时间
-const expireTimes = "1d";
+// const expireTimes = "1d";
 
 const sessionId = "sso-sessionid";
 
@@ -14,7 +14,8 @@ export function getToken() {
 }
 
 export function setToken(tokenVal: string) {
-  return cookies.set(tokenKey, tokenVal, expireTimes);
+  // return cookies.set(tokenKey, tokenVal, expireTimes);
+  return cookies.set(tokenKey, tokenVal);
 }
 
 export function removeToken() {

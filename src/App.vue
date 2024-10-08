@@ -2,12 +2,13 @@
   <div>
     <RouterView></RouterView>
   </div>
-  <!-- <transition v-if="screenIsLock" name="slide-up">
-    <LockScreen />
-  </transition> -->
-  <q-slide-transition v-if="screenIsLock">
-    <LockScreen />
-  </q-slide-transition>
+  <transition
+    appear
+    enter-active-class="animated animate__fadeInDown"
+    leave-active-class="animated animate__fadeOutUpBig"
+  >
+    <LockScreen v-if="screenIsLock" />
+  </transition>
 </template>
 
 <script lang="ts" setup>
@@ -32,9 +33,9 @@ watch(screenIsLock, (nVal, oVal) => {
 #app {
   width: 100%;
   height: 100vh;
+  font-family: SourceHanSans;
   background-color: aliceblue;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: SourceHanSans;
 }
 </style>

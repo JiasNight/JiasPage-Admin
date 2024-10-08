@@ -10,6 +10,7 @@
               class="body-view"
               :style="{
                 height: headerHeight,
+                backgroundColor: currentBgColor,
               }"
             >
               <component :is="Component" />
@@ -34,18 +35,37 @@ const themeStore = useThemeStore();
 
 // 定义响应式数据
 let headerHeight = $ref<string>("calc(100vh - 100px)");
+let currentBgColor = $ref<string>("");
 
 // 计算属性
 const headerShow: ComputedRef<boolean> = computed(() => themeStore.getHeaderShow);
 const cachedTags: ComputedRef<Array<string>> = computed(() => tagStore.getCachedTags);
 const isReload: ComputedRef<boolean> = computed(() => appStore.getReloadViews);
 const tagPageShow: ComputedRef<boolean> = computed(() => themeStore.getTagPageShow);
+const darkMode: ComputedRef<boolean> = computed(() => themeStore.getDarkMode);
+const themeColor: ComputedRef<Array<any>> = computed(() => themeStore.getThemeColor);
 
 // 监听
 watch(
   () => router.currentRoute.value,
   (newRoute, oldRoute) => {
     appStore.setCurrentRoute(newRoute);
+  },
+  { immediate: true }
+);
+
+watch(
+  darkMode,
+  (nVal, oVal) => {
+    if (nVal) {
+      themeColor.value.forEach((item) => {
+        if (item.key === "dark") {
+          currentBgColor = item.color;
+        }
+      });
+    } else {
+      currentBgColor = "#fff";
+    }
   },
   { immediate: true }
 );

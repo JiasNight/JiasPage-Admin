@@ -1,16 +1,19 @@
 <template>
-  <div class="screen-lock" @click="handleUnlockScreen">
+  <div class="screen-lock">
     <div class="lock-time">
       <span>{{ currentTime.h }}</span>
       <span class="time-split">:</span>
       <span>{{ currentTime.m }}</span>
     </div>
     <div class="lock-date">{{ currentMonth }}月{{ currentDay }}号，星期{{ currentWeek }}</div>
-    <!-- <div class="lock-">{{ currentMonth }}月{{ currentDay }}号，星期{{ currentWeek }}</div> -->
+    <q-btn class="lock-btn" flat dense round :icon="mdiLock" @click="handleUnlockScreen">
+      <q-tooltip class="btn-tooltip bg-primary" anchor="top middle" self="center middle"> 点击解锁屏幕 </q-tooltip>
+    </q-btn>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { mdiLock } from "@quasar/extras/mdi-v6";
 import { ComputedRef } from "vue";
 import useAppStore from "@/store/module/app";
 
@@ -26,9 +29,6 @@ let currentMonth: string = $ref("");
 let currentDay: string = $ref("");
 let currentWeek: string = $ref("");
 let timerId: any = $ref(null);
-
-// 计算属性
-const lockScreen: ComputedRef<boolean> = computed(() => appStore.getLockScreen);
 
 // 页面初始化方法
 const pageInit = () => {
@@ -75,13 +75,13 @@ onUnmounted(() => {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 9999;
+  z-index: 8888;
   overflow: hidden;
   width: 100vw;
   height: 100vh;
   color: white;
   background: #000;
-  cursor: pointer;
+  user-select: none;
 
   .lock-time {
     position: absolute;
@@ -114,6 +114,13 @@ onUnmounted(() => {
     font-weight: 900;
     text-align: center;
     letter-spacing: 5px;
+  }
+
+  .lock-btn {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
 </style>

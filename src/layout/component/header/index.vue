@@ -11,12 +11,22 @@
           <q-icon v-else class="c-p" :name="mdiClose" @click="searchValue = ''" />
         </template>
       </q-input>
+      <q-btn flat dense color="info" round :icon="mdiMonitorLock" @click="handleLockScreen">
+        <q-tooltip> 点击进行锁屏 </q-tooltip>
+      </q-btn>
+      <q-btn
+        flat
+        dense
+        color="info"
+        round
+        :icon="$q.fullscreen.isActive ? mdiFullscreenExit : mdiFullscreen"
+        @click="handleFullScreen"
+      >
+        <q-tooltip> {{ $q.fullscreen.isActive ? "退出全屏" : "点击全屏" }} </q-tooltip>
+      </q-btn>
       <q-btn flat dense color="negative" round :icon="mdiEmail">
         <q-badge color="red" floating>4</q-badge>
         <q-tooltip> 你有4条消息待处理！ </q-tooltip>
-      </q-btn>
-      <q-btn flat dense color="info" round :icon="mdiMonitorLock" @click="handleLockScreen">
-        <q-tooltip> 点击进行锁屏 </q-tooltip>
       </q-btn>
       <q-chip class="chip-labels" :icon="mdiAccount" outline clickable text-color="white">
         <div class="ellipsis">
@@ -58,6 +68,8 @@ import {
   mdiMagnify,
   mdiClose,
   mdiMonitorLock,
+  mdiFullscreen,
+  mdiFullscreenExit,
 } from "@quasar/extras/mdi-v6";
 import { IUserInfo } from "@/interface/common";
 import useUserStore from "@/store/module/user";
@@ -145,6 +157,12 @@ const handleToggleSider = (): void => {
 // 锁屏
 const handleLockScreen = (): void => {
   appStore.setLockScreen(true);
+};
+
+// 全屏
+const handleFullScreen = (): void => {
+  $q.fullscreen.toggle();
+  console.log($q);
 };
 </script>
 

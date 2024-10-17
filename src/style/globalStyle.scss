@@ -9,12 +9,12 @@
 @import "./app-variables";
 
 html {
-  overflow: hidden !important;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
 body {
+  overflow: hidden;
   width: 100%;
   min-width: 320px;
   height: 100%;
@@ -87,6 +87,7 @@ a {
 .cus-table-th {
   font-size: 0.8rem !important;
   font-weight: bold !important;
+
   // color: #4e5d78 !important;
   // background-color: #f8faff !important;
 }

@@ -1,7 +1,15 @@
 import service from "@/utils/request";
 
+// 获取全部角色列表
+export const getAllRoleList = () => {
+  return service.request({
+    url: "/adminApi/system/role/allList",
+    method: "post",
+  });
+};
+
 // 获取角色列表
-export const getRoleList = (data: object) => {
+export const getRoleList = (data?: object) => {
   return service.request({
     url: "/adminApi/system/role/list",
     method: "post",

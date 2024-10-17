@@ -7,6 +7,7 @@ import { handleResCode } from "./common/requestCodeEnum";
 import { aesUtil, rsaUtil, publicKey } from "./common/security";
 import { IResponse } from "@/interface/common";
 import { getToken } from "./auth";
+import { mdiCheck, mdiClose } from "@quasar/extras/mdi-v6";
 
 // 这个就是上面创建的router实例，用来跳转到signIn页面的
 // import router from '../router';
@@ -108,9 +109,16 @@ class AxiosTool {
           Dialog.create({
             title: "系统提示",
             message: "登录信息失效，请重新登录!",
-            cancel: true,
+            ok: {
+              push: false,
+              icon: mdiCheck,
+            },
+            cancel: {
+              push: false,
+              color: "warning",
+              icon: mdiClose,
+            },
             persistent: true,
-            color: "negative",
           }).onOk(() => {
             const userStore = useUserStore();
             userStore.logoutSystem().then(() => {

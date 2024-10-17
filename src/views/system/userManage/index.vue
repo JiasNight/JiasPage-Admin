@@ -12,7 +12,7 @@
     </div>
     <div class="col-xs-12 col-sm-6 col-md-10 col-lg-10 col-xl-9 q-pa-sm">
       <q-card class="q-pa-md" flat bordered>
-        <MyForm ref="userFormRef" v-model="queryFormData" label-width="80px" layout="horizontal">
+        <MyForm ref="userFormRef" v-model="queryFormData" query-form label-width="80px" layout="horizontal">
           <MyFormItem label="用户账号">
             <q-input v-model="queryFormData.username" class="w-200" outlined dense clearable placeholder="请输入用户名">
             </q-input>
@@ -48,9 +48,9 @@
             </q-input>
           </MyFormItem>
           <MyFormItem>
-            <div class="row items-center q-gutter-x-sm q-gutter-y-xs">
-              <q-btn label="查 询" color="primary" :icon="mdiMagnify" @click="queryTableDataBtn" />
-              <q-btn label="重 置" color="info" :icon="mdiRestore" @click="resetQueryFormBtn" />
+            <div class="row items-center q-gutter-x-sm">
+              <q-btn label="查询" color="primary" :icon="mdiMagnify" @click="queryTableDataBtn" />
+              <q-btn label="重置" color="info" :icon="mdiRestore" @click="resetQueryFormBtn" />
             </div>
           </MyFormItem>
         </MyForm>
@@ -58,7 +58,7 @@
 
       <div class="row items-center q-my-md q-gutter-x-sm">
         <q-btn color="accent" :icon="mdiPlus" label="新增" @click="handleAddUser"> </q-btn>
-        <q-btn color="info" :icon="mdiDownload" label="导 出"> </q-btn>
+        <q-btn color="info" :icon="mdiDownload" label="导出"> </q-btn>
       </div>
 
       <q-table
@@ -128,7 +128,6 @@
                 clearable
                 lazy-rules
                 :rules="userFormRules.username"
-                hint=""
                 placeholder="请输入用户账号"
               >
               </q-input>
@@ -145,7 +144,6 @@
                 clearable
                 :lazy-rules="useDialogType === 'add'"
                 :rules="useDialogType === 'add' ? userFormRules.password : []"
-                hint=""
                 placeholder="请输入用户密码"
               >
               </q-input>
@@ -160,7 +158,6 @@
                 clearable
                 lazy-rules
                 :rules="userFormRules.nickname"
-                hint=""
                 placeholder="请输入用户昵称"
               >
               </q-input>
@@ -176,7 +173,6 @@
                 clearable
                 lazy-rules
                 :rules="userFormRules.phone"
-                hint=""
                 placeholder="请输入手机号码"
               >
               </q-input>
@@ -192,7 +188,6 @@
                 clearable
                 lazy-rules
                 :rules="userFormRules.email"
-                hint=""
                 placeholder="请输入电子邮箱"
               >
               </q-input>
@@ -204,7 +199,6 @@
                 transition-show="scale"
                 transition-hide="scale"
                 :options="genderOptions"
-                hint=""
                 emit-value
                 map-options
                 outlined
@@ -222,7 +216,6 @@
                 dense
                 clearable
                 placeholder="请选择出生日期"
-                hint=""
               >
                 <template #append>
                   <q-icon :name="mdiCalendar" class="c-p">
@@ -237,10 +230,45 @@
                 </template>
               </q-input>
             </MyFormItem>
+            <MyFormItem label="角色">
+              <q-select
+                v-model="userFormData.roles"
+                class="w-200"
+                transition-show="scale"
+                transition-hide="scale"
+                :options="roleOptions"
+                option-label="name"
+                option-value="code"
+                hide-hint
+                emit-value
+                map-options
+                outlined
+                dense
+                options-dense
+                multiple
+                use-chips
+                placeholder="请选择用户性别"
+              />
+            </MyFormItem>
+            <MyFormItem label="城市">
+              <q-select
+                v-model="userFormData.gender"
+                class="w-200"
+                transition-show="scale"
+                transition-hide="scale"
+                :options="roleOptions"
+                emit-value
+                map-options
+                outlined
+                dense
+                options-dense
+                placeholder="请选择用户性别"
+              />
+            </MyFormItem>
             <MyFormItem label="状态">
               <q-toggle v-model="userFormData.status" class="w-200" color="positive" :true-value="0" :false-value="1" />
             </MyFormItem>
-            <MyFormItem label="备注" alone-row>
+            <MyFormItem label="备注" single-row>
               <q-input
                 v-model="userFormData.remarks"
                 class="w-200"
@@ -248,7 +276,6 @@
                 outlined
                 dense
                 clearable
-                hint=""
                 placeholder="请输入备注"
               >
               </q-input>
@@ -257,9 +284,9 @@
         </q-card-section>
         <q-separator />
         <q-card-actions align="right" class="q-ma-sm">
-          <q-btn v-if="useDialogType === 'add'" flat label="重 置" color="primary" @click="handleResetForm" />
-          <q-btn v-close-popup label="取 消" color="warning" />
-          <q-btn label="确 定" color="primary" @click="handleSubmitForm" />
+          <q-btn v-if="useDialogType === 'add'" flat label="重置" color="primary" @click="handleResetForm" />
+          <q-btn v-close-popup label="取消" color="warning" />
+          <q-btn label="确定" color="primary" @click="handleSubmitForm" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -278,6 +305,7 @@ import { IRes } from "@/interface/common";
 import useUserStore from "@/store/module/user";
 import { getUserList, newAddUser, updateUser, deleteUser } from "@/api/system/userManage";
 import { getDeptList } from "@/api/system/deptManage";
+import { getAllRoleList } from "@/api/system/roleManage";
 import UserRoles from "./components/UserRoles.vue";
 import ModifyPassword from "./components/ModifyPassword.vue";
 import {
@@ -331,6 +359,7 @@ interface IUserForms {
   gender: number;
   birthday: any | null;
   city: string;
+  roles: array;
   dept: string;
   avatar: string;
   status: number;
@@ -347,6 +376,7 @@ let emptyUserForm = {
   gender: null,
   birthday: "",
   city: "",
+  roles: [],
   dept: "",
   avatar: "",
   status: 0,
@@ -379,6 +409,8 @@ let genderOptions = $ref<Array<object>>([
   { label: "男", value: 0 },
   { label: "女", value: 1 },
 ]);
+
+let roleOptions = $ref<Array<object>>([]);
 
 let userInfoDialog = $ref<boolean>(false);
 
@@ -415,7 +447,7 @@ let showUserRoleDialog = $ref<boolean>(false);
 
 let showModifyPasswordDialog = $ref<boolean>(false);
 
-let userTableHeaderColumns = $ref<QTableColumn[]>([
+let userTableHeaderColumns = reactive<QTableColumn[]>([
   {
     label: "序号",
     name: "index",
@@ -491,7 +523,7 @@ let userRowMoreList = [
     icon: mdiAccountLock,
   },
   {
-    label: "角色权限",
+    label: "所属角色",
     key: "rolePermission",
     icon: mdiShieldAccount,
   },
@@ -522,6 +554,15 @@ const getDeptData = () => {
     .catch(() => {
       deptTreeLoading = false;
     });
+};
+
+// 获取角色列表
+const getRoleData = () => {
+  getAllRoleList().then((res: IRes) => {
+    if (res && res.code === 200) {
+      roleOptions = res.data.records;
+    }
+  });
 };
 
 // 点击树
@@ -612,7 +653,6 @@ const handleDeleteUser = (row: IUserTable): void => {
       if (res && res.code === 200) {
         Notify.create({
           type: "positive",
-          position: "top-right",
           message: "删除成功！",
         });
         getUserTable();
@@ -640,7 +680,6 @@ const handleSubmitForm = (): void => {
               userInfoDialog = false;
               Notify.create({
                 type: "positive",
-                position: "top-right",
                 message: "新增成功！",
               });
               getUserTable();
@@ -656,7 +695,6 @@ const handleSubmitForm = (): void => {
               userInfoDialog = false;
               Notify.create({
                 type: "positive",
-                position: "top-right",
                 message: "修改成功！",
               });
               getUserTable();
@@ -688,6 +726,7 @@ const handleClickUserMore = (key: string) => {
 // 加载之前
 onMounted(() => {
   getDeptData();
+  getRoleData();
   getUserTable();
 });
 </script>

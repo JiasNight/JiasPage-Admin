@@ -15,6 +15,8 @@
 import { ComputedRef } from "vue";
 import useAppStore from "@/store/module/app";
 import LockScreen from "@/components/LockScreen/index.vue";
+import { Notify } from "quasar";
+import { mdiBell } from "@quasar/extras/mdi-v6";
 
 const appStore = useAppStore();
 
@@ -26,6 +28,16 @@ watch(screenIsLock, (nVal, oVal) => {
   if (nVal) {
     console.log("锁屏");
   }
+});
+
+// 设置notify的默认值
+Notify.setDefaults({
+  position: "top",
+  timeout: 1000,
+  icon: mdiBell,
+  progress: true,
+  textColor: "white",
+  actions: [{ color: "white" }],
 });
 </script>
 

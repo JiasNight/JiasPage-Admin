@@ -2,11 +2,11 @@
   <div class="view-container q-pa-sm">
     <MyForm ref="queryFormRef" v-model="queryFormData" label-width="80px" layout="horizontal">
       <MyFormItem label="角色名称">
-        <q-input v-model="queryFormData.roleName" class="w-200" outlined dense clearable placeholder="请输入角色名称">
+        <q-input v-model="queryFormData.name" class="w-200" outlined dense clearable placeholder="请输入角色名称">
         </q-input>
       </MyFormItem>
       <MyFormItem label="角色代码">
-        <q-input v-model="queryFormData.roleCode" class="w-200" outlined dense clearable placeholder="请输入角色代码">
+        <q-input v-model="queryFormData.code" class="w-200" outlined dense clearable placeholder="请输入角色代码">
         </q-input>
       </MyFormItem>
       <MyFormItem label="创建时间">
@@ -25,9 +25,9 @@
         </q-input>
       </MyFormItem>
       <MyFormItem>
-        <div class="row items-center q-gutter-x-sm q-gutter-y-xs">
-          <q-btn label="查 询" color="primary" :icon="mdiMagnify" @click="handleQueryTableBtn" />
-          <q-btn label="重 置" color="info" :icon="mdiRestore" @click="resetQueryFormBtn" />
+        <div class="row items-center q-gutter-x-sm">
+          <q-btn label="查询" color="primary" :icon="mdiMagnify" @click="handleQueryTableBtn" />
+          <q-btn label="重置" color="info" :icon="mdiRestore" @click="resetQueryFormBtn" />
         </div>
       </MyFormItem>
     </MyForm>
@@ -36,17 +36,6 @@
       <q-btn color="accent" :icon="mdiPlus" label="新增" @click="handleAddRole"> </q-btn>
       <q-btn color="info" :icon="mdiDownload" label="导出" @click="handleDownload"> </q-btn>
     </div>
-    <!-- 表格 -->
-    <!-- <n-data-table
-      :data="roleTableData"
-      :columns="roleTableHeader"
-      :loading="tableIsLoading"
-      :row-key="tableRowKey"
-      :bordered="true"
-      :single-line="false"
-      :default-expand-all="true"
-      :pagination="pagination"
-    /> -->
     <q-table
       :loading="tableIsLoading"
       :rows="roleTableData"
@@ -63,44 +52,46 @@
       </template>
       <template #body-cell-ops="props">
         <q-td :props="props">
-          <q-btn flat dense color="primary" :icon="mdiPlaylistEdit" label="编辑" @click="handleEditRole(props.row)" />
-          <q-btn flat dense color="negative" :icon="mdiDelete" label="删除" @click="handleDeleteRole(props.row)" />
-          <q-btn flat dense color="info" :icon="mdiArrowRight" label="更多">
-            <q-popup-proxy>
-              <q-list dense bordered>
-                <q-item
-                  v-for="(item, i) in roleRowMoreList"
-                  :key="i"
-                  v-close-popup
-                  v-ripple
-                  clickable
-                  @click="handleClickRoleMore(item.key)"
-                >
-                  <q-item-section avatar>
-                    <q-icon color="primary" :name="item.icon" />
-                  </q-item-section>
-                  <q-item-section no-wrap>{{ item.label }}</q-item-section>
-                </q-item>
-              </q-list>
-            </q-popup-proxy>
-          </q-btn>
+          <template v-if="props.row.code !== 'admin'">
+            <q-btn flat dense color="primary" :icon="mdiPlaylistEdit" label="编辑" @click="handleEditRole(props.row)" />
+            <q-btn flat dense color="negative" :icon="mdiDelete" label="删除" @click="handleDeleteRole(props.row)" />
+            <q-btn flat dense color="info" :icon="mdiArrowRight" label="更多">
+              <q-popup-proxy>
+                <q-list dense bordered>
+                  <q-item
+                    v-for="(item, i) in roleRowMoreList"
+                    :key="i"
+                    v-close-popup
+                    v-ripple
+                    clickable
+                    @click="handleClickRoleMore(item.key)"
+                  >
+                    <q-item-section avatar>
+                      <q-icon color="primary" :name="item.icon" />
+                    </q-item-section>
+                    <q-item-section no-wrap>{{ item.label }}</q-item-section>
+                  </q-item>
+                </q-list>
+              </q-popup-proxy>
+            </q-btn>
+          </template>
         </q-td>
       </template>
     </q-table>
     <!-- 新增和编辑内容框 -->
-    <q-dialog v-model="showModal" persistent>
+    <q-dialog v-model="showDialog" persistent>
       <q-card bordered class="w-md">
         <q-card-section class="row items-center">
-          <div class="text-h6">{{ modelTitle }}</div>
+          <div class="text-h6">{{ dialogTitle }}</div>
           <q-space />
           <q-btn v-close-popup :icon="mdiClose" flat round dense />
         </q-card-section>
         <q-card-section class="row items-center">
-          <MyForm ref="roleFormRef" v-model="roleFormData" label-width="80px" layout="horizontal">
+          <MyForm ref="roleFormRef" v-model="roleFormData" label-width="80px">
             <MyFormItem label="角色名称" required>
               <q-input
                 v-model="roleFormData.name"
-                class="w-200"
+                class="w-full"
                 maxlength="20"
                 outlined
                 dense
@@ -115,7 +106,7 @@
             <MyFormItem label="角色代码" required>
               <q-input
                 v-model="roleFormData.code"
-                class="w-200"
+                class="w-full"
                 maxlength="20"
                 outlined
                 dense
@@ -127,10 +118,10 @@
               >
               </q-input>
             </MyFormItem>
-            <MyFormItem label="角色描述" required>
+            <MyFormItem label="角色描述">
               <q-input
                 v-model="roleFormData.description"
-                class="w-200"
+                class="w-full"
                 type="textarea"
                 maxlength="50"
                 outlined
@@ -146,24 +137,27 @@
         </q-card-section>
         <q-separator />
         <q-card-actions align="right" class="q-ma-sm">
-          <q-btn v-close-popup label="取 消" color="warning" />
-          <q-btn label="确 定" color="primary" :loading="confirmLoading" @click="handleSubmitForm" />
+          <q-btn v-close-popup label="取 消" :icon="mdiClose" color="warning" @click="showDialog = false" />
+          <q-btn label="确 定" color="primary" :icon="mdiCheck" :loading="confirmLoading" @click="handleSubmitForm" />
         </q-card-actions>
       </q-card>
     </q-dialog>
     <!-- 角色权限分配 -->
-    <RoleWithAuth :show="showRoleWithAuthModal" @close="showRoleWithAuthModal = false"></RoleWithAuth>
+    <RoleWithAuth :show="showRoleWithAuthDialog" @close="showRoleWithAuthDialog = false"></RoleWithAuth>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ICON } from "@/enums/icon";
 import {
   mdiAccountLock,
+  mdiAlert,
   mdiArrowRight,
   mdiAsterisk,
   mdiCalendar,
+  mdiCheck,
+  mdiCheckCircle,
   mdiClose,
+  mdiCloseCircle,
   mdiDelete,
   mdiDownload,
   mdiLockReset,
@@ -174,21 +168,16 @@ import {
   mdiRestore,
   mdiShieldAccount,
 } from "@quasar/extras/mdi-v6";
-import { QPagination, QTableColumn, QTreeNode } from "quasar";
-import { Ref, ComputedRef, h, Component } from "vue";
-import { TreeOption, FormInst, DataTableColumns, NButton, NIcon } from "naive-ui";
-import { Icon } from "@iconify/vue";
-import { renderIcon, resetForm } from "@/utils/common";
+import { QPagination, QTableColumn, QTreeNode, useQuasar } from "quasar";
 import { IRes } from "@/interface/common";
 import useUserStore from "@/store/module/user";
 import { getRoleList, addRoleList, updateRole, deleteRole } from "@/api/system/roleManage";
+import { resetForm } from "@/utils/common";
 import RoleWithAuth from "@/views/system/roleManage/components/RoleWithAuth.vue";
-import { Md5 } from "ts-md5";
-import { aesUtil } from "@/utils/common/security";
 
 interface IQueryForm {
-  roleName: string | null;
-  roleCode: string | null;
+  name: string | null;
+  code: string | null;
   createDate: string | null;
 }
 
@@ -216,19 +205,19 @@ interface IRoleTable {
 
 let tableIsLoading = $ref<boolean>(false);
 
-let queryForm = $ref<FormInst | null>(null);
+let queryForm = $ref<IQueryForm | null>(null);
 
 let queryFormData = $ref<IQueryForm>({
-  roleName: null,
-  roleCode: null,
+  name: null,
+  code: null,
   createDate: null,
 });
 
-let showModal = $ref<boolean>(false);
+let showDialog = $ref<boolean>(false);
 
-let showRoleWithAuthModal = $ref<boolean>(false);
+let showRoleWithAuthDialog = $ref<boolean>(false);
 
-let modelTitle = $ref<string>("");
+let dialogTitle = $ref<string>("");
 
 let useDialogType = $ref<string>("add");
 
@@ -253,7 +242,7 @@ let roleFormRules = {
 
 let roleTableData = $ref<IRoleForm[]>([]);
 
-let roleTableHeaderColumns = $ref<QTableColumn[]>([
+let roleTableHeaderColumns = reactive<QTableColumn[]>([
   {
     label: "序号",
     name: "index",
@@ -296,6 +285,23 @@ let roleTableHeaderColumns = $ref<QTableColumn[]>([
     classes: "cus-table-td",
   },
   {
+    label: "修改时间",
+    name: "updateTime",
+    field: "updateTime",
+    sortable: true,
+    align: "center",
+    headerClasses: "cus-table-th",
+    classes: "cus-table-td",
+  },
+  {
+    label: "修改人",
+    name: "updateBy",
+    field: "updateBy",
+    align: "center",
+    headerClasses: "cus-table-th",
+    classes: "cus-table-td",
+  },
+  {
     label: "操作",
     name: "ops",
     field: "ops",
@@ -305,7 +311,7 @@ let roleTableHeaderColumns = $ref<QTableColumn[]>([
   },
 ]);
 
-let pageInfo = $ref({
+let pageInfo = reactive({
   page: 1,
   rowsPerPage: 10,
   rowsNumber: 1,
@@ -313,13 +319,13 @@ let pageInfo = $ref({
 
 let roleRowMoreList = [
   {
-    label: "数据权限",
-    key: "accountFreeze",
+    label: "角色权限",
+    key: "roleWithAuth",
     icon: mdiAccountLock,
   },
   {
     label: "分配用户",
-    key: "rolePermission",
+    key: "roleWithUser",
     icon: mdiShieldAccount,
   },
 ];
@@ -333,12 +339,7 @@ let confirmLoading = $ref<boolean>(false);
 
 // 重置查询内容
 const resetQueryFormBtn = () => {
-  queryFormData = {
-    roleName: null,
-    roleCode: null,
-    createDate: null,
-  };
-  if (queryForm) queryForm.restoreValidation();
+  queryFormData = resetForm(queryFormData);
 };
 
 // 获取角色数据
@@ -354,7 +355,7 @@ const getRoleTableData = (): void => {
   getRoleList(data)
     .then((res: IRes) => {
       if (res && res.code === 200) {
-        roleTableData = res.data;
+        roleTableData = res.data.records;
         roleTableData.forEach((item: IRoleTable, index: number) => {
           item.index = index + 1;
         });
@@ -374,30 +375,66 @@ const handleQueryTableBtn = (): void => {
 // 新增
 const handleAddRole = (): void => {
   roleFormData = JSON.parse(JSON.stringify(emptyRoleForm));
-  modelTitle = "新增";
-  showModal = true;
+  dialogTitle = "新增";
+  useDialogType = "add";
+  showDialog = true;
 };
 
 // 导出
 const handleDownload = (): void => {
-  window.$message.warning("还未开发该功能！");
+  Notify.create({
+    type: "warning",
+    message: "还未开发该功能！",
+    icon: mdiAlert,
+  });
 };
 
+// 编辑
 const handleEditRole = (row: any): void => {
-  window.$message.warning("还未开发该功能！");
+  dialogTitle = "编辑";
+  useDialogType = "edit";
+  showDialog = true;
+  roleFormData = JSON.parse(JSON.stringify(row));
 };
 
 // 删除
-const handleDeleteRole = (rId: string): void => {
-  deleteRole(rId)
-    .then((res: IRes) => {
-      if (res && res.code === 200) {
-        window.$message.success("已删除角色！");
-        getRoleTableData();
-      }
+const handleDeleteRole = (row: any): void => {
+  Dialog.create({
+    title: "系统提示!",
+    message: "是否确定删除该角色?",
+    ok: {
+      push: false,
+      icon: mdiCheck,
+    },
+    cancel: {
+      push: false,
+      color: "warning",
+      icon: mdiClose,
+    },
+    persistent: true,
+  })
+    .onOk(() => {
+      // console.log('>>>> OK')
+      deleteRole(row.id)
+        .then((res: IRes) => {
+          if (res && res.code === 200) {
+            Notify.create({
+              type: "positive",
+              message: "已删除角色",
+              icon: mdiCheckCircle,
+            });
+            getRoleTableData();
+          }
+        })
+        .catch(() => {
+          Notify.create({
+            type: "negative",
+            message: "删除角色失败！",
+          });
+        });
     })
-    .catch(() => {
-      window.$message.warning("删除角色失败！");
+    .onCancel(() => {
+      // console.log(">>>> Cancel");
     });
 };
 
@@ -410,33 +447,31 @@ const handleSubmitForm = (): void => {
         addRoleList(copyRoleFormData)
           .then((res: IRes) => {
             if (res && res.code === 200) {
-              showModal = false;
+              showDialog = false;
               Notify.create({
                 type: "positive",
-                position: "top-right",
                 message: "新增成功！",
               });
               getRoleTableData();
             }
           })
           .catch(() => {
-            showModal = false;
+            showDialog = false;
           });
       } else {
         updateRole(copyRoleFormData)
           .then((res: IRes) => {
             if (res && res.code === 200) {
-              showModal = false;
+              showDialog = false;
               Notify.create({
                 type: "positive",
-                position: "top-right",
                 message: "修改成功！",
               });
               getRoleTableData();
             }
           })
           .catch(() => {
-            showModal = false;
+            showDialog = false;
           });
       }
     } else {
@@ -447,8 +482,8 @@ const handleSubmitForm = (): void => {
 
 const handleClickRoleMore = (key: string) => {
   console.log(key);
-  if (key === "resetPassword") showModifyPasswordDialog = true;
-  if (key === "rolePermission") showUserRoleDialog = true;
+  if (key === "roleWithAuth") showRoleWithAuthDialog = true;
+  // if (key === "roleWithUser") showModifyPasswordDialog = true;
   // if (key === 'accountFreeze') showUserRoleDialog = true;
 };
 

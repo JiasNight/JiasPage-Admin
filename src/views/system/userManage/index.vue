@@ -50,7 +50,7 @@
           <MyFormItem>
             <div class="row items-center q-gutter-x-sm">
               <q-btn label="查询" color="primary" :icon="mdiMagnify" @click="queryTableDataBtn" />
-              <q-btn label="重置" color="info" :icon="mdiRestore" @click="resetQueryFormBtn" />
+              <q-btn label="重置" color="info" :icon="mdiReload" @click="resetQueryFormBtn" />
             </div>
           </MyFormItem>
         </MyForm>
@@ -238,7 +238,7 @@
                 transition-hide="scale"
                 :options="roleOptions"
                 option-label="name"
-                option-value="code"
+                option-value="id"
                 hide-hint
                 emit-value
                 map-options
@@ -284,9 +284,16 @@
         </q-card-section>
         <q-separator />
         <q-card-actions align="right" class="q-ma-sm">
-          <q-btn v-if="useDialogType === 'add'" flat label="重置" color="primary" @click="handleResetForm" />
-          <q-btn v-close-popup label="取消" color="warning" />
-          <q-btn label="确定" color="primary" @click="handleSubmitForm" />
+          <q-btn
+            v-if="useDialogType === 'add'"
+            flat
+            label="重置"
+            color="primary"
+            :icon="mdiReload"
+            @click="handleResetForm"
+          />
+          <q-btn v-close-popup label="取消" :icon="mdiClose" color="warning" />
+          <q-btn label="确定" color="primary" :icon="mdiCheck" @click="handleSubmitForm" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -321,8 +328,9 @@ import {
   mdiPencil,
   mdiPlaylistEdit,
   mdiPlus,
-  mdiRestore,
   mdiShieldAccount,
+  mdiCheck,
+  mdiReload,
 } from "@quasar/extras/mdi-v6";
 import DeptTree from "@/components/DeptTree/index.vue";
 import { QPagination, QTableColumn, QTreeNode } from "quasar";
@@ -359,7 +367,7 @@ interface IUserForms {
   gender: number;
   birthday: any | null;
   city: string;
-  roles: array;
+  roles: Array<string>;
   dept: string;
   avatar: string;
   status: number;
@@ -689,6 +697,7 @@ const handleSubmitForm = (): void => {
             userInfoDialog = false;
           });
       } else {
+        console.log(copyUserFormData);
         updateUser(copyUserFormData)
           .then((res: IRes) => {
             if (res && res.code === 200) {

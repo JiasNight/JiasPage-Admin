@@ -70,6 +70,7 @@ import {
   mdiMonitorLock,
   mdiFullscreen,
   mdiFullscreenExit,
+  mdiCheck,
 } from "@quasar/extras/mdi-v6";
 import { IUserInfo } from "@/interface/common";
 import useUserStore from "@/store/module/user";
@@ -137,9 +138,16 @@ const handleSelectDropdown = (key: string) => {
     $q.dialog({
       title: "系统提示",
       message: "是否确认退出登录？",
-      cancel: true,
+      ok: {
+        push: false,
+        icon: mdiCheck,
+      },
+      cancel: {
+        push: false,
+        color: "warning",
+        icon: mdiClose,
+      },
       persistent: true,
-      color: "negative",
     }).onOk(() => {
       userStore.logoutSystem().then(() => {
         router.push("/signIn");

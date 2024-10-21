@@ -5,42 +5,42 @@ import { IThemeState, IThemeColor } from "@/interface/common";
 // 默认主题颜色
 const sysDefaultThemeColor = [
   {
-    label: "默认",
+    label: "primary",
     key: "primary",
     color: "#6e40c9",
   },
   {
-    label: "默认",
+    label: "secondary",
     key: "secondary",
     color: "#31ccec",
   },
   {
-    label: "默认",
+    label: "accent",
     key: "accent",
     color: "#00a8ff",
   },
   {
-    label: "默认",
+    label: "positive",
     key: "positive",
     color: "#2ed573",
   },
   {
-    label: "默认",
+    label: "negative",
     key: "negative",
     color: "#eb2f06",
   },
   {
-    label: "默认",
+    label: "info",
     key: "info",
     color: "#00d2d3",
   },
   {
-    label: "默认",
+    label: "warning",
     key: "warning",
     color: "#fc9607",
   },
   {
-    label: "默认",
+    label: "dark",
     key: "dark",
     color: "#1d1d1d",
   },
@@ -132,6 +132,44 @@ const useThemeStore = defineStore({
     setTagPageShow(show: boolean) {
       this.tagPageShow = show;
     },
+    setCurAppTheme() {
+      const curLocalStorageTheme = localStorage.getItem("themeInfo");
+      if (curLocalStorageTheme) {
+        const themeInfo = JSON.parse(curLocalStorageTheme);
+        this.darkMode = themeInfo.darkMode;
+        Dark.set(this.darkMode);
+        this.themeColor = themeInfo.themeColor;
+        this.themeColor.forEach((item: IThemeColor) => {
+          setCssVar(item.key, item.color);
+        });
+        this.siderHasHeader = themeInfo.siderHasHeader;
+        this.siderPosition = themeInfo.siderPosition;
+        this.siderWidth = themeInfo.siderWidth;
+        this.siderBgColor = themeInfo.siderBgColor;
+        this.headerShow = themeInfo.headerShow;
+        this.headerBgColor = themeInfo.headerBgColor;
+        this.headerHeight = themeInfo.headerHeight;
+        this.logoShow = themeInfo.logoShow;
+        this.breadcrumbsShow = themeInfo.breadcrumbsShow;
+        this.tagPageShow = themeInfo.tagPageShow;
+      } else {
+        Dark.set(this.darkMode);
+        this.themeColor.forEach((item: IThemeColor) => {
+          setCssVar(item.key, item.color);
+        });
+      }
+    },
+  },
+  // 所有数据持久化
+  // persist: true
+  // 自定义数据持久化
+  persist: {
+    // 存储storage的键名称，默认用当前store的id
+    key: "themeInfo",
+    // 修改存储，默认为localStorage，可修改为sessionStorage
+    storage: localStorage,
+    // 指定 state 中哪些数据需要被持久化,[]表示不持久化任何状态，undefined 或 null 表示持久化整个 state。
+    paths: undefined,
   },
 });
 

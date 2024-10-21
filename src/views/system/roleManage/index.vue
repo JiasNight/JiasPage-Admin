@@ -231,14 +231,12 @@ let emptyRoleForm = {
   order: 0,
 };
 
+// 确定按钮是否loading
+let confirmLoading = $ref<boolean>(false);
+
 const roleFormRef = $ref<any>(null);
 
 let roleFormData = $ref<IRoleForm>(JSON.parse(JSON.stringify(emptyRoleForm)));
-
-let roleFormRules = {
-  name: [(val: string) => (val && val.length > 0) || "请输入角色名称"],
-  code: [(val: string) => (val && val.length > 0) || "请输入角色代码"],
-};
 
 let roleTableData = $ref<IRoleForm[]>([]);
 
@@ -317,6 +315,21 @@ let pageInfo = reactive({
   rowsNumber: 1,
 });
 
+let roleFormRules = {
+  name: [(val: string) => (val && val.length > 0) || "请输入角色名称"],
+  code: [
+    (val: string) => (val && val.length > 0) || "请输入角色代码",
+    (val: string) => {
+      let res = roleTableData.some((item: IRoleForm) => {
+        return item.code === val;
+      });
+      if (res) {
+        return "角色代码已存在";
+      }
+    },
+  ],
+};
+
 let roleRowMoreList = [
   {
     label: "角色权限",
@@ -333,9 +346,6 @@ let roleRowMoreList = [
 let tableRowKey = (rowData: IRoleForm, i: number) => {
   return rowData.id;
 };
-
-// 确定按钮是否loading
-let confirmLoading = $ref<boolean>(false);
 
 // 重置查询内容
 const resetQueryFormBtn = () => {

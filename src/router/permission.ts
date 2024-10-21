@@ -26,7 +26,7 @@ export const setupPermission = (router: Router) => {
         LoadingBar.stop();
         return { path: "/" };
       } else {
-        const currentRoutes: Array<RouteRecordRaw> = await appStore.getRoutes;
+        const currentRoutes: Array<RouteRecordRaw> = appStore.getRoutes;
         const routesLength = toRaw(currentRoutes);
         // 如果没有路由信息，则通过当前用户获取路由表
         if (routesLength.length === 0) {

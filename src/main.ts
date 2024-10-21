@@ -30,6 +30,7 @@ import { setupPermission } from "@/router/permission";
 // 引入工具函数
 import { formatDate, renderIcon } from "@/utils/common";
 import useAppStore from "@/store/module/app";
+import useThemeStore from "@/store/module/theme";
 // 引入全局组件
 import MyForm from "@/components/MyForm/MyForm.vue";
 import MyFormItem from "@/components/MyForm/MyFormItem.vue";
@@ -61,6 +62,7 @@ myApp.config.globalProperties.$t = i18n.global.t;
 
 myApp.use(store);
 useAppStore().addRoutes();
+useThemeStore().setCurAppTheme();
 myApp.use(i18n);
 myApp.use(router);
 myApp.use(Quasar, {

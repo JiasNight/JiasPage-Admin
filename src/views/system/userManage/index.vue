@@ -297,8 +297,6 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <!-- 用户角色权限弹框 -->
-    <UserRoles :show="showUserRoleDialog" @close="showUserRoleDialog = false"></UserRoles>
     <!-- 修改用户密码 -->
     <ModifyPassword :show="showModifyPasswordDialog" @close="showModifyPasswordDialog = false"></ModifyPassword>
   </div>
@@ -313,7 +311,6 @@ import useUserStore from "@/store/module/user";
 import { getUserList, newAddUser, updateUser, deleteUser } from "@/api/system/userManage";
 import { getDeptList } from "@/api/system/deptManage";
 import { getAllRoleList } from "@/api/system/roleManage";
-import UserRoles from "./components/UserRoles.vue";
 import ModifyPassword from "./components/ModifyPassword.vue";
 import {
   mdiAccountLock,
@@ -451,8 +448,6 @@ let confirmLoading = $ref<boolean>(false);
 
 let tableIsLoading = $ref<boolean>(false);
 
-let showUserRoleDialog = $ref<boolean>(false);
-
 let showModifyPasswordDialog = $ref<boolean>(false);
 
 let userTableHeaderColumns = reactive<QTableColumn[]>([
@@ -529,11 +524,6 @@ let userRowMoreList = [
     label: "账户解冻",
     key: "accountFreeze",
     icon: mdiAccountLock,
-  },
-  {
-    label: "所属角色",
-    key: "rolePermission",
-    icon: mdiShieldAccount,
   },
   {
     label: "重置密码",
@@ -728,8 +718,15 @@ const handleResetForm = (): void => {
 const handleClickUserMore = (key: string) => {
   console.log(key);
   if (key === "resetPassword") showModifyPasswordDialog = true;
-  if (key === "rolePermission") showUserRoleDialog = true;
-  // if (key === 'accountFreeze') showUserRoleDialog = true;
+  if (key === "accountFreeze") {
+    Dialog.create({
+      title: "系统提示",
+      message: "此功能暂未开放",
+      cancel: true,
+      persistent: true,
+      color: "negative",
+    });
+  }
 };
 
 // 加载之前

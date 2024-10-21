@@ -131,7 +131,6 @@ class AxiosTool {
         } else {
           Notify.create({
             type: "negative",
-            position: "top-right",
             message: res.message || "请求异常",
           });
           return Promise.resolve(res);
@@ -146,7 +145,6 @@ class AxiosTool {
         if (!navigator.onLine) {
           Notify.create({
             type: "negative",
-            position: "top-right",
             message: "网络连接失败",
           });
           // 可以跳转到错误页面，也可以不做操作
